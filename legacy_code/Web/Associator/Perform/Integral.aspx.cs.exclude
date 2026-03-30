@@ -1,0 +1,117 @@
+﻿using System;
+using System.Data;
+using System.Configuration;
+using System.Collections;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+
+using Base.Biz;
+using Base.DB;
+using Base;
+using Lease.ConShop;
+using Associator;
+using Associator.Perform;
+using Base.Page;
+
+public partial class Associator_Perform_Integral : System.Web.UI.Page
+{
+    #region
+    public string integral;  //积分
+    public string IssueCard;  //发行新卡
+    public string Info;   //信息
+    public string Query;  //查询
+    #endregion
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!this.IsPostBack)
+        {
+            BindShop();
+            LockControl(true);
+
+            txtChgDate.Text = DateTime.Now.ToShortDateString().ToString();
+
+            integral = (String)GetGlobalResourceObject("BaseInfo", "Tab_integral");
+            IssueCard = (String)GetGlobalResourceObject("BaseInfo", "Tab_IssueCard");
+            Info = (String)GetGlobalResourceObject("BaseInfo", "Tab_Info");
+            Query = (String)GetGlobalResourceObject("BaseInfo", "Tab_Query");
+        }
+    }
+    protected void btnQuery_Click(object sender, EventArgs e)
+    {
+        if (txtCardID.Text != "")
+        {
+            Resultset rs = MembCardPO.GetMembCardInfoByID(txtCardID.Text);
+            if (rs.Count > 0)
+            {
+                MembCard mbCard = rs.Dequeue() as MembCard;
+                txtCardType.Text = mbCard.CardTypeId.ToString();
+                txtStauts.Text = (string)GetGlobalResourceObject("Parameter", mbCard.CardStatusId.ToString());
+                txtTermDate.Text = mbCard.ExpiredDate.ToShortDateString().ToString();
+                txtIntegral.Text = mbCard.TotalScore.ToString();
+
+                Resultset membRS = MemberPO.GetMembInfoByID(mbCard.MembID);
+                Member mber = membRS.Dequeue() as Member;
+                txtMembID.Text = mber.MembCode.ToString();
+                txtOtherCard.Text = mber.CertNum.ToString();
+                txtName.Text = mber.MembName.ToString();
+            }
+            else
+            {
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "message", "parent.document.all.txtWroMessage.value =  '" + (String)GetGlobalResourceObject("BaseInfo", "Memb_NOMemberCard") + "'", true);
+            }
+        }
+        else
+        {
+            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "message", "parent.document.all.txtWroMessage.value =  '" + (String)GetGlobalResourceObject("BaseInfo", "Memb_EnterCardID") + "'", true);
+        }
+    }
+
+    /// <summary>
+    /// 绑定商铺
+    /// </summary>
+    private void BindShop()
+    {
+        DataSet ds = MembScorePO.GetConShop();
+        int count = ds.Tables[0].Rows.Count;
+        if (count > 0)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                dropShopCode.Items.Add(new ListItem(ds.Tables[0].Rows[i]["ShopCode"].ToString(), ds.Tables[0].Rows[i]["ShopID"].ToString()));
+            }
+            txtShopName.Text = ds.Tables[0].Rows[0]["ShopName"].ToString();
+        }
+    }
+
+    /// <summary>
+    /// 设置控件是否只读
+    /// </summary>
+    /// <param name="m"></param>
+    private void LockControl(bool m)
+    {
+        txtCardType.ReadOnly = m;
+        txtStauts.ReadOnly = m;
+        txtMembID.ReadOnly = m;
+        txtName.ReadOnly = m;
+        txtOtherCard.ReadOnly = m;
+        txtShopName.ReadOnly = m;
+        txtTermDate.ReadOnly = m;
+    }
+
+
+    protected void dropShopCode_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        BaseBO baseBO = new BaseBO();
+        baseBO.WhereClause = "ShopID = " + dropShopCode.SelectedValue;
+        Resultset rs = baseBO.Query(new ConShop());
+        if(rs.Count > 0)
+        {
+            ConShop cnShop = rs.Dequeue() as ConShop;
+            txtShopName.Text = cnShop.ShopName;
+        }
+    }
+}

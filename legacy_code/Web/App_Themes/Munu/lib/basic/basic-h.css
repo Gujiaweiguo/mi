@@ -1,0 +1,65 @@
+.horz_nlsmenu {
+    border-top:#999999 1px solid;
+    border-left:#999999 1px solid;
+    border-bottom:#999999 1px solid;
+    background-color:#ffffff;
+    z-index:1;
+}
+
+.horz_nlsitemcontainer {
+    height:20px;
+    border:#ffffff 1px solid;
+    border-right:#999999 1px solid;
+}
+.horz_nlsiconcell {width:16px;}
+.horz_nlssubmenucell{width:20px;}
+.horz_nlsitem {
+    font-family:verdana;
+    font-size:8pt;
+    color:#666666;
+    padding:2px 5px 2px 5px;
+}
+
+.horz_nlsitemcontainerover {
+    height:20px;
+    border:#000000 1px solid;
+    background-color:#484848;
+}
+.horz_nlsiconcellover {width:16px;}
+.horz_nlssubmenucellover {width:20px;}
+.horz_nlsitemover {
+    font-family:verdana;
+    font-size:8pt;
+    color:#ffffff;
+    padding:2px 5px 2px 5px;
+}
+
+.horz_nlsitemdisable {
+    font-family:verdana;
+    font-size:8pt;
+    color:#999999;
+    padding:2px 5px 2px 5px;
+}
+
+.horz_nlsseparatorcontainer {padding-left:0px; width:1px;}
+
+.horz_nlsseparator {
+    height:5px;
+    width:1px;
+    background-image:url(img/vseparator.gif);
+    background-position:center center;
+    background-repeat:repeat-x;
+}
+
+.horz_mtopleft {height:0px; width:0px;}
+.horz_mtopright {height:0px; width:0px;}
+.horz_mbottomleft {width:0px; height:0px;}
+.horz_mbottomright {width:0px; height:0px;}
+.horz_mtop {height:0px;}
+.horz_mbottom {height:0px;}
+.horz_mleft {width:0px;}
+.horz_mright {width:0px;}
+
+.horz_horzshadow { -moz-opacity:0.4; background-repeat:no-repeat; background-image:url(img/hshadow.gif);filter:progid:DXImageTransform.Microsoft.Alpha( Opacity=40, FinishOpacity=0, Style=0, StartX=0,  FinishX=100, StartY=0, FinishY=100);}
+.horz_vertshadow { -moz-opacity:0.4; background-repeat:no-repeat; background-image:url(img/vshadow.gif);filter:progid:DXImageTransform.Microsoft.Alpha( Opacity=40, FinishOpacity=0, Style=0, StartX=0,  FinishX=100, StartY=0, FinishY=100);}
+.horz_cornshadow { -moz-opacity:0.4; background-repeat:no-repeat; background-image:url(img/cornershadow.gif);filter:progid:DXImageTransform.Microsoft.Alpha( Opacity=40, FinishOpacity=0, Style=0, StartX=0,  FinishX=100, StartY=0, FinishY=100);}

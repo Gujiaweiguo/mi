@@ -1,0 +1,14 @@
+<chart bgColor='ffffff,FFFFFF' baseFontSize='12' lowerLimit='0' upperLimit='8000' lowerLimitDisplay='ฒ๎' upperLimitDisplay='บร' numberScaleValue='1000,3000,5000' numberScaleUnit='K' formatNumberScale='1'>
+    <colorRange>
+        <color minValue='0' maxValue='1000' code='FF654F'/>
+        <color minValue='1000' maxValue='3000' code='F6BD0F'/>
+        <color minValue='3000' maxValue='8000' code='8BBA00'/>
+    </colorRange>
+    <dials>
+        <dial value='3400' rearExtension='10'/>
+    </dials>
+	
+	<trendpoints>
+         <point startValue='6500' displayValue='Previous' color='666666' useMarker='1' markerColor='F1f1f1' markerBorderColor='666666' markerRadius='7' markerTooltext='Previous year index: 79%' /> 
+    </trendpoints>
+</chart> 

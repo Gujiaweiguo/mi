@@ -1,0 +1,13 @@
+StoreID 	Number		123
+StoreDesc	String	16	asdasdasd
+CustCode	String	50	efqwerqwe
+CustName	String	50	efqwerqwe
+ShopCode	String	50	efqwerqwe
+ShopID		Number		1234
+ShopName	String	50	efqwerqwe
+SkuID		Number		1234
+SkuDesc		String	50	efqwerqwe
+Qty		Number		1234
+PaidAmt		Number		1234
+CommChg		Number		1234
+NetAmt		Number		1234

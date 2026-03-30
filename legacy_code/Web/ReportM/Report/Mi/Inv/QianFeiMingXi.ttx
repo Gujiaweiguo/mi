@@ -1,0 +1,9 @@
+ID	Number
+ShopCode	String	16	
+ShopName	String	64	
+ShopType	String	32	
+TradeName	String	64	
+RentArea	Number		
+Period	Date		
+ChargeTypeName	String	32	
+InvAmtL	Currency		

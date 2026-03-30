@@ -1,0 +1,8 @@
+ShopCode	String	16
+ShopName	String	64
+ContractCode	String	32
+ChargeTypeName	String	16
+InvActPayAmt	Number
+InvStartDate	DateTime
+InvEndDate	DateTime
+InvID	Number

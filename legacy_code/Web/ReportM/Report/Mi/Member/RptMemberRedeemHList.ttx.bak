@@ -1,0 +1,13 @@
+MembCode	String	16		
+MembCard	String	16		
+MemberName	String	30	
+MobilPhone	String	18	
+ComefromNm	String	40	
+GiftID	String	16	
+GiftDesc	String	64	
+RedeemDate	DateTime		
+GiftQty	DateTime		
+BonusPrev	Number		
+RedeemAmt	Number
+BonusCurr	Number
+

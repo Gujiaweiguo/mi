@@ -1,0 +1,16 @@
+invperiod	DateTime
+storeid	Number		
+storeshortname	String	50
+contractcode	String	32	
+custname	String	64	
+contractid	Number		
+amt	Currency		
+paidamt	Currency		
+iactamt	Currency		
+actpayamt	Currency		
+tradename	String	50
+brandname	String	32
+rentarea	Number
+shopname	String	32		
+shopcode	String	64
+shoptypename	String	32

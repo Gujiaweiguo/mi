@@ -1,0 +1,115 @@
+﻿using System;
+using System.Data;
+using System.Configuration;
+using System.Collections;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+using System.IO;
+
+using Base.Biz;
+using BaseInfo.User;
+
+public partial class Lease_Default4 : System.Web.UI.Page
+{
+    //DataSet ds = new DataSet();
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!this.IsPostBack)
+        {
+            //DataTable dt = new DataTable();
+            //dt.Columns.Add("EndDate");
+            //dt.Columns.Add("StartDate");
+            //dt.Columns.Add("ShopType");
+            //dt.Columns.Add("ShopName");
+            //dt.Columns.Add("BuildingID");
+            //dt.Columns.Add("AreaID");
+            //for (int i = 0; i < 4; i++)
+            //{
+            //    dt.Rows.Add(dt.NewRow());
+            //}
+            //this.GridView1.DataSource = dt;
+            //this.GridView1.DataBind();
+            MemoryStream ms = new MemoryStream(bytes); // MemoryStream创建其支持存储区为内存的流。           
+            //MemoryStream属于System.IO类
+            ms.Position = 0;
+            Image img = Image.FromStream(ms);
+            ms.Close();
+            this.pictureBox1.Image = img;
+            
+        }
+    }
+
+
+    //public void AddTree(int ParentID, TreeNode pNode)
+    //{
+    //    DataView dvTree = new DataView(ds.Tables[0]);
+    //    //过滤ParentID,得到当前的所有子节点
+    //    dvTree.RowFilter = "[PMenuID] = " + ParentID;
+    //    foreach (DataRowView Row in dvTree)
+    //    {
+    //        if (pNode == null)
+    //        {    //添加根节
+    //            TreeNode Node = new TreeNode();
+    //            Node.Text = Row["MenuName"].ToString();
+    //            TreeView1.Nodes.Add(Node);
+    //            //TreeView1.Nodes[0].Collapse();
+    //            //Node.CheckBox = true;
+    //            AddTree(Int32.Parse(Row["MenuID"].ToString()), Node);    //再次递归
+    //        }
+    //        else
+    //        {   //添加当前节点的子节点
+    //            TreeNode Node = new TreeNode();
+    //            Node.Text = Row["MenuName"].ToString();
+    //            pNode.ChildNodes.Add(Node);
+    //           // TreeView1.Nodes[0].CollapseAll();
+    //            //Node.CheckBox = true;
+    //            AddTree(Int32.Parse(Row["MenuID"].ToString()), Node);	//再次递归
+    //        }
+            
+    //    }
+    //    TreeView1.CollapseAll(); 
+    //}	
+
+    //private void InitTree()
+    //{
+
+    //    BaseTree tree = new BaseTree(new ShowMenu());
+    //    tree.CreateTree();
+    //    foreach (ITreeNode tn in tree.RootNodes)
+    //    {
+    //        TreeNode treeRoot = new TreeNode();
+    //        InitTreeNode(treeRoot, tn);
+    //        TreeView1.Nodes.Add(treeRoot);
+    //    }
+    //}
+
+    //private void InitTreeNode(TreeNode treeNode, ITreeNode deptNode)
+    //{
+    //    foreach (ITreeNode dn in deptNode.GetChildren())
+    //    {
+    //        TreeNode tn = new TreeNode();
+    //        treeNode.ChildNodes.Add(tn);
+    //        InitTreeNode(tn, dn);
+    //    }
+    //    treeNode.NavigateUrl = deptNode.GetValue();
+    //    treeNode.Text = deptNode.GetText();
+    //    treeNode.Target = "rightPartFrame";
+    //}
+    protected void TreeView1_SelectedNodeChanged(object sender, EventArgs e)
+    {
+        
+    }
+
+    protected void OnSelect(object sender, EventArgs e)
+    {
+        //TextBox1.Text = ((TreeView)sender).SelectedNode.Text;
+    }
+    protected void TreeView1_TreeNodeCheckChanged(object sender, TreeNodeEventArgs e)
+    {
+        //TextBox1.Text = TreeView1.SelectedNode.Text;
+    }
+}

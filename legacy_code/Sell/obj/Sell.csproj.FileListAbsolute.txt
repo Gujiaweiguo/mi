@@ -1,0 +1,15 @@
+E:\WORK\MI_NET\Code\Sell\bin\Debug\Sell.dll
+E:\WORK\MI_NET\Code\Sell\bin\Debug\Sell.pdb
+E:\WORK\MI_NET\Code\Sell\bin\Debug\Base.dll
+E:\WORK\MI_NET\Code\Sell\bin\Debug\Lease.dll
+E:\WORK\MI_NET\Code\Sell\bin\Debug\WorkFlow.dll
+E:\WORK\MI_NET\Code\Sell\bin\Debug\RentableArea.dll
+E:\WORK\MI_NET\Code\Sell\bin\Debug\BaseInfo.dll
+E:\WORK\MI_NET\Code\Sell\bin\Debug\Base.pdb
+E:\WORK\MI_NET\Code\Sell\bin\Debug\Lease.pdb
+E:\WORK\MI_NET\Code\Sell\bin\Debug\WorkFlow.pdb
+E:\WORK\MI_NET\Code\Sell\bin\Debug\RentableArea.pdb
+E:\WORK\MI_NET\Code\Sell\bin\Debug\BaseInfo.pdb
+E:\WORK\MI_NET\Code\Sell\obj\Debug\ResolveAssemblyReference.cache
+E:\WORK\MI_NET\Code\Sell\obj\Debug\Sell.dll
+E:\WORK\MI_NET\Code\Sell\obj\Debug\Sell.pdb

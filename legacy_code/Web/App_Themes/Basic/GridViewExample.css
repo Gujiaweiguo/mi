@@ -1,0 +1,63 @@
+﻿.foo {} /* W3C CSS validator likes CSS files to start with a class rather than a comment. Soooooo.... */
+
+/* This style sheet is intended to contain OFTEN CHANGED rules used when the GridView control adapter is enabled. */
+/* Empty rules are provided merely as a convenience for your future use or experimentation. */
+
+.PrettyGridView .AspNet-GridView
+{
+    width: 100%;
+}
+
+.PrettyGridView .AspNet-GridView div.AspNet-GridView-Pagination,
+.PrettyGridView .AspNet-GridView div.AspNet-GridView-Pagination a,
+.PrettyGridView .AspNet-GridView div.AspNet-GridView-Pagination span
+{
+    color: #00FFFF;
+    background: #284775;
+    font-weight: normal;
+    padding: 2px;
+}
+
+.PrettyGridView .AspNet-GridView table
+{
+    border: solid 1px #CCCCCC;
+    width: 100%;
+}
+
+.PrettyGridView .AspNet-GridView table thead tr th
+{
+    color: #F7F6F3;
+    background: #5D7B9D;
+    font-weight: bold;
+    border-bottom: solid 1px #CCCCCC;
+    border-right: solid 1px #CCCCCC;
+    padding: 2px;
+}
+
+.PrettyGridView .AspNet-GridView table thead tr th a
+{
+    color: #F7F6F3;
+}
+
+.PrettyGridView .AspNet-GridView table tbody tr td
+{
+    color: #333333;
+    background: White;
+    padding: 2px 20px 2px 2px;
+    border-bottom: solid 1px #CCCCCC;
+    border-right: solid 1px #CCCCCC;
+    text-align: right;
+}
+
+.PrettyGridView .AspNet-GridView table tbody tr.AspNet-GridView-Alternate td
+{
+    background: #F7F6F3;
+}
+
+.PrettyGridView .AspNet-GridView table tbody tr.AspNet-GridView-Selected td
+{
+}
+
+.PrettyGridView .AspNet-GridView table tfoot tr td
+{
+}

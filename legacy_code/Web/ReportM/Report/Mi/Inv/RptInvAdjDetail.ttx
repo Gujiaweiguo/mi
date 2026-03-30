@@ -1,0 +1,15 @@
+ShopCode	String	16
+ShopName	String	64
+ContractCode	String	32
+InvID	Number
+ChargeTypeID	Number
+ChargeTypeName	String	32
+InvPayAmt	Number
+InvAdjAmt	Number
+InvActPayAmt	Number
+CreateUserID	Number
+CreateTime	DateTime
+UserName	String	32
+CompletedTime	DateTime
+CheckUserName	String	32
+AdjReason	String	128

@@ -1,0 +1,21 @@
+InvCode	String	32	
+CustID	Number		
+CustName	String	64	
+ContractID	Number		
+ContractCode	String	32	
+BizMode	String	16	
+ShopID	Number		
+ShopCode	String	16	
+ShopName	String	64	
+InvDate	DateTime		1900-1-1
+InvPeriod	DateTime		1900-1-1
+ChargeTypeID	Number		
+ChargeTypeName	String	32	
+InvStartDate	DateTime		1900-1-1
+InvEndDate	DateTime		1900-1-1
+InvPayAmtL	Currency		
+InvAdjAmtL	Currency		
+InvPaidAmtL	Currency		
+InvBalanceAmt	Currency		
+RentType	Number		
+StoreName	String	32	

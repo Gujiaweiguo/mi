@@ -1,0 +1,24 @@
+CustCode	String	50	efqwerqwe
+CustName	String	50	efqwerqwe
+ShopCode	String	50	efqwerqwe
+ShopID		Number		1234
+ShopName	String	50	efqwerqwe
+PosID		String	50	efqwerqwe
+UserID		Number		1234
+BizDate		Datetime	2008-1-1
+TransTime	Datetime	2008-1-1
+ReceiptID	String	50	efqwerqwe
+CardID		String	50	efqwerqwe
+EFTID		String	50	efqwerqwe
+MediaMNo	Number		1234
+MediaMDesc	String	50	efqwerqwe
+SkuID		Number		1234
+SkuDesc		String	50	efqwerqwe
+PaidAmt		Number		1234
+CommRate	Number		1234
+CommChg		Number		1234
+NetAmt		Number		1234
+TransId		String	20	efqwerqwe
+TotalAmt	Number		1234
+BonusAmt	Number		1234
+MembCardID	String	16	efqwerqwe

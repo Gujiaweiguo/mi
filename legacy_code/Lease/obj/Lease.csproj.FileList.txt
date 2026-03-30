@@ -1,0 +1,13 @@
+obj\Debug\ResolveAssemblyReference.cache
+bin\Debug\Lease.dll
+bin\Debug\Lease.pdb
+bin\Debug\Base.dll
+bin\Debug\BaseInfo.dll
+bin\Debug\RentableArea.dll
+bin\Debug\WorkFlow.dll
+bin\Debug\Base.pdb
+bin\Debug\RentableArea.pdb
+bin\Debug\WorkFlow.pdb
+bin\Debug\BaseInfo.pdb
+obj\Debug\Lease.dll
+obj\Debug\Lease.pdb

@@ -1,0 +1,16 @@
+ContractID	Number		
+ContractCode	String	32	
+CustID	Number		
+CustCode	String	16	
+CustName	String	64	
+ChargeTypeID	Number		
+ChargeTypeCode	String	32	
+ChargeTypeName	String	32	
+InvPayAmt	Currency		
+ProductDate	DateTime		
+ChargePeriod	DateTime		
+ProductNote	String	128	
+BancthID	String	8	
+ProductStatus	Number		
+ProductStatusName	String	32
+RptTitle	String	64	

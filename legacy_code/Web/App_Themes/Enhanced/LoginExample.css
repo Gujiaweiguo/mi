@@ -1,0 +1,121 @@
+﻿.foo {} /* W3C CSS validator likes CSS files to start with a class rather than a comment. Soooooo.... */
+
+/* This style sheet is intended to contain OFTEN CHANGED rules used when the Login control adapter is enabled. */
+/* Empty rules are provided merely as a convenience for your future use or experimentation. */
+
+.PrettyLogin
+{
+    width: 18em;
+}
+
+.PrettyLogin .AspNet-Login
+{
+    font-family: Verdana;
+    font-size: 0.8em;
+    background: #FFFFFF url(bg-fade-light.png) repeat-x bottom;
+    padding: 4px;
+    border: solid 2px #465239;
+}
+
+.PrettyLogin .AspNet-Login label,
+.PrettyLogin .AspNet-Login input
+{
+    color: #465239;
+}
+
+.PrettyLogin .AspNet-Login input
+{
+    font-size: 1em;  /* lets the form element scale */
+}
+
+/* This rule is used when AutoAccessKey is true */
+.PrettyLogin .AspNet-Login label em
+{
+    text-decoration: underline;
+    font-style: normal;
+}
+
+.PrettyLogin .AspNet-Login input
+{
+    border: solid 1px #465239;
+}
+
+.PrettyLogin .AspNet-Login .AspNet-Login-TitlePanel
+{
+    font-weight: bold;
+    color: #465239;
+    background: #E9F5DA;
+    text-align: center;
+    height: 2em;
+    margin-bottom: 0.3em;
+    padding-top: 0.4em;
+    font-size: 1.5em
+}
+
+.PrettyLogin .AspNet-Login .AspNet-Login-FailurePanel
+{
+    color: #FF0000;
+}
+
+.PrettyLogin .AspNet-Login .AspNet-Login-UserPanel,
+.PrettyLogin .AspNet-Login .AspNet-Login-PasswordPanel,
+.PrettyLogin .AspNet-Login .AspNet-Login-RememberMePanel,
+.PrettyLogin .AspNet-Login .AspNet-Login-SubmitPanel
+{
+    padding: 0.25em 0.1em 0 0;
+    text-align: right;
+}
+
+.PrettyLogin .AspNet-Login .AspNet-Login-UserPanel label,
+.PrettyLogin .AspNet-Login .AspNet-Login-PasswordPanel label
+{
+    white-space: nowrap;
+}
+
+.PrettyLogin .AspNet-Login .AspNet-Login-UserPanel input,
+.PrettyLogin .AspNet-Login .AspNet-Login-PasswordPanel input
+{
+    width: 9em;
+}
+
+.PrettyLogin .AspNet-Login .AspNet-Login-RememberMePanel input
+{
+    border: none;
+}
+
+.PrettyLogin .AspNet-Login .AspNet-Login-SubmitPanel input
+{
+    background: White;
+    color: #465239;
+    border: solid 1px #465239;
+    float: right;
+    height: 1.7em;
+}
+
+.PrettyLogin .AspNet-Login .AspNet-Login-PasswordRecoveryPanel
+{
+    margin-bottom: 0.5em;
+}
+
+.PrettyLogin .AspNet-Login .AspNet-Login-CreateUserPanel a,
+.PrettyLogin .AspNet-Login .AspNet-Login-PasswordRecoveryPanel a
+{
+    color: #465239;
+    font-style: italic;
+}
+
+.PrettyLogin .AspNet-Login .AspNet-Login-InstructionPanel,
+.PrettyLogin .AspNet-Login .AspNet-Login-CreateUserPanel,
+.PrettyLogin .AspNet-Login .AspNet-Login-HelpPanel
+{
+}
+
+/* ------------------------------------------------------------------- */
+/* Specific to this sample web site. */
+/* These rules are probably not useful in your site. */
+
+#SampleLogin .Login-Skin
+{
+    background:url(bg-fade-light.png) repeat-x bottom;
+}
+

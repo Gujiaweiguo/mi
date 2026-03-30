@@ -1,0 +1,10 @@
+contractcode	String	32
+chargetypename	String	32
+FStartDate	DateTime
+FEndDate	DateTime
+FormulaType	String	32
+FixedRental	Number
+Pcent	Number
+PSalesTo	Number
+MinSum	Number
+MSalesTo	Number

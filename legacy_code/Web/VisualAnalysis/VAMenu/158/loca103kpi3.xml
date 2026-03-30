@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<chart bgColor="ffffff" enableRotation="1" baseFontSize="12" palette="4" decimals="0" showvalues="0" bleSmartLabels="1" bgAlpha="40,100" bgRatio="0,100" bgAngle="360" showBorder="0" startingAngle="170" numberScaleValue="W" formatNumber="0" caption="华东区12月租赁收入汇总" defaultAnimation="0" aboutMenuItemLabel="About Wincor Nixdorf" aboutMenuItemLink="n-http://www.wincor-nixdorf.com">
+  <set label="欠款" value="378869.00" />
+</chart>

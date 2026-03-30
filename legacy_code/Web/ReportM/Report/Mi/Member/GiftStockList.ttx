@@ -1,0 +1,10 @@
+GiftDesc	String	128
+CounterDesc	String	64
+StockCnt	Number
+RefPrice	Number
+ExByBonus	Number
+BonusCost	Number
+ExByReceipt	Number
+ReceiptMoney	Number
+GiftID	Number
+CounterID	Number

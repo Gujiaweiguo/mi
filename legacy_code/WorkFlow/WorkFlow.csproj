@@ -1,0 +1,105 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2459A80C-5147-4A8D-AC9A-EF6CD26D4AA4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WorkFlow</RootNamespace>
+    <AssemblyName>WorkFlow</AssemblyName>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Interop.jmail, Version=4.0.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Interop.jmail.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FuncApp.cs" />
+    <Compile Include="Func\IConfirmVoucher.cs" />
+    <Compile Include="Func\ITransitWrkFlw.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Uiltil\VoucherInfo.cs" />
+    <Compile Include="Uiltil\WrkFlwTreeNode.cs" />
+    <Compile Include="Uiltil\WrkFlwTree.cs" />
+    <Compile Include="WorkFlowMail\Mail.cs" />
+    <Compile Include="WorkFlowMail\WrkFlwMail.cs" />
+    <Compile Include="WorkFlowMail\WrkFlwMailApp.cs" />
+    <Compile Include="WorkFlowMail\WrkFlwMailList.cs" />
+    <Compile Include="WrkFlwApp.cs" />
+    <Compile Include="WrkFlwRpt\WrkFlwRptBO.cs" />
+    <Compile Include="WrkFlwRpt\WrkFlwRptPO.cs" />
+    <Compile Include="WrkFlw\BizGrp.cs" />
+    <Compile Include="WrkFlw\BizGrpElement.cs" />
+    <Compile Include="WrkFlw\QueryBizGrp.cs" />
+    <Compile Include="WrkFlw\WrkFlwBO.cs" />
+    <Compile Include="WrkFlw\WrkFlwDef.cs" />
+    <Compile Include="WrkFlw\WrkFlwEntity.cs" />
+    <Compile Include="WrkFlw\WrkFlw.cs" />
+    <Compile Include="Uiltil\WrkFlwException.cs" />
+    <Compile Include="WrkFlw\WrkFlwEntityBO.cs" />
+    <Compile Include="WrkFlw\WrkFlwEntityDisprove.cs" />
+    <Compile Include="WrkFlw\WrkFlwEntityInfo.cs" />
+    <Compile Include="WrkFlw\WrkFlwMgrEntityInfo.cs" />
+    <Compile Include="WrkFlw\WrkFlwNode.cs" />
+    <Compile Include="WrkFlw\WrkFlwTransfer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BaseInfo\BaseInfo.csproj">
+      <Project>{918E2379-CF34-4236-9CE0-490A205328C3}</Project>
+      <Name>BaseInfo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Base\Base.csproj">
+      <Project>{27AFE8D8-8D8A-40AB-9E47-296451D3243F}</Project>
+      <Name>Base</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="CustomerWrkFlw\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

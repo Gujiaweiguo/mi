@@ -1,0 +1,10 @@
+CustCode	String	50	efqwerqwe
+CustName	String	50	efqwerqwe
+ContractCode	String	50	efqwerqwe
+ContractStatus	String	50	efqwerqwe
+InvCode	String	50	efqwerqwe
+InvPeriod	DateTime	2008-1-1
+InvPayAmt	Number		1234
+sInvPaidAmt	Number		1234
+InvAdjAmt	Number		1234
+InvDate 	DateTime	2008-1-1

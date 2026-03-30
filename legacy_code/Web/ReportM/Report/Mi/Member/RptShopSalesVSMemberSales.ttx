@@ -1,0 +1,4 @@
+TenantId	String	30	asdf
+NetSales	Number		1001
+TotCustSales 	Number		1001
+TransDate	DateTime	2008-1-1

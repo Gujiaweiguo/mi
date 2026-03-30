@@ -1,0 +1,24 @@
+CustCode	String	50	efqwerqwe
+CustName	String	50	efqwerqwe
+ShopCode	String	50	efqwerqwe	
+ShopID		Number		1234
+ShopName	String	50	efqwerqwe
+PosID		String	50	efqwerqwe
+UserID		Number		1234
+BizDate		Number		1234
+TransTime	Datetime	2008-1-1
+ReceiptID	String	50	efqwerqwe
+SkuID		Number		1234
+SkuDesc		String	50	efqwerqwe
+Qty		Number		1234
+OrgPrice	Number		1234
+NewPrice	Number		1234
+ItemDisc	Number		1234
+AllocDisc	Number		1234
+PayAmt		Number		1234
+Tax		Number		1234
+PrefAmt		Number		1234
+PaidAmt		Number		1234
+DiscRate	Number		1234
+CostAmt		Number		1234
+ProfitAmt	Number		1234

@@ -1,0 +1,1771 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>YYControls</name>
+    </assembly>
+    <members>
+        <member name="T:YYControls.SmartSorting">
+            <summary>
+            高级排序功能实体类
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartSorting.ToString">
+            <summary>
+            ToString()
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:YYControls.SmartSorting.AllowSortTip">
+            <summary>
+            是否启用排序提示
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartSorting.AllowMultiSorting">
+            <summary>
+            是否启用复合排序
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartSorting.SortAscImageUrl">
+            <summary>
+            升序提示图片的URL
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartSorting.SortDescImageUrl">
+            <summary>
+            降序提示图片的URL
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartSorting.SortAscText">
+            <summary>
+            升序提示文本
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartSorting.SortDescText">
+            <summary>
+            降序提示文本
+            </summary>
+        </member>
+        <member name="T:YYControls.SmartGridViewAlpha.CheckboxAlls">
+            <summary>
+            CheckboxAlls 的摘要说明。
+            注意要继承自CollectionBase
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewAlpha.CheckboxAlls.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewAlpha.CheckboxAlls.Add(YYControls.SmartGridViewAlpha.CheckboxAll)">
+            <summary>
+            实现IList接口
+            将某项添加到 System.Collections.IList 中。
+            </summary>
+            <param name="item">要添加到 System.Collections.IList 的 System.Object。</param>
+        </member>
+        <member name="M:YYControls.SmartGridViewAlpha.CheckboxAlls.Remove(System.Int32)">
+            <summary>
+            实现IList接口
+            从 System.Collections.IList 中移除特定对象的第一个匹配项。
+            </summary>
+            <param name="index">要从 System.Collections.IList 移除的 System.Object</param>
+        </member>
+        <member name="M:YYControls.SmartGridViewAlpha.CheckboxAlls.ToString">
+            <summary>
+            ToString()
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.CheckboxAlls.Item(System.Int32)">
+            <summary>
+            实现IList接口
+            获取或设置指定索引处的元素。
+            </summary>
+            <param name="index">要获得或设置的元素从零开始的索引</param>
+            <returns></returns>
+        </member>
+        <member name="T:YYControls.Resources.Icon">
+            <summary>
+            Icon
+            </summary>
+        </member>
+        <member name="T:YYControls.AttributeValuePosition">
+            <summary>
+            属性的值的位置
+            </summary>
+        </member>
+        <member name="F:YYControls.AttributeValuePosition.First">
+            <summary>
+            起始
+            </summary>
+        </member>
+        <member name="F:YYControls.AttributeValuePosition.Last">
+            <summary>
+            结尾
+            </summary>
+        </member>
+        <member name="T:YYControls.ExportFormat">
+            <summary>
+            导出文件的格式
+            </summary>
+        </member>
+        <member name="F:YYControls.ExportFormat.CSV">
+            <summary>
+            CSV
+            </summary>
+        </member>
+        <member name="F:YYControls.ExportFormat.DOC">
+            <summary>
+            DOC
+            </summary>
+        </member>
+        <member name="F:YYControls.ExportFormat.TXT">
+            <summary>
+            TXT
+            </summary>
+        </member>
+        <member name="T:YYControls.PagingMode">
+            <summary>
+            自定义分页的显示模式
+            </summary>
+        </member>
+        <member name="F:YYControls.PagingMode.Default">
+            <summary>
+            系统自带分页的显示模式
+            </summary>
+        </member>
+        <member name="F:YYControls.PagingMode.Webabcd">
+            <summary>
+            Webabcd分页的显示模式
+            </summary>
+        </member>
+        <member name="T:YYControls.SmartGridView">
+            <summary>
+            SmartGridView类的属性部分
+            </summary>
+            <summary>
+            SmartGridView类的属性部分
+            </summary>
+            <summary>
+            SmartGridView类的委托部分
+            </summary>
+            <summary>
+            SmartGridView类的属性部分
+            </summary>
+            <summary>
+            SmartGridView类的属性部分
+            </summary>
+            <summary>
+            SmartGridView类的属性部分
+            </summary>
+            <summary>
+            SmartGridView类的属性部分
+            </summary>
+            <summary>
+            SmartGridView类的属性部分
+            </summary>
+            <summary>
+            SmartGridView类，继承自GridView
+            </summary>
+            <summary>
+            SmartGridView类的属性部分
+            </summary>
+            <summary>
+            SmartGridView类的事件部分
+            </summary>
+            <summary>
+            SmartGridView类的属性部分
+            </summary>
+            <summary>
+            SmartGridView类的属性部分
+            </summary>
+            <summary>
+            SmartGridView类的属性部分
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridView.Export(System.String,YYControls.ExportFormat,System.Text.Encoding)">
+            <summary>
+            导出SmartGridView的数据源的数据
+            </summary>
+            <param name="fileName">文件名</param>
+            <param name="exportFormat">导出文件的格式</param>
+            <param name="encoding">编码</param>
+        </member>
+        <member name="M:YYControls.SmartGridView.Export(System.String,YYControls.ExportFormat)">
+            <summary>
+            导出SmartGridView的数据源的数据
+            </summary>
+            <param name="fileName">文件名</param>
+            <param name="exportFormat">导出文件的格式</param>
+        </member>
+        <member name="M:YYControls.SmartGridView.Export(System.String)">
+            <summary>
+            导出SmartGridView的数据源的数据为Excel
+            </summary>
+            <param name="fileName">文件名</param>
+        </member>
+        <member name="M:YYControls.SmartGridView.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridView.OnInit(System.EventArgs)">
+            <summary>
+            OnInit
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:YYControls.SmartGridView.OnLoad(System.EventArgs)">
+            <summary>
+            OnLoad
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:YYControls.SmartGridView.SmartGridView_PreRender(System.Object,System.EventArgs)">
+            <summary>
+            SmartGridView的PreRender事件
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:YYControls.SmartGridView.ods_Selected(System.Object,System.Web.UI.WebControls.ObjectDataSourceStatusEventArgs)">
+            <summary>
+            SmartGridView的对象数据源控件的Selected事件
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:YYControls.SmartGridView.OnRowDataBound(System.Web.UI.WebControls.GridViewRowEventArgs)">
+            <summary>
+            OnRowDataBound
+            </summary>
+            <param name="e">e</param>
+        </member>
+        <member name="M:YYControls.SmartGridView.Render(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Render
+            </summary>
+            <param name="writer">writer</param>
+        </member>
+        <member name="M:YYControls.SmartGridView.OnRowDataBoundDataRow(System.Web.UI.WebControls.GridViewRowEventArgs)">
+            <summary>
+            触发RowDataBoundDataRow事件
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:YYControls.SmartGridView.OnRowDataBoundCell(YYControls.GridViewTableCell)">
+            <summary>
+            触发RowDataBoundCell事件
+            </summary>
+            <param name="gvtc"></param>
+        </member>
+        <member name="M:YYControls.SmartGridView.OnRenderBegin(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            触发RenderBegin事件
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="M:YYControls.SmartGridView.OnRenderEnd(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            触发RenderEnd事件
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="P:YYControls.SmartGridView.CustomPagerSettings">
+            <summary>
+            自定义分页样式
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridView.MouseOverCssClass">
+            <summary>
+            鼠标经过行时行的 CSS 类名
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridView.CascadeCheckboxes">
+            <summary>
+            联动复选框
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridView.BoundRowDoubleClickCommandName">
+            <summary>
+            行的双击事件需要绑定的CommandName
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridView.FixRowColumn">
+            <summary>
+            固定指定行、指定列
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridView.CheckedRowCssClass">
+            <summary>
+            行的指定复选框选中行时行的 CSS 类名
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridView.DataSourceObject">
+            <summary>
+            SmartGridView的数据源对象
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridView.ContextMenus">
+            <summary>
+            数据行的右键菜单
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridView.ContextMenuCssClass">
+            <summary>
+            右键菜单的级联样式表 CSS 类名
+            右键菜单的结构 div ul li a
+            </summary>
+        </member>
+        <member name="E:YYControls.SmartGridView.RowDataBoundDataRow">
+            <summary>
+            RowDataBound事件中的DataControlRowType.DataRow部分
+            </summary>
+        </member>
+        <member name="E:YYControls.SmartGridView.RowDataBoundCell">
+            <summary>
+            RowDataBound事件中的所有单元格
+            </summary>
+        </member>
+        <member name="E:YYControls.SmartGridView.RenderBegin">
+            <summary>
+            RenderBegin
+            </summary>
+        </member>
+        <member name="E:YYControls.SmartGridView.RenderEnd">
+            <summary>
+            RenderEnd
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridView.SmartSorting">
+            <summary>
+            高级排序功能
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridView.BoundRowClickCommandName">
+            <summary>
+            行的单击事件需要绑定的CommandName
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridView.ClientButtons">
+            <summary>
+            根据按钮的CommandName设置其商户端属性
+            </summary>
+        </member>
+        <member name="T:YYControls.SmartGridView.RowDataBoundDataRowHandler">
+            <summary>
+            RowDataBoundDataRow事件委托
+            </summary>
+            <remarks>
+            RowDataBound事件中的DataControlRowType.DataRow部分
+            </remarks>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="T:YYControls.SmartGridView.RowDataBoundCellHandler">
+            <summary>
+            RowDataBoundCell事件委托
+            </summary>
+            <remarks>
+            RowDataBound事件中的所有单元格
+            </remarks>
+            <param name="sender"></param>
+            <param name="gvtc"></param>
+        </member>
+        <member name="T:YYControls.SmartGridView.RenderBeginHandler">
+            <summary>
+            RenderBegin事件委托
+            </summary>
+            <param name="sender"></param>
+            <param name="writer"></param>
+        </member>
+        <member name="T:YYControls.SmartGridView.RenderEndHandler">
+            <summary>
+            RenderEnd事件委托
+            </summary>
+            <param name="sender"></param>
+            <param name="writer"></param>
+        </member>
+        <member name="T:YYControls.SmartGridViewFunction.SmartSortingFunction">
+            <summary>
+            扩展功能：复合排序和排序状态提示
+            </summary>
+        </member>
+        <member name="T:YYControls.SmartGridViewFunction.ExtendFunction">
+            <summary>
+            扩展功能类，抽象类
+            </summary>
+        </member>
+        <member name="F:YYControls.SmartGridViewFunction.ExtendFunction._sgv">
+            <summary>
+            SmartGridView对象变量
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.ExtendFunction.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.ExtendFunction.#ctor(YYControls.SmartGridView)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="sgv">SmartGridView对象</param>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.ExtendFunction.Complete">
+            <summary>
+            实现扩展功能
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.ExtendFunction.Execute">
+            <summary>
+            扩展功能的具体实现
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewFunction.ExtendFunction.SmartGridView">
+            <summary>
+            SmartGridView对象
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.SmartSortingFunction.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.SmartSortingFunction.#ctor(YYControls.SmartGridView)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="sgv">SmartGridView对象</param>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.SmartSortingFunction.Execute">
+            <summary>
+            扩展功能的实现
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.SmartSortingFunction._sgv_RowDataBoundCell(System.Object,YYControls.GridViewTableCell)">
+            <summary>
+            SmartGridView的RowDataBoundCell事件
+            </summary>
+            <param name="sender"></param>
+            <param name="gvtc"></param>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.SmartSortingFunction._sgv_Sorting(System.Object,System.Web.UI.WebControls.GridViewSortEventArgs)">
+            <summary>
+            Sorting事件
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.SmartSortingFunction.GetSortExpression(System.Web.UI.WebControls.GridViewSortEventArgs)">
+            <summary>
+            获得复合排序表达式
+            </summary>
+            <param name="e"></param>
+            <returns></returns>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.SmartSortingFunction.ModifySortExpression(System.String[],System.String)">
+            <summary>
+            更新排序表达式
+            </summary>
+            <param name="sortColumns">各个字段的排序表达式数组</param>
+            <param name="sortExpression">当前需要排序的字段（该字段在sortColumns数组中）</param>
+            <returns></returns>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.SmartSortingFunction.DisplaySortTip(System.String,System.Web.UI.WebControls.TableCell)">
+            <summary>
+            显示排序状态提示
+            </summary>
+            <param name="sortExpression">排序表达式</param>
+            <param name="tc">Header的TableCell</param>
+        </member>
+        <member name="T:YYControls.SmartGridViewFunction.FixRowColumnFunction">
+            <summary>
+            扩展功能：固定指定行、指定列
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.FixRowColumnFunction.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.FixRowColumnFunction.#ctor(YYControls.SmartGridView)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="sgv">SmartGridView对象</param>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.FixRowColumnFunction.Execute">
+            <summary>
+            扩展功能的实现
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.FixRowColumnFunction._sgv_RowDataBoundCell(System.Object,YYControls.GridViewTableCell)">
+            <summary>
+            SmartGridView的RowDataBoundCell事件
+            </summary>
+            <param name="sender"></param>
+            <param name="gvtc"></param>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.FixRowColumnFunction._sgv_RenderBegin(System.Object,System.Web.UI.HtmlTextWriter)">
+            <summary>
+            RenderBegin
+            </summary>
+            <param name="sender"></param>
+            <param name="writer"></param>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.FixRowColumnFunction._sgv_RenderEnd(System.Object,System.Web.UI.HtmlTextWriter)">
+            <summary>
+            RenderEnd
+            </summary>
+            <param name="sender"></param>
+            <param name="writer"></param>
+        </member>
+        <member name="T:YYControls.SmartGridViewAlpha.JavaScriptConstant">
+            <summary>
+            javascript
+            </summary>
+        </member>
+        <member name="T:YYControls.SmartGridViewAlpha.ConfirmButtonConverter">
+            <summary>
+            类型转换器
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewAlpha.ConfirmButtonConverter.CanConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+            <summary>
+            返回值能否将ConfirmButton类型转换为String类型
+            </summary>
+            <param name="context"></param>
+            <param name="destinationType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:YYControls.SmartGridViewAlpha.ConfirmButtonConverter.ConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type)">
+            <summary>
+            将ConfirmButton类型转换为String类型
+            </summary>
+            <param name="context"></param>
+            <param name="culture"></param>
+            <param name="value"></param>
+            <param name="destinationType"></param>
+            <returns></returns>
+        </member>
+        <member name="T:YYControls.ContextMenu">
+            <summary>
+            右键菜单实体类
+            </summary>
+        </member>
+        <member name="P:YYControls.ContextMenu.Text">
+            <summary>
+            菜单的文本内容
+            </summary>
+        </member>
+        <member name="P:YYControls.ContextMenu.BoundCommandName">
+            <summary>
+            需要绑定的CommandName
+            </summary>
+        </member>
+        <member name="P:YYControls.ContextMenu.NavigateUrl">
+            <summary>
+            链接的URL
+            </summary>
+        </member>
+        <member name="P:YYControls.ContextMenu.Target">
+            <summary>
+            链接的目标窗口或框架
+            </summary>
+        </member>
+        <member name="T:YYControls.ClientButton">
+            <summary>
+            商户端按钮实体类（根据按钮的CommandName设置其商户端属性）
+            </summary>
+        </member>
+        <member name="P:YYControls.ClientButton.BoundCommandName">
+            <summary>
+            需要绑定的CommandName
+            </summary>
+        </member>
+        <member name="P:YYControls.ClientButton.AttributeKey">
+            <summary>
+            属性的名称
+            </summary>
+        </member>
+        <member name="P:YYControls.ClientButton.AttributeValue">
+            <summary>
+            属性的值（{0} - CommandArgument；{1} - Text）
+            </summary>
+        </member>
+        <member name="P:YYControls.ClientButton.Position">
+            <summary>
+            属性的值的位置
+            </summary>
+        </member>
+        <member name="T:YYControls.SmartGridViewAlpha.SortTip">
+            <summary>
+            排序提示类
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewAlpha.SortTip.ToString">
+            <summary>
+            ToString()
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.SortTip.SortDescImage">
+            <summary>
+            降序提示图片
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.SortTip.SortAscImage">
+            <summary>
+            升序提示图片
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.SortTip.SortDescText">
+            <summary>
+            降序提示文本
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.SortTip.SortAscText">
+            <summary>
+            升序提示文本
+            </summary>
+        </member>
+        <member name="T:YYControls.SmartGridViewAlpha.SmartGridViewAlpha">
+            <summary>
+            继承自GridView
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewAlpha.SmartGridViewAlpha.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewAlpha.SmartGridViewAlpha.SmartGridViewAlpha_PreRender(System.Object,System.EventArgs)">
+            <summary>
+            SmartGridViewAlpha_PreRender
+            </summary>
+            <param name="sender">sender</param>
+            <param name="e">e</param>
+        </member>
+        <member name="M:YYControls.SmartGridViewAlpha.SmartGridViewAlpha.OnRowDataBound(System.Web.UI.WebControls.GridViewRowEventArgs)">
+            <summary>
+            OnRowDataBound
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:YYControls.SmartGridViewAlpha.SmartGridViewAlpha.Render(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Render
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="M:YYControls.SmartGridViewAlpha.SmartGridViewAlpha.OnRowCommand(System.Web.UI.WebControls.GridViewCommandEventArgs)">
+            <summary>
+            OnRowCommand
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:YYControls.SmartGridViewAlpha.SmartGridViewAlpha.OnRowCreated(System.Web.UI.WebControls.GridViewRowEventArgs)">
+            <summary>
+            OnRowCreated
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:YYControls.SmartGridViewAlpha.SmartGridViewAlpha.OnLoad(System.EventArgs)">
+            <summary>
+            OnLoad
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:YYControls.SmartGridViewAlpha.SmartGridViewAlpha.ods_Selected(System.Object,System.Web.UI.WebControls.ObjectDataSourceStatusEventArgs)">
+            <summary>
+            计算总记录数
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="F:YYControls.SmartGridViewAlpha.SmartGridViewAlpha._checkAllIDString">
+            <summary>
+            用于存每组的全选复选框ID
+            </summary>
+        </member>
+        <member name="F:YYControls.SmartGridViewAlpha.SmartGridViewAlpha._checkItemIDString">
+            <summary>
+            用于存每的项复选框ID
+            </summary>
+        </member>
+        <member name="F:YYControls.SmartGridViewAlpha.SmartGridViewAlpha._checkItemIDDictionary">
+            <summary>
+            每行有一个组的所有项复选框
+            </summary>
+        </member>
+        <member name="F:YYControls.SmartGridViewAlpha.SmartGridViewAlpha._isTopPager">
+            <summary>
+            当前行是顶端分页行吗？
+            </summary>
+        </member>
+        <member name="F:YYControls.SmartGridViewAlpha.SmartGridViewAlpha._yy_SmartGridViewAlpha_x">
+            <summary>
+            如果固定行、列的话 滚动条的x位置
+            </summary>
+        </member>
+        <member name="F:YYControls.SmartGridViewAlpha.SmartGridViewAlpha._yy_SmartGridViewAlpha_y">
+            <summary>
+            如果固定行、列的话 滚动条的y位置
+            </summary>
+        </member>
+        <member name="F:YYControls.SmartGridViewAlpha.SmartGridViewAlpha._raiseRowDataBound">
+            <summary>
+            是否触发RowDataBound事件
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.SmartGridViewAlpha.CssClassMouseOver">
+            <summary>
+            鼠标经过的样式 CSS 类名
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.SmartGridViewAlpha.ConfirmButtons">
+            <summary>
+            确认按钮集合
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.SmartGridViewAlpha.SortTip">
+            <summary>
+            排序提示信息
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.SmartGridViewAlpha.CheckboxAlls">
+            <summary>
+            复选框组集合 一个组由一个 全选复选框 和多个 项复选框组成
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.SmartGridViewAlpha.FixRowCol">
+            <summary>
+            固定表头、指定行或指定列
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.SmartGridViewAlpha.RowClickButtonID">
+            <summary>
+            单击行事件所对应的按钮的ID
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.SmartGridViewAlpha.RowDoubleClickButtonID">
+            <summary>
+            双击行事件所对应的按钮的ID
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.SmartGridViewAlpha.ChangeRowCSSByCheckBox">
+            <summary>
+            通过行的CheckBox的选中与否来修改行的样式
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.SmartGridViewAlpha.ContextMenus">
+            <summary>
+            行的右键菜单集合
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.SmartGridViewAlpha.PagingStyle">
+            <summary>
+            自定义分页样式
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.SmartGridViewAlpha.HiddenCheckboxAllID">
+            <summary>
+            隐藏字段的ID，用于存每组的全选复选框ID
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.SmartGridViewAlpha.HiddenCheckboxItemID">
+            <summary>
+            隐藏字段的ID，用于存每组的项复选框ID
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.SmartGridViewAlpha.GroupSeparator">
+            <summary>
+            组分隔符，一个 全选复选框 和其对应的n个 项复选框 为一个组
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.SmartGridViewAlpha.ItemSeparator">
+            <summary>
+            项分隔符，项复选框 每个项之间的分隔符
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.SmartGridViewAlpha.ScrollX">
+            <summary>
+            固定行、列的时候X滚动条的位置
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.SmartGridViewAlpha.ScrollY">
+            <summary>
+            固定行、列的时候Y滚动条的位置
+            </summary>
+        </member>
+        <member name="T:YYControls.SmartGridViewAlpha.ContextMenus">
+            <summary>
+            ContextMenus 的摘要说明。
+            注意要继承自CollectionBase
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewAlpha.ContextMenus.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewAlpha.ContextMenus.Add(YYControls.SmartGridViewAlpha.ContextMenu)">
+            <summary>
+            实现IList接口
+            将某项添加到 System.Collections.IList 中。
+            </summary>
+            <param name="item">要添加到 System.Collections.IList 的 System.Object。</param>
+        </member>
+        <member name="M:YYControls.SmartGridViewAlpha.ContextMenus.Remove(System.Int32)">
+            <summary>
+            实现IList接口
+            从 System.Collections.IList 中移除特定对象的第一个匹配项。
+            </summary>
+            <param name="index">要从 System.Collections.IList 移除的 System.Object</param>
+        </member>
+        <member name="M:YYControls.SmartGridViewAlpha.ContextMenus.ToString">
+            <summary>
+            ToString()
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.ContextMenus.Item(System.Int32)">
+            <summary>
+            实现IList接口
+            获取或设置指定索引处的元素。
+            </summary>
+            <param name="index">要获得或设置的元素从零开始的索引</param>
+            <returns></returns>
+        </member>
+        <member name="T:YYControls.SmartGridViewFunction.CustomPagerSettingsFunction">
+            <summary>
+            扩展功能：自定义分页样式
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.CustomPagerSettingsFunction.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.CustomPagerSettingsFunction.#ctor(YYControls.SmartGridView)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="sgv">SmartGridView对象</param>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.CustomPagerSettingsFunction.Execute">
+            <summary>
+            扩展功能的实现
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.CustomPagerSettingsFunction._sgv_RowCreated(System.Object,System.Web.UI.WebControls.GridViewRowEventArgs)">
+            <summary>
+            SmartGridView的RowCreated事件
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="T:YYControls.SmartGridViewFunction.ClientButtonFunction">
+            <summary>
+            扩展功能：根据按钮的CommandName设置其商户端属性
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.ClientButtonFunction.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.ClientButtonFunction.#ctor(YYControls.SmartGridView)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="sgv">SmartGridView对象</param>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.ClientButtonFunction.Execute">
+            <summary>
+            扩展功能的实现
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.ClientButtonFunction._sgv_RowDataBoundCell(System.Object,YYControls.GridViewTableCell)">
+            <summary>
+            SmartGridView的RowDataBoundCell事件
+            </summary>
+            <param name="sender"></param>
+            <param name="gvtc"></param>
+        </member>
+        <member name="T:YYControls.SmartTreeViewFunction.ExtendFunction">
+            <summary>
+            扩展功能类，抽象类
+            </summary>
+        </member>
+        <member name="F:YYControls.SmartTreeViewFunction.ExtendFunction._stv">
+            <summary>
+            SmartTreeView对象变量
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartTreeViewFunction.ExtendFunction.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartTreeViewFunction.ExtendFunction.#ctor(YYControls.SmartTreeView)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="stv">SmartTreeView对象</param>
+        </member>
+        <member name="M:YYControls.SmartTreeViewFunction.ExtendFunction.Complete">
+            <summary>
+            实现扩展功能
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartTreeViewFunction.ExtendFunction.Execute">
+            <summary>
+            扩展功能的具体实现
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartTreeViewFunction.ExtendFunction.SmartTreeView">
+            <summary>
+            SmartTreeView对象
+            </summary>
+        </member>
+        <member name="T:YYControls.SmartGridViewAlpha.ChangeRowCSSByCheckBox">
+            <summary>
+            通过行的CheckBox的选中与否来修改行的样式
+            实体类
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewAlpha.ChangeRowCSSByCheckBox.ToString">
+            <summary>
+            ToString()
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.ChangeRowCSSByCheckBox.CheckBoxID">
+            <summary>
+            根据哪个ChecxBox来判断是否选中了行，指定该CheckBox的ID
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.ChangeRowCSSByCheckBox.CssClassRowSelected">
+            <summary>
+            选中行的样式的 CSS 类名
+            </summary>
+        </member>
+        <member name="T:YYControls.SmartGridViewAlpha.ConfirmButton">
+            <summary>
+            ConfirmButton 的摘要说明。
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.ConfirmButton.CommandName">
+            <summary>
+            按钮的CommandName
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.ConfirmButton.ConfirmMessage">
+            <summary>
+            确认框弹出的信息
+            </summary>
+        </member>
+        <member name="T:YYControls.SmartGridViewFunction.RowDoubleClickFunction">
+            <summary>
+            扩展功能：响应行的双击事件
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.RowDoubleClickFunction.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.RowDoubleClickFunction.#ctor(YYControls.SmartGridView)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="sgv">SmartGridView对象</param>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.RowDoubleClickFunction.Execute">
+            <summary>
+            扩展功能的实现
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.RowDoubleClickFunction._sgv_RowDataBoundCell(System.Object,YYControls.GridViewTableCell)">
+            <summary>
+            RowDataBoundCell
+            </summary>
+            <param name="sender"></param>
+            <param name="gvtc"></param>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.RowDoubleClickFunction._sgv_RenderBegin(System.Object,System.Web.UI.HtmlTextWriter)">
+            <summary>
+            RenderBegin
+            </summary>
+            <param name="sender"></param>
+            <param name="writer"></param>
+        </member>
+        <member name="T:YYControls.CheckedRowCssClass">
+            <summary>
+            行的指定复选框选中时改变行的样式实体类
+            </summary>
+        </member>
+        <member name="M:YYControls.CheckedRowCssClass.ToString">
+            <summary>
+            ToString()
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:YYControls.CheckedRowCssClass.CheckBoxID">
+            <summary>
+            模板列中 数据行的复选框ID
+            </summary>
+        </member>
+        <member name="P:YYControls.CheckedRowCssClass.CssClass">
+            <summary>
+            选中的行的 CSS 类名
+            </summary>
+        </member>
+        <member name="T:YYControls.SmartGridViewAlpha.ConfirmButtons">
+            <summary>
+            ProjectGroups 的摘要说明。
+            注意要继承自CollectionBase
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewAlpha.ConfirmButtons.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewAlpha.ConfirmButtons.Add(YYControls.SmartGridViewAlpha.ConfirmButton)">
+            <summary>
+            实现IList接口
+            将某项添加到 System.Collections.IList 中。
+            </summary>
+            <param name="item">要添加到 System.Collections.IList 的 System.Object。</param>
+        </member>
+        <member name="M:YYControls.SmartGridViewAlpha.ConfirmButtons.Remove(System.Int32)">
+            <summary>
+            实现IList接口
+            从 System.Collections.IList 中移除特定对象的第一个匹配项。
+            </summary>
+            <param name="index">要从 System.Collections.IList 移除的 System.Object</param>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.ConfirmButtons.Item(System.Int32)">
+            <summary>
+            实现IList接口
+            获取或设置指定索引处的元素。
+            </summary>
+            <param name="index">要获得或设置的元素从零开始的索引</param>
+            <returns></returns>
+        </member>
+        <member name="T:YYControls.CascadeCheckbox">
+            <summary>
+            联动复选框实体类
+            </summary>
+        </member>
+        <member name="P:YYControls.CascadeCheckbox.ParentCheckboxID">
+            <summary>
+            模板列中 父复选框ID
+            </summary>
+        </member>
+        <member name="P:YYControls.CascadeCheckbox.ChildCheckboxID">
+            <summary>
+            模板列中 子复选框ID
+            </summary>
+        </member>
+        <member name="T:YYControls.Helper.Common">
+            <summary>
+            常用Helper
+            </summary>
+            <summary>
+            常用Helper
+            </summary>
+            <summary>
+            常用Helper
+            </summary>
+            <summary>
+            常用Helper
+            </summary>
+        </member>
+        <member name="M:YYControls.Helper.Common.SetAttribute(System.Web.UI.IAttributeAccessor,System.String,System.String,YYControls.AttributeValuePosition)">
+            <summary>
+            设置实现了IAttributeAccessor接口的控件的Attribute（保留原来同Key的Attribute）
+            </summary>
+            <param name="iaa">实现了IAttributeAccessor接口的控件</param>
+            <param name="key">属性的名称</param>
+            <param name="value">属性的值</param>
+            <param name="csp">属性的值的位置</param>
+        </member>
+        <member name="M:YYControls.Helper.Common.SetAttribute(System.Web.UI.IAttributeAccessor,System.String,System.String,YYControls.AttributeValuePosition,System.Char)">
+            <summary>
+            设置实现了IAttributeAccessor接口的控件的Attribute（保留原来同Key的Attribute）
+            </summary>
+            <param name="iaa">实现了IAttributeAccessor接口的控件</param>
+            <param name="key">属性的名称</param>
+            <param name="value">属性的值</param>
+            <param name="csp">属性的值的位置</param>
+            <param name="separator">属性分隔符</param>
+        </member>
+        <member name="M:YYControls.Helper.Common.ReplaceSpecialChars(System.String)">
+            <summary>
+             替换特殊字符
+            </summary>
+            <param name="input">字符串</param>
+            <returns></returns>
+        </member>
+        <member name="M:YYControls.Helper.Common.GetChildControlPrefix(System.Web.UI.Control)">
+            <summary>
+            获得某个控件的子控件的ID的前缀
+            </summary>
+            <param name="control">控件（本方法用于获得该控件的子控件的ID的前缀）</param>
+            <returns></returns>
+        </member>
+        <member name="M:YYControls.Helper.Common.Export(System.Data.DataTable,YYControls.ExportFormat,System.String,System.Text.Encoding)">
+            <summary>
+            导出为Excel
+            </summary>
+            <param name="dt">数据源</param>
+            <param name="exportFormat">导出文件的格式</param>
+            <param name="fileName">输出文件名</param>
+            <param name="encoding">编码</param>
+        </member>
+        <member name="M:YYControls.Helper.Common.Export(System.Data.DataTable,System.Int32[],YYControls.ExportFormat,System.String,System.Text.Encoding)">
+            <summary>
+            导出为Excel
+            </summary>
+            <param name="dt">数据源</param>
+            <param name="columnIndexList">列索引集合</param>
+            <param name="exportFormat">导出文件的格式</param>
+            <param name="fileName">输出文件名</param>
+            <param name="encoding">编码</param>
+        </member>
+        <member name="M:YYControls.Helper.Common.Export(System.Data.DataTable,System.Int32[],System.String[],YYControls.ExportFormat,System.String,System.Text.Encoding)">
+            <summary>
+            导出为Excel
+            </summary>
+            <param name="dt">数据源</param>
+            <param name="columnIndexList">列索引集合</param>
+            <param name="headers">字段数组</param>
+            <param name="exportFormat">导出文件的格式</param>
+            <param name="fileName">输出文件名</param>
+            <param name="encoding">编码</param>
+        </member>
+        <member name="M:YYControls.Helper.Common.Export(System.Data.DataSet,System.String[],System.String[],YYControls.ExportFormat,System.String,System.Text.Encoding)">
+            <summary>
+            导出为Excel
+            </summary>
+            <param name="ds">数据源</param>
+            <param name="headers">表头数组</param>
+            <param name="fields">字段数组</param>
+            <param name="exportFormat">导出文件的格式</param>
+            <param name="fileName">输出文件名</param>
+            <param name="encoding">编码</param>
+        </member>
+        <member name="M:YYControls.Helper.Common.CreateStylesheet(System.Xml.XmlTextWriter,System.String[],System.String[],YYControls.ExportFormat)">
+            <summary>
+            动态生成XSL，并写入XML流
+            </summary>
+            <param name="writer">XML流</param>
+            <param name="headers">表头数组</param>
+            <param name="fields">字段数组</param>
+            <param name="exportFormat">导出文件的格式</param>
+        </member>
+        <member name="T:YYControls.SmartGridViewFunction.ContextMenuFunction">
+            <summary>
+            扩展功能：给数据行增加右键菜单
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.ContextMenuFunction.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.ContextMenuFunction.#ctor(YYControls.SmartGridView)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="sgv">SmartGridView对象</param>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.ContextMenuFunction.Execute">
+            <summary>
+            扩展功能的实现
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.ContextMenuFunction._sgv_PreRender(System.Object,System.EventArgs)">
+            <summary>
+            SmartGridView的PreRender事件
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.ContextMenuFunction._sgv_RenderBegin(System.Object,System.Web.UI.HtmlTextWriter)">
+            <summary>
+            RenderBegin
+            </summary>
+            <param name="sender"></param>
+            <param name="writer"></param>
+        </member>
+        <member name="T:YYControls.Helper.SmartGridView">
+            <summary>
+            SmartGridView的Helper
+            </summary>
+        </member>
+        <member name="M:YYControls.Helper.SmartGridView.GetCheckedDataKey(System.Web.UI.WebControls.GridView,System.Int32)">
+            <summary>
+            获取GridView中通过复选框选中的行的DataKey集合
+            </summary>
+            <param name="gv">GridView</param>
+            <param name="columnIndex">CheckBox在GridView中的列索引</param>
+            <returns></returns>
+        </member>
+        <member name="M:YYControls.Helper.SmartGridView.GetCheckedDataKey(System.Web.UI.WebControls.GridView,System.String)">
+            <summary>
+            获取GridView中通过复选框选中的行的DataKey集合
+            </summary>
+            <param name="gv">GridView</param>
+            <param name="checkboxId">CheckBox的ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:YYControls.Helper.SmartGridView.GetColumnIndex(System.Web.UI.WebControls.GridView,System.String)">
+            <summary>
+            获取列索引
+            </summary>
+            <param name="gv">GridView</param>
+            <param name="controlId">控件ID</param>
+            <returns></returns>
+        </member>
+        <member name="T:YYControls.CustomPagerSettings">
+            <summary>
+            自定义分页样式实体类
+            </summary>
+        </member>
+        <member name="M:YYControls.CustomPagerSettings.ToString">
+            <summary>
+            ToString()
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:YYControls.CustomPagerSettings.PagingMode">
+            <summary>
+            自定义分页的显示模式
+            </summary>
+        </member>
+        <member name="P:YYControls.CustomPagerSettings.TextFormat">
+            <summary>
+            自定义分页的文本显示样式（{0}-每页显示记录数；{1}-总记录数；{2}-当前页数；{3}-总页数）
+            </summary>
+        </member>
+        <member name="T:YYControls.SmartGridViewFunction.CheckedRowCssClassFunction">
+            <summary>
+            扩展功能：行的指定复选框选中时改变行的样式
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.CheckedRowCssClassFunction.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.CheckedRowCssClassFunction.#ctor(YYControls.SmartGridView)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="sgv">SmartGridView对象</param>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.CheckedRowCssClassFunction.Execute">
+            <summary>
+            扩展功能的实现
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.CheckedRowCssClassFunction._sgv_PreRender(System.Object,System.EventArgs)">
+            <summary>
+            SmartGridView的PreRender事件
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="T:YYControls.SmartGridViewAlpha.ContextMenu">
+            <summary>
+            ContextMenu 的摘要说明。
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.ContextMenu.Icon">
+            <summary>
+            文字左边的图标的链接
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.ContextMenu.Text">
+            <summary>
+            菜单的文字
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.ContextMenu.CommandButtonId">
+            <summary>
+            所调用的命令按钮的ID
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.ContextMenu.NavigateUrl">
+            <summary>
+            链接的url
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.ContextMenu.Key">
+            <summary>
+            自定义属性key
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.ContextMenu.Value">
+            <summary>
+            自定义属性value
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.ContextMenu.ItemType">
+            <summary>
+            右键菜单的项的类别
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.ContextMenu.Target">
+            <summary>
+            链接的target
+            </summary>
+        </member>
+        <member name="T:YYControls.SmartGridViewAlpha.ContextMenu.ItemTypeCollection">
+            <summary>
+            右键菜单的项的类别
+            </summary>
+        </member>
+        <member name="F:YYControls.SmartGridViewAlpha.ContextMenu.ItemTypeCollection.Link">
+            <summary>
+            链接
+            </summary>
+        </member>
+        <member name="F:YYControls.SmartGridViewAlpha.ContextMenu.ItemTypeCollection.Command">
+            <summary>
+            按钮
+            </summary>
+        </member>
+        <member name="F:YYControls.SmartGridViewAlpha.ContextMenu.ItemTypeCollection.Custom">
+            <summary>
+            自定义
+            </summary>
+        </member>
+        <member name="F:YYControls.SmartGridViewAlpha.ContextMenu.ItemTypeCollection.Separator">
+            <summary>
+            分隔线
+            </summary>
+        </member>
+        <member name="T:YYControls.SmartGridViewAlpha.ContextMenu.TargetCollection">
+            <summary>
+            链接的target
+            </summary>
+        </member>
+        <member name="F:YYControls.SmartGridViewAlpha.ContextMenu.TargetCollection.Blank">
+            <summary>
+            新开窗口
+            </summary>
+        </member>
+        <member name="F:YYControls.SmartGridViewAlpha.ContextMenu.TargetCollection.Self">
+            <summary>
+            当前窗口
+            </summary>
+        </member>
+        <member name="F:YYControls.SmartGridViewAlpha.ContextMenu.TargetCollection.Top">
+            <summary>
+            跳出框架
+            </summary>
+        </member>
+        <member name="T:YYControls.SmartGridViewFunction.MouseOverCssClassFunction">
+            <summary>
+            扩展功能：鼠标经过行时改变行的样式
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.MouseOverCssClassFunction.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.MouseOverCssClassFunction.#ctor(YYControls.SmartGridView)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="sgv">SmartGridView对象</param>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.MouseOverCssClassFunction.Execute">
+            <summary>
+            扩展功能的实现
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.MouseOverCssClassFunction._sgv_RowDataBoundDataRow(System.Object,System.Web.UI.WebControls.GridViewRowEventArgs)">
+            <summary>
+            SmartGridView的RowDataBoundDataRow事件
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="T:YYControls.ContextMenus">
+            <summary>
+            ContextMenu集合类
+            注意要继承自CollectionBase
+            </summary>
+        </member>
+        <member name="M:YYControls.ContextMenus.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:YYControls.ContextMenus.Add(YYControls.ContextMenu)">
+            <summary>
+            实现IList接口
+            将某项添加到 System.Collections.IList 中。
+            </summary>
+            <param name="item">要添加到 System.Collections.IList 的 System.Object。</param>
+        </member>
+        <member name="M:YYControls.ContextMenus.Remove(System.Int32)">
+            <summary>
+            实现IList接口
+            从 System.Collections.IList 中移除特定对象的第一个匹配项。
+            </summary>
+            <param name="index">要从 System.Collections.IList 移除的 System.Object</param>
+        </member>
+        <member name="P:YYControls.ContextMenus.Item(System.Int32)">
+            <summary>
+            实现IList接口
+            获取或设置指定索引处的元素。
+            </summary>
+            <param name="index">要获得或设置的元素从零开始的索引</param>
+            <returns></returns>
+        </member>
+        <member name="T:YYControls.GridViewTableCell">
+            <summary>
+            GridViewTableCell
+            </summary>
+        </member>
+        <member name="M:YYControls.GridViewTableCell.#ctor(System.Web.UI.WebControls.TableCell,System.Int32,System.Web.UI.WebControls.DataControlRowType,System.Web.UI.WebControls.DataControlRowState)">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="P:YYControls.GridViewTableCell.TableCell">
+            <summary>
+            TableCell
+            </summary>
+        </member>
+        <member name="P:YYControls.GridViewTableCell.ColumnIndex">
+            <summary>
+            TableCell所在的列索引
+            </summary>
+        </member>
+        <member name="P:YYControls.GridViewTableCell.RowType">
+            <summary>
+            DataControlRowType
+            </summary>
+        </member>
+        <member name="P:YYControls.GridViewTableCell.RowState">
+            <summary>
+            DataControlRowState
+            </summary>
+        </member>
+        <member name="T:YYControls.ClientButtons">
+            <summary>
+            ClientButton集合类
+            注意要继承自CollectionBase
+            </summary>
+        </member>
+        <member name="M:YYControls.ClientButtons.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:YYControls.ClientButtons.Add(YYControls.ClientButton)">
+            <summary>
+            实现IList接口
+            将某项添加到 System.Collections.IList 中。
+            </summary>
+            <param name="item">要添加到 System.Collections.IList 的 System.Object。</param>
+        </member>
+        <member name="M:YYControls.ClientButtons.Remove(System.Int32)">
+            <summary>
+            实现IList接口
+            从 System.Collections.IList 中移除特定对象的第一个匹配项。
+            </summary>
+            <param name="index">要从 System.Collections.IList 移除的 System.Object</param>
+        </member>
+        <member name="P:YYControls.ClientButtons.Item(System.Int32)">
+            <summary>
+            实现IList接口
+            获取或设置指定索引处的元素。
+            </summary>
+            <param name="index">要获得或设置的元素从零开始的索引</param>
+            <returns></returns>
+        </member>
+        <member name="T:YYControls.SmartTreeViewFunction.CascadeCheckboxFunction">
+            <summary>
+            扩展功能：联动复选框
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartTreeViewFunction.CascadeCheckboxFunction.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartTreeViewFunction.CascadeCheckboxFunction.#ctor(YYControls.SmartTreeView)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="stv">SmartTreeView对象</param>
+        </member>
+        <member name="M:YYControls.SmartTreeViewFunction.CascadeCheckboxFunction.Execute">
+            <summary>
+            扩展功能的实现
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartTreeViewFunction.CascadeCheckboxFunction._stv_PreRender(System.Object,System.EventArgs)">
+            <summary>
+            SmartTreeView的PreRender事件
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="T:YYControls.SmartGridViewFunction.RowClickFunction">
+            <summary>
+            扩展功能：响应行的单击事件
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.RowClickFunction.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.RowClickFunction.#ctor(YYControls.SmartGridView)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="sgv">SmartGridView对象</param>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.RowClickFunction.Execute">
+            <summary>
+            扩展功能的实现
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.RowClickFunction._sgv_RowDataBoundCell(System.Object,YYControls.GridViewTableCell)">
+            <summary>
+            RowDataBoundCell
+            </summary>
+            <param name="sender"></param>
+            <param name="gvtc"></param>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.RowClickFunction._sgv_RenderBegin(System.Object,System.Web.UI.HtmlTextWriter)">
+            <summary>
+            RenderBegin
+            </summary>
+            <param name="sender"></param>
+            <param name="writer"></param>
+        </member>
+        <member name="T:YYControls.FixRowColumn">
+            <summary>
+            固定指定行、指定列的实体类
+            </summary>
+        </member>
+        <member name="M:YYControls.FixRowColumn.ToString">
+            <summary>
+            ToString();
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:YYControls.FixRowColumn.FixRowType">
+            <summary>
+            需要固定的行的RowType（用逗号“,”分隔）
+            </summary>
+        </member>
+        <member name="P:YYControls.FixRowColumn.FixRowState">
+            <summary>
+            需要固定的行的RowState（用逗号“,”分隔）
+            </summary>
+        </member>
+        <member name="P:YYControls.FixRowColumn.FixRows">
+            <summary>
+            需要固定的行的索引（用逗号“,”分隔）
+            </summary>
+        </member>
+        <member name="P:YYControls.FixRowColumn.FixColumns">
+            <summary>
+            需要固定的列的索引（用逗号“,”分隔）
+            </summary>
+        </member>
+        <member name="P:YYControls.FixRowColumn.TableWidth">
+            <summary>
+            表格的宽度
+            </summary>
+        </member>
+        <member name="P:YYControls.FixRowColumn.TableHeight">
+            <summary>
+            表格的高度
+            </summary>
+        </member>
+        <member name="T:YYControls.SmartGridViewFunction.CascadeCheckboxFunction">
+            <summary>
+            扩展功能：联动复选框（复选框的全选和取消全选）
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.CascadeCheckboxFunction.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.CascadeCheckboxFunction.#ctor(YYControls.SmartGridView)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="sgv">SmartGridView对象</param>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.CascadeCheckboxFunction.Execute">
+            <summary>
+            扩展功能的实现
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewFunction.CascadeCheckboxFunction._sgv_PreRender(System.Object,System.EventArgs)">
+            <summary>
+            SmartGridView的PreRender事件
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="T:YYControls.SmartGridViewAlpha.CheckboxAll">
+            <summary>
+            CheckboxAll 的摘要说明。
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.CheckboxAll.CheckboxAllID">
+            <summary>
+            模板列全选复选框ID
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.CheckboxAll.CheckboxItemID">
+            <summary>
+            模板列项复选框ID
+            </summary>
+        </member>
+        <member name="T:YYControls.SmartTreeView">
+            <summary>
+            SmartTreeView类，继承自TreeView
+            </summary>
+            <summary>
+            SmartTreeView类的属性部分
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartTreeView.OnInit(System.EventArgs)">
+            <summary>
+            OnInit
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:YYControls.SmartTreeView.SmartTreeView_PreRender(System.Object,System.EventArgs)">
+            <summary>
+            SmartTreeView的PreRender事件
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="P:YYControls.SmartTreeView.AllowCascadeCheckbox">
+            <summary>
+            是否启用联动复选框功能
+            </summary>
+        </member>
+        <member name="T:YYControls.CascadeCheckboxes">
+            <summary>
+            CascadeCheckbox集合类
+            注意要继承自CollectionBase
+            </summary>
+        </member>
+        <member name="M:YYControls.CascadeCheckboxes.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:YYControls.CascadeCheckboxes.Add(YYControls.CascadeCheckbox)">
+            <summary>
+            实现IList接口
+            将某项添加到 System.Collections.IList 中。
+            </summary>
+            <param name="item">要添加到 System.Collections.IList 的 System.Object。</param>
+        </member>
+        <member name="M:YYControls.CascadeCheckboxes.Remove(System.Int32)">
+            <summary>
+            实现IList接口
+            从 System.Collections.IList 中移除特定对象的第一个匹配项。
+            </summary>
+            <param name="index">要从 System.Collections.IList 移除的 System.Object</param>
+        </member>
+        <member name="P:YYControls.CascadeCheckboxes.Item(System.Int32)">
+            <summary>
+            实现IList接口
+            获取或设置指定索引处的元素。
+            </summary>
+            <param name="index">要获得或设置的元素从零开始的索引</param>
+            <returns></returns>
+        </member>
+        <member name="T:YYControls.SmartGridViewAlpha.Paging">
+            <summary>
+            自定义分页相关
+            </summary>
+        </member>
+        <member name="T:YYControls.SmartGridViewAlpha.Paging.PagingStyleCollection">
+            <summary>
+            自定义分页样式
+            </summary>
+        </member>
+        <member name="F:YYControls.SmartGridViewAlpha.Paging.PagingStyleCollection.None">
+            <summary>
+            不用自定义分页样式
+            </summary>
+        </member>
+        <member name="F:YYControls.SmartGridViewAlpha.Paging.PagingStyleCollection.Default">
+            <summary>
+            默认自定义分页样式
+            </summary>
+        </member>
+        <member name="T:YYControls.SmartGridViewAlpha.FixRowCol">
+            <summary>
+            固定表头、指定行或指定列的实体类
+            </summary>
+        </member>
+        <member name="M:YYControls.SmartGridViewAlpha.FixRowCol.ToString">
+            <summary>
+            ToString();
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.FixRowCol.IsFixHeader">
+            <summary>
+            固定表头否？
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.FixRowCol.IsFixPager">
+            <summary>
+            固定分页行否？
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.FixRowCol.FixRowIndices">
+            <summary>
+            需要固定的行的索引（用逗号“,”分隔）
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.FixRowCol.FixColumnIndices">
+            <summary>
+            需要固定的列的索引（用逗号“,”分隔）
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.FixRowCol.TableWidth">
+            <summary>
+            表格的宽度
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.FixRowCol.TableHeight">
+            <summary>
+            表格的高度
+            </summary>
+        </member>
+        <member name="P:YYControls.SmartGridViewAlpha.FixRowCol.EnableScrollState">
+            <summary>
+            是否保持滚动条的状态
+            </summary>
+        </member>
+    </members>
+</doc>

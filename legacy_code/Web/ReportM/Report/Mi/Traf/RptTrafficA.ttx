@@ -1,0 +1,7 @@
+storeid	Number
+StoreShortName	String	32
+bizmonth	Number
+lyinnum	Number
+tyinnum	Number
+lycha	Number
+tycha	Number

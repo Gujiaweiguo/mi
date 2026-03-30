@@ -1,0 +1,62 @@
+.alltext 
+{
+	font-family: "宋体";
+	font-size: 14px;
+	color: #333333;
+	text-decoration: none;
+	padding-right:5px;
+	line-height:16px;
+}
+.IptSty {
+	font-family: "宋体";
+	font-size: 14px;
+	background-color: #b4c4e8;
+	margin: 0px;
+	height: 18px;
+	width: 150px;
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 4px;
+	border: 1px solid #FFFFFF;
+	color: #003366;
+}
+.BtnSty {
+	font-family: "宋体";
+	font-size: 12px;
+	color: #484747;
+	background-attachment: fixed;
+	background-image: url(../images/btn_bg0.gif);
+	background-repeat: no-repeat;
+	background-position: left top;
+	height: 26px;
+	width: 50px;
+	padding:0px;
+	border:0px;
+}
+.BtnCHNSty {
+	font-family: "宋体";
+	font-size: 12px;
+	color: #484747;
+	background-attachment: fixed;
+	background-image: url(../images/CHN.jpg);
+	background-repeat: no-repeat;
+	background-position: left top;
+	height: 26px;
+	width: 50px;
+	padding:0px;
+	border:0px;
+}
+.BtnENGLISHSty {
+	font-family: "宋体";
+	font-size: 12px;
+	color: #484747;
+	background-attachment: fixed;
+	background-image: url(../images/English.jpg);
+	background-repeat: no-repeat;
+	background-position: left top;
+	height: 26px;
+	width: 50px;
+	padding:0px;
+	border:0px;
+}

@@ -1,0 +1,14 @@
+LCardId		String	30	asdf
+LCustId		String	30	asdf
+ExpDate		DateTime	2008-7-7
+WarValue	Number		1004
+BonusCurr	Number		1004
+Addr1		String	50	asdf
+Addr2		String	50	asdf
+OffPhone	String	50	asdf
+MobilPhone	String	50	asdf
+Email		String	50	asdf
+
+
+
+

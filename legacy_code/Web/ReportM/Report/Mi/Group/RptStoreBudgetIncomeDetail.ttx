@@ -1,0 +1,7 @@
+storeid	Number
+deptname		String	50
+period	DateTime
+invPayAmt	Number
+budgetamt	Number
+yearbudgetamt	Number
+yearInvPayAmt	Number

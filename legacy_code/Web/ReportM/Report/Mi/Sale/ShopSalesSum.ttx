@@ -1,0 +1,7 @@
+storeid	Number		
+storeshortname	String	50
+ShopId	String	50	efqwerqwe
+ShopName	String	50	efqwerqwe
+BizDate	DateTime	2008-1-1
+TotalReceipt	Number		1234
+PaidAmt	Number		1234

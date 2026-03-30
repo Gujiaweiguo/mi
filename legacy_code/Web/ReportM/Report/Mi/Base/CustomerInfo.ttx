@@ -1,0 +1,22 @@
+storeshortname	String	50	efqwerqwe
+CustCode	String	50	efqwerqwe
+CustName	String	50	efqwerqwe
+CustShortName	String	50	efqwerqwe
+CustTypeID	String	50	efqwerqwe
+LegalRep	String	50	efqwerqwe
+LegalRepTitle	String	50	efqwerqwe
+RegCap	Number		1004
+BankName	String	50	efqwerqwe
+BankAcct	String	50	efqwerqwe
+RegCode	String	50	efqwerqwe
+TaxCode	String	50	efqwerqwe
+RegAddr	String	50	efqwerqwe
+OfficeAddr	String	50	efqwerqwe
+PostAddr	String	50	efqwerqwe
+PostCode	String	50	efqwerqwe
+WebUrl	String	50	efqwerqwe
+ContractMan	String	50	efqwerqwe
+MobileTel	String	50	efqwerqwe
+CustLicenseStartDate	DateTime	2008-1-1
+CustLicenseEndDate	DateTime	2008-1-1
+

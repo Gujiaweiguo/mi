@@ -1,0 +1,7 @@
+membCode	String	16	
+membCard	String	16	
+MemberName	String	30	
+ComefromNm	String	18	
+TransAmt	Currency		
+GiftQty	Number		
+giftDesc	String	128	

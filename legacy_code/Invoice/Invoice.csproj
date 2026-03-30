@@ -1,0 +1,163 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3547688F-EF7E-4D22-B269-7020DC99B36E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Invoice</RootNamespace>
+    <AssemblyName>Invoice</AssemblyName>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Base, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Base\bin\Debug\Base.dll</HintPath>
+    </Reference>
+    <Reference Include="BaseInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\BaseInfo\bin\Debug\BaseInfo.dll</HintPath>
+    </Reference>
+    <Reference Include="Lease, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lease\bin\Debug\Lease.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WorkFlow, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\WorkFlow\bin\Debug\WorkFlow.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BankCard\BankTransDet.cs" />
+    <Compile Include="BankCard\BankTransDetPayInID.cs" />
+    <Compile Include="BankCard\BankTransSkuDet.cs" />
+    <Compile Include="BankCard\TransCard.cs" />
+    <Compile Include="Budget.cs" />
+    <Compile Include="BudgetCharge.cs" />
+    <Compile Include="BudgetChargePalaver.cs" />
+    <Compile Include="BudgetDetail.cs" />
+    <Compile Include="BuilderAuditing.cs" />
+    <Compile Include="Charge.cs" />
+    <Compile Include="ChargeAccount.cs" />
+    <Compile Include="ChargeCountLog.cs" />
+    <Compile Include="ChargeCountLogPO.cs" />
+    <Compile Include="ChargeDetail.cs" />
+    <Compile Include="ConfirmCharge.cs" />
+    <Compile Include="ConfirmChargePalaver.cs" />
+    <Compile Include="InterestRate.cs" />
+    <Compile Include="InterestRatePO.cs" />
+    <Compile Include="InvoiceH\ConfirmInvoiceCancel.cs" />
+    <Compile Include="ConfirmOtherChargeD.cs" />
+    <Compile Include="ConfirmOtherChargePalaver.cs" />
+    <Compile Include="InvoiceDetail.cs" />
+    <Compile Include="InvoiceHeader.cs" />
+    <Compile Include="InvoiceH\ChargeType.cs" />
+    <Compile Include="InvoiceH\ComfirmInvDisc.cs" />
+    <Compile Include="InvoiceH\ConfirmInvAdj.cs" />
+    <Compile Include="InvoiceH\ConfirmInvAdjCancel.cs" />
+    <Compile Include="InvoiceH\ConfirmInvoiceCancelPalaver.cs" />
+    <Compile Include="InvoiceH\CurExRate.cs" />
+    <Compile Include="InvoiceH\CurrencyType.cs" />
+    <Compile Include="InvoiceH\DepBal.cs" />
+    <Compile Include="InvoiceH\DepBalDel.cs" />
+    <Compile Include="InvoiceH\InvAdj.cs" />
+    <Compile Include="InvoiceH\InvAdjDet.cs" />
+    <Compile Include="InvoiceH\InvAdjDetail.cs" />
+    <Compile Include="InvoiceH\InvAdjDetIns.cs" />
+    <Compile Include="InvoiceH\InvAdjDetSel.cs" />
+    <Compile Include="InvoiceH\InvCancel.cs" />
+    <Compile Include="InvoiceH\InvDisc.cs" />
+    <Compile Include="InvoiceH\InvDiscAuditing.cs" />
+    <Compile Include="InvoiceH\InvDiscDet.cs" />
+    <Compile Include="InvoiceH\InvDiscDetail.cs" />
+    <Compile Include="InvoiceH\InvDiscSel.cs" />
+    <Compile Include="InvoiceH\InvHeaderSelectInvAdj.cs" />
+    <Compile Include="InvoiceH\InvoiceCancelPO.cs" />
+    <Compile Include="InvoiceH\InvoiceDetail.cs" />
+    <Compile Include="InvoiceH\InvoiceDetailBo.cs" />
+    <Compile Include="InvoiceH\InvoiceDetailSum.cs" />
+    <Compile Include="InvoiceH\InvoiceHeader.cs" />
+    <Compile Include="InvoiceH\InvoiceHeaderBo.cs" />
+    <Compile Include="InvoiceH\InvoiceHeaderCancel.cs" />
+    <Compile Include="InvoiceH\InvoicePay.cs" />
+    <Compile Include="InvoiceH\InvoicePayDetail.cs" />
+    <Compile Include="InvoiceH\InvoicePaySum.cs" />
+    <Compile Include="InvoiceH\InvoicePrintPO.cs" />
+    <Compile Include="InvoiceH\PayIn.cs" />
+    <Compile Include="InvoiceH\PayInPO.cs" />
+    <Compile Include="InvoiceH\PayInSum.cs" />
+    <Compile Include="InvoiceH\PayOut.cs" />
+    <Compile Include="InvoiceH\PayOutPO.cs" />
+    <Compile Include="InvoiceH\SurBal.cs" />
+    <Compile Include="InvoiceH\SurBalDel.cs" />
+    <Compile Include="InvoiceH\Surplus.cs" />
+    <Compile Include="InvoiceH\SurplusSum.cs" />
+    <Compile Include="InvoiceInterest.cs" />
+    <Compile Include="InvoiceInterestPO.cs" />
+    <Compile Include="InvoiceJVDetail.cs" />
+    <Compile Include="InvUnionReturnPO.cs" />
+    <Compile Include="MakePoolVoucher\AccountPara.cs" />
+    <Compile Include="MakePoolVoucher\AccountReport.cs" />
+    <Compile Include="MakePoolVoucher\IFinancing.cs" />
+    <Compile Include="MakePoolVoucher\KingdeeExcel.cs" />
+    <Compile Include="MakePoolVoucher\KingdeeExcelOutPut.cs" />
+    <Compile Include="MakePoolVoucher\TxtFileEncoding.cs" />
+    <Compile Include="OtherChargeD.cs" />
+    <Compile Include="OtherChargeH.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnionChargeCount.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="VBIDE">
+      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>3</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

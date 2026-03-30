@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ToolBar>
+  <toolbar toolbarID="C101" desc="大于100000" rb="0" gb="0" bb="0" />
+  <toolbar toolbarID="C102" desc="大于10000小于30000" rb="0" gb="255" bb="0" />
+  <toolbar toolbarID="C103" desc="大于30000小于50000" rb="255" gb="255" bb="0" />
+  <toolbar toolbarID="C104" desc="大于50000小于100000" rb="26" gb="0" bb="184" />
+  <toolbar toolbarID="C105" desc="小于10000" rb="255" gb="0" bb="0" />
+</ToolBar>

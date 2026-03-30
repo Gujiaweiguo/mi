@@ -1,0 +1,213 @@
+<asp:Menu SkinID="MainNav" runat="server"
+  StaticEnableDefaultPopOutImage="false"
+  ForeColor="#124500"
+  StaticHoverStyle-ForeColor="#FFFFFF"
+  StaticHoverStyle-BackColor="#165EA9"
+  StaticMenuItemStyle-HorizontalPadding="10"
+  StaticMenuItemStyle-VerticalPadding="2"
+  DynamicMenuStyle-BackColor="#E6F0FA"
+  DynamicMenuStyle-BorderColor="#165EA9"
+  DynamicMenuStyle-BorderStyle="solid"
+  DynamicMenuStyle-BorderWidth="2"
+  DynamicMenuItemStyle-HorizontalPadding="10"
+  DynamicMenuItemStyle-VerticalPadding="2"
+  DynamicHoverStyle-ForeColor="#FFFFFF"
+  DynamicHoverStyle-BackColor="#165EA9">
+  <StaticHoverStyle ForeColor="#FFFFFF" CssClass="Menu-Skin-DynamicHover" />
+  <DynamicMenuItemStyle HorizontalPadding="10px" VerticalPadding="3px" />
+  <DynamicHoverStyle ForeColor="#FFFFFF" CssClass="Menu-Skin-DynamicHover" />
+  </asp:Menu>
+
+<asp:Menu SkinID="SampleMenuVertical" runat="server"
+    Height="20"
+    ForeColor="black"
+    Font-Size="small" 
+    Font-Names="Tahoma"
+    DynamicHorizontalOffset="-3" 
+    DynamicVerticalOffset="3"
+    StaticEnableDefaultPopOutImage="true"
+    StaticPopOutImageUrl="~/App_Themes/Enhanced/arrow.png" 
+    DynamicPopOutImageUrl="~/App_Themes/Enhanced/arrow.png"
+    CssClass="Menu-Skin-Vertical">
+    <StaticMenuItemStyle ForeColor="black" BorderStyle="solid" BorderWidth="1px" BorderColor="#D2D2D2" Width="9em" HorizontalPadding="5" VerticalPadding="4" CssClass="Menu-Skin-StaticItem" />
+    <StaticHoverStyle ForeColor="#008B00" BackColor="White"  CssClass="Menu-Skin-DynamicHover" />
+    <DynamicMenuItemStyle ForeColor="black" BorderStyle="solid" BorderWidth="1px" Font-Size="small" BorderColor="#D2D2D2" Width="10.5em" HorizontalPadding="5" VerticalPadding="4" CssClass="Menu-Skin-StaticItem" />
+    <DynamicHoverStyle ForeColor="#008B00" BackColor="White"  CssClass="Menu-Skin-DynamicHover" />
+</asp:Menu>
+
+<asp:Menu SkinID="SampleMenuHorizontal" runat="server"
+    ForeColor="black"
+    Font-Size="small" 
+    Font-Names="Tahoma"
+    DynamicHorizontalOffset="0" 
+    DynamicVerticalOffset="0"
+    StaticEnableDefaultPopOutImage="true"
+    StaticPopOutImageUrl="~/App_Themes/Enhanced/arrow.png" 
+    DynamicPopOutImageUrl="~/App_Themes/Enhanced/arrow.png"
+    CssClass="Menu-Skin-Horizontal">
+    <StaticMenuItemStyle ForeColor="black" BorderStyle="solid" BorderWidth="1px" BorderColor="#D2D2D2" Width="9em" HorizontalPadding="5" VerticalPadding="4" CssClass="Menu-Skin-StaticItem" />
+    <StaticHoverStyle ForeColor="#008B00" BackColor="White" CssClass="Menu-Skin-DynamicHover" />
+    <DynamicMenuItemStyle ForeColor="black" BorderStyle="solid" BorderWidth="1px" Font-Size="small" BorderColor="#D2D2D2" Width="10.5em" HorizontalPadding="5" VerticalPadding="4" CssClass="Menu-Skin-StaticItem" />
+    <DynamicHoverStyle ForeColor="#008B00" BackColor="White"  CssClass="Menu-Skin-DynamicHover" />
+</asp:Menu>
+
+<asp:DataList SkinID="SampleDataList" runat="server" 
+    BorderStyle="solid" 
+    BorderWidth="3px" 
+    BorderColor="#959595"
+    CellSpacing="5">
+    <ItemStyle VerticalAlign="Top" />
+    <HeaderStyle forecolor="#465239" Font-Size="1.8em" backcolor="#E9F5DA" font-bold="True" horizontalalign="Center" Height="60px" CssClass="DataList-Skin-Header" />    
+    <FooterStyle forecolor="#465239" Font-Size="1.8em" backcolor="#E9F5DA" font-bold="True" horizontalalign="Center" Height="30px" />
+    </asp:DataList>
+
+<asp:DetailsView SkinID="SampleDetailsView" runat="server" 
+    backcolor="White"
+    Width="100%" 
+    gridlines="None"
+    font-bold="True"
+    cellspacing="4"
+    HeaderStyle-Font-Bold="true">
+    <HeaderStyle forecolor="#465239" Font-Size="1.2em" backcolor="#E9F5DA" font-bold="True" horizontalalign="Center" Height="40px" CssClass="DetailsView-Skin-Header"/>
+    <RowStyle forecolor="#333333" backcolor="White" CssClass="DetailsView-Skin-Row" />
+    <AlternatingRowStyle backcolor="#F2FBE6" CssClass="DetailsView-Skin-Alternating" />
+    <FieldHeaderStyle font-bold="False" forecolor="#737373" />
+    <PagerStyle backcolor="#E9F5DA" horizontalalign="Center" />
+    <EditRowStyle forecolor="blue" />
+    <CommandRowStyle forecolor="Blue" />
+</asp:DetailsView>
+
+<asp:FormView SkinID="SampleFormView" runat="server" 
+    backcolor="White" 
+    BorderStyle="solid" 
+    BorderWidth="3px" 
+    BorderColor="#959595"
+    gridlines="None" 
+    width="300px"
+    cellspacing="2">
+    <HeaderStyle forecolor="#465239" Font-Size="1.2em" backcolor="#E9F5DA" font-bold="True" horizontalalign="Center" Height="40px" CssClass="FormView-Skin-Header" />
+    <RowStyle forecolor="#465239" backcolor="White" />
+    <PagerStyle backcolor="#E9F5DA" horizontalalign="Center" />
+</asp:FormView>
+
+<asp:TreeView SkinID="SampleTreeView" Runat="server"
+    ExpandDepth="0"
+    CollapseImageUrl="~/App_Themes/Basic/collapse.gif"
+    ExpandImageUrl="~/App_Themes/Basic/expand.gif"
+    NoExpandImageUrl="~/App_Themes/Basic/blank.gif"
+    CssClass="TreeView-Skin-Root">
+    <RootNodeStyle CssClass="TreeView-Skin-Node" BorderStyle="solid" BorderWidth="1px" BorderColor="#E7E7E7" />
+    <ParentNodeStyle CssClass="TreeView-Skin-Node" BorderStyle="solid" BorderWidth="1px" BorderColor="#E7E7E7" />
+    <LeafNodeStyle ImageUrl="~/images/arrow.png" CssClass="TreeView-Skin-Leaf" />
+</asp:TreeView>
+
+<asp:GridView SkinID="SampleGridView" Runat="server" 
+    CellPadding="3" 
+    GridLines="None"
+    BorderStyle="solid" 
+    BorderWidth="2px" 
+    BorderColor="#465239"
+    >
+    <HeaderStyle forecolor="#465239" Font-Size="1em" backcolor="#E9F5DA" horizontalalign="Center" CssClass="GridView-Skin-Header" />
+    <RowStyle forecolor="#465239" backcolor="White" HorizontalAlign="Center" />
+    <AlternatingRowStyle forecolor="#333333" CssClass="GridView-Skin-AlternatingRow" />
+    <PagerStyle backcolor="#E9F5DA" horizontalalign="Center" />
+</asp:GridView>
+
+<asp:TreeView SkinID="SrcCodeViewerTree" Runat="server" ShowExpandCollapse="True" NodeIndent="8">
+    <ParentNodeStyle ImageUrl="~/App_Themes/Basic/folder.gif" HorizontalPadding="3px" VerticalPadding="2px" /> 
+    <LeafNodeStyle ImageUrl="~/App_Themes/Basic/txt.gif" HorizontalPadding="3px" VerticalPadding="2px" />
+    <LevelStyles>
+        <asp:TreeNodeStyle ImageUrl="~/App_Themes/Basic/Web.gif" HorizontalPadding="3px" VerticalPadding="2px" /> 
+    </LevelStyles>
+    <SelectedNodeStyle Font-Underline="False" />
+    <NodeStyle ChildNodesPadding="2px" />
+</asp:TreeView>
+
+<asp:TreeView SkinID="WhitePaperTocTree" Runat="server"
+    ExpandDepth="0"
+    CollapseImageUrl="~/App_Themes/Basic/collapse.gif"
+    ExpandImageUrl="~/App_Themes/Basic/expand.gif"
+    NoExpandImageUrl="~/App_Themes/Basic/blank.gif"
+    CssClass="WhitePaperTocTree-Skin-Root">
+    <RootNodeStyle CssClass="WhitePaperTocTree-Skin-Node" BorderStyle="solid" BorderWidth="1px" BorderColor="#E7E7E7" />
+    <ParentNodeStyle CssClass="WhitePaperTocTree-Skin-Node" BorderStyle="solid" BorderWidth="1px" BorderColor="#E7E7E7" />
+    <LeafNodeStyle ImageUrl="~/images/arrow.png" CssClass="WhitePaperTocTree-Skin-Leaf" />
+</asp:TreeView>
+
+
+<asp:Login SkinID="SampleLogin" runat="server" 
+    font-names="Verdana" 
+    font-size="0.8em" 
+    cellpadding="4" 
+    BorderStyle="solid" BorderWidth="2px" BorderColor="#465239" BorderPadding="5"
+    CssClass="Login-Skin"
+    >
+    <LoginButtonStyle BackColor="#FFFFFF" ForeColor="#465239" BorderColor="#465239" BorderStyle="Solid" BorderWidth="1px" />
+    <TitleTextStyle Font-Bold="true" ForeColor="#465239" BackColor="#E9F5DA" Height="2em" Font-Size="1.5em" horizontalalign="Center" />        
+    <LabelStyle ForeColor="#465239" />
+    <TextBoxStyle ForeColor="#465239" BorderColor="#465239" BorderStyle="Solid" BorderWidth="1px" />
+    <FailureTextStyle ForeColor="#990000" />
+    <CheckBoxStyle ForeColor="#465239" />
+    <HyperLinkStyle font-italic="True" forecolor="#465239" />
+    
+</asp:Login>
+
+<asp:PasswordRecovery SkinID="SamplePasswordRecovery" runat="server" 
+    font-names="Verdana" 
+    font-size="0.8em" 
+    cellpadding="4" 
+    BorderStyle="solid" BorderWidth="2px" BorderColor="#465239" BorderPadding="5"
+    CssClass="PasswordRecovery-Skin"
+    forecolor="#333333"
+    >
+    <SubmitButtonStyle BackColor="#FFFFFF" ForeColor="#465239" BorderColor="#465239" BorderStyle="Solid" BorderWidth="1px" />
+    <TitleTextStyle Font-Bold="true" ForeColor="#465239" BackColor="#E9F5DA" Height="2em" Font-Size="1.5em" horizontalalign="Center" CssClass="PasswordRecovery-Skin-Title" />        
+    <LabelStyle ForeColor="#465239" />
+    <TextBoxStyle ForeColor="#465239" BorderColor="#465239" BorderStyle="Solid" BorderWidth="1px" />
+    <FailureTextStyle ForeColor="#990000" />
+    <InstructionTextStyle  forecolor="#465239"  backcolor="#FFFFFF" Height="3em"  />
+    <SuccessTextStyle forecolor="#000000" CssClass="PasswordRecovery-Skin-SuccessText"  />
+    <HyperLinkStyle font-italic="True" forecolor="#465239"  />
+</asp:PasswordRecovery>
+
+<asp:ChangePassword SkinID="SampleChangePassword" runat="server" 
+    font-names="Verdana" 
+    font-size="0.8em" 
+    cellpadding="4" 
+    BorderStyle="Solid" BorderWidth="2px" BorderColor="#465239"
+    CssClass="ChangePassword-Skin"
+    >
+    <CancelButtonStyle BackColor="#FFFFFF" ForeColor="#465239" BorderStyle="Solid" BorderWidth="1px" BorderColor="#465239" />
+    <ContinueButtonStyle BackColor="#FFFFFF" ForeColor="#465239" BorderStyle="Solid" BorderWidth="1px" BorderColor="#465239" />
+    <ChangePasswordButtonStyle BackColor="#FFFFFF" ForeColor="#465239" BorderStyle="Solid" BorderWidth="1px" BorderColor="#465239" />
+    <TitleTextStyle Font-Bold="true" ForeColor="#465239" BackColor="#E9F5DA" Height="2em" Font-Size="1.5em" horizontalalign="Center" CssClass="ChangePassword-Skin-Title" />        
+    <LabelStyle ForeColor="#465239" />
+    <TextBoxStyle ForeColor="#465239" BorderStyle="Solid" BorderWidth="1px" BorderColor="#465239" />
+    <FailureTextStyle forecolor="#990000" />
+    <InstructionTextStyle  forecolor="#465239"  backcolor="#FFFFFF" CssClass="ChangePassword-Skin-InstructionText" />
+    <SuccessTextStyle forecolor="#000000" CssClass="ChangePassword-Skin-SuccessText"  />
+    <PasswordHintStyle forecolor="#666666" />
+    <HyperLinkStyle font-italic="True" forecolor="#465239" CssClass="ChangePassword-Skin-Hyperlink" />
+</asp:ChangePassword>
+
+<asp:CreateUserWizard SkinID="SampleCreateUserWizard" runat="server" 
+    font-names="Verdana" 
+    font-size="0.8em" 
+    cellpadding="4" 
+    BorderStyle="Solid" BorderWidth="2px" BorderColor="#465239"
+    CssClass="CreateUserWizard-Skin"
+    >
+    <CancelButtonStyle BackColor="#FFFFFF" ForeColor="#465239" BorderStyle="Solid" BorderWidth="1px" BorderColor="#465239" />
+    <ContinueButtonStyle BackColor="#FFFFFF" ForeColor="#465239" BorderStyle="Solid" BorderWidth="1px" BorderColor="#465239" />
+    <CreateUserButtonStyle BackColor="#FFFFFF" ForeColor="#465239" BorderStyle="Solid" BorderWidth="1px" BorderColor="#465239" />
+    <HeaderStyle Font-Bold="true" ForeColor="#FFFFFF" BackColor="#465239" Height="2em" HorizontalAlign="Center" Font-Size="1.5em"   />        
+    <TitleTextStyle Font-Bold="true" ForeColor="#465239" BackColor="#E9F5DA" Height="2em" Font-Size="1.5em" horizontalalign="Center" CssClass="CreateUserWizard-Skin-Title" />        
+    <LabelStyle ForeColor="#465239"  />
+    <TextBoxStyle ForeColor="#465239" BorderStyle="Solid" BorderWidth="1px" BorderColor="#465239" />
+    <InstructionTextStyle  forecolor="#465239"  backcolor="#FFFFFF" CssClass="CreateUserWizard-Skin-InstructionText" />
+    <PasswordHintStyle forecolor="#666666" />
+    <CompleteSuccessTextStyle forecolor="#000000" CssClass="CreateUserWizard-Skin-SuccessText"  />
+</asp:CreateUserWizard>
+
+<asp:LoginStatus SkinID="SampleLoginStatus" runat="server" CssClass="LoginStatus-Skin" />

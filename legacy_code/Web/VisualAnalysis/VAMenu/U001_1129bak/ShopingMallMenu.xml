@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ShopingMallMenu>
+	<Menu ID="1">
+		<MenuDesc>商铺出租情况分析ShoppingMall</MenuDesc>
+		<MenuUrl>local/query.aspx</MenuUrl>
+	</Menu>
+	<Menu ID="2">
+		<MenuDesc>租金收取情况分析ShoppingMall</MenuDesc>
+		<MenuUrl>local/query.aspx</MenuUrl>
+	</Menu>
+</ShopingMallMenu>

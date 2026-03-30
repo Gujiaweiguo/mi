@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ADCONTRACT_MONTH" xml:space="preserve">
+    <value>Monthly</value>
+  </data>
+  <data name="ADCONTRACT_QUARTER" xml:space="preserve">
+    <value>Quarterly</value>
+  </data>
+  <data name="ADCONTRACT_SEMIYEARLY" xml:space="preserve">
+    <value>Half-yearly</value>
+  </data>
+  <data name="ADCONTRACT_SETTLE_UP" xml:space="preserve">
+    <value>Full Payment</value>
+  </data>
+  <data name="ADCONTRACT_YEAR" xml:space="preserve">
+    <value>Yearly</value>
+  </data>
+  <data name="ADTYPE_COMM" xml:space="preserve">
+    <value>COMM</value>
+  </data>
+  <data name="ADTYPE_FAST" xml:space="preserve">
+    <value>FAST</value>
+  </data>
+  <data name="Application_Form" xml:space="preserve">
+    <value>Application Form</value>
+  </data>
+  <data name="BIZ_MODE_LEASE" xml:space="preserve">
+    <value>Rent</value>
+  </data>
+  <data name="BIZ_MODE_UNIT" xml:space="preserve">
+    <value>Joint venture</value>
+  </data>
+  <data name="BizGrp_NO" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="BizGrp_YES" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="Change_Request_Form" xml:space="preserve">
+    <value>Change Request Form</value>
+  </data>
+  <data name="CHARGECLASS_APPORTION" xml:space="preserve">
+    <value>Recurring charges</value>
+  </data>
+  <data name="CHARGECLASS_DEPOSIT" xml:space="preserve">
+    <value>Deposit</value>
+  </data>
+  <data name="CHARGECLASS_FANST" xml:space="preserve">
+    <value>Fixed mthly rental</value>
+  </data>
+  <data name="CHARGECLASS_INTEREST" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CHARGECLASS_LEASE" xml:space="preserve">
+    <value>Rental</value>
+  </data>
+  <data name="CHARGECLASS_MAINTAIN" xml:space="preserve">
+    <value>Repairs</value>
+  </data>
+  <data name="CHARGECLASS_OTHER" xml:space="preserve">
+    <value>Other charges</value>
+  </data>
+  <data name="CHARGECLASS_PREDICT" xml:space="preserve">
+    <value>Deposit</value>
+  </data>
+  <data name="CHARGECLASS_UNION" xml:space="preserve">
+    <value>Compute Joint Venture</value>
+  </data>
+  <data name="CHARGECLASS_UNION_INNERCARDRATE" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CHARGECLASS_UNION_OUTERCARDRATE" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CHARGECLASS_WATERORDLECT" xml:space="preserve">
+    <value>Utility charge</value>
+  </data>
+  <data name="CHARGECLASS_YEAREND" xml:space="preserve">
+    <value>Year-end charge</value>
+  </data>
+  <data name="ConShopBrand_Domestic" xml:space="preserve">
+    <value>Domestic</value>
+  </data>
+  <data name="ConShopBrand_International" xml:space="preserve">
+    <value>International</value>
+  </data>
+  <data name="ConShopBrand_Province" xml:space="preserve">
+    <value>Province</value>
+  </data>
+  <data name="CONTRACTSTATUS_TYPE_ATTREM" xml:space="preserve">
+    <value>Expired</value>
+  </data>
+  <data name="CONTRACTSTATUS_TYPE_END" xml:space="preserve">
+    <value>Terminated</value>
+  </data>
+  <data name="CONTRACTSTATUS_TYPE_FIRST" xml:space="preserve">
+    <value>Initial Stage</value>
+  </data>
+  <data name="CONTRACTSTATUS_TYPE_INGEAR" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="CONTRACTSTATUS_TYPE_PAUSE" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="CONTRACTSTATUS_TYPE_TEMP" xml:space="preserve">
+    <value>Draft</value>
+  </data>
+  <data name="CUST_DEAL_IN_LICENCE" xml:space="preserve">
+    <value>Commercial instrument</value>
+  </data>
+  <data name="CUST_OTHER" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="CUST_SANITATION_APPROBATE" xml:space="preserve">
+    <value>Food hygiene licence</value>
+  </data>
+  <data name="CUST_TYPE_STATUS_INVALID" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="CUST_TYPE_STATUS_VALID" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="DEPT_TYPE_CHILD_COMPANY" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="DEPT_TYPE_CHILD_SONLD" xml:space="preserve">
+    <value>Subsidiary</value>
+  </data>
+  <data name="DEPT_TYPE_DEPT" xml:space="preserve">
+    <value>DEPT</value>
+  </data>
+  <data name="DEPT_TYPE_MALL" xml:space="preserve">
+    <value>MALL</value>
+  </data>
+  <data name="DEPTSTATUS_INVALID" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="DEPTSTATUS_VALID" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="FAXTYPE_TYPE_COMM" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="FAXTYPE_TYPE_INCRE" xml:space="preserve">
+    <value>VAT</value>
+  </data>
+  <data name="FAXTYPE_TYPE_OTHER" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="FORMULATYPE_TYPE_ONE" xml:space="preserve">
+    <value>Fixed</value>
+  </data>
+  <data name="FORMULATYPE_TYPE_THREE" xml:space="preserve">
+    <value>One time payment</value>
+  </data>
+  <data name="FORMULATYPE_TYPE_TWO" xml:space="preserve">
+    <value>Percentage or guarantee</value>
+  </data>
+  <data name="HdwClass_Meter" xml:space="preserve">
+    <value>Meter</value>
+  </data>
+  <data name="HdwClass_Money" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="HdwCond_BAD" xml:space="preserve">
+    <value>Bad</value>
+  </data>
+  <data name="IFPREPAY_TYPE_NO" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="IFPREPAY_TYPE_YES" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="INDEPBALANCE_STATUS_INVALID" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="INDEPBALANCE_STATUS_VALID" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="InvoicePay_INVPAYTYPE_CASH" xml:space="preserve">
+    <value>CASH</value>
+  </data>
+  <data name="InvoicePay_INVPAYTYPE_CHECK" xml:space="preserve">
+    <value>Cheque</value>
+  </data>
+  <data name="InvoicePay_INVPAYTYPE_P_O" xml:space="preserve">
+    <value>Draft</value>
+  </data>
+  <data name="INVSTATUS_CEL" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="INVSTATUS_HALFINV" xml:space="preserve">
+    <value>Partial Payment</value>
+  </data>
+  <data name="INVSTATUS_INV" xml:space="preserve">
+    <value>Paid</value>
+  </data>
+  <data name="INVSTATUS_NOINV" xml:space="preserve">
+    <value>Active (Pending Payment)</value>
+  </data>
+  <data name="IS_LEADER_NO" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="IS_LEADER_YES" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="IS_ROLESTATUS_NO" xml:space="preserve">
+    <value>Nullity</value>
+  </data>
+  <data name="IS_ROLESTATUS_YES" xml:space="preserve">
+    <value>Effective</value>
+  </data>
+  <data name="ISCHARGECROSS_NO" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="ISCHARGECROSS_YES" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="Memb_MembCardNo" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="Memb_MembCardNoUse" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Memb_MembCardYes" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="NOTICE_PERIOD0" xml:space="preserve">
+    <value>Do not alert</value>
+  </data>
+  <data name="NOTICE_PERIOD1" xml:space="preserve">
+    <value>1 Mth before</value>
+  </data>
+  <data name="NOTICE_PERIOD2" xml:space="preserve">
+    <value>2 Mth before</value>
+  </data>
+  <data name="NOTICE_PERIOD3" xml:space="preserve">
+    <value>3 Mth before</value>
+  </data>
+  <data name="NOTICE_PERIOD4" xml:space="preserve">
+    <value>6 Mth before</value>
+  </data>
+  <data name="PayInput_BankCard" xml:space="preserve">
+    <value>Bank Card</value>
+  </data>
+  <data name="PayInput_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="PayInput_Cash" xml:space="preserve">
+    <value>Cash</value>
+  </data>
+  <data name="PayInput_DeductExpenses" xml:space="preserve">
+    <value>Deduct Expenses</value>
+  </data>
+  <data name="PayInput_ManualEntry" xml:space="preserve">
+    <value>Manual Entry</value>
+  </data>
+  <data name="PayInput_Non_Settlement" xml:space="preserve">
+    <value>Non-Settlement</value>
+  </data>
+  <data name="PayInput_OffsetPayment" xml:space="preserve">
+    <value>Offset Payment</value>
+  </data>
+  <data name="PayInput_Others" xml:space="preserve">
+    <value>Others</value>
+  </data>
+  <data name="PayInput_PartialSettlement" xml:space="preserve">
+    <value>Partial Settlement</value>
+  </data>
+  <data name="PayInput_Return" xml:space="preserve">
+    <value>Return</value>
+  </data>
+  <data name="PayInput_Settlement" xml:space="preserve">
+    <value>Settlement</value>
+  </data>
+  <data name="PayInput_SystemGenerate" xml:space="preserve">
+    <value>System Generate</value>
+  </data>
+  <data name="PAYTYPEID_TYPE_FOREGIFONE" xml:space="preserve">
+    <value>2 Mth in advance</value>
+  </data>
+  <data name="PAYTYPEID_TYPE_FOREGIFONETHREE" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PAYTYPEID_TYPE_FOREGIFRIVET" xml:space="preserve">
+    <value>Fixed amt</value>
+  </data>
+  <data name="PAYTYPEID_TYPE_FOREGIFTHREE" xml:space="preserve">
+    <value>4 Mth in advance</value>
+  </data>
+  <data name="PAYTYPEID_TYPE_FOREGIFTWO" xml:space="preserve">
+    <value>3 Mth in advance</value>
+  </data>
+  <data name="PENALTY_TYPE_NO" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="PENALTY_TYPE_YES" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="POT_SHOP_ADMIRAL" xml:space="preserve">
+    <value>Flagship store</value>
+  </data>
+  <data name="POT_SHOP_MAIN" xml:space="preserve">
+    <value>Main store</value>
+  </data>
+  <data name="POT_SHOP_REFINEMENT" xml:space="preserve">
+    <value>Specialty store</value>
+  </data>
+  <data name="Public_Sealed" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="RentableArea_NoLeaseOut" xml:space="preserve">
+    <value>Vacant</value>
+  </data>
+  <data name="SETTLEMODE_TYPE_FIRST" xml:space="preserve">
+    <value>Align at 1st month</value>
+  </data>
+  <data name="SETTLEMODE_TYPE_LAST" xml:space="preserve">
+    <value>Align at 2nd month</value>
+  </data>
+  <data name="SETTLEMODE_TYPE_NO" xml:space="preserve">
+    <value>No alignment</value>
+  </data>
+  <data name="ShopHdw_Mall" xml:space="preserve">
+    <value>Mall</value>
+  </data>
+  <data name="ShopHdw_Shop" xml:space="preserve">
+    <value>Shop</value>
+  </data>
+  <data name="Store_USAGE_HABITATION" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_USAGE_NO_HABITATION" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Unit_NoLeaseOut" xml:space="preserve">
+    <value>Occupied</value>
+  </data>
+  <data name="Unit_Nonrentable" xml:space="preserve">
+    <value>Nonrentable</value>
+  </data>
+  <data name="User_StatusDisabled" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="User_StatusEnabled" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="User_StatusResigned" xml:space="preserve">
+    <value>Resigned</value>
+  </data>
+  <data name="WrkFlw_Disabled" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="WrkFlw_Draft" xml:space="preserve">
+    <value>Draft</value>
+  </data>
+  <data name="WrkFlw_Enabled" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="WrkFlw_IfTransitNO" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="WrkFlw_IfTransitYES" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="WrkFlw_VouTriggerredNO" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="WrkFlw_VouTriggerredYES" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="WrkFlwNode_Back" xml:space="preserve">
+    <value>Back to starting node</value>
+  </data>
+  <data name="WrkFlwNode_Pending" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="WrkFlwNode_Proceed" xml:space="preserve">
+    <value>Proceed to next node</value>
+  </data>
+  <data name="WrkFlwNode_Submit" xml:space="preserve">
+    <value>Submit for approval</value>
+  </data>
+</root>

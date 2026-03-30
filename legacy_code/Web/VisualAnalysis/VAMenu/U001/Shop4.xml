@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<shopInformation>
+  <ShopInfor locaID="101" cityID="104" mallID="110" buildID="101" floorID="101">
+    <Shop shopID="203" UnitID="202" ShopCode="bjmcA01" ShopDesc="CK" FloorArea="100平米" RentArea="90平米" RentStatus="1" Brand="散铺" Customer="客户1" map="Img/icon12.png" plan="Img/xxxx.png" x="305" y="20" depth="1" rb="255" gb="0" bb="0" NoX="10" NoY="10" NameX="10" NameY="30" Remark="" />
+    <Shop shopID="204" UnitID="201" ShopCode="bjmc" ShopDesc="LV" FloorArea="100平米" RentArea="90平米" RentStatus="1" Brand="次主力店" Customer="客户1" map="Img/icon13.png" plan="Img/xxxx.png" x="464" y="20" depth="2" rb="255" gb="0" bb="0" NoX="65" NoY="10" NameX="65" NameY="30" Remark="" />
+    <Shop shopID="205" UnitID="204" ShopCode="bjmcB01" ShopDesc="Gucci" FloorArea="100平米" RentArea="90平米" RentStatus="1" Brand="散铺" Customer="客户1" map="Img/icon14.png" plan="Img/xxxx.png" x="662" y="20" depth="3" rb="255" gb="0" bb="0" NoX="15" NoY="10" NameX="15" NameY="30" Remark="" />
+    <Shop shopID="206" UnitID="206" ShopCode="bjfxA01" ShopDesc="Marco" FloorArea="100平米" RentArea="90平米" RentStatus="1" Brand="散铺" Customer="客户1" map="Img/icon15.png" plan="Img/xxxx.png" x="841" y="20" depth="4" rb="0" gb="0" bb="255" NoX="30" NoY="10" NameX="30" NameY="30" Remark="" />
+    <Shop shopID="207" UnitID="209" ShopCode="bjfxA02" ShopDesc="KFC" FloorArea="100平米" RentArea="90平米" RentStatus="1" Brand="散铺" Customer="客户1" map="Img/icon16.png" plan="Img/xxxx.png" x="227" y="108" depth="4" rb="0" gb="0" bb="255" NoX="160" NoY="15" NameX="160" NameY="35" Remark="" />
+    <Shop shopID="208" UnitID="208" ShopCode="bjfxB01" ShopDesc="Lily Pearl" FloorArea="100平米" RentArea="90平米" RentStatus="1" Brand="散铺" Customer="客户1" map="Img/icon17.png" plan="Img/xxxx.png" x="668" y="108" depth="5" rb="255" gb="0" bb="255" NoX="40" NoY="15" NameX="40" NameY="35" Remark="" />
+    <Shop shopID="209" UnitID="210" ShopCode="tygmA001" ShopDesc="万达" FloorArea="100平米" RentArea="90平米" RentStatus="1" Brand="散铺" Customer="客户1" map="Img/icon18.png" plan="Img/xxxx.png" x="823" y="108" depth="5" rb="255" gb="0" bb="255" NoX="60" NoY="15" NameX="60" NameY="35" Remark="" />
+    <Shop shopID="210" UnitID="214" ShopCode="tygmA002" ShopDesc="华星" FloorArea="100平米" RentArea="90平米" RentStatus="1" Brand="散铺" Customer="客户1" map="Img/icon19.png" plan="Img/xxxx.png" x="130" y="174" depth="5" rb="255" gb="0" bb="255" NoX="0" NoY="60" NameX="0" NameY="80" Remark="" />
+    <Shop shopID="211" UnitID="215" ShopCode="tygmB002" ShopDesc="恒星" FloorArea="100平米" RentArea="90平米" RentStatus="1" Brand="散铺" Customer="客户1" map="Img/icon20.png" plan="Img/xxxx.png" x="1066.5" y="174" depth="5" rb="255" gb="0" bb="255" NoX="0" NoY="60" NameX="0" NameY="80" Remark="" />
+    <Shop shopID="212" UnitID="218" ShopCode="tylsA001" ShopDesc="志强餐饮" FloorArea="100平米" RentArea="90平米" RentStatus="1" Brand="散铺" Customer="客户1" map="Img/icon21.png" plan="Img/xxxx.png" x="-7.5" y="334.5" depth="5" rb="0" gb="255" bb="255" NoX="40" NoY="20" NameX="40" NameY="40" Remark="" />
+    <Shop shopID="213" UnitID="219" ShopCode="tylsA002" ShopDesc="恒星科技" FloorArea="100平米" RentArea="90平米" RentStatus="1" Brand="散铺" Customer="客户1" map="Img/icon22.png" plan="Img/xxxx.png" x="272.7" y="310.5" depth="5" rb="0" gb="255" bb="255" NoX="50" NoY="-3" NameX="50" NameY="15" Remark="" />
+    <Shop shopID="210" UnitID="214" ShopCode="tygmA002" ShopDesc="华星" FloorArea="100平米" RentArea="90平米" RentStatus="1" Brand="散铺" Customer="客户1" map="Img/icon23.png" plan="Img/xxxx.png" x="466" y="310.5" depth="5" rb="0" gb="255" bb="0" NoX="20" NoY="20" NameX="20" NameY="40" Remark="" />
+    <Shop shopID="211" UnitID="215" ShopCode="tygmB002" ShopDesc="恒星" FloorArea="100平米" RentArea="90平米" RentStatus="1" Brand="散铺" Customer="客户1" map="Img/icon24.png" plan="Img/xxxx.png" x="669" y="310.5" depth="5" rb="255" gb="255" bb="0" NoX="20" NoY="20" NameX="20" NameY="40" Remark="" />
+    <Shop shopID="212" UnitID="218" ShopCode="tylsA001" ShopDesc="志强餐饮" FloorArea="100平米" RentArea="90平米" RentStatus="1" Brand="散铺" Customer="客户1" map="Img/icon25.png" plan="Img/xxxx.png" x="802.8" y="310.5" depth="5" rb="0" gb="255" bb="0" NoX="50" NoY="-3" NameX="50" NameY="15" Remark="" />
+    <Shop shopID="213" UnitID="219" ShopCode="tylsA002" ShopDesc="恒星科技" FloorArea="100平米" RentArea="90平米" RentStatus="1" Brand="散铺" Customer="客户1" map="Img/icon26.png" plan="Img/xxxx.png" x="990" y="334" depth="5" rb="255" gb="255" bb="0" NoX="150" NoY="20" NameX="150" NameY="40" Remark="" />
+  </ShopInfor>
+  <ShopInfor locaID="101" cityID="104" mallID="110" buildID="101" floorID="102">
+    <Shop shopID="103" UnitID="102" ShopCode="bjmcA01" ShopDesc="CK" FloorArea="100平米" RentArea="90平米" RentStatus="1" Brand="散铺" Customer="客户1" map="Img/icon1.png" plan="Img/xxxx.png" x="-2" y="18" depth="1" rb="255" gb="0" bb="0" NoX="80" NoY="100" NameX="80" NameY="120" Remark="" />
+    <Shop shopID="104" UnitID="101" ShopCode="bjmc" ShopDesc="LV" FloorArea="100平米" RentArea="90平米" RentStatus="1" Brand="次主力店" Customer="客户1" map="Img/icon2.png" plan="Img/xxxx.png" x="95" y="285" depth="2" rb="0" gb="0" bb="255" NoX="25" NoY="20" NameX="25" NameY="40" Remark="" />
+    <Shop shopID="105" UnitID="104" ShopCode="bjmcB01" ShopDesc="Gucci" FloorArea="100平米" RentArea="90平米" RentStatus="1" Brand="散铺" Customer="客户1" map="Img/icon3.png" plan="Img/xxxx.png" x="83" y="355" depth="3" rb="255" gb="0" bb="255" NoX="20" NoY="40" NameX="20" NameY="60" Remark="" />
+    <Shop shopID="106" UnitID="106" ShopCode="bjfxA01" ShopDesc="Marco" FloorArea="100平米" RentArea="90平米" RentStatus="1" Brand="散铺" Customer="客户1" map="Img/icon4.png" plan="Img/xxxx.png" x="9" y="500" depth="4" rb="0" gb="255" bb="255" NoX="70" NoY="20" NameX="70" NameY="40" Remark="" />
+    <Shop shopID="107" UnitID="109" ShopCode="bjfxA02" ShopDesc="KFC" FloorArea="100平米" RentArea="90平米" RentStatus="1" Brand="散铺" Customer="客户1" map="Img/icon5.png" plan="Img/xxxx.png" x="226" y="536" depth="4" rb="0" gb="0" bb="255" NoX="0" NoY="0" NameX="0" NameY="20" Remark="" />
+    <Shop shopID="108" UnitID="108" ShopCode="bjfxB01" ShopDesc="Lily Pearl" FloorArea="100平米" RentArea="90平米" RentStatus="1" Brand="散铺" Customer="客户1" map="Img/icon6.png" plan="Img/xxxx.png" x="267" y="285" depth="5" rb="0" gb="255" bb="0" NoX="60" NoY="100" NameX="60" NameY="120" Remark="" />
+    <Shop shopID="109" UnitID="110" ShopCode="tygmA001" ShopDesc="万达" FloorArea="100平米" RentArea="90平米" RentStatus="1" Brand="散铺" Customer="客户1" map="Img/icon7.png" plan="Img/xxxx.png" x="407" y="248" depth="5" rb="0" gb="255" bb="255" NoX="10" NoY="-5" NameX="10" NameY="10" Remark="" />
+    <Shop shopID="110" UnitID="114" ShopCode="tygmA002" ShopDesc="华星" FloorArea="100平米" RentArea="90平米" RentStatus="1" Brand="散铺" Customer="客户1" map="Img/icon8.png" plan="Img/xxxx.png" x="287" y="209" depth="5" rb="0" gb="0" bb="255" NoX="0" NoY="5" NameX="0" NameY="25" Remark="" />
+    <Shop shopID="111" UnitID="115" ShopCode="tygmB002" ShopDesc="恒星" FloorArea="100平米" RentArea="90平米" RentStatus="1" Brand="散铺" Customer="客户1" map="Img/icon9.png" plan="Img/xxxx.png" x="287" y="173" depth="5" rb="0" gb="0" bb="255" NoX="0" NoY="0" NameX="0" NameY="20" Remark="" />
+    <Shop shopID="112" UnitID="118" ShopCode="tylsA001" ShopDesc="志强餐饮" FloorArea="100平米" RentArea="90平米" RentStatus="1" Brand="散铺" Customer="客户1" map="Img/icon10.png" plan="Img/xxxx.png" x="337" y="172" depth="5" rb="0" gb="0" bb="255" NoX="10" NoY="10" NameX="10" NameY="30" Remark="" />
+    <Shop shopID="113" UnitID="119" ShopCode="tylsA002" ShopDesc="恒星科技" FloorArea="100平米" RentArea="90平米" RentStatus="1" Brand="散铺" Customer="客户1" map="Img/icon11.png" plan="Img/xxxx.png" x="268" y="31" depth="5" rb="255" gb="255" bb="0" NoX="50" NoY="25" NameX="50" NameY="45" Remark="" />
+  </ShopInfor>
+  <ShopInfor locaID="101" cityID="104" mallID="111" buildID="102" floorID="103">
+  </ShopInfor>
+  <ShopInfor locaID="101" cityID="104" mallID="111" buildID="102" floorID="104">
+  </ShopInfor>
+  <ShopInfor locaID="101" cityID="105" mallID="112" buildID="103" floorID="105">
+  </ShopInfor>
+  <ShopInfor locaID="101" cityID="105" mallID="112" buildID="103" floorID="106">
+  </ShopInfor>
+  <ShopInfor locaID="101" cityID="105" mallID="113" buildID="104" floorID="107">
+  </ShopInfor>
+  <ShopInfor locaID="101" cityID="105" mallID="113" buildID="104" floorID="108">
+  </ShopInfor>
+  <ShopInfor locaID="102" cityID="106" mallID="114" buildID="105" floorID="109">
+  </ShopInfor>
+  <ShopInfor locaID="102" cityID="106" mallID="114" buildID="105" floorID="110">
+  </ShopInfor>
+  <ShopInfor locaID="102" cityID="106" mallID="115" buildID="106" floorID="111">
+  </ShopInfor>
+  <ShopInfor locaID="102" cityID="106" mallID="115" buildID="106" floorID="112">
+  </ShopInfor>
+  <ShopInfor locaID="102" cityID="107" mallID="116" buildID="107" floorID="113">
+  </ShopInfor>
+  <ShopInfor locaID="102" cityID="107" mallID="116" buildID="107" floorID="114">
+  </ShopInfor>
+  <ShopInfor locaID="102" cityID="107" mallID="117" buildID="108" floorID="115">
+  </ShopInfor>
+  <ShopInfor locaID="102" cityID="107" mallID="117" buildID="108" floorID="116">
+  </ShopInfor>
+  <ShopInfor locaID="103" cityID="108" mallID="119" buildID="109" floorID="117">
+  </ShopInfor>
+  <ShopInfor locaID="103" cityID="108" mallID="119" buildID="109" floorID="118">
+  </ShopInfor>
+  <ShopInfor locaID="103" cityID="108" mallID="120" buildID="110" floorID="119">
+  </ShopInfor>
+  <ShopInfor locaID="103" cityID="108" mallID="120" buildID="110" floorID="120">
+  </ShopInfor>
+  <ShopInfor locaID="103" cityID="109" mallID="121" buildID="111" floorID="121">
+  </ShopInfor>
+  <ShopInfor locaID="103" cityID="109" mallID="121" buildID="111" floorID="122">
+  </ShopInfor>
+  <ShopInfor locaID="103" cityID="109" mallID="122" buildID="112" floorID="123">
+  </ShopInfor>
+  <ShopInfor locaID="103" cityID="109" mallID="122" buildID="112" floorID="124">
+  </ShopInfor>
+</shopInformation>

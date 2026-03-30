@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- slideShowTime - if set to 0, there is no autoslide -->
+
+<banner width = "230" height = "410" 
+		startWith="1" 
+		backgroundColor="0xffffff" 
+		backgroundTransparency="100" 
+		barHeight="25">
+
+	<item>
+		<path>images/htdocs/0.jpg</path>
+		<url></url>
+		<target>_blank</target>
+		<bar_color>0x777777</bar_color>
+		<bar_transparency>70</bar_transparency>
+		<slideShowTime>10</slideShowTime>
+	</item>
+	
+	<item>
+		<path>images/htdocs/1.jpg</path>
+		<url></url>
+		<target>_blank</target>
+		<bar_color>0x777777</bar_color>
+		<bar_transparency>50</bar_transparency>
+		<slideShowTime>10</slideShowTime>
+	</item>
+	
+	<item>
+		<path>images/htdocs/2.jpg</path>
+		<url></url>
+		<target>_blank</target>
+		<bar_color>0x777777</bar_color>
+		<bar_transparency>70</bar_transparency>
+		<slideShowTime>10</slideShowTime>
+	</item>
+	
+	<item>
+		<path>images/htdocs/3.jpg</path>
+		<url></url>
+		<target>_blank</target>
+		<bar_color>0x777777</bar_color>
+		<bar_transparency>70</bar_transparency>
+		<slideShowTime>10</slideShowTime>
+	</item>
+	
+	<item>
+		<path>images/htdocs/4.jpg</path>
+		<url></url>
+		<target>_blank</target>
+		<bar_color>0x777777</bar_color>
+		<bar_transparency>70</bar_transparency>
+		<slideShowTime>10</slideShowTime>
+	</item>
+	
+	<item>
+		<path>images/htdocs/5.jpg</path>
+		<url></url>
+		<target>_blank</target>
+		<bar_color>0x777777</bar_color>
+		<bar_transparency>70</bar_transparency>
+		<slideShowTime>10</slideShowTime>
+	</item>
+
+	<item>
+		<path>images/htdocs/6.jpg</path>
+		<url></url>
+		<target>_blank</target>
+		<bar_color>0x777777</bar_color>
+		<bar_transparency>70</bar_transparency>
+		<slideShowTime>10</slideShowTime>
+	</item>
+
+	<item>
+		<path>images/htdocs/7.jpg</path>
+		<url></url>
+		<target>_blank</target>
+		<bar_color>0x777777</bar_color>
+		<bar_transparency>70</bar_transparency>
+		<slideShowTime>10</slideShowTime>
+	</item>
+		
+</banner>

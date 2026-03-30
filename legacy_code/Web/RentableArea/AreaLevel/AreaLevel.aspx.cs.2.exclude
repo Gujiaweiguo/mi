@@ -1,0 +1,191 @@
+﻿using System;
+using System.Data;
+using System.Configuration;
+using System.Collections;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+
+using Base.Biz;
+using Base.DB;
+using Base.Page;
+using Base;
+using RentableArea;
+using Base.Page;
+
+public partial class RentableArea_AreaLevel_AreaLevel : BasePage
+{
+    DataTable dt = new DataTable();
+    PagedDataSource pds = new PagedDataSource();
+    BaseBO baseBO = new BaseBO();
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!IsPostBack)
+        {
+            //状态
+            int[] status = AreaLevel.GetAreaLevelStatus();
+            for (int i = 0; i < status.Length; i++)
+            {
+                this.cmbAreaStatus.Items.Add(new ListItem(AreaLevel.GetAreaLevelStatusDesc(status[i]), status[i].ToString()));
+            }
+            ViewState["currentCount"] = 1;
+            page();
+        }
+    }
+    protected void btnSave_Click(object sender, EventArgs e)
+    {
+        AreaLevel areaLevel = new AreaLevel();
+        areaLevel.AreaLevelID = RentableAreaApp.GetID("AreaLevel", "AreaLevelID");
+        areaLevel.AreaLevelCode = this.txtAreaCode.Text.Trim();
+        areaLevel.AreaLevelDesc = this.txtAreaName.Text.Trim();
+        areaLevel.AreaLevelStatus = Convert.ToInt32(this.cmbAreaStatus.SelectedItem.Value);
+        areaLevel.Note = this.txtNote.Text.Trim();
+
+        //插入数据
+        try
+        {
+            if (baseBO.Insert(areaLevel) != -1)
+            {
+               
+            }
+        }
+        catch (Exception ex)
+        {
+            Response.Write(ex.ToString());
+        }
+        page();
+    }
+    protected void btnEdit_Click(object sender, EventArgs e)
+    {
+        AreaLevel areaLevel = new AreaLevel();
+        areaLevel.AreaLevelCode = this.txtAreaCode.Text.Trim();
+        areaLevel.AreaLevelDesc = this.txtAreaName.Text.Trim();
+        areaLevel.AreaLevelStatus = Convert.ToInt32(this.cmbAreaStatus.SelectedItem.Value);
+        areaLevel.Note = this.txtNote.Text.Trim();
+
+        //修改
+        baseBO.WhereClause = "AreaLevelID=" + Convert.ToInt32(ViewState["AreaLevelID"]);
+        if (baseBO.Update(areaLevel) != -1)
+        {
+           
+        }
+        this.txtAreaCode.Text = "";
+        this.txtAreaName.Text = "";
+        this.txtNote.Text = "";
+        page();
+    }
+    protected void btnCel_Click(object sender, EventArgs e)
+    {
+        this.txtAreaCode.Text = "";
+        this.txtAreaName.Text = "";
+        this.txtNote.Text = "";
+        page();
+    }
+    protected void GrdVewCustType_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+
+    }
+    protected void GrdVewCustType_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        int arealeveId = 0;
+        arealeveId = Convert.ToInt32(GrdVewCustType.SelectedRow.Cells[0].Text);
+        ViewState["AreaLevelID"] = arealeveId;
+        baseBO.WhereClause = "AreaLevelID=" + arealeveId;
+
+        Resultset rs = baseBO.Query(new AreaLevel());
+        if (rs.Count == 1)
+        {
+
+            AreaLevel areaLevel = rs.Dequeue() as AreaLevel;
+            txtAreaCode.Text = areaLevel.AreaLevelCode;
+            txtAreaName.Text = areaLevel.AreaLevelDesc;
+            cmbAreaStatus.SelectedValue = areaLevel.AreaLevelStatus.ToString();
+            txtNote.Text = areaLevel.Note;
+        }
+        page();
+    }
+    protected void btnBack_Click(object sender, EventArgs e)
+    {
+        ViewState["currentCount"] = Convert.ToInt32(Convert.ToInt32(ViewState["currentCount"]) - 1);
+        page();
+    }
+    protected void btnNext_Click(object sender, EventArgs e)
+    {
+        ViewState["currentCount"] = Convert.ToInt32(Convert.ToInt32(ViewState["currentCount"]) + 1);
+        page();
+    }
+
+    protected void page()
+    {
+        baseBO.WhereClause = "";
+        DataSet ds = baseBO.QueryDataSet(new AreaLevel());
+        dt = ds.Tables[0];
+        int count = dt.Rows.Count;
+        int ss = 0;
+        //获取状态
+        for (int j = 0; j < count; j++)
+        {
+            string areaLevelTypeStatusName = AreaLevel.GetAreaLevelStatusDesc(Convert.ToInt32(dt.Rows[j]["AreaLevelStatus"].ToString()));
+            dt.Rows[j]["AreaLevelStatusName"] = areaLevelTypeStatusName;
+        }
+
+        pds.DataSource = dt.DefaultView;
+        if (pds.Count < 1)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                dt.Rows.Add(dt.NewRow());
+            }
+            pds.DataSource = dt.DefaultView;
+        }
+        else
+        {
+
+            GrdVewCustType.EmptyDataText = "";
+            pds.AllowPaging = true;
+            pds.PageSize = 9;
+            pds.CurrentPageIndex = Convert.ToInt32(ViewState["currentCount"]) - 1;
+            if (pds.IsFirstPage)
+            {
+                btnBack.Enabled = false;
+                btnNext.Enabled = true;
+            }
+
+            if (pds.IsLastPage)
+            {
+                btnBack.Enabled = true;
+                btnNext.Enabled = false;
+            }
+
+            if (pds.IsFirstPage && pds.IsLastPage)
+            {
+                btnBack.Enabled = false;
+                btnNext.Enabled = false;
+            }
+
+            if (!pds.IsLastPage && !pds.IsFirstPage)
+            {
+                btnBack.Enabled = true;
+                btnNext.Enabled = true;
+            }
+            GrdVewCustType.DataSource = pds;
+            GrdVewCustType.DataBind();
+
+            ss = GrdVewCustType.Rows.Count;
+            for (int i = 0; i < pds.PageSize - ss; i++)
+            {
+                dt.Rows.Add(dt.NewRow());
+            }
+            pds.DataSource = dt.DefaultView;
+
+        }
+        GrdVewCustType.DataSource = pds;
+        GrdVewCustType.DataBind();
+        for (int j = 0; j < pds.PageSize - ss; j++)
+            GrdVewCustType.Rows[(pds.PageSize - 1) - j].Cells[5].Text = "";
+
+    }
+}

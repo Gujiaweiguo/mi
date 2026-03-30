@@ -1,0 +1,16 @@
+StoreID	Number
+ShopName	String
+StoreDesc	String	16
+ContractCode	String	32
+CustCode	String	16
+CustName	String	64
+BizMode	Number
+ContractStatus	Number
+ConStartDate	DateTime
+ConEndDate	DateTime
+TotalArea	Number
+Rentamt	Number
+monthRent	Number
+ShopTypeName	String	64
+FloorName	String	64
+TradeName	String	64

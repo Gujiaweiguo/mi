@@ -1,0 +1,7 @@
+bin\Debug\Generalize.dll
+bin\Debug\Generalize.pdb
+bin\Debug\Base.dll
+bin\Debug\Base.pdb
+obj\Debug\ResolveAssemblyReference.cache
+obj\Debug\Generalize.dll
+obj\Debug\Generalize.pdb

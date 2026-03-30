@@ -1,0 +1,141 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B542A4FB-3FDF-4A3D-82BD-FB8D86D75055}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>YYControls</RootNamespace>
+    <AssemblyName>YYControls</AssemblyName>
+    <SccProjectName>"%24/Code", BAAAAAAA</SccProjectName>
+    <SccLocalPath>..</SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>MSSCCI:Microsoft Visual SourceSafe</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\YYControls.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\YYControls.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Enum.cs">
+    </Compile>
+    <Compile Include="Helper\Common\Attribute.cs" />
+    <Compile Include="Helper\Common\Control.cs" />
+    <Compile Include="Helper\Common\String.cs" />
+    <Compile Include="Helper\Common\Export.cs" />
+    <Compile Include="Helper\SmartGridView.cs" />
+    <Compile Include="Resources\Icon.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SmartGridViewAlpha\CheckboxAll.cs" />
+    <Compile Include="SmartGridViewAlpha\CheckboxAlls.cs" />
+    <Compile Include="SmartGridViewAlpha\ConfirmButton.cs" />
+    <Compile Include="SmartGridViewAlpha\ConfirmButtonConverter.cs" />
+    <Compile Include="SmartGridViewAlpha\ConfirmButtons.cs" />
+    <Compile Include="SmartGridViewAlpha\ContextMenu.cs" />
+    <Compile Include="SmartGridViewAlpha\ContextMenus.cs" />
+    <Compile Include="SmartGridViewAlpha\FixRowCol.cs" />
+    <Compile Include="SmartGridViewAlpha\JavaScriptConstant.cs" />
+    <Compile Include="SmartGridViewAlpha\Paging.cs" />
+    <Compile Include="SmartGridViewAlpha\SmartGridViewAlpha.cs" />
+    <Compile Include="SmartGridViewAlpha\SortTip.cs" />
+    <Compile Include="SmartGridViewAlpha\ChangeRowCSSByCheckBox.cs" />
+    <Compile Include="SmartGridView\CascadeCheckbox\CascadeCheckbox.cs" />
+    <Compile Include="SmartGridView\CascadeCheckbox\CascadeCheckboxes.cs" />
+    <Compile Include="SmartGridView\CascadeCheckbox\CascadeCheckboxFunction.cs" />
+    <Compile Include="SmartGridView\CascadeCheckbox\Property.cs" />
+    <Compile Include="SmartGridView\CheckedRowCssClass\Property.cs" />
+    <Compile Include="SmartGridView\CheckedRowCssClass\CheckedRowCssClass.cs" />
+    <Compile Include="SmartGridView\CheckedRowCssClass\CheckedRowCssClassFunction.cs" />
+    <Compile Include="SmartGridView\ClientButton\ClientButton.cs" />
+    <Compile Include="SmartGridView\ClientButton\ClientButtonFunction.cs" />
+    <Compile Include="SmartGridView\ClientButton\ClientButtons.cs" />
+    <Compile Include="SmartGridView\ClientButton\Property.cs" />
+    <Compile Include="SmartGridView\ContextMenu\ContextMenu.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SmartGridView\ContextMenu\ContextMenuFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SmartGridView\ContextMenu\ContextMenus.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SmartGridView\ContextMenu\Property.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SmartGridView\Event.cs" />
+    <Compile Include="SmartGridView\Export\Export.cs" />
+    <Compile Include="SmartGridView\FixRowColumn\Property.cs" />
+    <Compile Include="SmartGridView\FixRowColumn\FixRowColumn.cs">
+    </Compile>
+    <Compile Include="SmartGridView\FixRowColumn\FixRowColumnFunction.cs" />
+    <Compile Include="SmartGridView\Handler.cs" />
+    <Compile Include="SmartGridView\MouseOverCssClass\Property.cs" />
+    <Compile Include="SmartGridView\MouseOverCssClass\MouseOverCssClassFunction.cs" />
+    <Compile Include="SmartGridView\ExtendFunction.cs" />
+    <Compile Include="SmartGridView\CustomPagerSettings\CustomPagerSettings.cs" />
+    <Compile Include="SmartGridView\RowClick\RowClickFunction.cs" />
+    <Compile Include="SmartGridView\RowClick\Property.cs" />
+    <Compile Include="SmartGridView\SmartSorting\SmartSorting.cs" />
+    <Compile Include="SmartGridView\SmartSorting\SmartSortingFunction.cs" />
+    <Compile Include="SmartGridView\SmartSorting\Property.cs" />
+    <Compile Include="SmartGridView\SmartGridView.cs" />
+    <Compile Include="SmartGridView\GridViewTableCell.cs" />
+    <Compile Include="SmartGridView\RowDoubleClick\Property.cs" />
+    <Compile Include="SmartGridView\RowDoubleClick\RowDoubleClickFunction.cs" />
+    <Compile Include="SmartGridView\CustomPagerSettings\CustomPagerSettingsFunction.cs" />
+    <Compile Include="SmartGridView\CustomPagerSettings\Property.cs" />
+    <Compile Include="SmartTreeView\CascadeCheckbox\CascadeCheckboxFunction.cs" />
+    <Compile Include="SmartTreeView\CascadeCheckbox\Property.cs" />
+    <Compile Include="SmartTreeView\ExtendFunction.cs" />
+    <Compile Include="SmartTreeView\SmartTreeView.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SmartGridViewAlpha\icon.bmp" />
+    <EmbeddedResource Include="Resources\SmartTreeView.bmp" />
+    <Content Include="SmartGridView\readme.txt" />
+    <Content Include="SmartGridView\history.txt" />
+    <EmbeddedResource Include="Resources\SmartGridView.bmp">
+    </EmbeddedResource>
+    <EmbeddedResource Include="SmartGridView\Resources\ScriptLibrary.js" />
+    <EmbeddedResource Include="SmartGridView\Resources\ScriptLibraryDebug.js" />
+    <EmbeddedResource Include="SmartGridView\Resources\StyleLibrary.css" />
+    <EmbeddedResource Include="SmartTreeView\Resources\ScriptLibrary.js" />
+    <EmbeddedResource Include="SmartTreeView\Resources\ScriptLibraryDebug.js" />
+    <EmbeddedResource Include="SmartGridView\Resources\Asc.gif" />
+    <EmbeddedResource Include="SmartGridView\Resources\Desc.gif" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

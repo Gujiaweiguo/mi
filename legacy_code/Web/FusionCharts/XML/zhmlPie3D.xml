@@ -1,0 +1,9 @@
+<chart bgColor='ffffff' showBorder="0" baseFontSize='12'　palette='4' decimals='0' enableSmartLabels='1' enableRotation='0' bgAlpha='40,100' bgRatio='0,100' bgAngle='360' showBorder='1' startingAngle='70' numberScaleValue='W' formatNumber='1' caption='品类部综合毛利占比分析'>
+            <set label='副食' value='782' />
+            <set label='日化' value='1082' />
+            <set label='日用' value='508' />
+            <set label='生鲜' value='1304' isSliced='1'/>
+            <set label='食品' value='2727' isSliced='1'/>
+            <set label='针棉' value='348' isSliced='1'/>
+            <set label='自有' value='187' />
+</chart>

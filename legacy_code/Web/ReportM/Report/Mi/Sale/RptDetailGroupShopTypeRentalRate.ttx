@@ -1,0 +1,11 @@
+storeid	Number		
+deptname	String	32	
+cityname	String	32	
+ddname	String	32	
+deptid	Number		
+period	Date		
+unitstatus	Number		
+totalfloorarea	Number		
+shoptypename	String	32
+totalarea	Number
+leasearea	Number

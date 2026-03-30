@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<MIGroupMenu>
+	<Menu ID="1">
+		<MenuDesc>商铺出租情况分析</MenuDesc>
+		<MenuUrl>local/query.aspx</MenuUrl>
+	</Menu>
+	<Menu ID="2">
+		<MenuDesc>租金收取情况分析</MenuDesc>
+		<MenuUrl>local/query.aspx</MenuUrl>
+	</Menu>
+</MIGroupMenu>

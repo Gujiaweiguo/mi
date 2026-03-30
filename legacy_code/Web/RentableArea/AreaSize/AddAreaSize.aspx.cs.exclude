@@ -1,0 +1,60 @@
+﻿using System;
+using System.Data;
+using System.Configuration;
+using System.Collections;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+
+using RentableArea;
+using Base.DB;
+using Base.Biz;
+public partial class RentableArea_AreaSize_AddAreaSize : System.Web.UI.Page
+{
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!IsPostBack)
+        {
+            int[] status = AreaSize.GetAreaSizeStatus();
+            for (int i = 0; i < status.Length; i++)
+            {
+                this.cmbAreaSizeStatus.Items.Add(new ListItem(AreaSize.GetAreaSizeStatusDesc(status[i]), status[i].ToString()));
+            }
+        }
+    }
+    protected void btnCancel_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("QueryAreaSize.aspx");
+    }
+    protected void btnOk_Click(object sender, EventArgs e)
+    {
+        BaseBO baseBO = new BaseBO();
+        AreaSize areaSize = new AreaSize();
+        areaSize.AreaSizeID = RentableAreaApp.GetID("AreaSize", "AreaSizeID");
+        areaSize.AreaSizeCode = txtAreaSizeCode.Text.Trim();
+        areaSize.AreaSizeName = txtAreaSizeName.Text.Trim();
+        areaSize.AreaSizeStatus = Convert.ToInt32(cmbAreaSizeStatus.SelectedValue.ToString());
+        areaSize.Note = this.txtNote.Text.Trim();
+
+        //插入数据
+        try
+        {
+            if (baseBO.Insert(areaSize) != -1)
+            {
+                Response.Write("<script language=javascript>alert('添加成功!');</script>");
+                Response.Redirect("QueryAreaSize.aspx");
+            }
+            else
+            {
+                Response.Write("<script language=javascript>alert('添加失败!');</script>");
+            }
+        }
+        catch (Exception ex)
+        {
+            Response.Write(ex.ToString());
+        }
+    }
+}

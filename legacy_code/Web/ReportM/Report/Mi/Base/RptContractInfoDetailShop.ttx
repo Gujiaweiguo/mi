@@ -1,0 +1,11 @@
+contractcode	String	32
+shopcode	String	32
+shopname	String	32
+shoptypename	String	32
+rentarea	Number
+brandname	String	32
+areaname	String	32
+shopstartdate	DateTime
+shopenddate	DateTime
+contactorname	String	32
+tel	String	32

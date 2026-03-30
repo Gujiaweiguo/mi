@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Building>
+    <Building ID="1">
+	<MallCode>1</MallCode>
+        <BuildingCode>101</BuildingCode>
+        <BuildingDesc>A座</BuildingDesc>
+	<Img>33-2.png</Img>
+        <Remark>aaaaaaaaa</Remark>
+    </Building>
+    <Building ID="2">
+	<MallCode>2</MallCode>
+        <BuildingCode>102</BuildingCode>
+        <BuildingDesc>C座</BuildingDesc>
+	<Img>33-2.png</Img>
+        <Remark>bbbbbbbbb</Remark>
+    </Building>
+    <Building ID="3">
+	<MallCode>3</MallCode>
+        <BuildingCode>103</BuildingCode>
+        <BuildingDesc>B座</BuildingDesc>
+	<Img>33-2.png</Img>
+        <Remark>cccccccc</Remark>
+    </Building>
+    <Building ID="4">
+	<MallCode>2</MallCode>
+        <BuildingCode>104</BuildingCode>
+        <BuildingDesc>D座</BuildingDesc>
+	<Img>33-2.png</Img>
+        <Remark>dddddddddd</Remark>
+    </Building>
+</Building>

@@ -1,0 +1,244 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Integral.aspx.cs" Inherits="Associator_Perform_Integral" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head runat="server">
+    <title><%= (String)GetGlobalResourceObject("BaseInfo", "PotCustomer_lblCustTitle") %></title>
+    <link href="../../App_Themes/CSS/Rool.css" rel="stylesheet" type="text/css" />
+    <link href="../../App_Themes/Main/style.css" rel="stylesheet" type="text/css" />
+    <link href="../../App_Themes/CSS/ToolStyle.css" rel="stylesheet" type="text/css" />
+    <link href="../../App_Themes/Tabbar/css/dhtmlXTabbar.css" rel="stylesheet" type="text/css" />
+    <link href="../../App_Themes/Tabbar/css/webtab.css" rel="stylesheet" type="text/css" />
+     <style type="text/css">
+        <!--
+        table.tbIntegral tr{ height:28px; }
+        
+        table.tbIntegral tr.headLine{ height:1px; }
+        table.tbIntegral tr.bodyLine{ height:1px; }
+        
+        table.tbIntegral td.baseLable{ padding-right:5px;text-align:right;}
+        table.tbIntegral td.baseInput{ align:left;padding-right:20px }
+        --> 
+    </style>  
+    <script src="../../App_Themes/DateTime/popcalendar.js" type="text/javascript"></script>
+    <script type="text/javascript"  src="../../App_Themes/Tabbar/js/dhtmlXCommon.js"></script>
+	<script type="text/javascript" src="../../App_Themes/Tabbar/js/dhtmlXTabbar.js"></script>
+	<script type="text/javascript"  src="../../JavaScript/Calendar.js"></script>
+	<script type="text/javascript" src="../../JavaScript/Common.js"></script>
+	<script language="javascript" type="text/javascript" src="../../JavaScript/TabTools.js"></script>
+	<script type="text/javascript">
+	    function Load()
+	    {
+	        addTabTool("<%=integral %>,Associator/Perform/Integral.aspx~<%=IssueCard %>,Associator/Perform/IssueCard.aspx~<%=Info %>,Associator/Perform/AssociatorInfo.aspx~<%=Query %>,Associator/Perform/AssociatorQuery.aspx");
+	        loadTitle();
+	    }
+    </script>
+</head>
+<body style="margin:0px" onload='Load()'>
+    <form id="form1" runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server">
+        </asp:ScriptManager>
+        <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+        <ContentTemplate>
+    <div>
+        <table style="width:100%" border="0" cellpadding="0" cellspacing="0">
+            <tr>
+                <td style="height: 24px; text-align: left; width: 279px;" class="tdTopRightBackColor" align="left">
+                <img class="imageLeftBack" src="" style="width: 7px"  />
+                <asp:Label ID="Label31" runat="server" Text="<%$ Resources:BaseInfo,Associator_ServerItegral %>"></asp:Label></td>
+            <td style="height: 24px; width: 95px;" class="tdTopRightBackColor" align="left"></td>
+            <td style=" height: 24px;" class="tdTopRightBackColor" valign="top">
+                <img class="imageRightBack" src="" style="width: 7px;" align="right" /></td>
+            </tr>
+            <tr class="tdBackColor" style="height:20px">
+            <td colspan="3"></td>
+            </tr>
+            <tr>
+                <td colspan="3" class="tdBackColor" style="padding-left:20px; padding-right:20px">
+                <fieldset style="border-right: #c0c0c0 1px solid; border-top: #c0c0c0 1px solid;
+                                    border-left: #c0c0c0 1px solid; border-bottom: #c0c0c0 1px solid; width:100%;">
+                                    <legend style="text-align: left">
+                                    <asp:Label ID="Label33" runat="server" CssClass="labelStyle" Text="<%$ Resources:BaseInfo,Associator_SelAssociator %>"></asp:Label>
+                                    </legend>
+                    <table style="width:100%" border="0" cellpadding="0" cellspacing="0" class="tbIntegral">
+                        <tr>
+                            <td style="width: 106px" class="baseLable">
+                                <asp:Label ID="Label1" runat="server" Text="<%$ Resources:BaseInfo,Associator_lblCardID %>"></asp:Label></td>
+                            <td style="width: 182px">
+                                <asp:TextBox ID="txtCardID" runat="server" CssClass="ipt160px" Width="129px"></asp:TextBox>
+                                <asp:Button ID="btnQuery" runat="server" CssClass="buttonSmallHelp" Height="23px"
+                                    Width="25px" OnClick="btnQuery_Click" /></td>
+                            <td style="width: 64px" class="baseLable">
+                            </td>
+                            <td colspan="3">
+                            <fieldset style="border-right: #c0c0c0 1px solid; border-top: #c0c0c0 1px solid;
+                                    border-left: #c0c0c0 1px solid; border-bottom: #c0c0c0 1px solid; width:82%;">
+                                    <legend style="text-align: left">
+                                    <asp:Label ID="Label7" runat="server" CssClass="labelStyle" Text="<%$ Resources:BaseInfo,Associator_CardIDInput %>"></asp:Label>
+                                    </legend>
+                                <table style="width:100%">
+                                    <tr>
+                                        <td style="width:16%; height: 28px;">
+                                            <asp:RadioButton ID="RadioButton1" runat="server" GroupName="A" Width="97px" Text="<%$ Resources:BaseInfo,Associator_radCardMac %>" /></td>
+                                        <td style="width: 50%; height: 28px;"><asp:RadioButton ID="RadioButton2" runat="server" GroupName="A" Width="97px" Text="<%$ Resources:BaseInfo,Associator_radKeyboard %>" Checked="True" /></td>
+                                    </tr>
+                                </table>
+                             </fieldset>       
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6" style="text-align: center">
+                                <table border="0" cellpadding="0" cellspacing="0" style="width: 95%">
+                                    <tr style="height: 1px;">
+                                        <td style="height: 1px; background-color: #738495">
+                                        </td>
+                                    </tr>
+                                    <tr style="height: 1px;">
+                                        <td style="height: 1px; background-color: #ffffff">
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="baseLable" style="width: 106px">
+                                <asp:Label ID="Label2" runat="server" Text="<%$ Resources:BaseInfo,Associator_lblCardType %>"></asp:Label></td>
+                            <td style="width: 182px">
+                                <asp:TextBox ID="txtCardType" runat="server" Width="141px" CssClass="ipt160px" BackColor="#F5F5F4"></asp:TextBox></td>
+                            <td style="width: 64px" class="baseLable">
+                                <asp:Label ID="Label5" runat="server" Text="<%$ Resources:BaseInfo,Associator_lblCardState %>"></asp:Label></td>
+                            <td style="width: 159px">
+                                <asp:TextBox ID="txtStauts" runat="server" Width="138px" CssClass="ipt160px" BackColor="#F5F5F4"></asp:TextBox></td>
+                            <td style="width: 54px" class="baseLable">
+                                <asp:Label ID="Label8" runat="server" Text="<%$ Resources:BaseInfo,Associator_lblTermDate %>"></asp:Label></td>
+                            <td style="width: 274px">
+                                <asp:TextBox ID="txtTermDate" runat="server" Width="105px" CssClass="ipt160px" BackColor="#F5F5F4"></asp:TextBox></td>
+                        </tr>
+                        <tr>
+                            <td class="baseLable" style="width: 106px; height: 28px;">
+                                <asp:Label ID="Label3" runat="server" Text="<%$ Resources:BaseInfo,Associator_lblAccociatorID %>"></asp:Label></td>
+                            <td style="width: 182px; height: 28px;">
+                                <asp:TextBox ID="txtMembID" runat="server" Width="141px" CssClass="ipt160px" BackColor="#F5F5F4"></asp:TextBox></td>
+                            <td style="width: 64px; height: 28px;" class="baseLable">
+                                <asp:Label ID="Label6" runat="server" Text="<%$ Resources:BaseInfo,Associator_lblOtherCard %>"></asp:Label></td>
+                            <td style="width: 159px; height: 28px;">
+                                <asp:TextBox ID="txtOtherCard" runat="server" CssClass="ipt160px" Width="138px" BackColor="#F5F5F4"></asp:TextBox></td>
+                            <td style="width: 54px; height: 28px;">
+                            </td>
+                            <td style="width: 274px; height: 28px">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="baseLable" style="width: 106px">
+                                <asp:Label ID="Label4" runat="server" Text="<%$ Resources:BaseInfo,Associator_lblName %>"></asp:Label></td>
+                            <td colspan="3">
+                                <asp:TextBox ID="txtName" runat="server" Width="367px" CssClass="ipt160px" BackColor="#F5F5F4"></asp:TextBox></td>
+                            <td style="width: 54px" class="baseLable">
+                                <asp:Label ID="Label9" runat="server" Text="<%$ Resources:BaseInfo,Associator_lblItegral %>"></asp:Label></td>
+                            <td style="width: 274px">
+                                <asp:TextBox ID="txtIntegral" runat="server" Width="105px" CssClass="ipt160px" BackColor="#F5F5F4"></asp:TextBox></td>
+                        </tr>
+                    </table>
+                </fieldset>    
+                </td>
+            </tr>
+            <tr class="tdBackColor" style="height:20px">
+            <td colspan="3"></td>
+            </tr>
+            <tr>
+                <td colspan="3" class="tdBackColor" style="padding-left:20px; padding-right:20px">
+                 <fieldset style="border-right: #c0c0c0 1px solid; border-top: #c0c0c0 1px solid;
+                                    border-left: #c0c0c0 1px solid; border-bottom: #c0c0c0 1px solid; width:100%;">
+                                    <legend style="text-align: left">
+                                    <asp:Label ID="Label10" runat="server" CssClass="labelStyle" Text="<%$ Resources:BaseInfo,Associator_ExCharge %>"></asp:Label>
+                                    </legend>
+                     <table border="0" cellpadding="0" cellspacing="0" style="width:100%" class="tbIntegral">
+                         <tr>
+                             <td style="width: 124px; height: 15px;" class="baseLable">
+                                 <asp:Label ID="Label11" runat="server" Text="<%$ Resources:BaseInfo,Associator_lblshopID %>"></asp:Label></td>
+                             <td style="width: 146px; height: 15px;">
+                                 <asp:DropDownList ID="dropShopCode" runat="server" Width="135px" AutoPostBack="True" OnSelectedIndexChanged="dropShopCode_SelectedIndexChanged">
+                                 </asp:DropDownList></td>
+                             <td style="height: 15px" colspan="2">
+                                 <asp:TextBox ID="txtShopName" runat="server" Width="203px" CssClass="ipt160px" BackColor="#F5F5F4"></asp:TextBox></td>
+                             <td style="height: 15px; width: 68px;" class="baseLable">
+                                 <asp:Label ID="Label16" runat="server" Text="<%$ Resources:BaseInfo,Associator_lblTicketID %>"></asp:Label></td>
+                             <td style="height: 15px">
+                                 <asp:TextBox ID="txtTicketID" runat="server" Width="105px" CssClass="ipt160px"></asp:TextBox></td>
+                         </tr>
+                         <tr>
+                             <td style="width: 124px; height: 28px;" class="baseLable">
+                                 <asp:Label ID="Label12" runat="server" Text="<%$ Resources:BaseInfo,Associator_lblExChgDate %>"></asp:Label></td>
+                             <td style="width: 146px; height: 28px;">
+                                 <asp:TextBox ID="txtChgDate" runat="server" Width="129px" CssClass="ipt160px" onclick="calendar()"></asp:TextBox></td>
+                             <td style="width: 95px; height: 28px" class="baseLable">
+                                 <asp:Label ID="Label14" runat="server" Text="<%$ Resources:BaseInfo,Associator_lblExChgTime %>"></asp:Label></td>
+                             <td style="width: 129px; height: 28px;">
+                                 <asp:TextBox ID="txtChgTime" runat="server" Width="103px" CssClass="ipt160px"></asp:TextBox></td>
+                             <td style="width: 68px; height: 28px;">
+                             </td>
+                             <td style="height: 28px">
+                             </td>
+                         </tr>
+                         <tr>
+                             <td style="width: 124px" class="baseLable">
+                                 <asp:Label ID="Label13" runat="server" Text="<%$ Resources:BaseInfo,Associator_lblExChgMoney %>"></asp:Label></td>
+                             <td style="width: 146px">
+                                 <asp:TextBox ID="txtChgMoney" runat="server" Width="129px" CssClass="ipt160px"></asp:TextBox></td>
+                             <td style="width: 95px" class="baseLable">
+                                 <asp:Label ID="Label15" runat="server" Text="<%$ Resources:BaseInfo,Associator_lblPOSItegrtal %>"></asp:Label></td>
+                             <td style="width: 129px">
+                                 <asp:TextBox ID="txtPosIntegral" runat="server" Width="103px" CssClass="ipt160px"></asp:TextBox></td>
+                             <td style="width: 68px">
+                                 <asp:Button ID="Button2" runat="server" Text="更新积分" /></td>
+                             <td>
+                             </td>
+                         </tr>
+                         <tr>
+                             <td colspan="6" style="text-align:center">
+                             <table border="0" cellpadding="0" cellspacing="0" width="95%">
+                                                                <tr class="bodyLine">
+                                                                    <td style=" height: 1px; background-color: #738495;">
+                                                                    </td>
+                                                                </tr>
+                                                                <tr class="bodyLine">
+                                                                    <td style=" height: 1px; background-color: #FFFFFF;">
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                             </td>
+                         </tr>
+                         <tr>
+                             <td class="baseLable" style="width: 124px">
+                                 <asp:Label ID="Label17" runat="server" Text="<%$ Resources:BaseInfo,Associator_lblAccountItegrtal %>"></asp:Label></td>
+                             <td style="width: 146px">
+                                 <asp:TextBox ID="txtAccountIntegral" runat="server" CssClass="ipt160px" Width="129px" BackColor="#F5F5F4"></asp:TextBox></td>
+                             <td style="width: 95px" class="baseLable">
+                                 <asp:Label ID="Label18" runat="server" Text="<%$ Resources:BaseInfo,Associator_lblTotalItegrtal %>"></asp:Label></td>
+                             <td style="width: 129px">
+                                 <asp:TextBox ID="txtTotalIntegral" runat="server" CssClass="ipt160px" Width="106px" BackColor="#F5F5F4"></asp:TextBox></td>
+                             <td style="width: 68px">
+                             </td>
+                             <td>
+                             </td>
+                         </tr>
+                     </table>
+                 </fieldset>
+                </td>
+            </tr>
+            <tr class="tdBackColor" style="height: 20px">
+                <td colspan="3" style="padding-left:20px; padding-right:20px; height: 20px;" >
+                </td>
+            </tr>
+            <tr class="tdBackColor" style="height: 20px">
+                <td colspan="3">
+                </td>
+            </tr>
+        </table>
+    </div>
+        </ContentTemplate>
+        </asp:UpdatePanel>
+    </form>
+</body>
+</html>

@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<graph xAxisName="2010年度各月份" yAxisName="面积" subCaption="" baseFontSize="12" caption="" decimalPrecision="0" rotateNames="1" numDivLines="3" showValues="0" formatNumberScale="0" aboutMenuItemLabel="About Wincor Nixdorf" aboutMenuItemLink="n-http://www.wincor-nixdorf.com">
+  <categories>
+    <category name="2010-01" />
+    <category name="2010-02" />
+    <category name="2010-03" />
+    <category name="2010-04" />
+  </categories>
+  <dataset seriesName="公摊面积" color="AFD8F8" showValues="1">
+    <set value="0.00" />
+    <set value="0.00" />
+    <set value="0.00" />
+    <set value="0.00" />
+  </dataset>
+  <dataset seriesName="空置面积" color="F6BD0F" showValues="1">
+    <set value="80.50" />
+    <set value="80.50" />
+    <set value="80.50" />
+    <set value="80.50" />
+  </dataset>
+  <dataset seriesName="签约面积" color="8BBA00" showValues="1">
+    <set value="41097.50" />
+    <set value="41097.50" />
+    <set value="41097.50" />
+    <set value="41097.50" />
+  </dataset>
+</graph>

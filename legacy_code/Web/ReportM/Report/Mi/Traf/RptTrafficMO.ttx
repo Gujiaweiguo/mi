@@ -1,0 +1,7 @@
+storeid	Number
+StoreShortName	String	32
+bizdate	String	16
+counterid	Number
+name	String	50
+innum	Number
+outnum	Number

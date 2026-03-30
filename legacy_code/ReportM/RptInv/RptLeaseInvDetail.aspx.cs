@@ -1,0 +1,331 @@
+﻿using System;
+using System.Data;
+using System.Configuration;
+using System.Collections;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+using CrystalDecisions.Shared;
+using CrystalDecisions.CrystalReports.Engine;
+
+using Base.Biz;
+using Base.DB;
+using Base;
+using Base.Page;
+using Lease;
+using Lease.Customer;
+using Lease.Contract;
+using Lease.PotBargain;
+using RentableArea;
+using Base.Util;
+using BaseInfo.authUser;
+using BaseInfo.User;    
+
+public partial class RptBaseMenu_RptLeaseInvDetail : BasePage
+{
+    public string baseInfo;
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!this.IsPostBack)
+        {
+            baseInfo = (String)GetGlobalResourceObject("ReportInfo", "RptLeaseInvDetail_Title");
+
+        }
+
+    }
+
+    protected void btnOK_Click(object sender, EventArgs e)
+    {
+        Session["subReportSql"] = "";
+        Session["subRpt"] = "";
+        if (txtContractID.Text != "" || txtPeriod.Text != "")
+        {
+            BindData();
+        }
+        else
+        {
+            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "message", "parent.document.all.txtWroMessage.value =  '" + (String)GetGlobalResourceObject("BaseInfo", "Prompt_InputQuery") + "'", true);
+            return;
+        }
+        this.Response.Redirect("../ReportShow.aspx");
+    }
+
+    private void BindData()
+    {
+        ParameterFields paraFields = new ParameterFields();
+        ParameterField[] paraField = new ParameterField[2];
+        ParameterDiscreteValue[] discreteValue = new ParameterDiscreteValue[2];
+        ParameterRangeValue rangeValue = new ParameterRangeValue();
+        /*paraField[0] = new ParameterField();
+        paraField[0].ParameterFieldName = "REXCustCode";
+        discreteValue[0] = new ParameterDiscreteValue();
+        discreteValue[0].Value = (String)GetGlobalResourceObject("ReportInfo", "Rpt_CustCode");
+        paraField[0].CurrentValues.Add(discreteValue[0]);
+
+        paraField[1] = new ParameterField();
+        paraField[1].Name = "REXContractCode";
+        discreteValue[1] = new ParameterDiscreteValue();
+        discreteValue[1].Value = (String)GetGlobalResourceObject("ReportInfo", "RptContractInfo_ContractID");
+        paraField[1].CurrentValues.Add(discreteValue[1]);
+
+        paraField[2] = new ParameterField();
+        paraField[2].Name = "REXCustName";
+        discreteValue[2] = new ParameterDiscreteValue();
+        discreteValue[2].Value = (String)GetGlobalResourceObject("ReportInfo", "Rpt_CustName");
+        paraField[2].CurrentValues.Add(discreteValue[2]);
+
+        paraField[3] = new ParameterField();
+        paraField[3].Name = "REXInvCode";
+        discreteValue[3] = new ParameterDiscreteValue();
+        discreteValue[3].Value = (String)GetGlobalResourceObject("ReportInfo", "RptInv_InvCode");
+        paraField[3].CurrentValues.Add(discreteValue[3]);
+
+        paraField[4] = new ParameterField();
+        paraField[4].Name = "REXContractStatus";
+        discreteValue[4] = new ParameterDiscreteValue();
+        discreteValue[4].Value = (String)GetGlobalResourceObject("ReportInfo", "RptContractInfo_ContractStatus");
+        paraField[4].CurrentValues.Add(discreteValue[4]);
+
+        paraField[5] = new ParameterField();
+        paraField[5].Name = "REXInvPeriod";
+        discreteValue[5] = new ParameterDiscreteValue();
+        discreteValue[5].Value = (String)GetGlobalResourceObject("ReportInfo", "RptInv_InvPeriod");
+        paraField[5].CurrentValues.Add(discreteValue[5]);
+
+        paraField[6] = new ParameterField();
+        paraField[6].Name = "REXInvPayAmt";
+        discreteValue[6] = new ParameterDiscreteValue();
+        discreteValue[6].Value = (String)GetGlobalResourceObject("ReportInfo", "RptInv_InvPayAmt");
+        paraField[6].CurrentValues.Add(discreteValue[6]);
+
+        paraField[7] = new ParameterField();
+        paraField[7].Name = "REXSInvPaidAmt";
+        discreteValue[7] = new ParameterDiscreteValue();
+        discreteValue[7].Value = (String)GetGlobalResourceObject("ReportInfo", "RptInv_SInvPaidAmt");
+        paraField[7].CurrentValues.Add(discreteValue[7]);
+
+        paraField[8] = new ParameterField();
+        paraField[8].Name = "REXTotalAmt";
+        discreteValue[8] = new ParameterDiscreteValue();
+        discreteValue[8].Value = (String)GetGlobalResourceObject("ReportInfo", "RptInv_TotalAmt");
+        paraField[8].CurrentValues.Add(discreteValue[8]);
+
+        paraField[9] = new ParameterField();
+        paraField[9].Name = "REXInvAdjAmt";
+        discreteValue[9] = new ParameterDiscreteValue();
+        discreteValue[9].Value = (String)GetGlobalResourceObject("ReportInfo", "RptInv_InvAdjAmt");
+        paraField[9].CurrentValues.Add(discreteValue[9]);
+
+        paraField[10] = new ParameterField();
+        paraField[10].Name = "REXInvDate";
+        discreteValue[10] = new ParameterDiscreteValue();
+        discreteValue[10].Value = (String)GetGlobalResourceObject("ReportInfo", "RptInv_InvDate");
+        paraField[10].CurrentValues.Add(discreteValue[10]);*/
+
+        paraField[0] = new ParameterField();
+        paraField[0].Name = "REXTitle";
+        discreteValue[0] = new ParameterDiscreteValue();
+        discreteValue[0].Value = (String)GetGlobalResourceObject("ReportInfo", "RptLeaseInvDetail_Title");
+        paraField[0].CurrentValues.Add(discreteValue[0]);
+
+        paraField[1] = new ParameterField();
+        paraField[1].Name = "REXSdate";
+        discreteValue[1] = new ParameterDiscreteValue();
+        discreteValue[1].Value = (String)GetGlobalResourceObject("ReportInfo", "RptFloatSaleQuery_Sdate");
+        paraField[1].CurrentValues.Add(discreteValue[1]);
+
+
+
+
+        foreach (ParameterField pf in paraField)
+        {
+            paraFields.Add(pf);
+        }
+
+        string whereStr1 = "";
+        string whereStr2 = "";
+        string whereStr3 = "";
+        string whereStr4 = "";
+        string whereStr5 = "";
+        string whereStr6 = "";
+
+        string sql = "(SELECT MAX(InvPeriod) FROM InvoiceHeader,Contract WHERE InvoiceHeader.ContractID = Contract.ContractID AND Contract.ContractCode = '" + txtContractID.Text + "')";
+
+        if (txtContractID.Text != "" && txtPeriod.Text == "")
+        {
+            whereStr1 = " AND invoiceHeader.InvPeriod = " + sql +
+	                            " AND Contract.ContractCode = '" + txtContractID.Text + "'";
+            whereStr2 = " AND invhe.InvPeriod = " + sql;
+            whereStr3 = " AND invH.InvPeriod < " + sql;
+            whereStr4 = " AND ( invoiceHeader.InvPeriod = " + sql;
+            whereStr5 = " AND Contract.ContractCode = '" + txtContractID.Text + "'";
+            whereStr6 = sql;
+        }
+
+        if (txtPeriod.Text != "" && txtContractID.Text == "")
+        {
+            whereStr1 = " AND invoiceHeader.InvPeriod = '" + txtPeriod.Text + "'";
+            whereStr2 = " AND invhe.InvPeriod = '" + txtPeriod.Text + "'";
+            whereStr3 = " AND invH.InvPeriod < '" + txtPeriod.Text + "'";
+            whereStr4 = " AND ( invoiceHeader.InvPeriod = '" + txtPeriod.Text + "'";
+            whereStr6 = txtPeriod.Text.Trim();
+        }
+
+        if(txtContractID.Text != "" && txtPeriod.Text != "")
+        {
+            whereStr1 = " AND Contract.ContractCode = '" + txtContractID.Text +
+                       "' AND invoiceHeader.InvPeriod = '" + txtPeriod.Text + "'";
+            whereStr2 = " AND invhe.InvPeriod = '" + txtPeriod.Text + "'";
+            whereStr3 = " AND invH.InvPeriod < '" + txtPeriod.Text + "'";
+            whereStr4 = " AND ( invoiceHeader.InvPeriod = '" + txtPeriod.Text + "'";
+            whereStr5 = " AND Contract.ContractCode = '" + txtContractID.Text + "'";
+            whereStr6 = txtPeriod.Text.Trim();
+        }
+
+        SessionUser sessionUser = (SessionUser)Session["UserAccessInfo"];
+        string authWhere = "";
+        if (AuthBase.GetAuthUser(sessionUser.UserID) > 0)
+        {
+            authWhere = " AND EXISTS ( " + AuthBase.AUTH_SQL_SHOP + sessionUser.UserID +
+                        ") AND EXISTS ( " + AuthBase.AUTH_SQL_BUILD + sessionUser.UserID +
+                        ") AND EXISTS ( " + AuthBase.AUTH_SQL_FLOOR + sessionUser.UserID +
+                        ") AND EXISTS ( " + AuthBase.AUTH_SQL_CONTRACT + sessionUser.UserID + ")";
+        }
+
+        string str_sql = "SELECT " +
+                            " Contract.ContractCode,Customer.CustName,Contract.ContractID," +
+                            " Customer.PostCode,Customer.PostAddr,CustContact.ContactMan,ConShop.ShopCode,ConShop.ShopName," +
+                            " CurrencyType.CurTypeName,invoiceHeader.InvID,invoiceHeader.InvPeriod,sPay.ChargeTypeName," +
+                            " ISNULL(sPay.InvActPayAmt,0) as sAmt," +
+                            " ISNULL(sActPay.actpayAmt,0) as sactpayAmt," +
+                            " ISNULL(sIpay.iAmt,0) as siAmt" +
+                            " FROM invoiceHeader " +
+                            " INNER JOIN" +
+                            " (" +
+                                " SELECT SUM(InvoiceDetail.InvActPayAmt) AS InvActPayAmt," +
+                                    " SUM(InvoiceDetail.InvPaidAmt) as InvPaidAmt,invhe.InvPeriod," +
+                                    " ContractID,InvoiceDetail.ChargeTypeID,ct.ChargeTypeName,invhe.InvID" +
+                                " FROM InvoiceDetail,invoiceHeader as invhe,ChargeType as ct" +
+                                " WHERE InvoiceDetail.InvID = invhe.InvID" +
+                                " AND InvoiceDetail.ChargeTypeID = ct.ChargeTypeID" +
+                                " AND InvoiceDetail.ChargeTypeID NOT IN " +
+                                     " (" +
+                                     " SELECT ChargeTypeID " +
+                                     " FROM ChargeType" +
+                                     " WHERE ChargeClass = " + Lease.PotBargain.ChargeType.CHARGECLASS_INTEREST +
+                                     " ) " + whereStr2 +
+                                " group by  ContractID,InvoiceDetail.ChargeTypeID,ct.ChargeTypeName,invhe.InvID,invhe.InvPeriod" +
+                            " ) as sPay ON (invoiceHeader.InvID = sPay.InvID and sPay.InvPeriod = invoiceHeader.invPeriod)" +
+                            " LEFT JOIN" +
+                            " (" +
+                                " SELECT SUM(invD.invActPayAmt - invD.invPaidAmt) AS actpayAmt,ContractID," +
+                                        " invD.ChargeTypeID,ChargeType.ChargeTypeName,invP.InvPeriod" +
+                                " FROM InvoiceHeader AS invH INNER JOIN" +
+                                " InvoiceDetail AS invD ON (invH.invID = invD.invID) INNER JOIN" +
+                               "  ChargeType ON (ChargeType.ChargeTypeID = invD.ChargeTypeID) LEFT JOIN" +
+                                " (" +
+                                    " (select InvPeriod,InvID from invoiceheader " +
+                                     " where InvPeriod = " + sql + ")" +
+                               "  ) AS invP ON (invP.InvID = invH.InvID)" +
+                               "  WHERE invD.ChargeTypeID NOT IN " +
+                                         " (" +
+                                         " SELECT ChargeTypeID " +
+                                         " FROM ChargeType" +
+                                         " WHERE ChargeClass = " + Lease.PotBargain.ChargeType.CHARGECLASS_INTEREST +
+                                         " ) " + whereStr3 +
+                                " group by  ContractID ,invD.ChargeTypeID,ChargeType.ChargeTypeName,invP.InvPeriod" +
+                            " ) as sActPay ON (sActPay.ContractID = sPay.ContractID " +
+                                            " AND sActPay.ChargeTypeID = sPay.ChargeTypeID)" +
+                            " LEFT JOIN" +
+                             " (" +
+                                 " SELECT invH.contractID,invD.ChargeTypeID,invH.InvID,invH.InvPeriod," +
+                                 " SUM(invI.interestamt) AS iAmt " +
+                                 " FROM InvoiceHeader AS invH INNER JOIN" +
+                                 " InvoiceDetail AS invD ON (invH.invID = invD.invID) INNER JOIN" +
+                                 " invoiceInterest AS invI ON (invD.invDetailID = invI.lateinvdetailid)" +
+                                 " WHERE EXISTS ( " +
+                                     " SELECT 1 " +
+                                     " FROM invoiceDetail AS a" +
+                                     " WHERE a.invID = invI.invCode" +
+                                    " )" +
+                             " GROUP BY invH.contractID,invD.ChargeTypeID,invH.invID,invH.InvPeriod" +
+                             " ) AS sIpay ON (invoiceHeader.InvID = sIpay.InvID and" +
+                                             " sIpay.InvPeriod = invoiceHeader.invPeriod" +
+                            " )" +
+                            " INNER JOIN" +
+                             " Contract ON (invoiceHeader.contractID = Contract.ContractID ) INNER JOIN" +
+                             " Customer ON (Contract.CustID = Customer.CustID) INNER JOIN" +
+                             " CurrencyType ON (CurrencyType.CurTypeId=invoiceheader.InvCurTypeId) INNER JOIN" +
+                             " CustContact ON (CustContact.CustID = Customer.CustID) INNER JOIN" +
+                            " ConShop ON (Contract.contractID = ConShop.contractID)" +
+                            " WHERE 1=1 " + whereStr1 + authWhere +
+                             " GROUP BY " +
+                            " invoiceHeader.InvPeriod,sPay.InvActPayAmt," +
+                            " sactPay.actpayAmt,sIpay.iAmt," +
+                            " Contract.ContractCode,Customer.CustName,Contract.ContractID," +
+                            " Customer.PostCode,Customer.PostAddr,CustContact.ContactMan,ConShop.ShopCode,ConShop.ShopName," +
+                           "  CurrencyType.CurTypeName,invoiceHeader.InvID,sPay.ChargeTypeName" +
+
+                            " union all" +
+
+                           "  SELECT " +
+                            " Contract.ContractCode,Customer.CustName,Contract.ContractID," +
+                            " Customer.PostCode,Customer.PostAddr,CustContact.ContactMan,ConShop.ShopCode,ConShop.ShopName," +
+                            " CurrencyType.CurTypeName,invoiceHeader.InvID," + whereStr6 + "," +
+                            " sActPay.ChargeTypeName," +
+                            " 0 as sAmt," +
+                            " ISNULL(sactPay.actpayAmt,0) as sactpayAmt," +
+                            " 0 as siAmt" +
+                            " FROM invoiceHeader" +
+                            " INNER JOIN" +
+                            " (" +
+                                " SELECT SUM(invD.invActPayAmt - invD.invPaidAmt) AS actpayAmt,ContractID," +
+                                        " invD.ChargeTypeID,invH.InvID,invH.InvPeriod,ChargeType.ChargeTypeName" +
+                                " FROM InvoiceHeader AS invH INNER JOIN" +
+                                " InvoiceDetail AS invD ON (invH.invID = invD.invID) INNER JOIN" +
+                                " ChargeType ON (ChargeType.ChargeTypeID = invD.ChargeTypeID)" +
+                                " WHERE" +
+                                 //" invD.ChargeTypeID NOT IN " +
+                                 " NOT EXISTS "+
+                                         " (" +
+                                             " SELECT InvoiceDetail.ChargeTypeID FROM InvoiceDetail,InvoiceHeader,ChargeType" +
+                                            " WHERE InvoiceDetail.InvID = InvoiceHeader.InvID" +
+                                            " AND InvoiceDetail.chargeTypeID = ChargeType.chargeTypeID" + whereStr4 +
+                                    " or ChargeType.ChargeClass = " + Lease.PotBargain.ChargeType.CHARGECLASS_INTEREST + ")" +
+                                    " AND InvoiceDetail.ChargeTypeID = ChargeType.ChargeTypeID" +
+                                        " )" +
+                                " group by  ContractID ,invD.ChargeTypeID,invH.InvID,invH.InvPeriod,ChargeType.ChargeTypeName" +
+                            " ) as sActPay ON (invoiceHeader.InvID = sActPay.InvID and" +
+                                             " sActPay.InvPeriod = invoiceHeader.invPeriod" +
+                                            " )" +
+                            " INNER JOIN" +
+                             " Contract ON (invoiceHeader.contractID = Contract.ContractID ) INNER JOIN" +
+                             " Customer ON (Contract.CustID = Customer.CustID) INNER JOIN" +
+                             " CurrencyType ON (CurrencyType.CurTypeId=invoiceheader.InvCurTypeId) INNER JOIN" +
+                             " CustContact ON (CustContact.CustID = Customer.CustID) INNER JOIN" +
+                            " ConShop ON (Contract.contractID = ConShop.contractID)" +
+                            " WHERE sactPay.actpayAmt > 0 and  1=1 " + whereStr5 + authWhere +
+                            " GROUP BY " +
+                    " invoiceHeader.InvPeriod," +
+                    " sactPay.actpayAmt," +
+                    " Contract.ContractCode,Customer.CustName,Contract.ContractID," +
+                    " Customer.PostCode,Customer.PostAddr,CustContact.ContactMan,ConShop.ShopCode,ConShop.ShopName," +
+                    " CurrencyType.CurTypeName,invoiceHeader.InvID,sActPay.ChargeTypeName" +
+                    " order by ConShop.ShopCode DESC";
+            
+
+        Session["paraFil"] = paraFields;
+        Session["sql"] = str_sql;
+        Session["rpUrl"] = "..\\ReportM\\Report\\Mi\\Inv\\InvoiceDetail.rpt";
+        //Session["rpUrl"] = "..\\ReportM\\Report\\Mi\\Inv\\LeaseInvDetail.rpt";
+
+    }
+    protected void BtnCel_Click(object sender, EventArgs e)
+    {
+        txtContractID.Text = "";
+        txtPeriod.Text = "";
+    }
+}

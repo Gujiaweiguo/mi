@@ -1,0 +1,7 @@
+orderid	Number
+deptname	String	50
+month	Datetime
+tradename	String	50
+rentarea	Number
+paidamt	Number
+ypaidamt	Number

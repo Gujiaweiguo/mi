@@ -1,0 +1,13 @@
+subsid	Number
+subsname	String	50
+deposit	Number
+onemonth	Number
+twomonth	Number
+threemonth	Number
+sixmonth	Number
+ninemonth	Number
+oneyear	Number
+twoyear	Number
+otheryear	Number
+threeyear	Number
+allAmt	Number

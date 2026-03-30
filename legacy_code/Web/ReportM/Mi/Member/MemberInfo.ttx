@@ -1,0 +1,19 @@
+MembId		Number
+MembCode	String	16
+MemberName	String	30
+MembCardId	String	16
+Dob		DateTime
+LOtherId	String	18
+DateJoint	DateTime
+SexNm		String	6
+AgeStr		String	32
+NatNm		String	24
+Addr1		String	30
+BizNm		String	24
+IncomeNm	String	17
+Email		String	40
+MobilPhone	String	18
+BonusCurr	Number
+
+
+

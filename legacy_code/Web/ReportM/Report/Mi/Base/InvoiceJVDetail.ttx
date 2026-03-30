@@ -1,0 +1,24 @@
+ContractId	Long		1
+CustID		Long		1
+CustName	String	50	efqwerqwe
+ContractCode	String	50	efqwerqwe
+InvCode		String	50	efqwerqwe
+CurTypeName	String	50	efqwerqwe
+LegalCode	String	50	efqwerqwe
+BankName	String	50	efqwerqwe
+BankAcct	String	50	efqwerqwe
+OfficeAddr	String	50	efqwerqwe
+CreateTime	DateTime	2008-6-4
+IsFirst		Long		0
+prtName		String	50	efqwerqwe
+PrintFlag	Long		0
+ChargeTypeName	String	50	efqwerqwe
+InvStartDate	DateTime	2008-6-4
+InvEndDate	DateTime	2008-6-4
+InvActPayAmt	Number		1004
+Note		String	50	efqwerqwe
+cType	Long		1
+invSalesAmt	Number		999999.1
+invJVCostAmt	Number		1999.1
+invPcent	Number		0.25
+InvTaxRate	Number		0.17

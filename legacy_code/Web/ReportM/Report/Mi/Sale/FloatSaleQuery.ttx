@@ -1,0 +1,6 @@
+storeid	Number		
+storeName	String	50	
+Trade2Name	String	50	
+FloorName	String	50	
+TransTime	String	50	
+PAmt	Number		

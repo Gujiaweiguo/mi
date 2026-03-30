@@ -1,0 +1,7 @@
+ActID		String	30	asdf
+ActDesc		String	30	asdf
+FreeGiftId 	String	30	asdf
+GiftDesc	String	30	asdf
+GiveDate	DateTime	2008-1-1
+LCardId		String	30	asdf
+GiftQty		Number		1001

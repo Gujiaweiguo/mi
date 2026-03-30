@@ -1,0 +1,33 @@
+﻿<chart baseFontSize='12' caption='各项目散铺租售比分析' showBorder='0' showValues='0' PYAxisName='租售比' canvasbgColor='ffffff' canvasbgAlpha='40'> 
+   <categories>
+      <category label='通州项目' />
+      <category label='紫金山项目' />
+      <category label='青岛项目' />
+      <category label='抚顺项目' />
+
+   </categories>
+
+   <dataset seriesName='2009'  color='75edff'>
+      <set value='51' />
+      <set value='41'/>
+      <set value='43' />
+      <set value='16' />
+   </dataset>
+   <dataset seriesName='2008' color='ff5959'>
+     <set value='45'  />
+      <set value='34' />
+      <set value='25' />
+      <set value='19'/>
+   </dataset>
+   <dataset seriesName='2007' color='ceff00'>
+       <set value='12'/>
+      <set value='41'/>
+      <set value='23'/>
+      <set value='40'/>
+   </dataset>
+
+   <trendlines>
+      <line startValue='300' color='91C728' displayValue='' showOnTop='1'/>
+   </trendlines>
+
+</chart>

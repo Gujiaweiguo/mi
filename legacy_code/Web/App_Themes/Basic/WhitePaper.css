@@ -1,0 +1,152 @@
+﻿#WhitePaper h3 
+{
+    font-size:1.2em;
+}
+
+#WhitePaper h4
+{
+    font-size: 1em;
+    margin-left: 1em;
+}
+
+#WhitePaper #CSSClasses h4, 
+#WhitePaper #UsingInYourWebSite h4 
+{
+    font-size: 1.1em;
+    background: #4682B3;
+    color: White;
+    margin: 20px 0 15px 0;
+    padding: 5px;
+}
+
+#WhitePaper #CSSClasses,
+#WhitePaper #UsingInYourWebSite
+{
+    margin: 20px 0 40px 40px;
+}
+
+#WhitePaper #UsingInYourWebSite table
+{
+    margin:0 0 0 30px;
+}
+
+#WhitePaper #UsingInYourWebSite th
+{
+    color: White;    
+    background: Black;
+    font-weight: bold;
+    white-space: nowrap;
+    padding: 0 10px 0 10px;
+}
+
+#WhitePaper #UsingInYourWebSite td
+{
+    vertical-align: top;
+    border-bottom: solid 1px black;
+    padding: 5px;
+    white-space: nowrap;
+}
+
+#WhitePaper #UsingInYourWebSite .SpecialNote
+{
+    white-space: normal;
+}
+
+/*  TOC TreeView */
+
+.WhitePaperToc div.AspNet-TreeView
+{
+    width: 300px;
+}
+
+
+.WhitePaperToc div.AspNet-TreeView ul li
+{
+    white-space: nowrap;
+    padding: 3px 0 2px 0; 
+    font-size: 10pt;
+}
+
+.WhitePaperToc div.AspNet-TreeView ul ul
+{
+    margin: 2px 0 2px 12px;
+}
+
+.WhitePaperToc div.AspNet-TreeView ul li img
+{
+    border: none;
+    vertical-align: middle;
+    margin: 0 4px 0 0;
+}
+
+.WhitePaperToc div.AspNet-TreeView li a
+{
+    text-decoration: none;
+    padding-left:4px;
+}
+
+.WhitePaperToc div.AspNet-TreeView li.AspNet-TreeView-Root
+{
+    background:url(bg-fade-light.png) repeat-x bottom;
+    border-top: solid 1px #E7E7E7;
+    border-right: solid 1px #D2D2D2;
+    border-bottom: solid 1px #D2D2D2;
+    border-left: solid 1px #E7E7E7;
+    margin:0 4px 6px 0;
+}
+
+.WhitePaperToc div.AspNet-TreeView li.AspNet-TreeView-Parent
+{
+    background:url(bg-fade-light.png) repeat-x bottom;
+    border-top: solid 1px #E7E7E7;
+    border-right: solid 1px #D2D2D2;
+    border-bottom: solid 1px #D2D2D2;
+    border-left: solid 1px #E7E7E7;
+    margin:0 4px 6px 0;
+}
+
+.WhitePaperToc div.AspNet-TreeView li.AspNet-TreeView-Leaf
+{
+    
+}
+
+.WhitePaperToc div.AspNet-TreeView .AspNet-TreeView-Collapse
+{
+    background: url(collapse.gif) 0 -1px no-repeat;
+    width: 15px;
+    float:left;
+    cursor: n-resize;
+}
+
+.WhitePaperToc div.AspNet-TreeView .AspNet-TreeView-Expand
+{
+    background: url(expand.gif) 0 -1px no-repeat;
+    width: 15px;
+    float:left;
+    cursor: n-resize;
+}
+
+/* --------------------------------------------------------------------------------------------------- */
+/* Used when the TreeView adapter is NOT used. */
+/* These styles are used by the TreeView's skin, found in this theme's skin file. */
+
+td.WhitePaperTocTree-Skin-Node a
+{
+    text-decoration: none;
+    padding-left:4px;
+}
+
+td.WhitePaperTocTree-Skin-Node {
+    background:url(bg-fade-light-short.png) repeat-x bottom;
+    padding:1px 0 1px 2px;
+    width:100%;
+}
+
+.WhitePaperTocTree-Skin-Root table 
+{
+    margin:4px 0;
+}
+
+.WhitePaperTocTree-Skin-Leaf {
+    padding:0 0 0 2px;
+}

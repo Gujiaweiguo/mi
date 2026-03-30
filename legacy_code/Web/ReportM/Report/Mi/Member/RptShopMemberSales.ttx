@@ -1,0 +1,17 @@
+PurhistID	Number		
+MembCardID	String	16	
+MembID	Number
+MembCode	String	16
+MemberName	String	30		
+ShopID	Number
+ShopCode	String	16
+ShopName	String	64		
+TransDT	DateTime		
+szArtNmbr	String	50	
+NetAmt	Currency		
+BonusAmt	Currency		
+ReceiptID	String	16	
+EntryAt	DateTime		
+EntryBy	String	10
+PaidAmt	Currency
+perAmt	Currency	

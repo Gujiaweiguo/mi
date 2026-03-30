@@ -1,0 +1,17 @@
+<chart bgColor='FFFFFF' showBorder='0' baseFontSize='12' caption='增长指标'  showValues='1' decimals='0' formatNumberScale='1' useRoundEdges='14' zeroPlaneColor='000000' zeroPlaneThickness='1' zeroPlaneAlpha='80' yAxisMinValue='0' yAxisMaxValue='80'  setAdaptiveYMin='1' adjustDiv='0' numberScaleValue='分'>
+<set label='副食' value='57.9' toolText='副食: 57.9分'/>
+<set label='日化' value='64.3' toolText='日化: 64.3分'/>
+<set label='日用' value='53.6' toolText='日用: 53.6分'/>
+<set label='生鲜' value='52.1' toolText='生鲜: 52.1分'/>
+<set label='食品' value='70.7' toolText='食品: 70.7分'/>
+<set label='针棉' value='44.4' toolText='针棉: 44.4分'/>
+<set label='自有' value='52' toolText='自有: 52分'/>
+  <styles>
+        <definition>
+            <style name='myShadow' type='shadow' angle='45' distance='3' color='000000'/>
+        </definition>
+        <application>
+            <apply toObject='DIVLINES' styles='myShadow' />
+        </application>
+    </styles>
+</chart>

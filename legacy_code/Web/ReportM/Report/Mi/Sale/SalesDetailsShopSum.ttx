@@ -1,0 +1,13 @@
+StoreID 	Number		123
+StoreDesc	String	16	asdasdasd
+CustCode	String	50	
+CustName	String	50	
+ShopCode	String	50	
+ShopID	Number		
+ShopName	String	50	
+Qty	Number		
+PayAmt	Number		
+PrefAmt	Number		
+PaidAmt	Number		
+CostAmt	Number		
+ProfitAmt	Number		

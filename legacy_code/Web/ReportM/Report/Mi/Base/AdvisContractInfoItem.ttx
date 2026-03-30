@@ -1,0 +1,9 @@
+ContractCode	String	50	efqwerqwe
+CustCode	String	50	efqwerqwe
+CustName	String	50	efqwerqwe
+ContractStatus	String	50	erqw
+ConStartDate	DateTime	2008-1-1
+ConEndDate	DateTime	2008-1-1
+AdBoardTypeName	String	50	efqwerqwe
+AdBoardName	String	50	efqwerqwe
+AdBoardCode	String	50	efqwerqwe

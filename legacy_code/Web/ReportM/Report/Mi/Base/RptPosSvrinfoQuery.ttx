@@ -1,0 +1,4 @@
+PosSvrID	Number
+StoreName	String	32
+PosSvrName	String	32
+IP		String	32

@@ -1,0 +1,114 @@
+.nlstree {
+    background-color:#ffffff;
+}
+
+a.prnnode, a.node  {
+    font-family:tahoma,Arial;
+    font-size:8pt;
+    color:#000000;
+    text-decoration:none;
+    cursor:pointer;
+    margin:0px;
+    padding:1px 1px 1px 1px;
+    border:#ffffff 1px solid;
+}
+
+a.prnnode:hover { background-color:#CCFFCC; font-weight:bold;}
+a.node:hover { background-color:#CCFFCC; text-decoration:underline;}
+
+a.selnode {
+    font-family:tahoma,Arial;
+    font-size:8pt;
+    color:#000000;
+    text-decoration:none;
+    cursor:pointer;
+    margin:0px;
+    background-color:#CCFFCC;
+    padding:1px 1px 1px 1px;
+    border:#66CC66 1px solid;
+}
+
+a.selprnnode {
+    font-family:tahoma,Arial;
+    font-size:8pt;
+    font-weight:bold;
+    color:#000000;
+    text-decoration:none;
+    cursor:pointer;
+    margin:0px;
+    background-color:#CCFFCC;
+    padding:1px 1px 1px 1px;
+    border:#66CC66 1px solid;
+}
+
+div.row {
+    color:#0066cc;
+    text-decoration:none;
+    cursor:pointer;
+}
+
+div.selrow {
+    background-color:#99CCFF;
+    cursor:pointer;
+}
+
+div.row:hover {}
+
+input.nodeedit {
+    font-family:Verdana,Arial;
+    font-size:8pt;
+    color:#666666;
+    text-decoration:none;
+    position:absolute;
+    height:18px;
+    border:#cfcfcf 1px solid;
+    z-index:1;
+}
+
+
+/*Special node styles.*/
+.spcnodeprn {
+    font-family:tahoma,Arial;
+    font-size:8pt;
+    color:#cc0000;
+    text-decoration:none;
+    cursor:pointer;
+    padding:1px 1px 1px 1px;
+    border:#ffffff 1px solid;
+}
+
+.spcnodeprn:hover { background-color:#CCFFCC; font-weight:bold; }
+
+.selspcnodeprn {
+    font-family:tahoma,Arial;
+    font-size:8pt;
+    font-weight:bold;
+    color:#ff0000;
+    text-decoration:none;
+    cursor:pointer;
+    margin:0px;
+    background-color:#CCFFCC;
+    padding:1px 1px 1px 1px;
+    border:#66CC66 1px solid;
+}
+
+.spcnode { 
+    font-family:Verdana;
+    font-size:11px;
+    font-style:italic;
+    text-decoration:none;
+    color:#666666; 
+    background-image:url(spcnode.gif);
+    padding:2px;
+}
+    
+.selspcnode { 
+    font-family:Verdana;
+    font-size:11px;
+    font-style:italic;
+    font-weight:bold;
+    text-decoration:none;
+    color:#ff9900; 
+    padding:2px;
+    background-image:url(spcnode.gif);
+}

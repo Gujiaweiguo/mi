@@ -1,0 +1,6 @@
+storeid	Number		
+StoreName	String	32	
+shoptypename	String	32	
+month	Date		
+SalesAmt	Number
+InvPayAmt	Number		

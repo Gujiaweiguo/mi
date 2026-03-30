@@ -1,0 +1,31 @@
+<chart formatNumber='0'  defaultNumberScale='W' numberScaleValue='W' divLineDashGap ='20' formatNumberScale='1'  baseFontSize='12' palette='1' caption='品类部综合毛利指标达成'  showvalues='1'   showSum='1' decimals='0'  numDivLines ='3' useRoundEdges='1' chartRightMargin='60'>
+<categories>
+<category label='副食' />
+<category label='日化' />
+<category label='日用' />
+<category label='生鲜' />
+<category label='食品' />
+<category label='针棉' />
+<category label='自有' />
+</categories>
+
+<dataset seriesName='未完成' color='86a3ac' showValues='0'>
+<set value='5718' />
+<set value='6863' />
+<set value='3546' />
+<set value='14626' />
+<set value='15834' />
+<set value='2435' />
+
+</dataset>
+<dataset seriesName='已完成' color='8BBA00' showValues='0'>
+<set value='4210' />
+<set value='6025' />
+<set value='3284' />
+<set value='8981' />
+<set value='14412' />
+
+<set value='1845' />
+<set value='974' />
+</dataset>
+</chart>

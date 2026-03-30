@@ -1,0 +1,7 @@
+StoreShortName	String	32
+shopcode	String	32
+shopname	String	32
+tradename	String	32
+rentarea	Number
+ContractCode	String	32
+exclusive	String	32

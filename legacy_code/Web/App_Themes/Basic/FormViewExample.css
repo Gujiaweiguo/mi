@@ -1,0 +1,109 @@
+﻿.foo {} /* W3C CSS validator likes CSS files to start with a class rather than a comment. Soooooo.... */
+
+/* This style sheet is intended to contain OFTEN CHANGED rules used when the FormView control adapter is enabled. */
+/* Empty rules are provided merely as a convenience for your future use or experimentation. */
+/* See DetailsViewExample.css for comparison of similar rules. */
+
+
+
+/* The whole FormView, including the header, footer, pagination and data regions. */
+.PrettyFormView .AspNet-FormView
+{
+    width: 20em;
+    background-color: White;
+}
+
+/* HeaderText or <HeaderTemplate> */
+.PrettyFormView .AspNet-FormView-Header
+{
+    color: #F7F6F3;
+    background-color: #5D7B9D;
+    font-weight: bold;
+    padding: 4px 0 4px 4px;
+}
+
+/* FooterText or <FooterTemplate> */
+.PrettyFormView .AspNet-FormView-Footer
+{
+}
+
+/* Controls the appearance of whatever you define in the <ItemTemplate> */
+.PrettyFormView .AspNet-FormView-Data
+{
+    padding:7px 0 0 4px;
+}
+
+/* Controls the appearance of whatever you define in the pagination region. */
+.PrettyFormView .AspNet-FormView-Pagination
+{
+    background-color: #284775; 
+    text-align:center;
+    margin: 10px 0 0 0;
+    padding: 4px 0 4px 0;
+    margin-left: 4px;
+}
+
+/* This controls the appearance of the "current page" listed in the pagination region. */
+/* This is NOT a link */
+.PrettyFormView .AspNet-FormView-ActivePage
+{
+    color: White;
+    margin-left: 4px;   
+}
+
+/* Controls the numbers used to navigate to other pages. */
+/* This is a link */
+.PrettyFormView .AspNet-FormView-OtherPage
+{
+    color: #00FFFF;
+    text-decoration:none;
+    margin-left: 4px;
+}
+
+/* Uncomment and customize these rules to further refine the appearance of the pagination links. */
+/*
+.PrettyFormView a.AspNet-FormView-OtherPage:link
+{
+    color:Lime;
+}
+
+.PrettyFormView a.AspNet-FormView-OtherPage:visited
+{
+    color:Maroon;
+}
+*/
+
+.PrettyFormView a.AspNet-FormView-OtherPage:hover
+{
+    color:#FFA500;
+}
+
+/* ------------------------------------------------------------------- */
+/* Specific to this sample web site. */
+/* These rules are probably not useful in your site. */
+
+#SampleFormView .Sample-Contact
+{
+    border: solid 2px #648ABD;
+    padding: 4px;
+    background:#B9D3EE;
+    color:Maroon;
+}
+
+#SampleFormView .Sample-Name
+{    
+    font-size:large;
+}
+
+#SampleFormView .Sample-Address
+{
+    color: Black;
+    font-size:small;
+}
+
+#SampleFormView .Sample-Phone
+{
+    color: #333333; 
+    text-align:right;
+    font-size:medium;
+}

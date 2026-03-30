@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encodingbb="utf-8"?>
+<ToolBar>
+    <toolbar toolbarID="C01" desc="服装" rb="255" gb="178" bb="212" />
+    <toolbar toolbarID="T003" desc="餐饮" rb="255" gb="131" bb="131" />
+    <toolbar toolbarID="T004" desc="皮具" rb="255" gb="74" bb="74" />
+    <toolbar toolbarID="T005" desc="精品" rb="214" gb="32" bb="32" />
+    <toolbar toolbarID="T006" desc="主力店" rb="88" gb="0" bb="0" />
+    <toolbar toolbarID="T007" desc="珠宝" rb="130" gb="184" bb="0" />
+    <toolbar toolbarID="T008" desc="其他" rb="189" gb="73" bb="73" />
+</ToolBar>

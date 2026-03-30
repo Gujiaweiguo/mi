@@ -1,0 +1,14 @@
+contractcode	String	32
+custcode	String	32
+custname	String	64
+tradename	String	32
+bizmode		String	32
+constartdate	DateTime
+conenddate	DateTime
+shopcode	String	32
+shopname	String	64
+rentArea	Number
+brandname	String	32
+shoptypename	String	32
+subsname	String	64
+storename	String	64

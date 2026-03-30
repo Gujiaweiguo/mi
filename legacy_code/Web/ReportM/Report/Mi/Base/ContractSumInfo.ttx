@@ -1,0 +1,10 @@
+storeshortname	String	50	efqwerqwe
+ContractCode	String	50	efqwerqwe
+CustCode	Number		1004
+CustName	String	50	efqwerqwe
+BizMode	String	10	зтСо
+ContractStatus	String	10	asdf
+ConStartDate	DateTime	2008-1-1
+ConEndDate	DateTime	2008-1-1
+TotalArea	Number		1234
+shoptype	String	50	efqwerqwe

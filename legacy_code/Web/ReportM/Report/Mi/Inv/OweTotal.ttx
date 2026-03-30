@@ -1,0 +1,15 @@
+storeid	Number		
+storeshortname	String	50
+ContractCode	String	32	
+CustName	String	64	
+ContractID	Number		
+ShopCode	String	16	
+ShopName	String	64	
+amt	Currency		
+actpayAmt	Currency		
+iActAmt	Currency		
+paidamt	Currency
+InvPeriod	DateTime	
+tradename	String	50
+brandname	String	50
+RentArea	Number	

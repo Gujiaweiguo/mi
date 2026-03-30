@@ -1,0 +1,17 @@
+contractcode	String	32
+custcode	String	32
+custshortname	String	32
+constartdate	DateTime
+conenddate	DateTime
+chargestartdate	DateTime
+tradename	String	32
+refid	String	32
+penalty	String	32
+notice	String	32
+econurl	String	64
+stopdate	DateTime
+subsname	String	32
+contracttypename	String	32
+norentdays	Number
+username	String	32
+bizmode	String	32

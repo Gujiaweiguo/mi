@@ -1,0 +1,6008 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Account_lblAccountMon" xml:space="preserve">
+    <value>记帐月</value>
+  </data>
+  <data name="Account_lblAgainPrint" xml:space="preserve">
+    <value>重打结算单</value>
+  </data>
+  <data name="Account_lblChargeMoney" xml:space="preserve">
+    <value>费用金额</value>
+  </data>
+  <data name="Account_lblChargeType" xml:space="preserve">
+    <value>费用类型</value>
+  </data>
+  <data name="Account_lblCostQty" xml:space="preserve">
+    <value>本次使用量</value>
+  </data>
+  <data name="Account_lblCur" xml:space="preserve">
+    <value>本次</value>
+  </data>
+  <data name="Account_lblCurQty" xml:space="preserve">
+    <value>本次读数</value>
+  </data>
+  <data name="Account_lblFreeQty" xml:space="preserve">
+    <value>免费量</value>
+  </data>
+  <data name="Account_lblInvoiceStutas" xml:space="preserve">
+    <value>结算单状态</value>
+  </data>
+  <data name="Account_lblLast" xml:space="preserve">
+    <value>上次</value>
+  </data>
+  <data name="Account_lblLastRead" xml:space="preserve">
+    <value>上次读数</value>
+  </data>
+  <data name="Account_lblMCharegType" xml:space="preserve">
+    <value>记表费用类型</value>
+  </data>
+  <data name="Account_lblOtherCharge" xml:space="preserve">
+    <value>其它费用录入</value>
+  </data>
+  <data name="Account_lblOtherChargePalaver" xml:space="preserve">
+    <value>其它费用审批</value>
+  </data>
+  <data name="Account_lblPrice" xml:space="preserve">
+    <value>单价</value>
+  </data>
+  <data name="Account_lblQty" xml:space="preserve">
+    <value>使用量</value>
+  </data>
+  <data name="Account_lblTimes" xml:space="preserve">
+    <value>倍率</value>
+  </data>
+  <data name="Account_lblTotalMoney" xml:space="preserve">
+    <value>合计金额</value>
+  </data>
+  <data name="Account_lblWaterElectCharge" xml:space="preserve">
+    <value>水电费录入</value>
+  </data>
+  <data name="Account_lblWaterElectChargePalaver" xml:space="preserve">
+    <value>水电费审批</value>
+  </data>
+  <data name="Activity_lblBound" xml:space="preserve">
+    <value>活动范围</value>
+  </data>
+  <data name="Activity_lblContentsNm" xml:space="preserve">
+    <value>活动描述</value>
+  </data>
+  <data name="Activity_lblEstCosts" xml:space="preserve">
+    <value>费用预算</value>
+  </data>
+  <data name="Activity_lblintention" xml:space="preserve">
+    <value>活动目的</value>
+  </data>
+  <data name="Activity_lblMcompany" xml:space="preserve">
+    <value>主办单位</value>
+  </data>
+  <data name="Activity_lblMIntrenet" xml:space="preserve">
+    <value>其他活动</value>
+  </data>
+  <data name="Activity_lblPcompany" xml:space="preserve">
+    <value>参与单位</value>
+  </data>
+  <data name="Activity_lblsitus" xml:space="preserve">
+    <value>活动地点</value>
+  </data>
+  <data name="Ad_lblAgree" xml:space="preserve">
+    <value>审批同意</value>
+  </data>
+  <data name="Ad_lblCheckAdBoardContract" xml:space="preserve">
+    <value>审批广告位出租合同</value>
+  </data>
+  <data name="Ad_lblCheckIdea" xml:space="preserve">
+    <value>审批意见</value>
+  </data>
+  <data name="Ad_lblFastAdBoard" xml:space="preserve">
+    <value>固定广告位</value>
+  </data>
+  <data name="Ad_lblFastAdBoardDefine" xml:space="preserve">
+    <value>固定广告位定义与维护</value>
+  </data>
+  <data name="AdBoard_lblAdBoardCode" xml:space="preserve">
+    <value>广告位编码</value>
+  </data>
+  <data name="AdBoard_lblAdBoardName" xml:space="preserve">
+    <value>广告位名称</value>
+  </data>
+  <data name="AdBoard_lblAdBoardStatus" xml:space="preserve">
+    <value>广告位状态</value>
+  </data>
+  <data name="AdBoard_lblAdContractCode" xml:space="preserve">
+    <value>租用合同编码</value>
+  </data>
+  <data name="AdBoard_lblContractID" xml:space="preserve">
+    <value>合同编码</value>
+  </data>
+  <data name="AdBoard_lblCustName" xml:space="preserve">
+    <value>租用企业名称</value>
+  </data>
+  <data name="AdBoard_lblEndDate" xml:space="preserve">
+    <value>合同终止日期</value>
+  </data>
+  <data name="AdBoard_NewConEndDate" xml:space="preserve">
+    <value>延长期结束日期</value>
+  </data>
+  <data name="AdBoard_NewConStartDate" xml:space="preserve">
+    <value>延长期开始日期</value>
+  </data>
+  <data name="AdContract_lblAdContractCode" xml:space="preserve">
+    <value>租用合同代码</value>
+  </data>
+  <data name="AdContract_lblAdDesc" xml:space="preserve">
+    <value>广告位置描述</value>
+  </data>
+  <data name="AdContract_lblAdMaker" xml:space="preserve">
+    <value>广告制作商</value>
+  </data>
+  <data name="AdContract_lblAdType" xml:space="preserve">
+    <value>广告位类型</value>
+  </data>
+  <data name="AdContract_lblEndDate" xml:space="preserve">
+    <value>合同终止日期</value>
+  </data>
+  <data name="AdContract_lblFastnessAd" xml:space="preserve">
+    <value>固定广告位</value>
+  </data>
+  <data name="AdContract_lblLastPaymentDate" xml:space="preserve">
+    <value>最后付款日期</value>
+  </data>
+  <data name="AdContract_lblPayingCycle" xml:space="preserve">
+    <value>付款周期</value>
+  </data>
+  <data name="AdContract_lblPaymentPerCycle" xml:space="preserve">
+    <value>每期付款</value>
+  </data>
+  <data name="AdContract_lblPrepayment" xml:space="preserve">
+    <value>预付或首付</value>
+  </data>
+  <data name="AdContract_lblStartDate" xml:space="preserve">
+    <value>合同生效日期</value>
+  </data>
+  <data name="AdContract_lblStopDate" xml:space="preserve">
+    <value>合同提前终止日期</value>
+  </data>
+  <data name="AdContract_lblTotalMoney" xml:space="preserve">
+    <value>合同总金额</value>
+  </data>
+  <data name="AdContract_rbtnCommonly" xml:space="preserve">
+    <value>一般</value>
+  </data>
+  <data name="AdContract_rbtnFastness" xml:space="preserve">
+    <value>固定</value>
+  </data>
+  <data name="AddAuth_AuthDef" xml:space="preserve">
+    <value>数据权限定义</value>
+  </data>
+  <data name="AddAuth_Contract" xml:space="preserve">
+    <value>按合同</value>
+  </data>
+  <data name="AddAuth_rdoAll" xml:space="preserve">
+    <value>全部</value>
+  </data>
+  <data name="AddAuth_rdoFloor" xml:space="preserve">
+    <value>按楼层</value>
+  </data>
+  <data name="AddAuth_rdoOnlyDept" xml:space="preserve">
+    <value>仅部门</value>
+  </data>
+  <data name="AddAuth_rdoOnlyOne" xml:space="preserve">
+    <value>仅本人</value>
+  </data>
+  <data name="AddRole_labBizGrp" xml:space="preserve">
+    <value>所属业务组</value>
+  </data>
+  <data name="AddRole_labRoleFunctionVindicate" xml:space="preserve">
+    <value>所选中的角色功能维护</value>
+  </data>
+  <data name="AddRole_labRoleTitle" xml:space="preserve">
+    <value>当前角色列表</value>
+  </data>
+  <data name="AddRole_labRoleUpdateTitle" xml:space="preserve">
+    <value>已定义角色列表</value>
+  </data>
+  <data name="AddUnits_NoStoreID" xml:space="preserve">
+    <value>请先选择项目</value>
+  </data>
+  <data name="AddUnits_UnitStatusIsErr" xml:space="preserve">
+    <value>状态无效</value>
+  </data>
+  <data name="AddUser_labUserDefine" xml:space="preserve">
+    <value>系统用户定义</value>
+  </data>
+  <data name="AddUser_labUserInfo" xml:space="preserve">
+    <value>部门当前用户列表</value>
+  </data>
+  <data name="AddUser_labUserTree" xml:space="preserve">
+    <value>部门列表</value>
+  </data>
+  <data name="AreaSize_lblAreaSizeCode" xml:space="preserve">
+    <value>面积大小编码</value>
+  </data>
+  <data name="AreaSize_lblAreaSizeName" xml:space="preserve">
+    <value>面积大小名称</value>
+  </data>
+  <data name="AreaSize_lblAreaSizeStatus" xml:space="preserve">
+    <value>面积大小状态</value>
+  </data>
+  <data name="AreaSize_lblNote" xml:space="preserve">
+    <value>备注</value>
+  </data>
+  <data name="AreaVindicate_labAreaCode" xml:space="preserve">
+    <value>经营区域编码</value>
+  </data>
+  <data name="AreaVindicate_labAreaName" xml:space="preserve">
+    <value>经营区域名称</value>
+  </data>
+  <data name="AreaVindicate_labAreaTitle" xml:space="preserve">
+    <value>区域</value>
+  </data>
+  <data name="AreaVindicate_labAreaVindicate" xml:space="preserve">
+    <value>经营区域定义与维护</value>
+  </data>
+  <data name="Associator_AssociatorAddress" xml:space="preserve">
+    <value>地址</value>
+  </data>
+  <data name="Associator_AssociatorBeFondOf" xml:space="preserve">
+    <value>喜好商品</value>
+  </data>
+  <data name="Associator_AssociatorBirthday" xml:space="preserve">
+    <value>出生日期</value>
+  </data>
+  <data name="Associator_AssociatorBringuUp" xml:space="preserve">
+    <value>教育水平</value>
+  </data>
+  <data name="Associator_AssociatorCode" xml:space="preserve">
+    <value>会员号</value>
+  </data>
+  <data name="Associator_AssociatorCommemorate" xml:space="preserve">
+    <value>结婚纪念日</value>
+  </data>
+  <data name="Associator_AssociatorCustom" xml:space="preserve">
+    <value>自定义</value>
+  </data>
+  <data name="Associator_AssociatorDistance" xml:space="preserve">
+    <value>距离范围</value>
+  </data>
+  <data name="Associator_AssociatorDuty" xml:space="preserve">
+    <value>职务</value>
+  </data>
+  <data name="Associator_AssociatorEarning" xml:space="preserve">
+    <value>收入水平</value>
+  </data>
+  <data name="Associator_AssociatorEmail" xml:space="preserve">
+    <value>电子邮件</value>
+  </data>
+  <data name="Associator_AssociatorEnrollment" xml:space="preserve">
+    <value>入会时间</value>
+  </data>
+  <data name="Associator_AssociatorFolk" xml:space="preserve">
+    <value>民族</value>
+  </data>
+  <data name="Associator_AssociatorGender" xml:space="preserve">
+    <value>性别</value>
+  </data>
+  <data name="Associator_AssociatorIdentity" xml:space="preserve">
+    <value>证件号</value>
+  </data>
+  <data name="Associator_AssociatorInterest" xml:space="preserve">
+    <value>兴趣爱好</value>
+  </data>
+  <data name="Associator_AssociatorLargess" xml:space="preserve">
+    <value>喜好赠品</value>
+  </data>
+  <data name="Associator_AssociatorMarriage" xml:space="preserve">
+    <value>婚姻状况</value>
+  </data>
+  <data name="Associator_AssociatorMobileTel" xml:space="preserve">
+    <value>移动电话</value>
+  </data>
+  <data name="Associator_AssociatorName" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="Associator_AssociatorNationality" xml:space="preserve">
+    <value>国家/地区</value>
+  </data>
+  <data name="Associator_AssociatorOccupation" xml:space="preserve">
+    <value>职业</value>
+  </data>
+  <data name="Associator_AssociatorOfficeTel" xml:space="preserve">
+    <value>办公电话</value>
+  </data>
+  <data name="Associator_AssociatorOrigin" xml:space="preserve">
+    <value>会员来源</value>
+  </data>
+  <data name="Associator_AssociatorPostCode" xml:space="preserve">
+    <value>邮政编码</value>
+  </data>
+  <data name="Associator_AssociatorPwd" xml:space="preserve">
+    <value>设置密码</value>
+  </data>
+  <data name="Associator_AssociatorRemark" xml:space="preserve">
+    <value>备注</value>
+  </data>
+  <data name="Associator_AssociatorTel" xml:space="preserve">
+    <value>家庭</value>
+  </data>
+  <data name="Associator_AssociatorVehicle" xml:space="preserve">
+    <value>交通工具</value>
+  </data>
+  <data name="Associator_BadCard" xml:space="preserve">
+    <value>坏卡更新费</value>
+  </data>
+  <data name="Associator_btnChargeRecord" xml:space="preserve">
+    <value>兑换记录</value>
+  </data>
+  <data name="Associator_btnChargeRecordRPT" xml:space="preserve">
+    <value>兑换记录报表</value>
+  </data>
+  <data name="Associator_btnExpenditureSurvey" xml:space="preserve">
+    <value>消费统计</value>
+  </data>
+  <data name="Associator_btnUpdateItegrtal" xml:space="preserve">
+    <value>更新积分</value>
+  </data>
+  <data name="Associator_CardID" xml:space="preserve">
+    <value>卡号</value>
+  </data>
+  <data name="Associator_CardIDInput" xml:space="preserve">
+    <value>卡号输入方式</value>
+  </data>
+  <data name="Associator_CardLevel" xml:space="preserve">
+    <value>卡级别号</value>
+  </data>
+  <data name="Associator_CardLevelName" xml:space="preserve">
+    <value>卡级别名称</value>
+  </data>
+  <data name="Associator_chkCardDegrade" xml:space="preserve">
+    <value>该卡级别可以降级</value>
+  </data>
+  <data name="Associator_chkCardInvalidation" xml:space="preserve">
+    <value>该卡级别可以失效</value>
+  </data>
+  <data name="Associator_chkCardUpgrade" xml:space="preserve">
+    <value>该卡级别可以升级</value>
+  </data>
+  <data name="Associator_chkChangeInto" xml:space="preserve">
+    <value>使用积分兑换</value>
+  </data>
+  <data name="Associator_chkExtend" xml:space="preserve">
+    <value>赠品活动设置</value>
+  </data>
+  <data name="Associator_chkInvalidationYear" xml:space="preserve">
+    <value>该卡级别于此时限内失效(年)</value>
+  </data>
+  <data name="Associator_chkTicketChangeInto" xml:space="preserve">
+    <value>使用小票兑换</value>
+  </data>
+  <data name="Associator_DayAvailability" xml:space="preserve">
+    <value>当日有效</value>
+  </data>
+  <data name="Associator_ExCharge" xml:space="preserve">
+    <value>交易信息</value>
+  </data>
+  <data name="Associator_Integral" xml:space="preserve">
+    <value>积分值(%)</value>
+  </data>
+  <data name="Associator_Itegral" xml:space="preserve">
+    <value>积分</value>
+  </data>
+  <data name="Associator_Largess" xml:space="preserve">
+    <value>赠品</value>
+  </data>
+  <data name="Associator_LargessCAB" xml:space="preserve">
+    <value>赠品兑换/退换</value>
+  </data>
+  <data name="Associator_lblAccociatorID" xml:space="preserve">
+    <value>会员号</value>
+  </data>
+  <data name="Associator_lblAccountItegrtal" xml:space="preserve">
+    <value>计算积分</value>
+  </data>
+  <data name="Associator_lblAccumulateIntegral" xml:space="preserve">
+    <value>累计积分</value>
+  </data>
+  <data name="Associator_lblActivity" xml:space="preserve">
+    <value>活动</value>
+  </data>
+  <data name="Associator_lblActivityDate" xml:space="preserve">
+    <value>活动时间</value>
+  </data>
+  <data name="Associator_lblActivityPostil" xml:space="preserve">
+    <value>活动批注</value>
+  </data>
+  <data name="Associator_lblAdmonition" xml:space="preserve">
+    <value>发出警告信的月份数</value>
+  </data>
+  <data name="Associator_lblAdmonitionMes" xml:space="preserve">
+    <value>低于此积分或金额将打印警告信</value>
+  </data>
+  <data name="Associator_lblApplicationDate" xml:space="preserve">
+    <value>礼品申请日期</value>
+  </data>
+  <data name="Associator_lblApplicationNum" xml:space="preserve">
+    <value>礼品申请单号</value>
+  </data>
+  <data name="Associator_lblAssociatorCard" xml:space="preserve">
+    <value>会员卡号</value>
+  </data>
+  <data name="Associator_lblAssociatorNum" xml:space="preserve">
+    <value>会员编号</value>
+  </data>
+  <data name="Associator_lblAssociatorQuery" xml:space="preserve">
+    <value>会员查询</value>
+  </data>
+  <data name="Associator_lblAssociatorSort" xml:space="preserve">
+    <value>会员卡类别</value>
+  </data>
+  <data name="Associator_lblBargaining" xml:space="preserve">
+    <value>交易金额</value>
+  </data>
+  <data name="Associator_lblBaseLine" xml:space="preserve">
+    <value>降级底限积分或金额</value>
+  </data>
+  <data name="Associator_lblBewrite" xml:space="preserve">
+    <value>活动描述</value>
+  </data>
+  <data name="Associator_lblCardID" xml:space="preserve">
+    <value>会员卡号</value>
+  </data>
+  <data name="Associator_lblCardInfo" xml:space="preserve">
+    <value>卡信息</value>
+  </data>
+  <data name="Associator_lblCardLevel" xml:space="preserve">
+    <value>卡级别</value>
+  </data>
+  <data name="Associator_lblCarDnature" xml:space="preserve">
+    <value>卡性</value>
+  </data>
+  <data name="Associator_lblCardNumInput" xml:space="preserve">
+    <value>卡号输入方式</value>
+  </data>
+  <data name="Associator_lblCardRule" xml:space="preserve">
+    <value>该卡级别所使用规则</value>
+  </data>
+  <data name="Associator_lblCardState" xml:space="preserve">
+    <value>卡状态</value>
+  </data>
+  <data name="Associator_lblCardType" xml:space="preserve">
+    <value>卡类型</value>
+  </data>
+  <data name="Associator_lblChangeIntoM" xml:space="preserve">
+    <value>兑换所需小票金额</value>
+  </data>
+  <data name="Associator_lblChangeIntoOne" xml:space="preserve">
+    <value>每张小票只能兑换一件</value>
+  </data>
+  <data name="Associator_lblConsumeDate" xml:space="preserve">
+    <value>消费日期</value>
+  </data>
+  <data name="Associator_lblContact" xml:space="preserve">
+    <value>联系方式</value>
+  </data>
+  <data name="Associator_lblCustomerCard" xml:space="preserve">
+    <value>顾客卡</value>
+  </data>
+  <data name="Associator_lblDate" xml:space="preserve">
+    <value>交易日期</value>
+  </data>
+  <data name="Associator_lblDateToZero" xml:space="preserve">
+    <value>重定为0日期</value>
+  </data>
+  <data name="Associator_lblDemotion" xml:space="preserve">
+    <value>降级规则</value>
+  </data>
+  <data name="Associator_lblDemotionLevel" xml:space="preserve">
+    <value>降级至该卡级别</value>
+  </data>
+  <data name="Associator_lblDetails" xml:space="preserve">
+    <value>详细资料</value>
+  </data>
+  <data name="Associator_lblDoCardDate" xml:space="preserve">
+    <value>办卡日期</value>
+  </data>
+  <data name="Associator_lblEmployeeCard" xml:space="preserve">
+    <value>员工卡</value>
+  </data>
+  <data name="Associator_lblExchangeDate" xml:space="preserve">
+    <value>兑换日期</value>
+  </data>
+  <data name="Associator_lblExchangeIntegral" xml:space="preserve">
+    <value>兑换积分</value>
+  </data>
+  <data name="Associator_lblExchangeNumber" xml:space="preserve">
+    <value>兑换数量</value>
+  </data>
+  <data name="Associator_lblExchangeOK" xml:space="preserve">
+    <value>兑换确定</value>
+  </data>
+  <data name="Associator_lblExchangeTotalIntegral" xml:space="preserve">
+    <value>兑换总积分</value>
+  </data>
+  <data name="Associator_lblExChgDate" xml:space="preserve">
+    <value>交易日期</value>
+  </data>
+  <data name="Associator_lblExChgMoney" xml:space="preserve">
+    <value>交易金额</value>
+  </data>
+  <data name="Associator_lblExChgTime" xml:space="preserve">
+    <value>交易时间</value>
+  </data>
+  <data name="Associator_lblExtendDate" xml:space="preserve">
+    <value>礼品发放日期</value>
+  </data>
+  <data name="Associator_lblGoodsDepict" xml:space="preserve">
+    <value>商品描述</value>
+  </data>
+  <data name="Associator_lblHistoryInfo" xml:space="preserve">
+    <value>卡历史信息</value>
+  </data>
+  <data name="Associator_lblHolding" xml:space="preserve">
+    <value>会员卡保持有效所需达到的积分或金额</value>
+  </data>
+  <data name="Associator_lblInitiateDate" xml:space="preserve">
+    <value>入会日期</value>
+  </data>
+  <data name="Associator_lblIntegralChange" xml:space="preserve">
+    <value>积分转换</value>
+  </data>
+  <data name="Associator_lblIntegralInfo" xml:space="preserve">
+    <value>积分信息</value>
+  </data>
+  <data name="Associator_lblIntegralToZero" xml:space="preserve">
+    <value>重定为0所失积分</value>
+  </data>
+  <data name="Associator_lblIntegralType" xml:space="preserve">
+    <value>积分余额类型</value>
+  </data>
+  <data name="Associator_lblInvalidationRule" xml:space="preserve">
+    <value>失效规则</value>
+  </data>
+  <data name="Associator_lblIssueDate" xml:space="preserve">
+    <value>发放日期</value>
+  </data>
+  <data name="Associator_lblIssueNewCard" xml:space="preserve">
+    <value>发行新卡</value>
+  </data>
+  <data name="Associator_lblIssueOK" xml:space="preserve">
+    <value>确认发放</value>
+  </data>
+  <data name="Associator_lblItegral" xml:space="preserve">
+    <value>目前积分</value>
+  </data>
+  <data name="Associator_lbllargessBack" xml:space="preserve">
+    <value>赠品退换</value>
+  </data>
+  <data name="Associator_lblLargessBewrite" xml:space="preserve">
+    <value>赠品描述</value>
+  </data>
+  <data name="Associator_lblLargessCharge" xml:space="preserve">
+    <value>赠品发放</value>
+  </data>
+  <data name="Associator_lbllargessExcharg" xml:space="preserve">
+    <value>积分兑换赠品</value>
+  </data>
+  <data name="Associator_lblLargessExchargIntegral" xml:space="preserve">
+    <value>赠品兑换积分</value>
+  </data>
+  <data name="Associator_lblLargessNum" xml:space="preserve">
+    <value>赠品号</value>
+  </data>
+  <data name="Associator_lblLevel" xml:space="preserve">
+    <value>级别</value>
+  </data>
+  <data name="Associator_lblLeveLenactment" xml:space="preserve">
+    <value>卡级别设定</value>
+  </data>
+  <data name="Associator_lblLevelMes" xml:space="preserve">
+    <value>卡级别信息</value>
+  </data>
+  <data name="Associator_lblMainCardInfo" xml:space="preserve">
+    <value>主卡持有者信息</value>
+  </data>
+  <data name="Associator_lblMesPutIn" xml:space="preserve">
+    <value>信息提交日期</value>
+  </data>
+  <data name="Associator_lblModifyDate" xml:space="preserve">
+    <value>修改日期</value>
+  </data>
+  <data name="Associator_lblName" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="Associator_lblNeedChangeInto" xml:space="preserve">
+    <value>兑换所需积分数</value>
+  </data>
+  <data name="Associator_lblNewCard" xml:space="preserve">
+    <value>新卡号</value>
+  </data>
+  <data name="Associator_lblNo" xml:space="preserve">
+    <value>号码</value>
+  </data>
+  <data name="Associator_lblNowNumber" xml:space="preserve">
+    <value>现有量</value>
+  </data>
+  <data name="Associator_lblNumber" xml:space="preserve">
+    <value>数量</value>
+  </data>
+  <data name="Associator_lblOfficeTel" xml:space="preserve">
+    <value>办公室</value>
+  </data>
+  <data name="Associator_lblOneActivity" xml:space="preserve">
+    <value>每次活动发放一次</value>
+  </data>
+  <data name="Associator_lblOneDate" xml:space="preserve">
+    <value>每天发放一次</value>
+  </data>
+  <data name="Associator_lblOtherCard" xml:space="preserve">
+    <value>其他证件</value>
+  </data>
+  <data name="Associator_lblOtherPassPort" xml:space="preserve">
+    <value>其他证件号</value>
+  </data>
+  <data name="Associator_lblOverDate" xml:space="preserve">
+    <value>到期日</value>
+  </data>
+  <data name="Associator_lblParticular" xml:space="preserve">
+    <value>详细信息</value>
+  </data>
+  <data name="Associator_lblPOSItegrtal" xml:space="preserve">
+    <value>在POS端计算积分</value>
+  </data>
+  <data name="Associator_lblPostil" xml:space="preserve">
+    <value>活动批注</value>
+  </data>
+  <data name="Associator_lblPurchaseM" xml:space="preserve">
+    <value>购物日期</value>
+  </data>
+  <data name="Associator_lblQueryCondition" xml:space="preserve">
+    <value>查询条件</value>
+  </data>
+  <data name="Associator_lblRule" xml:space="preserve">
+    <value>期满规则</value>
+  </data>
+  <data name="Associator_lblSelAssciator" xml:space="preserve">
+    <value>选择会员</value>
+  </data>
+  <data name="Associator_lblSelect" xml:space="preserve">
+    <value>赠品选项</value>
+  </data>
+  <data name="Associator_lblSelServiceDesk" xml:space="preserve">
+    <value>选择服务台</value>
+  </data>
+  <data name="Associator_lblShop" xml:space="preserve">
+    <value>商铺</value>
+  </data>
+  <data name="Associator_lblshopID" xml:space="preserve">
+    <value>店号</value>
+  </data>
+  <data name="Associator_lblStaffID" xml:space="preserve">
+    <value>员工号</value>
+  </data>
+  <data name="Associator_lblStat" xml:space="preserve">
+    <value>统计以上积分或金额的月份数</value>
+  </data>
+  <data name="Associator_lblStatMonth" xml:space="preserve">
+    <value>统计以上积分或金额的月份数</value>
+  </data>
+  <data name="Associator_lblSurplus" xml:space="preserve">
+    <value>节余</value>
+  </data>
+  <data name="Associator_lblSymbol" xml:space="preserve">
+    <value>赠品代号</value>
+  </data>
+  <data name="Associator_lblTermDate" xml:space="preserve">
+    <value>期满日期</value>
+  </data>
+  <data name="Associator_lblTicketID" xml:space="preserve">
+    <value>小票号</value>
+  </data>
+  <data name="Associator_lblTicketM" xml:space="preserve">
+    <value>所需小票金额</value>
+  </data>
+  <data name="Associator_lblTime" xml:space="preserve">
+    <value>活动时间</value>
+  </data>
+  <data name="Associator_lblTotal" xml:space="preserve">
+    <value>总计</value>
+  </data>
+  <data name="Associator_lblTotalItegrtal" xml:space="preserve">
+    <value>积分总数</value>
+  </data>
+  <data name="Associator_lblType" xml:space="preserve">
+    <value>类型</value>
+  </data>
+  <data name="Associator_lblUnder" xml:space="preserve">
+    <value>低于此积分或金额将打警告信</value>
+  </data>
+  <data name="Associator_lblUpdateCardInfo" xml:space="preserve">
+    <value>会员卡修改</value>
+  </data>
+  <data name="Associator_lblUpgrade" xml:space="preserve">
+    <value>升级规则</value>
+  </data>
+  <data name="Associator_lblUpgradeLevel" xml:space="preserve">
+    <value>升级至该卡级别</value>
+  </data>
+  <data name="Associator_lblUpgradeM" xml:space="preserve">
+    <value>升级所需达到的积分或金额</value>
+  </data>
+  <data name="Associator_LongTime" xml:space="preserve">
+    <value>多日有效</value>
+  </data>
+  <data name="Associator_LoseCard" xml:space="preserve">
+    <value>丢卡更新费</value>
+  </data>
+  <data name="Associator_NewCardCharge" xml:space="preserve">
+    <value>新卡费</value>
+  </data>
+  <data name="Associator_NotEnrolAssociator" xml:space="preserve">
+    <value>未注册会员信息维护</value>
+  </data>
+  <data name="Associator_OnceAvailability" xml:space="preserve">
+    <value>当次有效</value>
+  </data>
+  <data name="Associator_Particular" xml:space="preserve">
+    <value>会员详细信息</value>
+  </data>
+  <data name="Associator_Purhist" xml:space="preserve">
+    <value>会员消费信息查询</value>
+  </data>
+  <data name="Associator_QueryAssociator" xml:space="preserve">
+    <value>会员信息查询</value>
+  </data>
+  <data name="Associator_rabBackCard" xml:space="preserve">
+    <value>退卡</value>
+  </data>
+  <data name="Associator_rabCardStuta" xml:space="preserve">
+    <value>会员卡状态</value>
+  </data>
+  <data name="Associator_rabDamage" xml:space="preserve">
+    <value>损坏</value>
+  </data>
+  <data name="Associator_rabDegrade" xml:space="preserve">
+    <value>降级</value>
+  </data>
+  <data name="Associator_rabInvalid" xml:space="preserve">
+    <value>无效</value>
+  </data>
+  <data name="Associator_rabLose" xml:space="preserve">
+    <value>丢失</value>
+  </data>
+  <data name="Associator_rabNewCard" xml:space="preserve">
+    <value>新卡</value>
+  </data>
+  <data name="Associator_rabRise" xml:space="preserve">
+    <value>升级</value>
+  </data>
+  <data name="Associator_rabUpdateCard" xml:space="preserve">
+    <value>更新卡</value>
+  </data>
+  <data name="Associator_radCardMac" xml:space="preserve">
+    <value>由读卡器读入</value>
+  </data>
+  <data name="Associator_radKeyboard" xml:space="preserve">
+    <value>由键盘输入</value>
+  </data>
+  <data name="Associator_Ranking" xml:space="preserve">
+    <value>积分点和购买额排序</value>
+  </data>
+  <data name="Associator_rdoCardReader" xml:space="preserve">
+    <value>由读卡器读入</value>
+  </data>
+  <data name="Associator_rdoConsumption" xml:space="preserve">
+    <value>基于消费积分</value>
+  </data>
+  <data name="Associator_rdoEveryDay" xml:space="preserve">
+    <value>每天发放一次</value>
+  </data>
+  <data name="Associator_rdoEveryTime" xml:space="preserve">
+    <value>每次活动发放一次</value>
+  </data>
+  <data name="Associator_rdoKeyset" xml:space="preserve">
+    <value>由键盘输入</value>
+  </data>
+  <data name="Associator_rdoMoney" xml:space="preserve">
+    <value>基于消费金额</value>
+  </data>
+  <data name="Associator_rdoNo" xml:space="preserve">
+    <value>否</value>
+  </data>
+  <data name="Associator_rdoYes" xml:space="preserve">
+    <value>是</value>
+  </data>
+  <data name="Associator_RptQAssociator" xml:space="preserve">
+    <value>会员相关报表</value>
+  </data>
+  <data name="Associator_SelAssociator" xml:space="preserve">
+    <value>选取会员</value>
+  </data>
+  <data name="Associator_ServerItegral" xml:space="preserve">
+    <value>服务台累计积分</value>
+  </data>
+  <data name="Associator_ServiceDesk" xml:space="preserve">
+    <value>服务台</value>
+  </data>
+  <data name="Associator_Setup" xml:space="preserve">
+    <value>赠品参数设置</value>
+  </data>
+  <data name="Associator_TicketChargeGift" xml:space="preserve">
+    <value>以小票换礼品</value>
+  </data>
+  <data name="Associator_TicketM" xml:space="preserve">
+    <value>小票金额</value>
+  </data>
+  <data name="Associator_UserID" xml:space="preserve">
+    <value>用户号</value>
+  </data>
+  <data name="Auditing" xml:space="preserve">
+    <value />
+  </data>
+  <data name="BankCard_BankAmt" xml:space="preserve">
+    <value>交易金额</value>
+  </data>
+  <data name="BankCard_BankCard" xml:space="preserve">
+    <value>银行卡号</value>
+  </data>
+  <data name="BankCard_BankCardVerify" xml:space="preserve">
+    <value>银行卡对账</value>
+  </data>
+  <data name="BankCard_BankEFTID" xml:space="preserve">
+    <value>银行终端号</value>
+  </data>
+  <data name="BankCard_BankTransTime" xml:space="preserve">
+    <value>交易时间</value>
+  </data>
+  <data name="BankCard_BankTransTimeBagin" xml:space="preserve">
+    <value>交易开始日期</value>
+  </data>
+  <data name="BankCard_BankTransTimeEnd" xml:space="preserve">
+    <value>交易结束日期</value>
+  </data>
+  <data name="BankCard_btnTransmit" xml:space="preserve">
+    <value>导入</value>
+  </data>
+  <data name="BankCard_btnTransmitBank" xml:space="preserve">
+    <value>银行卡导入接口数据</value>
+  </data>
+  <data name="BankCard_btnTransmitPos" xml:space="preserve">
+    <value>POS导入接口数据</value>
+  </data>
+  <data name="BankCard_Disposal" xml:space="preserve">
+    <value>处理记录：</value>
+  </data>
+  <data name="BankCard_Month" xml:space="preserve">
+    <value>收款月份</value>
+  </data>
+  <data name="BankCard_MonthBigen" xml:space="preserve">
+    <value>收款开始日期</value>
+  </data>
+  <data name="BankCard_MonthEnd" xml:space="preserve">
+    <value>收款结束日期</value>
+  </data>
+  <data name="BankCard_NotSelect" xml:space="preserve">
+    <value>选择不能为空</value>
+  </data>
+  <data name="BankCard_Transmit" xml:space="preserve">
+    <value>银行卡导入</value>
+  </data>
+  <data name="BankCard_TransmitClount" xml:space="preserve">
+    <value>导入行数:</value>
+  </data>
+  <data name="BankCard_TransmitLost" xml:space="preserve">
+    <value>导入失败</value>
+  </data>
+  <data name="BankCard_TransmitSelect" xml:space="preserve">
+    <value>导入选择</value>
+  </data>
+  <data name="BankCard_TransmitSucceed" xml:space="preserve">
+    <value>导入成功</value>
+  </data>
+  <data name="BankCardVerify_BtnBegin" xml:space="preserve">
+    <value>开始</value>
+  </data>
+  <data name="BankPayIn_TitBankPayIn" xml:space="preserve">
+    <value>生成代收款</value>
+  </data>
+  <data name="BizGrp_MessageError" xml:space="preserve">
+    <value>操作失败,有重复的业务组名称!</value>
+  </data>
+  <data name="BizGrp_Title" xml:space="preserve">
+    <value>当前业务组定义列表</value>
+  </data>
+  <data name="BrandLevel_BrandLevelAdd" xml:space="preserve">
+    <value>品牌等级定义</value>
+  </data>
+  <data name="BrandLevel_BrandLevelCode" xml:space="preserve">
+    <value>品牌等级编码</value>
+  </data>
+  <data name="BrandLevel_BrandLevelName" xml:space="preserve">
+    <value>品牌等级</value>
+  </data>
+  <data name="Btn_Del" xml:space="preserve">
+    <value>删除 </value>
+  </data>
+  <data name="Btn_Edit" xml:space="preserve">
+    <value>编辑</value>
+  </data>
+  <data name="btn_lblPrint" xml:space="preserve">
+    <value>打印</value>
+  </data>
+  <data name="But_AddAuth" xml:space="preserve">
+    <value>添加数据权限   </value>
+  </data>
+  <data name="Button_back" xml:space="preserve">
+    <value>上一页 </value>
+  </data>
+  <data name="Button_next" xml:space="preserve">
+    <value>下一页 </value>
+  </data>
+  <data name="Button_Pass" xml:space="preserve">
+    <value>审批通过 </value>
+  </data>
+  <data name="ChangeLease_NotUpdate" xml:space="preserve">
+    <value>原结算公式</value>
+  </data>
+  <data name="ChangeLease_Update" xml:space="preserve">
+    <value>现结算公式</value>
+  </data>
+  <data name="Charge_InterestAmt" xml:space="preserve">
+    <value>滞纳金</value>
+  </data>
+  <data name="Charge_InterestRate" xml:space="preserve">
+    <value>滞纳金利率</value>
+  </data>
+  <data name="Charge_LatePayAmt" xml:space="preserve">
+    <value>滞纳本金</value>
+  </data>
+  <data name="Charge_NoInterest" xml:space="preserve">
+    <value>未生成滞纳金</value>
+  </data>
+  <data name="ChargeAccount_ContractCodeNull" xml:space="preserve">
+    <value>请输入合同编码</value>
+  </data>
+  <data name="ChargeType_lblChargeClass" xml:space="preserve">
+    <value>费用分类</value>
+  </data>
+  <data name="ChargeType_lblChargeTypeCode" xml:space="preserve">
+    <value>费用类型编码</value>
+  </data>
+  <data name="ChargeType_lblChargeTypeDefine" xml:space="preserve">
+    <value>费用类型维护</value>
+  </data>
+  <data name="ChargeType_lblChargeTypeName" xml:space="preserve">
+    <value>费用类型名称</value>
+  </data>
+  <data name="ChargeType_lblIsChargeCross" xml:space="preserve">
+    <value>收费时间交叉</value>
+  </data>
+  <data name="ChargeType_lblNote" xml:space="preserve">
+    <value>备注</value>
+  </data>
+  <data name="ckck_selectAll" xml:space="preserve">
+    <value>全选</value>
+  </data>
+  <data name="ConFormulaMod_ModReason" xml:space="preserve">
+    <value>变更原因</value>
+  </data>
+  <data name="ConFormulaMod_NullContractID" xml:space="preserve">
+    <value>无合同编码.</value>
+  </data>
+  <data name="ConLease_butAddAll" xml:space="preserve">
+    <value>      提交
+  审批</value>
+  </data>
+  <data name="ConLease_butDel" xml:space="preserve">
+    <value>作废 </value>
+  </data>
+  <data name="ConLease_butSaveTemp" xml:space="preserve">
+    <value>保存草稿</value>
+  </data>
+  <data name="ConLease_InvoiceType" xml:space="preserve">
+    <value>发票类型</value>
+  </data>
+  <data name="ConLease_labBalanceDeduct" xml:space="preserve">
+    <value>结算扣率%</value>
+  </data>
+  <data name="ConLease_labBaseAmt" xml:space="preserve">
+    <value>基本租金</value>
+  </data>
+  <data name="ConLease_labChargeTypeID" xml:space="preserve">
+    <value>费用类型</value>
+  </data>
+  <data name="ConLease_labDeductAndKeep" xml:space="preserve">
+    <value>抽成与保底</value>
+  </data>
+  <data name="ConLease_labDegree" xml:space="preserve">
+    <value>额度</value>
+  </data>
+  <data name="ConLease_labDistill" xml:space="preserve">
+    <value>抽成率</value>
+  </data>
+  <data name="ConLease_labEndDate" xml:space="preserve">
+    <value>结束时间</value>
+  </data>
+  <data name="ConLease_labFastnessHire" xml:space="preserve">
+    <value>固定租金</value>
+  </data>
+  <data name="ConLease_labFixedRental" xml:space="preserve">
+    <value>租金额</value>
+  </data>
+  <data name="ConLease_labFormulaType" xml:space="preserve">
+    <value>公式类别</value>
+  </data>
+  <data name="ConLease_labMinSumSell" xml:space="preserve">
+    <value>保底销售额</value>
+  </data>
+  <data name="ConLease_labRentalThan" xml:space="preserve">
+    <value>租售比</value>
+  </data>
+  <data name="ConLease_labSellCount" xml:space="preserve">
+    <value>销售额</value>
+  </data>
+  <data name="ConLease_labUnitHire" xml:space="preserve">
+    <value>单位意向租金</value>
+  </data>
+  <data name="ConLease_LalKeepMin" xml:space="preserve">
+    <value>保底额</value>
+  </data>
+  <data name="ConLease_lblTaxFrank" xml:space="preserve">
+    <value>税率%</value>
+  </data>
+  <data name="ConLease_rabDayHire" xml:space="preserve">
+    <value>日租金</value>
+  </data>
+  <data name="ConLease_rabFastness" xml:space="preserve">
+    <value>固定</value>
+  </data>
+  <data name="ConLease_rabLevel" xml:space="preserve">
+    <value>级别</value>
+  </data>
+  <data name="ConLease_rabMonopole" xml:space="preserve">
+    <value>单级</value>
+  </data>
+  <data name="ConLease_rabMonthHire" xml:space="preserve">
+    <value>月租金</value>
+  </data>
+  <data name="ConLease_rabMultilevel" xml:space="preserve">
+    <value>多级</value>
+  </data>
+  <data name="Conshop_Confirm" xml:space="preserve">
+    <value>待审批</value>
+  </data>
+  <data name="ConShopBaseInfo_RentAreaErr" xml:space="preserve">
+    <value>签约面积录入错误</value>
+  </data>
+  <data name="ConTerminateBill_ConTerminateBill" xml:space="preserve">
+    <value>合同续约</value>
+  </data>
+  <data name="ConTerminateBill_lblTerReason" xml:space="preserve">
+    <value>提前终约原因</value>
+  </data>
+  <data name="Contract_ChargeStartDate" xml:space="preserve">
+    <value>结算公式日期输入错误,请检查.</value>
+  </data>
+  <data name="Contract_ContractType" xml:space="preserve">
+    <value>合同类型</value>
+  </data>
+  <data name="Contract_ContractTypeVindicate" xml:space="preserve">
+    <value>合同类型维护</value>
+  </data>
+  <data name="Contract_ManageCompany" xml:space="preserve">
+    <value>管理公司</value>
+  </data>
+  <data name="ConUnionMod_Lease" xml:space="preserve">
+    <value>此合同为租赁合同</value>
+  </data>
+  <data name="ConUnionMod_Union" xml:space="preserve">
+    <value>此合同为联营合同</value>
+  </data>
+  <data name="Customer_labBusinessManQuery" xml:space="preserve">
+    <value>商户资料查询</value>
+  </data>
+  <data name="Customer_labCustomerNameNotNull" xml:space="preserve">
+    <value>商户名称不能为空.</value>
+  </data>
+  <data name="Customer_labCustomerQuery" xml:space="preserve">
+    <value>商户资料查询</value>
+  </data>
+  <data name="Customer_labCustomerUpdate" xml:space="preserve">
+    <value>商户资料维护</value>
+  </data>
+  <data name="CustPalaver_butConsent" xml:space="preserve">
+    <value>同意 </value>
+  </data>
+  <data name="CustPalaver_butLeadPalaver" xml:space="preserve">
+    <value>提交上级 </value>
+  </data>
+  <data name="CustPalaver_butOverrule" xml:space="preserve">
+    <value>驳回 </value>
+  </data>
+  <data name="CustPalaver_labPalaverNote" xml:space="preserve">
+    <value>审批备注</value>
+  </data>
+  <data name="CustType_lblCustType" xml:space="preserve">
+    <value>商户类型维护</value>
+  </data>
+  <data name="CustType_lblCustTypeCode" xml:space="preserve">
+    <value>类型编码</value>
+  </data>
+  <data name="CustType_lblCustTypeName" xml:space="preserve">
+    <value>类型名称</value>
+  </data>
+  <data name="CustType_lblCustTypeStatus" xml:space="preserve">
+    <value>是否启用</value>
+  </data>
+  <data name="CustType_lblNote" xml:space="preserve">
+    <value>说明</value>
+  </data>
+  <data name="DataSource_InPut" xml:space="preserve">
+    <value>导入数据</value>
+  </data>
+  <data name="DataSource_Manual" xml:space="preserve">
+    <value>手工录入</value>
+  </data>
+  <data name="DataSource_POS" xml:space="preserve">
+    <value>POS销售</value>
+  </data>
+  <data name="DataSource_Put" xml:space="preserve">
+    <value>导入销售</value>
+  </data>
+  <data name="DataSource_TrandPOS" xml:space="preserve">
+    <value>POS机上传</value>
+  </data>
+  <data name="Dept_lblCity" xml:space="preserve">
+    <value>所在城市</value>
+  </data>
+  <data name="Dept_lblConcessionAuth" xml:space="preserve">
+    <value>商铺范围</value>
+  </data>
+  <data name="Dept_lblContractAuth" xml:space="preserve">
+    <value>合约范围</value>
+  </data>
+  <data name="Dept_lblDept" xml:space="preserve">
+    <value>部门管理</value>
+  </data>
+  <data name="Dept_lblDeptAuth" xml:space="preserve">
+    <value>部门权限</value>
+  </data>
+  <data name="Dept_lblDeptCode" xml:space="preserve">
+    <value>部门编码</value>
+  </data>
+  <data name="Dept_lblDeptLevel" xml:space="preserve">
+    <value>部门级别</value>
+  </data>
+  <data name="Dept_lblDeptName" xml:space="preserve">
+    <value>部门名称</value>
+  </data>
+  <data name="Dept_lblDeptType" xml:space="preserve">
+    <value>部门类型</value>
+  </data>
+  <data name="Dept_lblDeptUpdate" xml:space="preserve">
+    <value>部门修改</value>
+  </data>
+  <data name="Dept_lblFax" xml:space="preserve">
+    <value>传真</value>
+  </data>
+  <data name="Dept_lblFeeAuth" xml:space="preserve">
+    <value>费用范围</value>
+  </data>
+  <data name="Dept_lblIndepBalance" xml:space="preserve">
+    <value>独立核算</value>
+  </data>
+  <data name="Dept_lblOfficeAddr" xml:space="preserve">
+    <value>办公地址</value>
+  </data>
+  <data name="Dept_lblOfficeTel" xml:space="preserve">
+    <value>办公电话</value>
+  </data>
+  <data name="Dept_lblOrderID" xml:space="preserve">
+    <value>排序号</value>
+  </data>
+  <data name="Dept_lblOtherAuth" xml:space="preserve">
+    <value>部门范围</value>
+  </data>
+  <data name="Dept_lblPDeptID" xml:space="preserve">
+    <value>父部门名称</value>
+  </data>
+  <data name="Dept_lblPostAddr" xml:space="preserve">
+    <value>邮寄地址</value>
+  </data>
+  <data name="Dept_lblPostCode" xml:space="preserve">
+    <value>邮政编码</value>
+  </data>
+  <data name="Dept_lblRegAddr" xml:space="preserve">
+    <value>注册地址</value>
+  </data>
+  <data name="Dept_lblStatus" xml:space="preserve">
+    <value>是否启用</value>
+  </data>
+  <data name="Dept_lblTel" xml:space="preserve">
+    <value>联系电话</value>
+  </data>
+  <data name="Dept_lblTradeAuth" xml:space="preserve">
+    <value>行业范围</value>
+  </data>
+  <data name="Dept_MallAdd" xml:space="preserve">
+    <value>购物中心定义</value>
+  </data>
+  <data name="Dept_MallName" xml:space="preserve">
+    <value>购物中心名称</value>
+  </data>
+  <data name="Dept_MallNameQuery" xml:space="preserve">
+    <value>购物中心查看</value>
+  </data>
+  <data name="Dept_Other" xml:space="preserve">
+    <value>其他</value>
+  </data>
+  <data name="Dept_rbtnAllShop" xml:space="preserve">
+    <value>所有商铺</value>
+  </data>
+  <data name="Dept_rbtnAllTreaty" xml:space="preserve">
+    <value>所有合约</value>
+  </data>
+  <data name="Dept_rbtnAllVocation" xml:space="preserve">
+    <value>所有行业</value>
+  </data>
+  <data name="Dept_rbtNoRrestrict" xml:space="preserve">
+    <value>没有限定</value>
+  </data>
+  <data name="Dept_rbtnRrestrict" xml:space="preserve">
+    <value>其他限定</value>
+  </data>
+  <data name="Dept_rbtnShop" xml:space="preserve">
+    <value>部分商铺</value>
+  </data>
+  <data name="Dept_rbtnTreaty" xml:space="preserve">
+    <value>部分合约</value>
+  </data>
+  <data name="Dept_rbtnVocation" xml:space="preserve">
+    <value>部分行业</value>
+  </data>
+  <data name="Dept_Title" xml:space="preserve">
+    <value>部门结构定义——组织树浏览</value>
+  </data>
+  <data name="Dept_TitleAdd" xml:space="preserve">
+    <value>添加</value>
+  </data>
+  <data name="DeptTree_labDeptAdd" xml:space="preserve">
+    <value>添加 </value>
+  </data>
+  <data name="DeptTree_labDeptContext" xml:space="preserve">
+    <value>属下部门</value>
+  </data>
+  <data name="Dict_Exist" xml:space="preserve">
+    <value>已存在</value>
+  </data>
+  <data name="Dict_NotExist" xml:space="preserve">
+    <value>不存在</value>
+  </data>
+  <data name="Formula_lblContent" xml:space="preserve">
+    <value>定义内容</value>
+  </data>
+  <data name="Formula_lblDefine" xml:space="preserve">
+    <value>定义列表</value>
+  </data>
+  <data name="Hidden_AreaNotSelect" xml:space="preserve">
+    <value>请先选择经营区域.</value>
+  </data>
+  <data name="Hidden_DateTime" xml:space="preserve">
+    <value>费用开始日期不能小于合同开始日期!</value>
+  </data>
+  <data name="Hidden_DeptCodeBeing" xml:space="preserve">
+    <value>部门编码已经存在.</value>
+  </data>
+  <data name="Hidden_Error" xml:space="preserve">
+    <value>数据错误.</value>
+  </data>
+  <data name="Hidden_hidAdd" xml:space="preserve">
+    <value>添加成功.</value>
+  </data>
+  <data name="Hidden_hidCondition" xml:space="preserve">
+    <value>请填写条件.</value>
+  </data>
+  <data name="Hidden_hidContrac" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Hidden_hidCustContact" xml:space="preserve">
+    <value>潜在商户通讯录不完全.</value>
+  </data>
+  <data name="Hidden_hidCustID" xml:space="preserve">
+    <value>潜在商户编码</value>
+  </data>
+  <data name="Hidden_hidCustLicense" xml:space="preserve">
+    <value>潜在商户证照不完全.</value>
+  </data>
+  <data name="Hidden_hidCustName" xml:space="preserve">
+    <value>潜在商户名称</value>
+  </data>
+  <data name="Hidden_hidDateTime" xml:space="preserve">
+    <value>终止日期小于开始日期.</value>
+  </data>
+  <data name="Hidden_hidDelete" xml:space="preserve">
+    <value>删除成功.</value>
+  </data>
+  <data name="Hidden_hidFloorArea" xml:space="preserve">
+    <value>建筑面积不能为空.</value>
+  </data>
+  <data name="Hidden_hidInsert" xml:space="preserve">
+    <value>插入数据错误.</value>
+  </data>
+  <data name="Hidden_hidMessage" xml:space="preserve">
+    <value>信息不能为空.</value>
+  </data>
+  <data name="Hidden_hidNoBuilding" xml:space="preserve">
+    <value>不是有效大楼.</value>
+  </data>
+  <data name="Hidden_hidNoData" xml:space="preserve">
+    <value>无数据.</value>
+  </data>
+  <data name="Hidden_hidNoMessage" xml:space="preserve">
+    <value>查询无此信息.</value>
+  </data>
+  <data name="Hidden_hidNotNullFloor" xml:space="preserve">
+    <value>楼层不能为空.</value>
+  </data>
+  <data name="Hidden_hidNotNullLocation" xml:space="preserve">
+    <value>方位编码不能为空.</value>
+  </data>
+  <data name="Hidden_hidRepeat" xml:space="preserve">
+    <value>数据中已经有该编码.</value>
+  </data>
+  <data name="Hidden_hidRoleCodeBeing" xml:space="preserve">
+    <value>角色编码已存在.</value>
+  </data>
+  <data name="Hidden_hidSelect" xml:space="preserve">
+    <value>请先选择部门.</value>
+  </data>
+  <data name="Hidden_hidSelectLocation" xml:space="preserve">
+    <value>请选择方位.</value>
+  </data>
+  <data name="Hidden_hidUnitCode" xml:space="preserve">
+    <value>单元编码不能为空.</value>
+  </data>
+  <data name="Hidden_hidUpdate" xml:space="preserve">
+    <value>修改成功.</value>
+  </data>
+  <data name="Hidden_hidUpdateLost" xml:space="preserve">
+    <value>更新失败</value>
+  </data>
+  <data name="Hidden_hidUseArea" xml:space="preserve">
+    <value>可出租面积不能为空.</value>
+  </data>
+  <data name="Hidden_hidUserCodeBeing" xml:space="preserve">
+    <value>用户编码已存在.</value>
+  </data>
+  <data name="Hidden_hidWrite" xml:space="preserve">
+    <value>需输入必要信息.</value>
+  </data>
+  <data name="Hidden_hidYesBulidingCode" xml:space="preserve">
+    <value>已有大楼编码.</value>
+  </data>
+  <data name="Hidden_hidYesFloor" xml:space="preserve">
+    <value>已有楼层编码.</value>
+  </data>
+  <data name="Hidden_hidYesLocationCode" xml:space="preserve">
+    <value>已有方位编码.</value>
+  </data>
+  <data name="Hidden_IntError" xml:space="preserve">
+    <value>请输入数字类型的值.</value>
+  </data>
+  <data name="Hidden_Shop" xml:space="preserve">
+    <value>商铺意向</value>
+  </data>
+  <data name="Internet_lblInternet" xml:space="preserve">
+    <value>网络设定</value>
+  </data>
+  <data name="Internet_lblInternetNm" xml:space="preserve">
+    <value>网络公司名称</value>
+  </data>
+  <data name="Internet_optDaily" xml:space="preserve">
+    <value>每日</value>
+  </data>
+  <data name="Internet_optMthly" xml:space="preserve">
+    <value>每月</value>
+  </data>
+  <data name="Internet_optWeekly" xml:space="preserve">
+    <value>每星期</value>
+  </data>
+  <data name="Inv_lableBatch" xml:space="preserve">
+    <value>批量</value>
+  </data>
+  <data name="Inv_lableSingle" xml:space="preserve">
+    <value>单个</value>
+  </data>
+  <data name="Inv_lblAccountEndDate" xml:space="preserve">
+    <value>计算结束日期</value>
+  </data>
+  <data name="Inv_lblAccountStartDate" xml:space="preserve">
+    <value>计算开始日期</value>
+  </data>
+  <data name="Inv_lblChargeTypeName" xml:space="preserve">
+    <value>费用名称</value>
+  </data>
+  <data name="Inv_lblDepAmL" xml:space="preserve">
+    <value>押金金额</value>
+  </data>
+  <data name="Inv_lblDepBal" xml:space="preserve">
+    <value>押金处理</value>
+  </data>
+  <data name="Inv_lblEndDate" xml:space="preserve">
+    <value>启征结束时间</value>
+  </data>
+  <data name="Inv_lblInvPayID" xml:space="preserve">
+    <value>付款单号</value>
+  </data>
+  <data name="Inv_lblPayOut" xml:space="preserve">
+    <value>代收款返还</value>
+  </data>
+  <data name="Inv_lblPayOutAmt" xml:space="preserve">
+    <value>处理金额</value>
+  </data>
+  <data name="Inv_lblPayOutSum" xml:space="preserve">
+    <value>累计返还</value>
+  </data>
+  <data name="Inv_lblStartDate" xml:space="preserve">
+    <value>启征开始时间</value>
+  </data>
+  <data name="InvAdj_AdjAmt" xml:space="preserve">
+    <value>调整金额</value>
+  </data>
+  <data name="InvAdj_AdjDate" xml:space="preserve">
+    <value>调整日期</value>
+  </data>
+  <data name="InvAdj_AdjOpr" xml:space="preserve">
+    <value>调整人</value>
+  </data>
+  <data name="InvAdj_AdjReason" xml:space="preserve">
+    <value>调整原因</value>
+  </data>
+  <data name="InvAdj_InvExRate" xml:space="preserve">
+    <value>当前结算单汇率错误,请与管理员联系.</value>
+  </data>
+  <data name="InvAdj_KeepAccountsMth" xml:space="preserve">
+    <value>记账月</value>
+  </data>
+  <data name="InvAdjDisc_DiscRateNotNull" xml:space="preserve">
+    <value>请填写优惠率.</value>
+  </data>
+  <data name="InvAdjDise_SelInvfullInfo" xml:space="preserve">
+    <value>请选择优惠单据.</value>
+  </data>
+  <data name="InvCancel_InvCancel" xml:space="preserve">
+    <value>取消原因</value>
+  </data>
+  <data name="InvCancel_lblInv" xml:space="preserve">
+    <value>结算单调整</value>
+  </data>
+  <data name="InvCancel_lblInvAuditing" xml:space="preserve">
+    <value>结算单调整审批</value>
+  </data>
+  <data name="InvCancel_lblInvCancel" xml:space="preserve">
+    <value>结算单取消</value>
+  </data>
+  <data name="InvCancel_lblInvCancelAuditing" xml:space="preserve">
+    <value>租赁结算单审批</value>
+  </data>
+  <data name="InvDiscDet_DiscDetCausation" xml:space="preserve">
+    <value>优惠原因</value>
+  </data>
+  <data name="InvDiscDet_DiscDetMoney" xml:space="preserve">
+    <value>优惠金额</value>
+  </data>
+  <data name="InvDiscDet_DiscDetRatio" xml:space="preserve">
+    <value>优惠率(%)</value>
+  </data>
+  <data name="InvDiscDet_InvDiscDe" xml:space="preserve">
+    <value>租赁结算优惠单</value>
+  </data>
+  <data name="Invoice_BacthPrint" xml:space="preserve">
+    <value>批量打印租赁结算单</value>
+  </data>
+  <data name="Invoice_chkDefault" xml:space="preserve">
+    <value>默认</value>
+  </data>
+  <data name="Invoice_InvBalan" xml:space="preserve">
+    <value>费用结算</value>
+  </data>
+  <data name="Invoice_InvUnionDeductMoney" xml:space="preserve">
+    <value>扣款额</value>
+  </data>
+  <data name="Invoice_InvUnionMoneyP" xml:space="preserve">
+    <value>抽成金额</value>
+  </data>
+  <data name="Invoice_InvUnionPayment" xml:space="preserve">
+    <value>货款</value>
+  </data>
+  <data name="Invoice_InvUnionReturnMoney" xml:space="preserve">
+    <value>返款额</value>
+  </data>
+  <data name="Invoice_InvUnionReturnTotalMoney" xml:space="preserve">
+    <value>返款总额</value>
+  </data>
+  <data name="Invoice_InvUnionTaxMoney" xml:space="preserve">
+    <value>税额</value>
+  </data>
+  <data name="Invoice_InvUnionTicket" xml:space="preserve">
+    <value>开票金额</value>
+  </data>
+  <data name="Invoice_JVBacthPrint" xml:space="preserve">
+    <value>批量打印联营结算单</value>
+  </data>
+  <data name="Invoice_JVBancthPrint" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Invoice_lblcbType" xml:space="preserve">
+    <value>打印本期未结算金额</value>
+  </data>
+  <data name="Invoice_lblSurAmt" xml:space="preserve">
+    <value>余款金额</value>
+  </data>
+  <data name="Invoice_lblSurBal" xml:space="preserve">
+    <value>余款处理</value>
+  </data>
+  <data name="Invoice_lblSurBalInvID" xml:space="preserve">
+    <value>余款单号</value>
+  </data>
+  <data name="Invoice_lblSurBalType" xml:space="preserve">
+    <value>处理方式</value>
+  </data>
+  <data name="Invoice_lblTotalSurBalAmt" xml:space="preserve">
+    <value>累计处理</value>
+  </data>
+  <data name="InvoiceHeader_InvPaidAmt" xml:space="preserve">
+    <value>已付金额</value>
+  </data>
+  <data name="InvoiceHeader_lblBalance" xml:space="preserve">
+    <value>余额</value>
+  </data>
+  <data name="InvoiceHeader_lblInvDate" xml:space="preserve">
+    <value>结算日期</value>
+  </data>
+  <data name="InvoiceHeader_lblInvID" xml:space="preserve">
+    <value>结算单号</value>
+  </data>
+  <data name="InvoiceHeader_lblInvPaidAmt" xml:space="preserve">
+    <value>费用金额</value>
+  </data>
+  <data name="InvoiceHeader_lblInvPaidAmtSum" xml:space="preserve">
+    <value>付款总额</value>
+  </data>
+  <data name="InvoiceHeader_lblInvPayAmt" xml:space="preserve">
+    <value>费用金额</value>
+  </data>
+  <data name="InvoiceHeader_lblInvPayCurID" xml:space="preserve">
+    <value>付款币种</value>
+  </data>
+  <data name="InvoiceHeader_lblInvPayDate" xml:space="preserve">
+    <value>付款日期</value>
+  </data>
+  <data name="InvoiceHeader_lblInvPayExRate" xml:space="preserve">
+    <value>货币汇率</value>
+  </data>
+  <data name="InvoiceHeader_lblInvPayType" xml:space="preserve">
+    <value>支付方式</value>
+  </data>
+  <data name="InvoiceHeader_lblPayment" xml:space="preserve">
+    <value>应付额</value>
+  </data>
+  <data name="InvoiceHeader_lblShouldPayment" xml:space="preserve">
+    <value>本次付</value>
+  </data>
+  <data name="InvoiceHeader_lblSurAmt" xml:space="preserve">
+    <value>可用金额</value>
+  </data>
+  <data name="InvoiceHeader_TitInvoiceHeader" xml:space="preserve">
+    <value>租赁结算单</value>
+  </data>
+  <data name="InvoicePara_ReportBewrite" xml:space="preserve">
+    <value>报表描述</value>
+  </data>
+  <data name="InvoicePara_ReportName" xml:space="preserve">
+    <value>报表名称</value>
+  </data>
+  <data name="InvoicePara_ReportRemark" xml:space="preserve">
+    <value>报表备注</value>
+  </data>
+  <data name="InvoicePara_ReportSubhead" xml:space="preserve">
+    <value>报表副标题</value>
+  </data>
+  <data name="InvoicePara_ReportTitle" xml:space="preserve">
+    <value>报表抬头</value>
+  </data>
+  <data name="InvoicePara_Title" xml:space="preserve">
+    <value>租赁结算单参数设置</value>
+  </data>
+  <data name="InvoicePara_TitleUnion" xml:space="preserve">
+    <value>联营结算单参数设置</value>
+  </data>
+  <data name="InvoicePay_INVPAYTYPE_BANK_CARD" xml:space="preserve">
+    <value>银行卡</value>
+  </data>
+  <data name="InvoicePay_INVPAYTYPE_BANK_CHANGETAB" xml:space="preserve">
+    <value>银行转账</value>
+  </data>
+  <data name="InvoicePay_INVPAYTYPE_BANK_MONEYSAVING" xml:space="preserve">
+    <value>银行现金存款</value>
+  </data>
+  <data name="InvoicePay_INVPAYTYPE_CASH" xml:space="preserve">
+    <value>现金</value>
+  </data>
+  <data name="InvoicePay_INVPAYTYPE_CHECK" xml:space="preserve">
+    <value>支票</value>
+  </data>
+  <data name="InvoicePay_INVPAYTYPE_DEPOSIT_MORTAGAGE" xml:space="preserve">
+    <value>押金抵扣</value>
+  </data>
+  <data name="InvoicePay_INVPAYTYPE_P_O" xml:space="preserve">
+    <value>汇票</value>
+  </data>
+  <data name="InvoicePay_INVPAYTYPE_REPLACE_FUND" xml:space="preserve">
+    <value>代收款抵扣</value>
+  </data>
+  <data name="InvoicePay_INVPAYTYPE_RESIDUAL_MORTAGAGE" xml:space="preserve">
+    <value>余款抵付</value>
+  </data>
+  <data name="InvoicePay_INVPAYTYPE_WEBBANK" xml:space="preserve">
+    <value>网银</value>
+  </data>
+  <data name="INVPAYTYPE_OTHER" xml:space="preserve">
+    <value>其他</value>
+  </data>
+  <data name="lblChargeType_AccountNumber" xml:space="preserve">
+    <value>财务帐号</value>
+  </data>
+  <data name="LblDate_EndDate" xml:space="preserve">
+    <value>结束日期</value>
+  </data>
+  <data name="Lease_Addrentalformula" xml:space="preserve">
+    <value>结算公式变更录入</value>
+  </data>
+  <data name="Lease_AddrentalFormulaMod" xml:space="preserve">
+    <value>变更结算公式</value>
+  </data>
+  <data name="Lease_Approveatriumlease" xml:space="preserve">
+    <value>场地租赁合同审批</value>
+  </data>
+  <data name="Lease_Approvechargesreduction" xml:space="preserve">
+    <value>租赁结算优惠单审批</value>
+  </data>
+  <data name="Lease_Approverenewedlease" xml:space="preserve">
+    <value>租赁合同续约审批</value>
+  </data>
+  <data name="Lease_Approverentalformulachanges" xml:space="preserve">
+    <value>结算公式变更审批</value>
+  </data>
+  <data name="Lease_Approveterminatedlease" xml:space="preserve">
+    <value>租赁合同终约审批</value>
+  </data>
+  <data name="Lease_ChargeDateError" xml:space="preserve">
+    <value>结算公式日期错误.</value>
+  </data>
+  <data name="Lease_ContractAccountIng" xml:space="preserve">
+    <value>正在计算合同编码</value>
+  </data>
+  <data name="Lease_ContractType" xml:space="preserve">
+    <value>合同类型</value>
+  </data>
+  <data name="Lease_ExistInterestRate" xml:space="preserve">
+    <value>该合同的此费用类型已存在滞纳金利率</value>
+  </data>
+  <data name="Lease_ExpressionMod" xml:space="preserve">
+    <value>结算公式变更</value>
+  </data>
+  <data name="Lease_FirstFoot" xml:space="preserve">
+    <value>首期结算</value>
+  </data>
+  <data name="Lease_FirstInvoice" xml:space="preserve">
+    <value>     首期
+    结算</value>
+  </data>
+  <data name="Lease_FormulaPSet" xml:space="preserve">
+    <value>抽成设定</value>
+  </data>
+  <data name="Lease_InterestRateModi" xml:space="preserve">
+    <value>滞纳金利率维护</value>
+  </data>
+  <data name="Lease_KeepMinSet" xml:space="preserve">
+    <value>保底设定</value>
+  </data>
+  <data name="Lease_lbBalance" xml:space="preserve">
+    <value>结算公式</value>
+  </data>
+  <data name="Lease_lblBasic" xml:space="preserve">
+    <value>基本合同项目</value>
+  </data>
+  <data name="Lease_lblBasicContractInfo" xml:space="preserve">
+    <value>合同基本信息</value>
+  </data>
+  <data name="Lease_lblChargeDate" xml:space="preserve">
+    <value>费用期间</value>
+  </data>
+  <data name="Lease_lblComm" xml:space="preserve">
+    <value>(单元编码:面积)</value>
+  </data>
+  <data name="Lease_lblCommOper" xml:space="preserve">
+    <value>招商员</value>
+  </data>
+  <data name="Lease_lblConChargeType" xml:space="preserve">
+    <value>租赁费用类型</value>
+  </data>
+  <data name="Lease_lblCurExRate" xml:space="preserve">
+    <value>汇率维护</value>
+  </data>
+  <data name="Lease_lblCurrencyType" xml:space="preserve">
+    <value>币种维护</value>
+  </data>
+  <data name="Lease_lblCurTypeID" xml:space="preserve">
+    <value>本币种</value>
+  </data>
+  <data name="Lease_lblCurTypeName" xml:space="preserve">
+    <value>币种名称</value>
+  </data>
+  <data name="Lease_lblCurTypeStatus" xml:space="preserve">
+    <value>币种状态</value>
+  </data>
+  <data name="Lease_lblEnterCurTypeName" xml:space="preserve">
+    <value>请输入币种名称</value>
+  </data>
+  <data name="Lease_lblExRate" xml:space="preserve">
+    <value>汇率</value>
+  </data>
+  <data name="Lease_lblExRateDate" xml:space="preserve">
+    <value>汇率时间</value>
+  </data>
+  <data name="Lease_lblExRateError" xml:space="preserve">
+    <value>汇率有误</value>
+  </data>
+  <data name="Lease_lblIsLocal" xml:space="preserve">
+    <value>是否本币</value>
+  </data>
+  <data name="Lease_lblLeaseAccount" xml:space="preserve">
+    <value>租赁费用计算</value>
+  </data>
+  <data name="Lease_lblNorentDays" xml:space="preserve">
+    <value>免租期</value>
+  </data>
+  <data name="Lease_lblPayInAmt" xml:space="preserve">
+    <value>代收款金额</value>
+  </data>
+  <data name="Lease_lblPayInCode" xml:space="preserve">
+    <value>代收款单号</value>
+  </data>
+  <data name="Lease_lblPayInDataSource" xml:space="preserve">
+    <value>数据来源</value>
+  </data>
+  <data name="Lease_lblPayInDate" xml:space="preserve">
+    <value>收款日期</value>
+  </data>
+  <data name="Lease_lblPayInEdit" xml:space="preserve">
+    <value>租赁代收款修改</value>
+  </data>
+  <data name="Lease_lblPayInPeriod" xml:space="preserve">
+    <value>代收款计帐月</value>
+  </data>
+  <data name="Lease_lblPayInPut" xml:space="preserve">
+    <value>租赁代收款录入</value>
+  </data>
+  <data name="Lease_lblPayInStatus" xml:space="preserve">
+    <value>收款状态</value>
+  </data>
+  <data name="Lease_lblPayInType" xml:space="preserve">
+    <value>代收款类型</value>
+  </data>
+  <data name="Lease_lblShopCode" xml:space="preserve">
+    <value>商铺编码</value>
+  </data>
+  <data name="Lease_lblStatus" xml:space="preserve">
+    <value>汇率状态</value>
+  </data>
+  <data name="Lease_lblToCurTypeID" xml:space="preserve">
+    <value>目标币种</value>
+  </data>
+  <data name="Lease_NewLineBtnPutIn" xml:space="preserve">
+    <value>     提交
+     审批  </value>
+  </data>
+  <data name="Lease_NewLineBtnTemp" xml:space="preserve">
+    <value>     保存
+     草稿  </value>
+  </data>
+  <data name="Lease_RadioAccountPrint" xml:space="preserve">
+    <value>计算后打印</value>
+  </data>
+  <data name="Lease_RadioAllContract" xml:space="preserve">
+    <value>全部合同</value>
+  </data>
+  <data name="Lease_RadioNoPrint" xml:space="preserve">
+    <value>不打印</value>
+  </data>
+  <data name="Lease_RadioOneContract" xml:space="preserve">
+    <value>单个合同</value>
+  </data>
+  <data name="Lease_Renewjointventurelease" xml:space="preserve">
+    <value>联营合同再签</value>
+  </data>
+  <data name="Lease_RenewjointventureUnion" xml:space="preserve">
+    <value>联营合同再签审批</value>
+  </data>
+  <data name="Lease_Renewlease" xml:space="preserve">
+    <value>租赁合同再签</value>
+  </data>
+  <data name="Lease_RenewleaseBill" xml:space="preserve">
+    <value>租赁合同再签审批</value>
+  </data>
+  <data name="Lease_RptType" xml:space="preserve">
+    <value>报表类型</value>
+  </data>
+  <data name="Lease_UnionCount" xml:space="preserve">
+    <value>联营费用计算</value>
+  </data>
+  <data name="LeaseAreaType_AreaAdd" xml:space="preserve">
+    <value>场地出租合同录入</value>
+  </data>
+  <data name="LeaseAreaType_AreaConsent" xml:space="preserve">
+    <value>场地出租合同审批</value>
+  </data>
+  <data name="LeaseAreaType_AreaType" xml:space="preserve">
+    <value>场地类型</value>
+  </data>
+  <data name="LeaseAreaType_AreaTypeCode" xml:space="preserve">
+    <value>类型编码</value>
+  </data>
+  <data name="LeaseAreaType_AreaTypeDesc" xml:space="preserve">
+    <value>类型描述</value>
+  </data>
+  <data name="LeaseAreaType_AreaTypeStatus" xml:space="preserve">
+    <value>类型状态</value>
+  </data>
+  <data name="LeaseAreaType_CustCode" xml:space="preserve">
+    <value>商户编码</value>
+  </data>
+  <data name="LeaseAreaType_lblAreaDesc" xml:space="preserve">
+    <value>场地位置描述</value>
+  </data>
+  <data name="LeaseAreaType_lblAreaMaker" xml:space="preserve">
+    <value>场地布置商</value>
+  </data>
+  <data name="LeaseAreaType_NoStop" xml:space="preserve">
+    <value>未终止</value>
+  </data>
+  <data name="LeaseAreaType_Stop" xml:space="preserve">
+    <value>已终止</value>
+  </data>
+  <data name="LeaseBargain_lblPostil" xml:space="preserve">
+    <value>租赁合同审批</value>
+  </data>
+  <data name="LeaseBargain_lblWrite" xml:space="preserve">
+    <value>租赁合同录入</value>
+  </data>
+  <data name="LeaseConUnion_InTaxRate" xml:space="preserve">
+    <value>进项税(%)</value>
+  </data>
+  <data name="LeaseConUnion_OutTaxRate" xml:space="preserve">
+    <value>销项税(%)</value>
+  </data>
+  <data name="LeaseHdw_lblHdwType" xml:space="preserve">
+    <value>硬件类别</value>
+  </data>
+  <data name="LeaseHdw_lblHdwTypeModi" xml:space="preserve">
+    <value>硬件类型维护</value>
+  </data>
+  <data name="LeaseHdw_lblHdwTypeStatus" xml:space="preserve">
+    <value>硬件类型状态</value>
+  </data>
+  <data name="LeaseholdContract_labAccountCycle" xml:space="preserve">
+    <value>账期</value>
+  </data>
+  <data name="LeaseholdContract_labAdditionalItem" xml:space="preserve">
+    <value>附加条款</value>
+  </data>
+  <data name="LeaseholdContract_labBillCycle" xml:space="preserve">
+    <value>结算周期</value>
+  </data>
+  <data name="LeaseholdContract_labChargeEndDate" xml:space="preserve">
+    <value>费用结束日期</value>
+  </data>
+  <data name="LeaseholdContract_labChargeStartDate" xml:space="preserve">
+    <value>起租日期</value>
+  </data>
+  <data name="LeaseholdContract_labConEndDate" xml:space="preserve">
+    <value>合同终止日期</value>
+  </data>
+  <data name="LeaseholdContract_labConStartDate" xml:space="preserve">
+    <value>合同开始日期</value>
+  </data>
+  <data name="LeaseholdContract_labContractCode" xml:space="preserve">
+    <value>合同编码</value>
+  </data>
+  <data name="LeaseholdContract_labContractStatus" xml:space="preserve">
+    <value>合同状态</value>
+  </data>
+  <data name="LeaseholdContract_labConUnionRentInc" xml:space="preserve">
+    <value>费用增长率</value>
+  </data>
+  <data name="LeaseholdContract_labCurrencyType" xml:space="preserve">
+    <value>结算币种</value>
+  </data>
+  <data name="LeaseholdContract_labEConURL" xml:space="preserve">
+    <value>电子合同</value>
+  </data>
+  <data name="LeaseholdContract_labFirstAccountMonth" xml:space="preserve">
+    <value>首次结算记帐月</value>
+  </data>
+  <data name="LeaseholdContract_labIntDay" xml:space="preserve">
+    <value>滞纳金启征天数 </value>
+  </data>
+  <data name="LeaseholdContract_labLatePayInt" xml:space="preserve">
+    <value>滞纳金利率‰</value>
+  </data>
+  <data name="LeaseholdContract_labMonthSettleDays" xml:space="preserve">
+    <value>月结天数设定</value>
+  </data>
+  <data name="LeaseholdContract_labNote" xml:space="preserve">
+    <value>备注</value>
+  </data>
+  <data name="LeaseholdContract_labNotice" xml:space="preserve">
+    <value>终约通知期限</value>
+  </data>
+  <data name="LeaseholdContract_labPayTypeID" xml:space="preserve">
+    <value>押金方式</value>
+  </data>
+  <data name="LeaseholdContract_labPenalty" xml:space="preserve">
+    <value>提前终约处罚</value>
+  </data>
+  <data name="LeaseholdContract_labPenaltyItem" xml:space="preserve">
+    <value>提前终约附加条款</value>
+  </data>
+  <data name="LeaseholdContract_labRefID" xml:space="preserve">
+    <value>相关档案号</value>
+  </data>
+  <data name="LeaseholdContract_labRentInc" xml:space="preserve">
+    <value>租金增长率</value>
+  </data>
+  <data name="LeaseholdContract_labSettleMode" xml:space="preserve">
+    <value>结算处理方式</value>
+  </data>
+  <data name="LeaseholdContract_labShopCode" xml:space="preserve">
+    <value>商铺编码</value>
+  </data>
+  <data name="LeaseholdContract_labTradeID" xml:space="preserve">
+    <value>业态</value>
+  </data>
+  <data name="LeaseholdContract_labYesNoMin" xml:space="preserve">
+    <value>是否预收保底</value>
+  </data>
+  <data name="LeaseholdContractAuditing_labAttract" xml:space="preserve">
+    <value>招商员</value>
+  </data>
+  <data name="LeaseholdContractAuditing_labOverruleMust" xml:space="preserve">
+    <value>驳回必填</value>
+  </data>
+  <data name="LeaseModify_Title" xml:space="preserve">
+    <value>租赁合同信息修改</value>
+  </data>
+  <data name="LeaseModify_TitleAutiding" xml:space="preserve">
+    <value>租赁合同信息修改审批</value>
+  </data>
+  <data name="LeaseShopHdw_lblHdwCode" xml:space="preserve">
+    <value>硬件编号</value>
+  </data>
+  <data name="LeaseShopHdw_lblHdwCond" xml:space="preserve">
+    <value>硬件状况</value>
+  </data>
+  <data name="LeaseShopHdw_lblHdwName" xml:space="preserve">
+    <value>硬件名称</value>
+  </data>
+  <data name="LeaseShopHdw_lblHdwQty" xml:space="preserve">
+    <value>硬件数量</value>
+  </data>
+  <data name="LeaseShopHdw_lblHdwStd" xml:space="preserve">
+    <value>硬件规格</value>
+  </data>
+  <data name="LeaseShopHdw_lblHdwTypeName" xml:space="preserve">
+    <value>硬件类型名称</value>
+  </data>
+  <data name="LeaseShopHdw_lblHdwUnit" xml:space="preserve">
+    <value>硬件单位</value>
+  </data>
+  <data name="LeaseShopHdw_lblOwner" xml:space="preserve">
+    <value>资产拥有人</value>
+  </data>
+  <data name="Login_Backhome" xml:space="preserve">
+    <value>返回首页</value>
+  </data>
+  <data name="Login_lblLoginTit" xml:space="preserve">
+    <value>系统登录</value>
+  </data>
+  <data name="Login_lblOK" xml:space="preserve">
+    <value>确认</value>
+  </data>
+  <data name="Login_Loginout" xml:space="preserve">
+    <value>退出系统</value>
+  </data>
+  <data name="Login_UserID" xml:space="preserve">
+    <value>用户编码</value>
+  </data>
+  <data name="Login_UserLang" xml:space="preserve">
+    <value>使用语言</value>
+  </data>
+  <data name="Login_UserPwd" xml:space="preserve">
+    <value>登录口令</value>
+  </data>
+  <data name="Main_Operation_Interface" xml:space="preserve">
+    <value>操作界面</value>
+  </data>
+  <data name="MakePoolVoucher_ComeAndGoCo" xml:space="preserve">
+    <value>往来单位</value>
+  </data>
+  <data name="MakePoolVoucher_FYear" xml:space="preserve">
+    <value>年度期间</value>
+  </data>
+  <data name="MakePoolVoucher_lblRentalInt" xml:space="preserve">
+    <value>财务凭证导出</value>
+  </data>
+  <data name="MakePoolVoucher_lblSubs" xml:space="preserve">
+    <value>子公司名称</value>
+  </data>
+  <data name="MakePoolVoucher_NoPara" xml:space="preserve">
+    <value>没有凭证类型,请先导入凭证参数</value>
+  </data>
+  <data name="MakePoolVoucher_VoucherInput" xml:space="preserve">
+    <value>凭证参数导入</value>
+  </data>
+  <data name="MakePoolVoucher_WarrantName" xml:space="preserve">
+    <value>凭证名称</value>
+  </data>
+  <data name="Mall" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Master_cmdActivity" xml:space="preserve">
+    <value>其他</value>
+  </data>
+  <data name="Master_cmdDisplay" xml:space="preserve">
+    <value>美陈</value>
+  </data>
+  <data name="Master_cmdInternat" xml:space="preserve">
+    <value>网络</value>
+  </data>
+  <data name="Master_cmdPrints" xml:space="preserve">
+    <value>平面媒体</value>
+  </data>
+  <data name="Master_cmdRadio" xml:space="preserve">
+    <value>广播</value>
+  </data>
+  <data name="Master_cmdTV" xml:space="preserve">
+    <value>电视</value>
+  </data>
+  <data name="Master_lblAnPNm" xml:space="preserve">
+    <value>活动名称</value>
+  </data>
+  <data name="Master_lblAnPRecord" xml:space="preserve">
+    <value>推广促销活动信息</value>
+  </data>
+  <data name="Master_lblAnPRecordParticular" xml:space="preserve">
+    <value>推广促销活动详细信息设置</value>
+  </data>
+  <data name="Master_lblAnPTheme" xml:space="preserve">
+    <value>促销主题</value>
+  </data>
+  <data name="Master_lblEnd" xml:space="preserve">
+    <value>结束日期</value>
+  </data>
+  <data name="Master_lblSales" xml:space="preserve">
+    <value>业绩目标</value>
+  </data>
+  <data name="Master_lblStart" xml:space="preserve">
+    <value>开始时间</value>
+  </data>
+  <data name="Master_lblTargetPeopletime" xml:space="preserve">
+    <value>客流目标</value>
+  </data>
+  <data name="MDisplay_lblDisplayDesc" xml:space="preserve">
+    <value>陈列描述</value>
+  </data>
+  <data name="MDisplay_lblDisplayNm" xml:space="preserve">
+    <value>陈列名称</value>
+  </data>
+  <data name="MDisplay_lblintention" xml:space="preserve">
+    <value>陈列目的</value>
+  </data>
+  <data name="MDisplay_lblLocationDesc" xml:space="preserve">
+    <value>位置描述</value>
+  </data>
+  <data name="MDisplay_lblMcompany" xml:space="preserve">
+    <value>制作公司名称</value>
+  </data>
+  <data name="MDisplay_lblMDisplay" xml:space="preserve">
+    <value>美陈信息</value>
+  </data>
+  <data name="MediaInfo_AddMember" xml:space="preserve">
+    <value>      增加
+  成员</value>
+  </data>
+  <data name="MediaInfo_CardTypeD" xml:space="preserve">
+    <value>国内卡</value>
+  </data>
+  <data name="MediaInfo_CardTypeF" xml:space="preserve">
+    <value>国际卡</value>
+  </data>
+  <data name="MediaInfo_ChangAuto" xml:space="preserve">
+    <value>允许自动找零</value>
+  </data>
+  <data name="MediaInfo_CMediaMNo" xml:space="preserve">
+    <value>找零币制成员</value>
+  </data>
+  <data name="MediaInfo_CMediaNo" xml:space="preserve">
+    <value>找零币制种类</value>
+  </data>
+  <data name="MediaInfo_ComMall" xml:space="preserve">
+    <value>购物广场承担手续费比例(%)</value>
+  </data>
+  <data name="MediaInfo_ComTenant" xml:space="preserve">
+    <value>商户承担手续费比例(%)</value>
+  </data>
+  <data name="MediaInfo_Display" xml:space="preserve">
+    <value>      增加
+  种类</value>
+  </data>
+  <data name="MediaInfo_MediaDesc" xml:space="preserve">
+    <value>币制种类描述</value>
+  </data>
+  <data name="MediaInfo_MediaMDesc" xml:space="preserve">
+    <value>币制成员描述</value>
+  </data>
+  <data name="MediaInfo_MediaMNo" xml:space="preserve">
+    <value>币制成员编码</value>
+  </data>
+  <data name="MediaInfo_MediaNo" xml:space="preserve">
+    <value>币制种类编码</value>
+  </data>
+  <data name="MediaInfo_RMediaMNo" xml:space="preserve">
+    <value>退款币制成员</value>
+  </data>
+  <data name="MediaInfo_RMediaNo" xml:space="preserve">
+    <value>退款币制种类</value>
+  </data>
+  <data name="Mem_All" xml:space="preserve">
+    <value>所有</value>
+  </data>
+  <data name="Mem_ByMonth" xml:space="preserve">
+    <value>按月</value>
+  </data>
+  <data name="Mem_ByYear" xml:space="preserve">
+    <value>按年</value>
+  </data>
+  <data name="Mem_Generated" xml:space="preserve">
+    <value>通过注册</value>
+  </data>
+  <data name="Mem_NoGenerated" xml:space="preserve">
+    <value>未通过注册</value>
+  </data>
+  <data name="Memb_EnterCardID" xml:space="preserve">
+    <value>请输入会员卡号!</value>
+  </data>
+  <data name="Memb_NOMemberCard" xml:space="preserve">
+    <value>该会员卡不存在!</value>
+  </data>
+  <data name="Member_lblOldCardIssue" xml:space="preserve">
+    <value>老会员发卡</value>
+  </data>
+  <data name="Member_lblQueryLargess" xml:space="preserve">
+    <value>会员赠品兑换查询</value>
+  </data>
+  <data name="Member_lblSetBounsF" xml:space="preserve">
+    <value>积分规则设定</value>
+  </data>
+  <data name="Member_NoMemberID" xml:space="preserve">
+    <value>该会员号不存在!</value>
+  </data>
+  <data name="Member_YesCardID" xml:space="preserve">
+    <value>卡号已存在!</value>
+  </data>
+  <data name="Menber_lblQueryBonus" xml:space="preserve">
+    <value>会员积分查询</value>
+  </data>
+  <data name="Menber_lblQueryPurhist" xml:space="preserve">
+    <value>会员消费记录查询</value>
+  </data>
+  <data name="Menu_AreaManage" xml:space="preserve">
+    <value>经营区域管理</value>
+  </data>
+  <data name="Menu_Associator" xml:space="preserve">
+    <value>会员管理</value>
+  </data>
+  <data name="Menu_AssociatorMes" xml:space="preserve">
+    <value>会员信息录入</value>
+  </data>
+  <data name="Menu_AssociatorMesModify" xml:space="preserve">
+    <value>会员信息修改</value>
+  </data>
+  <data name="Menu_BackHome" xml:space="preserve">
+    <value>返回</value>
+  </data>
+  <data name="Menu_BillboardContractInformationList" xml:space="preserve">
+    <value>广告合同信息明细列表</value>
+  </data>
+  <data name="Menu_BillboardManagement" xml:space="preserve">
+    <value>广告位管理</value>
+  </data>
+  <data name="Menu_Billreprint" xml:space="preserve">
+    <value>重打租赁结算单</value>
+  </data>
+  <data name="Menu_BookGift" xml:space="preserve">
+    <value>礼品申请</value>
+  </data>
+  <data name="Menu_BrandManagement" xml:space="preserve">
+    <value>品牌维护</value>
+  </data>
+  <data name="Menu_BrowsingandUpdatingWorkflows" xml:space="preserve">
+    <value>查询更新</value>
+  </data>
+  <data name="Menu_BrowsingCurrentDepartmentDefinitions" xml:space="preserve">
+    <value>部门查看</value>
+  </data>
+  <data name="Menu_BrowsingCurrentRoles" xml:space="preserve">
+    <value>角色查看</value>
+  </data>
+  <data name="Menu_BrowsingMallGeographicalInformation" xml:space="preserve">
+    <value>楼层查看</value>
+  </data>
+  <data name="Menu_BrowsingRegularUnits" xml:space="preserve">
+    <value>单元查看</value>
+  </data>
+  <data name="Menu_BrowsingTenantGroups" xml:space="preserve">
+    <value>经营区域查看</value>
+  </data>
+  <data name="Menu_BuildingFloors" xml:space="preserve">
+    <value>楼层管理</value>
+  </data>
+  <data name="Menu_BusinessParametersManagement" xml:space="preserve">
+    <value>参数维护</value>
+  </data>
+  <data name="Menu_CalculateTenancyExpense" xml:space="preserve">
+    <value>租赁费用计算</value>
+  </data>
+  <data name="Menu_CommissionedReceivableManagement" xml:space="preserve">
+    <value>代收款管理</value>
+  </data>
+  <data name="Menu_ContractAlert" xml:space="preserve">
+    <value>2.2.3合同到期预警列表</value>
+  </data>
+  <data name="Menu_ContractInformationSummary" xml:space="preserve">
+    <value>2.2.1合同信息汇总列表</value>
+  </data>
+  <data name="Menu_CreditCardTransactionsManagement" xml:space="preserve">
+    <value>银行卡管理</value>
+  </data>
+  <data name="Menu_CurUserName" xml:space="preserve">
+    <value>当前用户:</value>
+  </data>
+  <data name="Menu_CustomerInformation" xml:space="preserve">
+    <value>商户信息列表</value>
+  </data>
+  <data name="Menu_CustomerManager" xml:space="preserve">
+    <value>商户管理</value>
+  </data>
+  <data name="Menu_CustomerTypeManagement" xml:space="preserve">
+    <value>商户类型维护</value>
+  </data>
+  <data name="Menu_CustPalaver" xml:space="preserve">
+    <value>招商洽谈明细列表</value>
+  </data>
+  <data name="Menu_DefineBillboard" xml:space="preserve">
+    <value>广告位维护</value>
+  </data>
+  <data name="Menu_DefineMallDepartments" xml:space="preserve">
+    <value>部门维护</value>
+  </data>
+  <data name="Menu_DefineMallGeographicalInformation" xml:space="preserve">
+    <value>楼层维护</value>
+  </data>
+  <data name="Menu_DefineRegularUnits" xml:space="preserve">
+    <value>单元维护</value>
+  </data>
+  <data name="Menu_DefineTenantGroups" xml:space="preserve">
+    <value>经营区域维护</value>
+  </data>
+  <data name="Menu_DefineWorkGroups" xml:space="preserve">
+    <value>业务组定义</value>
+  </data>
+  <data name="Menu_DepositManagement" xml:space="preserve">
+    <value>押金处理</value>
+  </data>
+  <data name="Menu_ElementaryBusinessInformationQuery" xml:space="preserve">
+    <value>基础信息报表</value>
+  </data>
+  <data name="Menu_ExChangeGift" xml:space="preserve">
+    <value>小票换礼品</value>
+  </data>
+  <data name="Menu_ExpenseReportingSystem" xml:space="preserve">
+    <value>费用相关报表</value>
+  </data>
+  <data name="Menu_ExpenseTypeManagement" xml:space="preserve">
+    <value>费用类型维护</value>
+  </data>
+  <data name="Menu_FirstInvoice" xml:space="preserve">
+    <value>首期费用计算</value>
+  </data>
+  <data name="Menu_FirstLease" xml:space="preserve">
+    <value>租赁首期费用计算</value>
+  </data>
+  <data name="Menu_FirstUnion" xml:space="preserve">
+    <value>联营首期费用计算</value>
+  </data>
+  <data name="Menu_GenerateReceivables" xml:space="preserve">
+    <value>生成代收款</value>
+  </data>
+  <data name="Menu_GiveGift" xml:space="preserve">
+    <value>发放礼品</value>
+  </data>
+  <data name="Menu_Help" xml:space="preserve">
+    <value>系统帮助</value>
+  </data>
+  <data name="Menu_ImportTransactionsData" xml:space="preserve">
+    <value>银行卡导入</value>
+  </data>
+  <data name="Menu_InActionAnalysis" xml:space="preserve">
+    <value>无积分会员分析</value>
+  </data>
+  <data name="Menu_InputReceivables" xml:space="preserve">
+    <value>代收款录入</value>
+  </data>
+  <data name="Menu_InquireCustomerInformation" xml:space="preserve">
+    <value>商户资料查询</value>
+  </data>
+  <data name="Menu_InquirePotentialCustomerInformation" xml:space="preserve">
+    <value>潜在商户资料查询</value>
+  </data>
+  <data name="Menu_InsufficientBonus" xml:space="preserve">
+    <value>积分不足预警</value>
+  </data>
+  <data name="Menu_InterestPrint" xml:space="preserve">
+    <value>滞纳金结算单重打</value>
+  </data>
+  <data name="Menu_InterestRate" xml:space="preserve">
+    <value>滞纳金管理</value>
+  </data>
+  <data name="Menu_InvJVAccept" xml:space="preserve">
+    <value>联营费用收取</value>
+  </data>
+  <data name="Menu_InvoiceInterest" xml:space="preserve">
+    <value>滞纳金生成</value>
+  </data>
+  <data name="Menu_InvoiceInterest1" xml:space="preserve">
+    <value>生成</value>
+  </data>
+  <data name="Menu_InvoiceList" xml:space="preserve">
+    <value>单据和付款明细</value>
+  </data>
+  <data name="Menu_InvUnionReturn" xml:space="preserve">
+    <value>联营费用结算</value>
+  </data>
+  <data name="Menu_IssueNewCard" xml:space="preserve">
+    <value>新会员发卡</value>
+  </data>
+  <data name="Menu_lblHandBonus" xml:space="preserve">
+    <value>会员积分补登</value>
+  </data>
+  <data name="Menu_lblShopHdwModi" xml:space="preserve">
+    <value>物业仪表维护</value>
+  </data>
+  <data name="Menu_Lease" xml:space="preserve">
+    <value>费用管理</value>
+  </data>
+  <data name="Menu_LeaseAccountManagementGroup" xml:space="preserve">
+    <value>招商组</value>
+  </data>
+  <data name="Menu_LeaseContractInformationList" xml:space="preserve">
+    <value>2.2.2合同信息明细列表</value>
+  </data>
+  <data name="Menu_LeaseContractManagement" xml:space="preserve">
+    <value>租约管理</value>
+  </data>
+  <data name="Menu_LeaseContractStop" xml:space="preserve">
+    <value>租赁合同终止</value>
+  </data>
+  <data name="Menu_LeaseContractStopAdd" xml:space="preserve">
+    <value>合同终止录入</value>
+  </data>
+  <data name="Menu_LeaseContractStopAuditing" xml:space="preserve">
+    <value>合同终止审批</value>
+  </data>
+  <data name="Menu_LeaseItemModify" xml:space="preserve">
+    <value>修改租赁合同基本信息</value>
+  </data>
+  <data name="Menu_LeaseItemModifyAutiding" xml:space="preserve">
+    <value>修改租赁合同基本信息审批</value>
+  </data>
+  <data name="Menu_LeaseModify" xml:space="preserve">
+    <value>修改已审批合同</value>
+  </data>
+  <data name="Menu_LeaseQuery" xml:space="preserve">
+    <value>商铺合同查询</value>
+  </data>
+  <data name="Menu_LeaseUnionItemModify" xml:space="preserve">
+    <value>修改联营合同基本信息</value>
+  </data>
+  <data name="Menu_LeaseUnionItemModifyAuditing" xml:space="preserve">
+    <value>修改联营合同基本信息审批</value>
+  </data>
+  <data name="Menu_MaintainCustomerInformation" xml:space="preserve">
+    <value>商户资料维护</value>
+  </data>
+  <data name="Menu_MaintainPotentialCustomerInformation" xml:space="preserve">
+    <value>潜在商户资料维护</value>
+  </data>
+  <data name="Menu_MallOrganizationStructureManagement" xml:space="preserve">
+    <value>部门管理</value>
+  </data>
+  <data name="Menu_ManualReceipt" xml:space="preserve">
+    <value>单笔销售数据录入</value>
+  </data>
+  <data name="Menu_MediaInfo" xml:space="preserve">
+    <value>付款方式维护</value>
+  </data>
+  <data name="Menu_MemberBonusComparison" xml:space="preserve">
+    <value>会员积分比较</value>
+  </data>
+  <data name="Menu_MemberInforAnalysis" xml:space="preserve">
+    <value>会员分析-会员资料/积分</value>
+  </data>
+  <data name="Menu_MemberInformation" xml:space="preserve">
+    <value>会员信息查询</value>
+  </data>
+  <data name="Menu_MemberProfileAnalysis" xml:space="preserve">
+    <value>会员信息</value>
+  </data>
+  <data name="Menu_MemberStatistics" xml:space="preserve">
+    <value>会员统计表</value>
+  </data>
+  <data name="Menu_MenuInfo" xml:space="preserve">
+    <value>菜单维护</value>
+  </data>
+  <data name="Menu_ModifyanExistedUser" xml:space="preserve">
+    <value>修改用户</value>
+  </data>
+  <data name="Menu_ModifyReceivables" xml:space="preserve">
+    <value>代收款修改</value>
+  </data>
+  <data name="Menu_NewPassword" xml:space="preserve">
+    <value>更改密码</value>
+  </data>
+  <data name="Menu_NewRole" xml:space="preserve">
+    <value>角色维护</value>
+  </data>
+  <data name="Menu_NewUser" xml:space="preserve">
+    <value>增加用户</value>
+  </data>
+  <data name="Menu_NewWorkflow" xml:space="preserve">
+    <value>添加</value>
+  </data>
+  <data name="Menu_NoUserName" xml:space="preserve">
+    <value>未知</value>
+  </data>
+  <data name="Menu_PayOutList" xml:space="preserve">
+    <value>返款单生成</value>
+  </data>
+  <data name="Menu_PerchaseRank" xml:space="preserve">
+    <value>积分点购买金额及频次排序</value>
+  </data>
+  <data name="Menu_PlanUnitShopTypeColor" xml:space="preserve">
+    <value>单元规划业态图示</value>
+  </data>
+  <data name="Menu_PotCustomer" xml:space="preserve">
+    <value>潜在商户信息列表</value>
+  </data>
+  <data name="Menu_ProcessReceivables" xml:space="preserve">
+    <value>代收款返还</value>
+  </data>
+  <data name="Menu_Receipt" xml:space="preserve">
+    <value>销售数据导入</value>
+  </data>
+  <data name="Menu_ReceiptQuery" xml:space="preserve">
+    <value>销售单据查询</value>
+  </data>
+  <data name="Menu_RedeemGift" xml:space="preserve">
+    <value>赠品兑换</value>
+  </data>
+  <data name="Menu_RegularRentableSpacesManagement" xml:space="preserve">
+    <value>项目信息定义</value>
+  </data>
+  <data name="Menu_RegularUnitsInformationSummary" xml:space="preserve">
+    <value>单元情况列表</value>
+  </data>
+  <data name="Menu_RegularUnitsTypeVindicate" xml:space="preserve">
+    <value>单元类型维护</value>
+  </data>
+  <data name="Menu_ReplacementCharges" xml:space="preserve">
+    <value>换卡收费</value>
+  </data>
+  <data name="Menu_ReportingSystem" xml:space="preserve">
+    <value>报表</value>
+  </data>
+  <data name="Menu_ResidueManagement" xml:space="preserve">
+    <value>余款处理</value>
+  </data>
+  <data name="Menu_RptBankCardDiversitylblTrans" xml:space="preserve">
+    <value>银行卡交易差异报表</value>
+  </data>
+  <data name="Menu_RptBankCrdSumRpt" xml:space="preserve">
+    <value>商铺银行卡交易统计列表</value>
+  </data>
+  <data name="Menu_RptGoodsRejected" xml:space="preserve">
+    <value>商品退货明细列表</value>
+  </data>
+  <data name="Menu_RptMediaSum" xml:space="preserve">
+    <value>付款方式汇总</value>
+  </data>
+  <data name="Menu_RptSalesMediaSumCust_Title" xml:space="preserve">
+    <value>商铺销售付款方式汇总列表</value>
+  </data>
+  <data name="Menu_RptStoreInvSum" xml:space="preserve">
+    <value>1.1经营总结</value>
+  </data>
+  <data name="Menu_SalesBrand" xml:space="preserve">
+    <value>3.2主要品牌销售额情况</value>
+  </data>
+  <data name="Menu_SalesReportingSystem" xml:space="preserve">
+    <value>销售相关报表</value>
+  </data>
+  <data name="Menu_SEfrmGpcmdAp" xml:space="preserve">
+    <value>推广活动管理</value>
+  </data>
+  <data name="Menu_Sell" xml:space="preserve">
+    <value>销售管理</value>
+  </data>
+  <data name="Menu_Sellins" xml:space="preserve">
+    <value>销售数据导入</value>
+  </data>
+  <data name="Menu_Sellint" xml:space="preserve">
+    <value>销售数据管理</value>
+  </data>
+  <data name="Menu_ServiceDesk" xml:space="preserve">
+    <value>服务台工作站</value>
+  </data>
+  <data name="Menu_SettlementBillOperation" xml:space="preserve">
+    <value>结算单管理</value>
+  </data>
+  <data name="Menu_ShopDaySales" xml:space="preserve">
+    <value>销售日报生成</value>
+  </data>
+  <data name="Menu_ShopMemberSales" xml:space="preserve">
+    <value>商铺会员销售额</value>
+  </data>
+  <data name="Menu_ShopMonthSales" xml:space="preserve">
+    <value>销售月报生成</value>
+  </data>
+  <data name="Menu_ShopSalesVSMemberSales" xml:space="preserve">
+    <value>商店日销售与会员销售比较</value>
+  </data>
+  <data name="Menu_ShopSellReceipt" xml:space="preserve">
+    <value>批量销售数据录入</value>
+  </data>
+  <data name="Menu_ShopTotalSalesVSMemberSales" xml:space="preserve">
+    <value>商店销售与会员销售比较</value>
+  </data>
+  <data name="Menu_ShopTypeManagement" xml:space="preserve">
+    <value>商铺类型维护</value>
+  </data>
+  <data name="Menu_SkuInfo" xml:space="preserve">
+    <value>商品编码维护</value>
+  </data>
+  <data name="Menu_SMSPara" xml:space="preserve">
+    <value>系统参数设置</value>
+  </data>
+  <data name="Menu_StoreRentInfo" xml:space="preserve">
+    <value>项目出租情况列表</value>
+  </data>
+  <data name="Menu_StoreSalesYearAnalysis" xml:space="preserve">
+    <value>3.1项目销售额情况</value>
+  </data>
+  <data name="Menu_SystemElementaryDataManagement" xml:space="preserve">
+    <value>基础信息定义</value>
+  </data>
+  <data name="Menu_SystemOperationRoleManagemsnt" xml:space="preserve">
+    <value>角色管理</value>
+  </data>
+  <data name="Menu_SystemUserManagement" xml:space="preserve">
+    <value>用户管理</value>
+  </data>
+  <data name="Menu_TenancyExpenseSettlement" xml:space="preserve">
+    <value>租赁费用结算</value>
+  </data>
+  <data name="Menu_TicketChargeGift" xml:space="preserve">
+    <value>小票换礼品</value>
+  </data>
+  <data name="Menu_TimeSalesAnalysis" xml:space="preserve">
+    <value>销售分析图示</value>
+  </data>
+  <data name="Menu_TitleDeductMoney" xml:space="preserve">
+    <value>商铺代收款抵扣汇总列表</value>
+  </data>
+  <data name="Menu_TradeRelation" xml:space="preserve">
+    <value>业态维护</value>
+  </data>
+  <data name="Menu_TransactionsReconciliation" xml:space="preserve">
+    <value>银行卡对账</value>
+  </data>
+  <data name="Menu_TRUContractInformation" xml:space="preserve">
+    <value>场地合同信息明细报表</value>
+  </data>
+  <data name="Menu_UnionBillreprint" xml:space="preserve">
+    <value>重打联营结算单</value>
+  </data>
+  <data name="Menu_UnitManage" xml:space="preserve">
+    <value>单元管理</value>
+  </data>
+  <data name="Menu_UnregisteredCard" xml:space="preserve">
+    <value>新注册会员</value>
+  </data>
+  <data name="Menu_VAtongzhou" xml:space="preserve">
+    <value>可视化系统</value>
+  </data>
+  <data name="Menu_VisualAnalysis" xml:space="preserve">
+    <value>可视化</value>
+  </data>
+  <data name="Menu_Workflow" xml:space="preserve">
+    <value>工作流数据定义</value>
+  </data>
+  <data name="Menu_WorkflowManagement" xml:space="preserve">
+    <value>工作流管理</value>
+  </data>
+  <data name="MesPublic_InvCancel" xml:space="preserve">
+    <value>结算单已取消.</value>
+  </data>
+  <data name="MesPublic_lblHaveMesPutIn" xml:space="preserve">
+    <value>已有提交数据.</value>
+  </data>
+  <data name="MiInfoVindicate_labAttractTel" xml:space="preserve">
+    <value>招商电话</value>
+  </data>
+  <data name="MiInfoVindicate_labContentTel" xml:space="preserve">
+    <value>物业电话</value>
+  </data>
+  <data name="Mneu_SalesMediaSumDay" xml:space="preserve">
+    <value>商铺每日销售付款方式汇总列表</value>
+  </data>
+  <data name="msg_NotFindData" xml:space="preserve">
+    <value>没有查到相关数据.</value>
+  </data>
+  <data name="Munu_Auth" xml:space="preserve">
+    <value>数据权限维护</value>
+  </data>
+  <data name="Munu_WorkbencNavigator" xml:space="preserve">
+    <value>工 作 导 航 台</value>
+  </data>
+  <data name="OpenPageLog_MainName" xml:space="preserve">
+    <value>主页面</value>
+  </data>
+  <data name="OpenPageLog_PageName" xml:space="preserve">
+    <value>页面名称</value>
+  </data>
+  <data name="OpenPageLog_PagePath" xml:space="preserve">
+    <value>页面路径</value>
+  </data>
+  <data name="OpenPageLog_PageQuery" xml:space="preserve">
+    <value>用户系统登录查询</value>
+  </data>
+  <data name="PayOut_PayOutAmtBig" xml:space="preserve">
+    <value>返还金额大于代收款金额!</value>
+  </data>
+  <data name="PayOut_PayOutAmtZero" xml:space="preserve">
+    <value>请输入返还金额！</value>
+  </data>
+  <data name="PotCustomer_ADDArchives" xml:space="preserve">
+    <value>建档人</value>
+  </data>
+  <data name="PotCustomer_AreaSalesRate" xml:space="preserve">
+    <value>坪效</value>
+  </data>
+  <data name="PotCustomer_BaseDiscount" xml:space="preserve">
+    <value>商品基础折扣</value>
+  </data>
+  <data name="PotCustomer_Basic" xml:space="preserve">
+    <value>基本信息</value>
+  </data>
+  <data name="PotCustomer_BrandOperateType" xml:space="preserve">
+    <value>品牌经营方式类型维护</value>
+  </data>
+  <data name="PotCustomer_btnExamine" xml:space="preserve">
+    <value>提交审批</value>
+  </data>
+  <data name="PotCustomer_BusinessItem" xml:space="preserve">
+    <value>商业项目</value>
+  </data>
+  <data name="PotCustomer_butAdd" xml:space="preserve">
+    <value>添加</value>
+  </data>
+  <data name="PotCustomer_butCancelEdit" xml:space="preserve">
+    <value>取消编辑</value>
+  </data>
+  <data name="PotCustomer_butSave" xml:space="preserve">
+    <value>保存 </value>
+  </data>
+  <data name="PotCustomer_butUpdate" xml:space="preserve">
+    <value>更新 </value>
+  </data>
+  <data name="PotCustomer_CheckMainBrand" xml:space="preserve">
+    <value>主营品牌不能为空</value>
+  </data>
+  <data name="PotCustomer_CheckPcent" xml:space="preserve">
+    <value>抽成率不能为空</value>
+  </data>
+  <data name="PotCustomer_CheckPotShopFalse" xml:space="preserve">
+    <value>请检查意向商铺信息</value>
+  </data>
+  <data name="PotCustomer_CheckRentalPrice" xml:space="preserve">
+    <value>单位租金不能为0</value>
+  </data>
+  <data name="PotCustomer_CheckRentArea" xml:space="preserve">
+    <value>意向面积不能为0</value>
+  </data>
+  <data name="PotCustomer_CheckRentInc" xml:space="preserve">
+    <value>租金递增率不能为空</value>
+  </data>
+  <data name="PotCustomer_CheckSEDate" xml:space="preserve">
+    <value>意向商铺日期错误</value>
+  </data>
+  <data name="PotCustomer_ClientCard" xml:space="preserve">
+    <value>商户证照</value>
+  </data>
+  <data name="PotCustomer_Contact" xml:space="preserve">
+    <value>联系人</value>
+  </data>
+  <data name="PotCustomer_ContactVindicate" xml:space="preserve">
+    <value>联系人维护</value>
+  </data>
+  <data name="PotCustomer_CreditLevel" xml:space="preserve">
+    <value>商户信用等级</value>
+  </data>
+  <data name="PotCustomer_CustAttractProcessType" xml:space="preserve">
+    <value>招商进程级别</value>
+  </data>
+  <data name="PotCustomer_CustContactorName" xml:space="preserve">
+    <value>商户洽商人</value>
+  </data>
+  <data name="PotCustomer_CustCreditLevel" xml:space="preserve">
+    <value>信用等级</value>
+  </data>
+  <data name="PotCustomer_CustManageSurvey" xml:space="preserve">
+    <value>潜在商户经营概况</value>
+  </data>
+  <data name="PotCustomer_CustMostlyTitle" xml:space="preserve">
+    <value>主要议题</value>
+  </data>
+  <data name="PotCustomer_CustomerLayer" xml:space="preserve">
+    <value>客层</value>
+  </data>
+  <data name="PotCustomer_CustPalaverNote" xml:space="preserve">
+    <value>潜在商户洽商记录</value>
+  </data>
+  <data name="PotCustomer_CustPalaverPlace" xml:space="preserve">
+    <value>洽商地点</value>
+  </data>
+  <data name="PotCustomer_CustPalaverResult" xml:space="preserve">
+    <value>达成意向</value>
+  </data>
+  <data name="PotCustomer_CustPalaverRound" xml:space="preserve">
+    <value>洽谈轮次</value>
+  </data>
+  <data name="PotCustomer_CustRentInc" xml:space="preserve">
+    <value>租金递增率</value>
+  </data>
+  <data name="PotCustomer_CustSource" xml:space="preserve">
+    <value>商户来源</value>
+  </data>
+  <data name="PotCustomer_CustTakeOutRate" xml:space="preserve">
+    <value>抽成率</value>
+  </data>
+  <data name="PotCustomer_CustUnSolved" xml:space="preserve">
+    <value>未解决问题</value>
+  </data>
+  <data name="PotCustomer_hiddenInformation" xml:space="preserve">
+    <value>基本信息</value>
+  </data>
+  <data name="PotCustomer_InputPeople" xml:space="preserve">
+    <value>录入人</value>
+  </data>
+  <data name="PotCustomer_IntentUnits" xml:space="preserve">
+    <value>意向单元</value>
+  </data>
+  <data name="PotCustomer_labCustomerQuery" xml:space="preserve">
+    <value>潜在商户资料查询</value>
+  </data>
+  <data name="PotCustomer_labCustomerUptate" xml:space="preserve">
+    <value>潜在商户资料维护</value>
+  </data>
+  <data name="PotCustomer_lblBankAcct" xml:space="preserve">
+    <value>银行帐号</value>
+  </data>
+  <data name="PotCustomer_lblBankName" xml:space="preserve">
+    <value>开户银行</value>
+  </data>
+  <data name="PotCustomer_lblBrandTradeType" xml:space="preserve">
+    <value>品牌经营方式</value>
+  </data>
+  <data name="PotCustomer_lblContactorName" xml:space="preserve">
+    <value>联系人姓名</value>
+  </data>
+  <data name="PotCustomer_lblCreateUserTitle" xml:space="preserve">
+    <value>商户立项准备</value>
+  </data>
+  <data name="PotCustomer_lblCustAge" xml:space="preserve">
+    <value>客群年龄</value>
+  </data>
+  <data name="PotCustomer_lblCustCode" xml:space="preserve">
+    <value>商户编码</value>
+  </data>
+  <data name="PotCustomer_lblCustLicenseCode" xml:space="preserve">
+    <value>证照编码</value>
+  </data>
+  <data name="PotCustomer_lblCustLicenseName" xml:space="preserve">
+    <value>证照名称</value>
+  </data>
+  <data name="PotCustomer_lblCustLicenseType" xml:space="preserve">
+    <value>证照类型</value>
+  </data>
+  <data name="PotCustomer_lblCustName" xml:space="preserve">
+    <value>商户名称</value>
+  </data>
+  <data name="PotCustomer_lblCustSex" xml:space="preserve">
+    <value>客群性别</value>
+  </data>
+  <data name="PotCustomer_lblCustShortName" xml:space="preserve">
+    <value>商户简称</value>
+  </data>
+  <data name="PotCustomer_lblCustTitle" xml:space="preserve">
+    <value>潜在商户资料准备</value>
+  </data>
+  <data name="PotCustomer_lblCustTradeBrand" xml:space="preserve">
+    <value>商户经营品牌</value>
+  </data>
+  <data name="PotCustomer_lblCustType" xml:space="preserve">
+    <value>商户类型</value>
+  </data>
+  <data name="PotCustomer_lblCustUnitPrice" xml:space="preserve">
+    <value>客单价</value>
+  </data>
+  <data name="PotCustomer_lblEMail" xml:space="preserve">
+    <value>电子邮件</value>
+  </data>
+  <data name="PotCustomer_lblLegalRep" xml:space="preserve">
+    <value>法人姓名</value>
+  </data>
+  <data name="PotCustomer_lblLegalRepTitle" xml:space="preserve">
+    <value>法人职务</value>
+  </data>
+  <data name="PotCustomer_lblMobileTel" xml:space="preserve">
+    <value>移动电话</value>
+  </data>
+  <data name="PotCustomer_lblMostlyWarePrice" xml:space="preserve">
+    <value>主商品价格</value>
+  </data>
+  <data name="PotCustomer_lblOfficeAddr" xml:space="preserve">
+    <value>办公地址1</value>
+  </data>
+  <data name="PotCustomer_lblOfficeAddr2" xml:space="preserve">
+    <value>办公地址2</value>
+  </data>
+  <data name="PotCustomer_lblOfficeAddr3" xml:space="preserve">
+    <value>办公地址3</value>
+  </data>
+  <data name="PotCustomer_lblOfficeTel" xml:space="preserve">
+    <value>办公电话</value>
+  </data>
+  <data name="PotCustomer_lblPostAddr" xml:space="preserve">
+    <value>邮寄地址1</value>
+  </data>
+  <data name="PotCustomer_lblPostAddr2" xml:space="preserve">
+    <value>邮寄地址2</value>
+  </data>
+  <data name="PotCustomer_lblPostAddr3" xml:space="preserve">
+    <value>邮寄地址3</value>
+  </data>
+  <data name="PotCustomer_lblPostCode" xml:space="preserve">
+    <value>邮政编码</value>
+  </data>
+  <data name="PotCustomer_lblRegAddr" xml:space="preserve">
+    <value>注册地</value>
+  </data>
+  <data name="PotCustomer_lblRegCap" xml:space="preserve">
+    <value>注册资金</value>
+  </data>
+  <data name="PotCustomer_lblRegCode" xml:space="preserve">
+    <value>工商注册号</value>
+  </data>
+  <data name="PotCustomer_lblTaxCode" xml:space="preserve">
+    <value>税号</value>
+  </data>
+  <data name="PotCustomer_lblTitle" xml:space="preserve">
+    <value>联系人职务</value>
+  </data>
+  <data name="PotCustomer_lblTradeBrand" xml:space="preserve">
+    <value>经营品牌</value>
+  </data>
+  <data name="PotCustomer_lblTradeType" xml:space="preserve">
+    <value>业态</value>
+  </data>
+  <data name="PotCustomer_lblVoucherTitle" xml:space="preserve">
+    <value>立项审批</value>
+  </data>
+  <data name="PotCustomer_lblWeb" xml:space="preserve">
+    <value>企业主页</value>
+  </data>
+  <data name="PotCustomer_LevelName" xml:space="preserve">
+    <value>等级名称</value>
+  </data>
+  <data name="PotCustomer_LinkmanVindicate" xml:space="preserve">
+    <value>联系人维护</value>
+  </data>
+  <data name="PotCustomer_ManageSurvey" xml:space="preserve">
+    <value>经营概况</value>
+  </data>
+  <data name="PotCustomer_PalaverType" xml:space="preserve">
+    <value>洽谈方式</value>
+  </data>
+  <data name="PotCustomer_PalaverUser" xml:space="preserve">
+    <value>商户洽谈人</value>
+  </data>
+  <data name="PotCustomer_planArea" xml:space="preserve">
+    <value>计划开店区域</value>
+  </data>
+  <data name="PotCustomer_planDate" xml:space="preserve">
+    <value>计划开店日期</value>
+  </data>
+  <data name="PotCustomer_planShopNumber" xml:space="preserve">
+    <value>计划开店数量</value>
+  </data>
+  <data name="PotCustomer_PotShopHighReg" xml:space="preserve">
+    <value>层高要求</value>
+  </data>
+  <data name="PotCustomer_PotShopLoadReg" xml:space="preserve">
+    <value>荷载要求</value>
+  </data>
+  <data name="PotCustomer_PotShopPowerReg" xml:space="preserve">
+    <value>电量要求</value>
+  </data>
+  <data name="PotCustomer_PotShopWaterReg" xml:space="preserve">
+    <value>上下水</value>
+  </data>
+  <data name="PotCustomer_PriceRange" xml:space="preserve">
+    <value>单品价格范围</value>
+  </data>
+  <data name="PotCustomer_ProcessType" xml:space="preserve">
+    <value>招商进程类型维护</value>
+  </data>
+  <data name="PotCustomer_PromoteArea" xml:space="preserve">
+    <value>促销范围</value>
+  </data>
+  <data name="PotCustomer_PromoteCost" xml:space="preserve">
+    <value>促销力度</value>
+  </data>
+  <data name="PotCustomer_SetupShopArea" xml:space="preserve">
+    <value>开店区域</value>
+  </data>
+  <data name="PotCustomer_ShopNumber" xml:space="preserve">
+    <value>开店数量</value>
+  </data>
+  <data name="PotCustomer_SourceType" xml:space="preserve">
+    <value>商户来源类型</value>
+  </data>
+  <data name="PotCustomer_TakeChargeArea" xml:space="preserve">
+    <value>负责区域</value>
+  </data>
+  <data name="PotShop_BizMode" xml:space="preserve">
+    <value>经营方式</value>
+  </data>
+  <data name="PotShop_CustomerLayerName" xml:space="preserve">
+    <value>客层名称</value>
+  </data>
+  <data name="PotShop_CustomerLayerVindicate" xml:space="preserve">
+    <value>客层维护</value>
+  </data>
+  <data name="PotShop_lblMainBrand" xml:space="preserve">
+    <value>主营品牌</value>
+  </data>
+  <data name="PotShop_lblPalaverAim" xml:space="preserve">
+    <value>谈判目标</value>
+  </data>
+  <data name="PotShop_lblPalaverNode" xml:space="preserve">
+    <value>谈判记录</value>
+  </data>
+  <data name="PotShop_lblPalaverTime" xml:space="preserve">
+    <value>谈判日期</value>
+  </data>
+  <data name="PotShop_lblPalaverUser" xml:space="preserve">
+    <value>谈判人员</value>
+  </data>
+  <data name="PotShop_lblPotShopName" xml:space="preserve">
+    <value>商铺名称</value>
+  </data>
+  <data name="PotShop_lblRentalPrice" xml:space="preserve">
+    <value>单位租金</value>
+  </data>
+  <data name="PotShop_lblRentArea" xml:space="preserve">
+    <value>意向面积</value>
+  </data>
+  <data name="PotShop_lblShopEndDate" xml:space="preserve">
+    <value>终止日期</value>
+  </data>
+  <data name="PotShop_lblShopStartDate" xml:space="preserve">
+    <value>开始日期</value>
+  </data>
+  <data name="PotShop_lblShopType" xml:space="preserve">
+    <value>商铺类型</value>
+  </data>
+  <data name="PotShop_lblShopTypeCode" xml:space="preserve">
+    <value>商铺类型编码</value>
+  </data>
+  <data name="PotShop_lblShopTypeName" xml:space="preserve">
+    <value>商铺类型名称</value>
+  </data>
+  <data name="PotShop_lblShopTypeTitle" xml:space="preserve">
+    <value>商铺类型</value>
+  </data>
+  <data name="PotShop_PalaverAndOther" xml:space="preserve">
+    <value>谈判记录及其他</value>
+  </data>
+  <data name="PotShop_Selected" xml:space="preserve">
+    <value>选择</value>
+  </data>
+  <data name="Print_soptBnW" xml:space="preserve">
+    <value>黑白</value>
+  </data>
+  <data name="Print_soptColour" xml:space="preserve">
+    <value>彩色</value>
+  </data>
+  <data name="Prints_chkFri" xml:space="preserve">
+    <value>星期五</value>
+  </data>
+  <data name="Prints_chkMon" xml:space="preserve">
+    <value>星期一</value>
+  </data>
+  <data name="Prints_chkSat" xml:space="preserve">
+    <value>星期六</value>
+  </data>
+  <data name="Prints_chkSun" xml:space="preserve">
+    <value>星期日</value>
+  </data>
+  <data name="Prints_chkThu" xml:space="preserve">
+    <value>星期四</value>
+  </data>
+  <data name="Prints_chkTue" xml:space="preserve">
+    <value>星期二</value>
+  </data>
+  <data name="Prints_chkWed" xml:space="preserve">
+    <value>星期三</value>
+  </data>
+  <data name="Prints_lblAddr" xml:space="preserve">
+    <value>地址</value>
+  </data>
+  <data name="Prints_lblOffPhone" xml:space="preserve">
+    <value>办公室电话</value>
+  </data>
+  <data name="Prints_lblPrints" xml:space="preserve">
+    <value>平面媒体设定</value>
+  </data>
+  <data name="Prints_lblPrintSizeNm" xml:space="preserve">
+    <value>版面大小</value>
+  </data>
+  <data name="Prints_lblPrintsNm" xml:space="preserve">
+    <value>媒体名称</value>
+  </data>
+  <data name="Prints_lblWeb" xml:space="preserve">
+    <value>公司网址</value>
+  </data>
+  <data name="Prompt_AccountDate" xml:space="preserve">
+    <value>请输入计算开始时间</value>
+  </data>
+  <data name="Prompt_AccountEndDate" xml:space="preserve">
+    <value>请输入结算结束时间</value>
+  </data>
+  <data name="Prompt_AdjAmt" xml:space="preserve">
+    <value>请输入调整金额！</value>
+  </data>
+  <data name="Prompt_Before_Charge_No" xml:space="preserve">
+    <value>前期费用未生成!</value>
+  </data>
+  <data name="Prompt_CheckIdeaNoEmpty" xml:space="preserve">
+    <value>请输入审批意见!</value>
+  </data>
+  <data name="Prompt_ConfirmOK" xml:space="preserve">
+    <value>提交成功</value>
+  </data>
+  <data name="Prompt_conLeaseBalanceMonth" xml:space="preserve">
+    <value>请输入结算月份!</value>
+  </data>
+  <data name="Prompt_conLeaseBillCycle" xml:space="preserve">
+    <value>请选择结算周期!</value>
+  </data>
+  <data name="Prompt_conLeaseIfPrepay" xml:space="preserve">
+    <value>请选择是否预收保底!</value>
+  </data>
+  <data name="Prompt_conLeaseMonthSettleDays" xml:space="preserve">
+    <value>请输入月结天数设定!</value>
+  </data>
+  <data name="Prompt_conLeasePayTypeID" xml:space="preserve">
+    <value>请选择押金方式!</value>
+  </data>
+  <data name="Prompt_conLeaseSettleMode" xml:space="preserve">
+    <value>请选择结算处理方式!</value>
+  </data>
+  <data name="Prompt_Contact_Date_No" xml:space="preserve">
+    <value>结算时间段不在合同范围内!</value>
+  </data>
+  <data name="Prompt_Contract_Info_No" xml:space="preserve">
+    <value>没有合同信息!</value>
+  </data>
+  <data name="Prompt_Contract_No" xml:space="preserve">
+    <value>合同无效!</value>
+  </data>
+  <data name="Prompt_Contract_No_Data" xml:space="preserve">
+    <value>未生成费用！</value>
+  </data>
+  <data name="Prompt_contractCode" xml:space="preserve">
+    <value>请输入合同编码!</value>
+  </data>
+  <data name="Prompt_Exist" xml:space="preserve">
+    <value>对不起,该编码已存在!</value>
+  </data>
+  <data name="Prompt_ExistHCode" xml:space="preserve">
+    <value>该月已存在此硬件记录!</value>
+  </data>
+  <data name="Prompt_ExistUnitCode" xml:space="preserve">
+    <value>已存在该单元编码.</value>
+  </data>
+  <data name="Prompt_ExistUnitCodeError" xml:space="preserve">
+    <value>单元编码输入错误.</value>
+  </data>
+  <data name="Prompt_First_Charge_No" xml:space="preserve">
+    <value>首期费用未生成!</value>
+  </data>
+  <data name="Prompt_InputChargeDate" xml:space="preserve">
+    <value>请输入费用期间!</value>
+  </data>
+  <data name="Prompt_InputFloat" xml:space="preserve">
+    <value>请输入浮点型!</value>
+  </data>
+  <data name="Prompt_InputInt" xml:space="preserve">
+    <value>请输入整数!</value>
+  </data>
+  <data name="Prompt_InputQuery" xml:space="preserve">
+    <value>请输入查询条件</value>
+  </data>
+  <data name="Prompt_invAdjAmtError" xml:space="preserve">
+    <value>调整金额不在有效范围!</value>
+  </data>
+  <data name="Prompt_invDiscAmtError" xml:space="preserve">
+    <value>优惠金额不在有效范围！</value>
+  </data>
+  <data name="Prompt_invOver" xml:space="preserve">
+    <value>此结算单明细已结清！</value>
+  </data>
+  <data name="Prompt_InvPaidAmtYes" xml:space="preserve">
+    <value>此结算单已做过结算！</value>
+  </data>
+  <data name="Prompt_LeaseChargeAccount" xml:space="preserve">
+    <value>联营合同不能在此计算</value>
+  </data>
+  <data name="Prompt_LeaseContractBeginDate" xml:space="preserve">
+    <value>请输入合同开始时间!</value>
+  </data>
+  <data name="Prompt_LeaseContractEndDate" xml:space="preserve">
+    <value>请输入合同结束时间!</value>
+  </data>
+  <data name="Prompt_LeaseTradeID" xml:space="preserve">
+    <value>请选择业态!</value>
+  </data>
+  <data name="Prompt_Message" xml:space="preserve">
+    <value>请输入费用记账月</value>
+  </data>
+  <data name="Prompt_Month_Charge_Yes" xml:space="preserve">
+    <value>该月费用已生成过!</value>
+  </data>
+  <data name="Prompt_NatureMonth" xml:space="preserve">
+    <value>自然月:0</value>
+  </data>
+  <data name="Prompt_NoCustCode" xml:space="preserve">
+    <value>该商户编码不存在！</value>
+  </data>
+  <data name="Prompt_NoCustShortName" xml:space="preserve">
+    <value>该商户简称不存在！</value>
+  </data>
+  <data name="Prompt_paidAmtSum" xml:space="preserve">
+    <value>请输入付款总额!</value>
+  </data>
+  <data name="Prompt_PalaverYes" xml:space="preserve">
+    <value>同意通过</value>
+  </data>
+  <data name="Prompt_PayInAmt" xml:space="preserve">
+    <value>代收款金额小于付款总额！</value>
+  </data>
+  <data name="Prompt_PayInPayOut" xml:space="preserve">
+    <value>代收款金额等于累计返还金额</value>
+  </data>
+  <data name="Prompt_selectPayType" xml:space="preserve">
+    <value>请选择支付方式!</value>
+  </data>
+  <data name="Prompt_SessionIsNull" xml:space="preserve">
+    <value>网页已过时,请重新登录!/Overtime,login again,please!</value>
+  </data>
+  <data name="Prompt_subAuthYes" xml:space="preserve">
+    <value>子权限添加成功!</value>
+  </data>
+  <data name="Prompt_Succed" xml:space="preserve">
+    <value>生成成功!</value>
+  </data>
+  <data name="Prompt_Success" xml:space="preserve">
+    <value>操作成功！</value>
+  </data>
+  <data name="Prompt_thisPaidGreaterPaid" xml:space="preserve">
+    <value>付款明细总额大于本次付款总额</value>
+  </data>
+  <data name="Prompt_thisPaidlowerGreaterPaid" xml:space="preserve">
+    <value>付款明细总额小于本次付款总额,本次付款明细总额为:</value>
+  </data>
+  <data name="Prompt_thisPaidMoreList" xml:space="preserve">
+    <value>存在本次付款额大于余额明细记录！</value>
+  </data>
+  <data name="Prompt_WorkLose" xml:space="preserve">
+    <value>操作失败!</value>
+  </data>
+  <data name="Promt_First_Charge_Cancel" xml:space="preserve">
+    <value>首期费用取消</value>
+  </data>
+  <data name="Promt_First_Charge_Yes" xml:space="preserve">
+    <value>首期费用已生成过!</value>
+  </data>
+  <data name="PublicMes_AddLeaseFormulaH" xml:space="preserve">
+    <value>请填加结算公式信息</value>
+  </data>
+  <data name="PublicMes_AddLeaseItem" xml:space="preserve">
+    <value>请填加合同相关条款.</value>
+  </data>
+  <data name="PublicMes_AddLeaseShop" xml:space="preserve">
+    <value>请填加商铺信息.</value>
+  </data>
+  <data name="PublicMes_BillOfDocumentDelete" xml:space="preserve">
+    <value>确定要删除单据.</value>
+  </data>
+  <data name="PublicMes_ContractCode" xml:space="preserve">
+    <value>已有该合同编码.</value>
+  </data>
+  <data name="PublicMes_DateError" xml:space="preserve">
+    <value>日期输入错误.启征结束时间必须小于今天.</value>
+  </data>
+  <data name="PublicMes_Default" xml:space="preserve">
+    <value>已经有默认设置.</value>
+  </data>
+  <data name="PublicMes_ErrorLog" xml:space="preserve">
+    <value>程序处理异常错误,请查看错误日志.</value>
+  </data>
+  <data name="PublicMes_FormulaSave" xml:space="preserve">
+    <value>请先保存类别公式.</value>
+  </data>
+  <data name="PublicMes_Lease" xml:space="preserve">
+    <value>租赁</value>
+  </data>
+  <data name="PublicMes_NotContract" xml:space="preserve">
+    <value>不是有效合同.</value>
+  </data>
+  <data name="PublicMes_NotNode" xml:space="preserve">
+    <value>添加错误,没有有效根节点.</value>
+  </data>
+  <data name="PublicMes_OnlyDefault" xml:space="preserve">
+    <value>缺少默认设置.</value>
+  </data>
+  <data name="PublicMes_OverruleMessage" xml:space="preserve">
+    <value>审批意见</value>
+  </data>
+  <data name="PublicMes_Union" xml:space="preserve">
+    <value>联营</value>
+  </data>
+  <data name="PubMessage_AllContract" xml:space="preserve">
+    <value>所有合同</value>
+  </data>
+  <data name="PubMessage_ContractStop" xml:space="preserve">
+    <value>终止合同</value>
+  </data>
+  <data name="PubMessage_OnlySelected" xml:space="preserve">
+    <value>至少选择一个</value>
+  </data>
+  <data name="Radio_lblAirtime" xml:space="preserve">
+    <value>时间(秒)</value>
+  </data>
+  <data name="Radio_lblContentsNm" xml:space="preserve">
+    <value>宣传内容</value>
+  </data>
+  <data name="Radio_lblEstCosts" xml:space="preserve">
+    <value>估计费用</value>
+  </data>
+  <data name="Radio_lblRadio" xml:space="preserve">
+    <value>广播台设定</value>
+  </data>
+  <data name="Radio_lblRadioNm" xml:space="preserve">
+    <value>广播台名称</value>
+  </data>
+  <data name="RentableArea_AreaRate" xml:space="preserve">
+    <value>得房率</value>
+  </data>
+  <data name="RentableArea_AvgRentalAmt" xml:space="preserve">
+    <value>平均日租金</value>
+  </data>
+  <data name="RentableArea_BlankOut" xml:space="preserve">
+    <value>已作废</value>
+  </data>
+  <data name="RentableArea_labBuildingTitle" xml:space="preserve">
+    <value>楼层定义与维护</value>
+  </data>
+  <data name="RentableArea_labUnitTitle" xml:space="preserve">
+    <value>可出租区域浏览</value>
+  </data>
+  <data name="RentableArea_lblArea" xml:space="preserve">
+    <value>经营区域</value>
+  </data>
+  <data name="RentableArea_lblAreaCode" xml:space="preserve">
+    <value>区域编码</value>
+  </data>
+  <data name="RentableArea_lblAreaLeveCode" xml:space="preserve">
+    <value>级别编码</value>
+  </data>
+  <data name="RentableArea_lblAreaLevel" xml:space="preserve">
+    <value>面积级别维护</value>
+  </data>
+  <data name="RentableArea_lblAreaLeveName" xml:space="preserve">
+    <value>级别名称</value>
+  </data>
+  <data name="RentableArea_lblAreaLeveStatus" xml:space="preserve">
+    <value>级别状态</value>
+  </data>
+  <data name="RentableArea_lblAreaName" xml:space="preserve">
+    <value>区域名称</value>
+  </data>
+  <data name="RentableArea_lblAreaQuery" xml:space="preserve">
+    <value>经营区域查询</value>
+  </data>
+  <data name="RentableArea_lblAreaSize" xml:space="preserve">
+    <value>面积大小</value>
+  </data>
+  <data name="RentableArea_lblAreaSizeCode" xml:space="preserve">
+    <value>面积编码</value>
+  </data>
+  <data name="RentableArea_lblAreaSizeName" xml:space="preserve">
+    <value>面积名称</value>
+  </data>
+  <data name="RentableArea_lblAreaSizeStatus" xml:space="preserve">
+    <value>面积状态</value>
+  </data>
+  <data name="RentableArea_lblAreaStatus" xml:space="preserve">
+    <value>区域状态</value>
+  </data>
+  <data name="RentableArea_lblBuilding" xml:space="preserve">
+    <value>大楼定义</value>
+  </data>
+  <data name="RentableArea_lblBuildingAddr" xml:space="preserve">
+    <value>地址</value>
+  </data>
+  <data name="RentableArea_lblBuildingCode" xml:space="preserve">
+    <value>大楼编码</value>
+  </data>
+  <data name="RentableArea_lblBuildingName" xml:space="preserve">
+    <value>大楼名称</value>
+  </data>
+  <data name="RentableArea_lblBuildingStatus" xml:space="preserve">
+    <value>大楼状态</value>
+  </data>
+  <data name="RentableArea_lblBuildingtit" xml:space="preserve">
+    <value>楼层定义——当前定义浏览</value>
+  </data>
+  <data name="RentableArea_lblBuildingtitrig" xml:space="preserve">
+    <value>楼层定义</value>
+  </data>
+  <data name="RentableArea_lblFloorArea" xml:space="preserve">
+    <value>建筑面积</value>
+  </data>
+  <data name="RentableArea_lblFloorCode" xml:space="preserve">
+    <value>楼层编码</value>
+  </data>
+  <data name="RentableArea_lblFloorName" xml:space="preserve">
+    <value>楼层名称</value>
+  </data>
+  <data name="RentableArea_lblFloors" xml:space="preserve">
+    <value>楼层定义</value>
+  </data>
+  <data name="RentableArea_lblFloorStatus" xml:space="preserve">
+    <value>楼层状态</value>
+  </data>
+  <data name="RentableArea_lblIsBlankOut" xml:space="preserve">
+    <value>是否作废</value>
+  </data>
+  <data name="RentableArea_lblIsRentable" xml:space="preserve">
+    <value>可出租面积</value>
+  </data>
+  <data name="RentableArea_lblLocation" xml:space="preserve">
+    <value>方位定义</value>
+  </data>
+  <data name="RentableArea_lblLocationCode" xml:space="preserve">
+    <value>方位编码</value>
+  </data>
+  <data name="RentableArea_lblLocationName" xml:space="preserve">
+    <value>方位名称</value>
+  </data>
+  <data name="RentableArea_lblLocationStatus" xml:space="preserve">
+    <value>当前状态</value>
+  </data>
+  <data name="RentableArea_lblNoeUnitCollect" xml:space="preserve">
+    <value>当前单元集合</value>
+  </data>
+  <data name="RentableArea_lblPlan" xml:space="preserve">
+    <value>平面图</value>
+  </data>
+  <data name="RentableArea_lblPostCode" xml:space="preserve">
+    <value>邮政编码</value>
+  </data>
+  <data name="RentableArea_lblPTradeID" xml:space="preserve">
+    <value>上级类别</value>
+  </data>
+  <data name="RentableArea_lblRentArea" xml:space="preserve">
+    <value>签约面积</value>
+  </data>
+  <data name="RentableArea_lblSelArea" xml:space="preserve">
+    <value>所在经营区域</value>
+  </data>
+  <data name="RentableArea_lblSelAreaLevel" xml:space="preserve">
+    <value>租金级别定义</value>
+  </data>
+  <data name="RentableArea_lblSelBuildingID" xml:space="preserve">
+    <value>所在大楼</value>
+  </data>
+  <data name="RentableArea_lblSelectUnit" xml:space="preserve">
+    <value>选择单元</value>
+  </data>
+  <data name="RentableArea_lblSelFloorID" xml:space="preserve">
+    <value>所在楼层</value>
+  </data>
+  <data name="RentableArea_lblSelLocationID" xml:space="preserve">
+    <value>所在方位</value>
+  </data>
+  <data name="RentableArea_lblSelUnitStatus" xml:space="preserve">
+    <value>当前状态</value>
+  </data>
+  <data name="RentableArea_lblShopName" xml:space="preserve">
+    <value>当前商铺名称</value>
+  </data>
+  <data name="RentableArea_lblTradeAdd" xml:space="preserve">
+    <value>业态维护</value>
+  </data>
+  <data name="RentableArea_lblTradeCode" xml:space="preserve">
+    <value>业态编码</value>
+  </data>
+  <data name="RentableArea_lblTradeDefine" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="RentableArea_lblTradeLevel" xml:space="preserve">
+    <value>业态级别</value>
+  </data>
+  <data name="RentableArea_lblTradeName" xml:space="preserve">
+    <value>业态名称</value>
+  </data>
+  <data name="RentableArea_lblTradeRelation" xml:space="preserve">
+    <value>业态</value>
+  </data>
+  <data name="RentableArea_lblTradeStatus" xml:space="preserve">
+    <value>业态状态</value>
+  </data>
+  <data name="RentableArea_lblTradeTable" xml:space="preserve">
+    <value>业态列表</value>
+  </data>
+  <data name="RentableArea_lblUnit" xml:space="preserve">
+    <value>单元定义</value>
+  </data>
+  <data name="RentableArea_lblUnitCode" xml:space="preserve">
+    <value>单元编码</value>
+  </data>
+  <data name="RentableArea_lblUnitDesc" xml:space="preserve">
+    <value>单元描述</value>
+  </data>
+  <data name="RentableArea_lblUnitStatus" xml:space="preserve">
+    <value>单元状态</value>
+  </data>
+  <data name="RentableArea_lblUnitType" xml:space="preserve">
+    <value>单元类别</value>
+  </data>
+  <data name="RentableArea_lblUnitTypeCode" xml:space="preserve">
+    <value>单元类别编码</value>
+  </data>
+  <data name="RentableArea_lblUnitTypeName" xml:space="preserve">
+    <value>单元类别名称</value>
+  </data>
+  <data name="RentableArea_lblUnitTypeStatus" xml:space="preserve">
+    <value>单元类别状态</value>
+  </data>
+  <data name="RentableArea_lblUseArea" xml:space="preserve">
+    <value>可出租面积</value>
+  </data>
+  <data name="RentableArea_LeaseOut" xml:space="preserve">
+    <value>已出租</value>
+  </data>
+  <data name="RentableArea_NoLeaseOut" xml:space="preserve">
+    <value>未出租</value>
+  </data>
+  <data name="RentableArea_Rentareas" xml:space="preserve">
+    <value>已出租面积</value>
+  </data>
+  <data name="RentableArea_UseRate" xml:space="preserve">
+    <value>出租率</value>
+  </data>
+  <data name="RentArea_lblAreaSize" xml:space="preserve">
+    <value>面积</value>
+  </data>
+  <data name="Role_lblFunc" xml:space="preserve">
+    <value>角色权限</value>
+  </data>
+  <data name="Role_lblFuncID" xml:space="preserve">
+    <value>权限编码</value>
+  </data>
+  <data name="Role_lblLeader" xml:space="preserve">
+    <value>是否领导</value>
+  </data>
+  <data name="Role_lblRoleCode" xml:space="preserve">
+    <value>角色编码</value>
+  </data>
+  <data name="Role_lblRoleID" xml:space="preserve">
+    <value>角色内码</value>
+  </data>
+  <data name="Role_lblRoleName" xml:space="preserve">
+    <value>角色名称</value>
+  </data>
+  <data name="Role_lblRoleStatus" xml:space="preserve">
+    <value>角色状态</value>
+  </data>
+  <data name="Role_lblSubAuth" xml:space="preserve">
+    <value>子权限</value>
+  </data>
+  <data name="Role_lblSubAuthExport" xml:space="preserve">
+    <value>导出</value>
+  </data>
+  <data name="Rpt_AdContractCode" xml:space="preserve">
+    <value>广告合同编码</value>
+  </data>
+  <data name="Rpt_AdvAmt" xml:space="preserve">
+    <value>应付金额</value>
+  </data>
+  <data name="Rpt_AreaAdContractCode" xml:space="preserve">
+    <value>场地合同编码</value>
+  </data>
+  <data name="Rpt_AreaSales" xml:space="preserve">
+    <value>单位面积销售额</value>
+  </data>
+  <data name="Rpt_AreaTypeCode" xml:space="preserve">
+    <value>场地编码</value>
+  </data>
+  <data name="Rpt_BatchId" xml:space="preserve">
+    <value>批次号</value>
+  </data>
+  <data name="Rpt_BonusGpPer" xml:space="preserve">
+    <value>积分率 </value>
+  </data>
+  <data name="Rpt_Brand" xml:space="preserve">
+    <value>品牌</value>
+  </data>
+  <data name="Rpt_ChangeAmt" xml:space="preserve">
+    <value>调整优惠金额</value>
+  </data>
+  <data name="Rpt_ChargeAmt" xml:space="preserve">
+    <value>费用总额</value>
+  </data>
+  <data name="Rpt_color" xml:space="preserve">
+    <value>色号</value>
+  </data>
+  <data name="Rpt_ComAmt" xml:space="preserve">
+    <value>手续费</value>
+  </data>
+  <data name="Rpt_CompareDate" xml:space="preserve">
+    <value>对比日期</value>
+  </data>
+  <data name="Rpt_Component" xml:space="preserve">
+    <value>成分</value>
+  </data>
+  <data name="Rpt_ConDeposit" xml:space="preserve">
+    <value>合同押金</value>
+  </data>
+  <data name="Rpt_CurrentMonthSales" xml:space="preserve">
+    <value>本月销售</value>
+  </data>
+  <data name="Rpt_CurrentYear" xml:space="preserve">
+    <value>本年累计
+(元)</value>
+  </data>
+  <data name="Rpt_CustLicenseEndDate" xml:space="preserve">
+    <value>执照结束日期</value>
+  </data>
+  <data name="Rpt_CustLicenseStartDate" xml:space="preserve">
+    <value>执照开始日期</value>
+  </data>
+  <data name="Rpt_CycleCompare" xml:space="preserve">
+    <value>环比</value>
+  </data>
+  <data name="Rpt_DeptId" xml:space="preserve">
+    <value>商品分类</value>
+  </data>
+  <data name="Rpt_DiscountPcentRate" xml:space="preserve">
+    <value>抽成率(%)</value>
+  </data>
+  <data name="Rpt_DownYear" xml:space="preserve">
+    <value>上年累计
+(元)</value>
+  </data>
+  <data name="Rpt_dPriceMax" xml:space="preserve">
+    <value>最高售价</value>
+  </data>
+  <data name="Rpt_dPriceMin" xml:space="preserve">
+    <value>最低售价</value>
+  </data>
+  <data name="Rpt_EDate" xml:space="preserve">
+    <value>结束日期</value>
+  </data>
+  <data name="Rpt_Efficiency" xml:space="preserve">
+    <value>费效比</value>
+  </data>
+  <data name="Rpt_EndMonthCount" xml:space="preserve">
+    <value>截止本月年度预算情况</value>
+  </data>
+  <data name="Rpt_EndTime" xml:space="preserve">
+    <value>结束时间</value>
+  </data>
+  <data name="Rpt_FloorStair" xml:space="preserve">
+    <value>楼层</value>
+  </data>
+  <data name="Rpt_GrossProfit" xml:space="preserve">
+    <value>毛利</value>
+  </data>
+  <data name="Rpt_GrossSales" xml:space="preserve">
+    <value>销售金额</value>
+  </data>
+  <data name="Rpt_InPeriodPaidAmt" xml:space="preserve">
+    <value>付款期内已付金额</value>
+  </data>
+  <data name="Rpt_InvAddsTitile" xml:space="preserve">
+    <value>结算单</value>
+  </data>
+  <data name="Rpt_InvAdjAmt" xml:space="preserve">
+    <value>调整金额</value>
+  </data>
+  <data name="Rpt_InvComTitile" xml:space="preserve">
+    <value>公司名称</value>
+  </data>
+  <data name="Rpt_InvDate" xml:space="preserve">
+    <value>生成日期</value>
+  </data>
+  <data name="Rpt_InvPaidAmt" xml:space="preserve">
+    <value>已付金额</value>
+  </data>
+  <data name="Rpt_InvPayAmt" xml:space="preserve">
+    <value>结算单总额</value>
+  </data>
+  <data name="Rpt_InvPeriod" xml:space="preserve">
+    <value>费用记账月</value>
+  </data>
+  <data name="Rpt_IsBlacklist" xml:space="preserve">
+    <value>黑名单</value>
+  </data>
+  <data name="Rpt_IsClassCode" xml:space="preserve">
+    <value>类别商品</value>
+  </data>
+  <data name="Rpt_isDiscountCode" xml:space="preserve">
+    <value>是否降价商品</value>
+  </data>
+  <data name="Rpt_LaseYearPeriod" xml:space="preserve">
+    <value>同比</value>
+  </data>
+  <data name="Rpt_lblCustBalanceDetail" xml:space="preserve">
+    <value>1.3欠费明细</value>
+  </data>
+  <data name="Rpt_lblCustInfo" xml:space="preserve">
+    <value>商户信息列表</value>
+  </data>
+  <data name="Rpt_lblCustInvSum" xml:space="preserve">
+    <value>商户付款汇总列表</value>
+  </data>
+  <data name="Rpt_lblCustPaidDetail" xml:space="preserve">
+    <value>商户付款明细列表</value>
+  </data>
+  <data name="Rpt_lblFloatSaleQuery" xml:space="preserve">
+    <value>项目日销售统计图表</value>
+  </data>
+  <data name="Rpt_lblFloorSaleRate" xml:space="preserve">
+    <value>楼层销售比重</value>
+  </data>
+  <data name="Rpt_lblHireType" xml:space="preserve">
+    <value>租金类型</value>
+  </data>
+  <data name="Rpt_lblInvChargeCountLog" xml:space="preserve">
+    <value>结算单生成日志查询</value>
+  </data>
+  <data name="Rpt_lblLastOweDetail" xml:space="preserve">
+    <value>商铺往期欠款明细列表</value>
+  </data>
+  <data name="Rpt_lblLeaseInvDetail" xml:space="preserve">
+    <value>结算单明细列表</value>
+  </data>
+  <data name="Rpt_lblMallSalesSum" xml:space="preserve">
+    <value>项目销售均价分析列表</value>
+  </data>
+  <data name="Rpt_lblSalesComparison" xml:space="preserve">
+    <value>商铺日销售对比分析列表</value>
+  </data>
+  <data name="Rpt_lblSalesDetails" xml:space="preserve">
+    <value>商铺销售统计列表</value>
+  </data>
+  <data name="Rpt_lblSalesMediaSum" xml:space="preserve">
+    <value>商铺销售付款方式汇总列表</value>
+  </data>
+  <data name="Rpt_lblShopAreaAnalysis" xml:space="preserve">
+    <value>商铺单位面积销售分析列表</value>
+  </data>
+  <data name="Rpt_lblShopAreaBasedRental" xml:space="preserve">
+    <value>商铺单位面积租金分析列表</value>
+  </data>
+  <data name="Rpt_lblShopEfficiency" xml:space="preserve">
+    <value>3.6商户租金销售额比率明细表</value>
+  </data>
+  <data name="Rpt_lblShopSalesRank" xml:space="preserve">
+    <value>商铺销售排名分析列表</value>
+  </data>
+  <data name="Rpt_lblShopSalesSum" xml:space="preserve">
+    <value>商铺月销售汇总报表</value>
+  </data>
+  <data name="Rpt_lblTimeSalesAnalysis" xml:space="preserve">
+    <value>项目时段销售分析列表</value>
+  </data>
+  <data name="Rpt_lblTradeSaleRate" xml:space="preserve">
+    <value>业态销售比重</value>
+  </data>
+  <data name="Rpt_lblTradeSalesAnalysis" xml:space="preserve">
+    <value>3.5各业态租金销售额比率统计表</value>
+  </data>
+  <data name="Rpt_leaseColor" xml:space="preserve">
+    <value>出租情况图示</value>
+  </data>
+  <data name="Rpt_Level" xml:space="preserve">
+    <value>等级</value>
+  </data>
+  <data name="Rpt_LicenseEndDate" xml:space="preserve">
+    <value>证照结束日期</value>
+  </data>
+  <data name="Rpt_LicenseStartDate" xml:space="preserve">
+    <value>证照开始日期</value>
+  </data>
+  <data name="Rpt_Location" xml:space="preserve">
+    <value>方位</value>
+  </data>
+  <data name="Rpt_MediaDesc" xml:space="preserve">
+    <value>币值种类</value>
+  </data>
+  <data name="Rpt_MediaMDesc" xml:space="preserve">
+    <value>付款方式</value>
+  </data>
+  <data name="Rpt_MobileTel" xml:space="preserve">
+    <value>联系电话</value>
+  </data>
+  <data name="Rpt_MonthAmt" xml:space="preserve">
+    <value>基础月租金</value>
+  </data>
+  <data name="Rpt_MonthBetCount" xml:space="preserve">
+    <value>月预算差异</value>
+  </data>
+  <data name="Rpt_MonthCount" xml:space="preserve">
+    <value>本月费用预算情况</value>
+  </data>
+  <data name="Rpt_MonthPayAmt" xml:space="preserve">
+    <value>本月应收金额
+(元)</value>
+  </data>
+  <data name="Rpt_MonthSellCount" xml:space="preserve">
+    <value>当月销售额
+(元)</value>
+  </data>
+  <data name="Rpt_MReceipt" xml:space="preserve">
+    <value>开始流水号</value>
+  </data>
+  <data name="Rpt_NetAmt" xml:space="preserve">
+    <value>销售净额</value>
+  </data>
+  <data name="Rpt_NumberRank" xml:space="preserve">
+    <value>排名数量</value>
+  </data>
+  <data name="Rpt_oldMPaidAmt" xml:space="preserve">
+    <value>环比销售额
+(元)</value>
+  </data>
+  <data name="Rpt_oldMRate" xml:space="preserve">
+    <value>环比差异
+(%)</value>
+  </data>
+  <data name="Rpt_OldPPRate" xml:space="preserve">
+    <value>同比增长率</value>
+  </data>
+  <data name="Rpt_OtherCharge" xml:space="preserve">
+    <value>水电费</value>
+  </data>
+  <data name="Rpt_PaidEndDate" xml:space="preserve">
+    <value>付款结束日期</value>
+  </data>
+  <data name="Rpt_PaidStartDate" xml:space="preserve">
+    <value>付款开始日期</value>
+  </data>
+  <data name="Rpt_PayAmt" xml:space="preserve">
+    <value>本月费用收入情况</value>
+  </data>
+  <data name="Rpt_PaymentPerCycle" xml:space="preserve">
+    <value>每期付款金额</value>
+  </data>
+  <data name="Rpt_Pcode" xml:space="preserve">
+    <value>货号</value>
+  </data>
+  <data name="Rpt_Period" xml:space="preserve">
+    <value>间隔时段</value>
+  </data>
+  <data name="Rpt_POSId" xml:space="preserve">
+    <value>POS机号</value>
+  </data>
+  <data name="Rpt_Prepayment" xml:space="preserve">
+    <value>预付金额</value>
+  </data>
+  <data name="Rpt_Price" xml:space="preserve">
+    <value>建议售价</value>
+  </data>
+  <data name="Rpt_PrintMan" xml:space="preserve">
+    <value>打印人</value>
+  </data>
+  <data name="Rpt_Produce" xml:space="preserve">
+    <value>产地</value>
+  </data>
+  <data name="Rpt_rdoAll" xml:space="preserve">
+    <value>全部</value>
+  </data>
+  <data name="Rpt_rdoFormula" xml:space="preserve">
+    <value>抽成</value>
+  </data>
+  <data name="Rpt_ReceiptUp" xml:space="preserve">
+    <value>销售笔数差额</value>
+  </data>
+  <data name="Rpt_ReceiptUpRate" xml:space="preserve">
+    <value>销售笔数差额%</value>
+  </data>
+  <data name="Rpt_ReprintFlag" xml:space="preserve">
+    <value>重打标志</value>
+  </data>
+  <data name="Rpt_RingThan" xml:space="preserve">
+    <value>环比</value>
+  </data>
+  <data name="Rpt_RptInvoiceheader" xml:space="preserve">
+    <value>费用收取情况报表</value>
+  </data>
+  <data name="Rpt_RReceipt" xml:space="preserve">
+    <value>终止流水号</value>
+  </data>
+  <data name="Rpt_SaleDetail" xml:space="preserve">
+    <value>销售明细</value>
+  </data>
+  <data name="Rpt_SalesAmt" xml:space="preserve">
+    <value>销售总额</value>
+  </data>
+  <data name="Rpt_SalesBalance" xml:space="preserve">
+    <value>销售差额</value>
+  </data>
+  <data name="Rpt_SalesBalanceRate" xml:space="preserve">
+    <value>销售差额%</value>
+  </data>
+  <data name="Rpt_SalesDate" xml:space="preserve">
+    <value>销售日期</value>
+  </data>
+  <data name="Rpt_SalesMonth" xml:space="preserve">
+    <value>销售月份</value>
+  </data>
+  <data name="Rpt_SalesPer" xml:space="preserve">
+    <value>客均价</value>
+  </data>
+  <data name="Rpt_SalesTime" xml:space="preserve">
+    <value>销售时间</value>
+  </data>
+  <data name="Rpt_Salevalue" xml:space="preserve">
+    <value>销售总额</value>
+  </data>
+  <data name="Rpt_SameCompare" xml:space="preserve">
+    <value>同比</value>
+  </data>
+  <data name="Rpt_SDate" xml:space="preserve">
+    <value>开始日期</value>
+  </data>
+  <data name="Rpt_SearcheDate" xml:space="preserve">
+    <value>查询日期</value>
+  </data>
+  <data name="Rpt_SearchSDate" xml:space="preserve">
+    <value>查询开始日期</value>
+  </data>
+  <data name="Rpt_ShopDetail" xml:space="preserve">
+    <value>商铺明细</value>
+  </data>
+  <data name="Rpt_ShopMonthSalesCompareInfo" xml:space="preserve">
+    <value>3.4商户销售额比较明细表</value>
+  </data>
+  <data name="Rpt_ShopSum" xml:space="preserve">
+    <value>商铺汇总</value>
+  </data>
+  <data name="Rpt_ShopTypeColor" xml:space="preserve">
+    <value>商铺业态图示</value>
+  </data>
+  <data name="Rpt_SignDate" xml:space="preserve">
+    <value>签订日期</value>
+  </data>
+  <data name="Rpt_SkuDesc" xml:space="preserve">
+    <value>商品名称</value>
+  </data>
+  <data name="Rpt_SkuId" xml:space="preserve">
+    <value>商品编码</value>
+  </data>
+  <data name="Rpt_SkuPercent" xml:space="preserve">
+    <value>抽成率</value>
+  </data>
+  <data name="Rpt_SKUSum" xml:space="preserve">
+    <value>商品汇总</value>
+  </data>
+  <data name="Rpt_SkuTotalQty" xml:space="preserve">
+    <value>销售数量</value>
+  </data>
+  <data name="Rpt_Spec" xml:space="preserve">
+    <value>规格</value>
+  </data>
+  <data name="Rpt_StartTime" xml:space="preserve">
+    <value>开始时间</value>
+  </data>
+  <data name="Rpt_Status" xml:space="preserve">
+    <value>状态</value>
+  </data>
+  <data name="Rpt_Stock" xml:space="preserve">
+    <value>商品库存</value>
+  </data>
+  <data name="Rpt_StoreInvDetail" xml:space="preserve">
+    <value>1.2预算执行</value>
+  </data>
+  <data name="Rpt_StoreMSalesSum" xml:space="preserve">
+    <value>项目销售额对比分析列表</value>
+  </data>
+  <data name="Rpt_StoreRentalDetail" xml:space="preserve">
+    <value>项目租赁收入情况列表(明细)</value>
+  </data>
+  <data name="Rpt_StoreRentalHeader" xml:space="preserve">
+    <value>项目租赁收入情况列表(汇总)</value>
+  </data>
+  <data name="Rpt_StoreRentalInfo" xml:space="preserve">
+    <value>项目租赁收入情况列表</value>
+  </data>
+  <data name="Rpt_StoreRentInfo" xml:space="preserve">
+    <value>明细报表</value>
+  </data>
+  <data name="Rpt_StoreRentInfoDetail" xml:space="preserve">
+    <value>汇总报表</value>
+  </data>
+  <data name="Rpt_StoreShopTypeRentalThan" xml:space="preserve">
+    <value>项目商铺类型租售比分析列表</value>
+  </data>
+  <data name="Rpt_Sumtype" xml:space="preserve">
+    <value>汇总类型</value>
+  </data>
+  <data name="Rpt_SurplusAmt" xml:space="preserve">
+    <value>未付金额</value>
+  </data>
+  <data name="Rpt_ThisMonth" xml:space="preserve">
+    <value>本月</value>
+  </data>
+  <data name="Rpt_Title_lblAdvisContractInfoItem" xml:space="preserve">
+    <value>广告合同信息明细列表</value>
+  </data>
+  <data name="Rpt_Title_lblAreaContractInfoItem" xml:space="preserve">
+    <value>场地合同信息明细列表</value>
+  </data>
+  <data name="Rpt_Title_lblContractInfo" xml:space="preserve">
+    <value>合同信息明细列表</value>
+  </data>
+  <data name="Rpt_Title_lblContractSumInfo" xml:space="preserve">
+    <value>合同信息汇总列表</value>
+  </data>
+  <data name="Rpt_Title_lblUnitInfo" xml:space="preserve">
+    <value>单元情况列表</value>
+  </data>
+  <data name="Rpt_TotalReceipt" xml:space="preserve">
+    <value>销售笔数</value>
+  </data>
+  <data name="Rpt_TpUsrTitle" xml:space="preserve">
+    <value>收银员信息列表</value>
+  </data>
+  <data name="Rpt_TradeSalesAnalysis" xml:space="preserve">
+    <value>业态销售分析</value>
+  </data>
+  <data name="Rpt_TransId" xml:space="preserve">
+    <value>交易号</value>
+  </data>
+  <data name="Rpt_TransTime" xml:space="preserve">
+    <value>交易时间</value>
+  </data>
+  <data name="Rpt_Unit" xml:space="preserve">
+    <value>单位</value>
+  </data>
+  <data name="Rpt_UnitAll" xml:space="preserve">
+    <value>所有单元</value>
+  </data>
+  <data name="Rpt_UnitPrice" xml:space="preserve">
+    <value>单位面积租金</value>
+  </data>
+  <data name="Rpt_UnitTypeSalesSum" xml:space="preserve">
+    <value>3.3项目销售额比较分析</value>
+  </data>
+  <data name="Rpt_UserID" xml:space="preserve">
+    <value>收银员号</value>
+  </data>
+  <data name="Rpt_VisualAnalysisRent" xml:space="preserve">
+    <value>出租率分析报表</value>
+  </data>
+  <data name="Rpt_Year" xml:space="preserve">
+    <value>年度</value>
+  </data>
+  <data name="Rpt_YearCount" xml:space="preserve">
+    <value>年预算差异</value>
+  </data>
+  <data name="Rpt_YearDiff" xml:space="preserve">
+    <value>年度差异</value>
+  </data>
+  <data name="Rpt_YearLYRate" xml:space="preserve">
+    <value>环比增长率</value>
+  </data>
+  <data name="Rpt_yearMPaidAmt" xml:space="preserve">
+    <value>同比销售额
+(元)</value>
+  </data>
+  <data name="Rpt_YearPayAmt" xml:space="preserve">
+    <value>截至本月应收金额
+(元)</value>
+  </data>
+  <data name="Rpt_yearRate" xml:space="preserve">
+    <value>同比差异
+(%)</value>
+  </data>
+  <data name="RptInv_OweDetailTitle" xml:space="preserve">
+    <value>商户欠款明细列表</value>
+  </data>
+  <data name="RptInv_OweTitle" xml:space="preserve">
+    <value>商户欠款汇总表</value>
+  </data>
+  <data name="RptStoreInvInfo_title" xml:space="preserve">
+    <value>项目租赁收入情况列表</value>
+  </data>
+  <data name="RptStoreRentInfo_lblRentAmt" xml:space="preserve">
+    <value>基础月租金</value>
+  </data>
+  <data name="RptTotalSales_Title" xml:space="preserve">
+    <value>项目商铺类型销售分析列表</value>
+  </data>
+  <data name="Rtp_SearchEDate" xml:space="preserve">
+    <value>查询结束日期</value>
+  </data>
+  <data name="Sale_lblCancelDaily" xml:space="preserve">
+    <value>取消销售日报导入</value>
+  </data>
+  <data name="Sale_lblMaxTransID" xml:space="preserve">
+    <value>最大小票号</value>
+  </data>
+  <data name="Sale_lblMinTransID" xml:space="preserve">
+    <value>最小小票号</value>
+  </data>
+  <data name="Sale_lblTransNumber" xml:space="preserve">
+    <value>交易笔数</value>
+  </data>
+  <data name="Sale_NoShopID" xml:space="preserve">
+    <value>导入文件中商铺编号不存在，请检查导入文件内容！</value>
+  </data>
+  <data name="Sale_OtherBank" xml:space="preserve">
+    <value>其它银行卡</value>
+  </data>
+  <data name="Select_Select" xml:space="preserve">
+    <value>---请选择---</value>
+  </data>
+  <data name="Sell_lblBatch" xml:space="preserve">
+    <value>导入批次</value>
+  </data>
+  <data name="Sell_lblCnlBatch" xml:space="preserve">
+    <value>取消批次</value>
+  </data>
+  <data name="Sell_SellData" xml:space="preserve">
+    <value>销售数据导入</value>
+  </data>
+  <data name="Shop_lblHdwCode" xml:space="preserve">
+    <value>硬件代码</value>
+  </data>
+  <data name="ShopBaseInfo_NoInConShopUnit" xml:space="preserve">
+    <value>没有找到单元数据</value>
+  </data>
+  <data name="ShopBaseInfo_SaveBuildingIDErr" xml:space="preserve">
+    <value>商铺大楼ID保存错误,请重试!</value>
+  </data>
+  <data name="ShopBrand_lblBrandLevel" xml:space="preserve">
+    <value>品牌等级</value>
+  </data>
+  <data name="ShopBrand_lblBrandName" xml:space="preserve">
+    <value>品牌名称</value>
+  </data>
+  <data name="ShopBrand_lblBrandProduce" xml:space="preserve">
+    <value>品牌产地</value>
+  </data>
+  <data name="ShopBrand_lblBrandRegDesc" xml:space="preserve">
+    <value>品牌注册地</value>
+  </data>
+  <data name="ShopBrand_lblBrandSelect" xml:space="preserve">
+    <value>品牌选择</value>
+  </data>
+  <data name="ShopBrand_lblBrandTargetCust" xml:space="preserve">
+    <value>受众群体</value>
+  </data>
+  <data name="ShopBrand_lblConShopBrandDefine" xml:space="preserve">
+    <value>品牌维护</value>
+  </data>
+  <data name="ShopSell_InputDate" xml:space="preserve">
+    <value>销售日期</value>
+  </data>
+  <data name="ShopXml_NameX" xml:space="preserve">
+    <value>商铺名称x位置</value>
+  </data>
+  <data name="ShopXml_NameY" xml:space="preserve">
+    <value>商铺名称y位置</value>
+  </data>
+  <data name="ShopXml_NoX" xml:space="preserve">
+    <value>商铺号x位置</value>
+  </data>
+  <data name="ShopXml_NoY" xml:space="preserve">
+    <value>商铺号y位置</value>
+  </data>
+  <data name="ShopXml_ShopAttrVindicate" xml:space="preserve">
+    <value>商铺属性维护</value>
+  </data>
+  <data name="ShopXml_ShopMap" xml:space="preserve">
+    <value>单元图片</value>
+  </data>
+  <data name="ShopXml_UnitAttrVindicate" xml:space="preserve">
+    <value>单元属性维护</value>
+  </data>
+  <data name="ShopXml_X" xml:space="preserve">
+    <value>水平X点</value>
+  </data>
+  <data name="ShopXml_Y" xml:space="preserve">
+    <value>垂直Y点</value>
+  </data>
+  <data name="ShowInfo_DelFail" xml:space="preserve">
+    <value>删除失败!</value>
+  </data>
+  <data name="ShowInfo_SelUserfullInfo" xml:space="preserve">
+    <value>请选择有效信息!</value>
+  </data>
+  <data name="SkuInfo_GoUpNum" xml:space="preserve">
+    <value>自动编号</value>
+  </data>
+  <data name="SkuMaster_lblSkuLocked" xml:space="preserve">
+    <value>是否锁定</value>
+  </data>
+  <data name="SMSPara_InPuth" xml:space="preserve">
+    <value>      生成
+目录</value>
+  </data>
+  <data name="SMSpara_lblSubAuthExport" xml:space="preserve">
+    <value>导出目录</value>
+  </data>
+  <data name="SMSpara_lblSubAuthInput" xml:space="preserve">
+    <value>导入目录</value>
+  </data>
+  <data name="SMSPara_MailSMTP" xml:space="preserve">
+    <value>SMTP服务器</value>
+  </data>
+  <data name="SMSPara_MailSMTPPassword" xml:space="preserve">
+    <value>SMTP密码</value>
+  </data>
+  <data name="SMSPara_MailSMTPUser" xml:space="preserve">
+    <value>SMTP用户名</value>
+  </data>
+  <data name="sort" xml:space="preserve">
+    <value>排序</value>
+  </data>
+  <data name="Store_AttentionVarietyList" xml:space="preserve">
+    <value>关注品牌列表</value>
+  </data>
+  <data name="Store_BackdropExplain" xml:space="preserve">
+    <value>背景说明</value>
+  </data>
+  <data name="Store_BusinessItemBackdroptenance" xml:space="preserve">
+    <value>商业项目项目背景维护</value>
+  </data>
+  <data name="Store_BusinessItemBasicInfobrowse" xml:space="preserve">
+    <value>商业项目信息查看</value>
+  </data>
+  <data name="Store_BusinessItemBasicInfoMaintenance" xml:space="preserve">
+    <value>商业项目信息维护</value>
+  </data>
+  <data name="Store_BusinessItemBrowse" xml:space="preserve">
+    <value>商业项目浏览</value>
+  </data>
+  <data name="Store_BusinessItemCardtenance" xml:space="preserve">
+    <value>商业项目权证信息维护</value>
+  </data>
+  <data name="Store_BusinessItemDefinition" xml:space="preserve">
+    <value>商业项目管理</value>
+  </data>
+  <data name="Store_BusinessItemList" xml:space="preserve">
+    <value>商业项目列表</value>
+  </data>
+  <data name="Store_CardInfo" xml:space="preserve">
+    <value>权证信息</value>
+  </data>
+  <data name="Store_CardSize" xml:space="preserve">
+    <value>权证面积</value>
+  </data>
+  <data name="Store_CardType" xml:space="preserve">
+    <value>权证类型</value>
+  </data>
+  <data name="Store_ContentName" xml:space="preserve">
+    <value>物业名称 </value>
+  </data>
+  <data name="Store_DesignUse" xml:space="preserve">
+    <value>设计用途</value>
+  </data>
+  <data name="Store_FloorCompleteDate" xml:space="preserve">
+    <value>竣工时间</value>
+  </data>
+  <data name="Store_FloorConfigurationType" xml:space="preserve">
+    <value>结构类型</value>
+  </data>
+  <data name="Store_FloorThing" xml:space="preserve">
+    <value>楼层情况</value>
+  </data>
+  <data name="Store_GroundParking" xml:space="preserve">
+    <value>地上车位</value>
+  </data>
+  <data name="Store_ItemAttentionVariety" xml:space="preserve">
+    <value>项目关注品牌</value>
+  </data>
+  <data name="Store_ItemBackdrop" xml:space="preserve">
+    <value>项目背景</value>
+  </data>
+  <data name="Store_ItemCode" xml:space="preserve">
+    <value>项目编码</value>
+  </data>
+  <data name="Store_LicenseCardVindicate" xml:space="preserve">
+    <value>权证类型维护</value>
+  </data>
+  <data name="Store_OccurDate" xml:space="preserve">
+    <value>发生日期 </value>
+  </data>
+  <data name="Store_Owner" xml:space="preserve">
+    <value>所有权人</value>
+  </data>
+  <data name="Store_PaperDate" xml:space="preserve">
+    <value>发证日期</value>
+  </data>
+  <data name="Store_SaveFileThing" xml:space="preserve">
+    <value>存档情况</value>
+  </data>
+  <data name="Store_StoreAddr" xml:space="preserve">
+    <value>项目地址</value>
+  </data>
+  <data name="Store_StoreAmbit" xml:space="preserve">
+    <value>项目四至范围</value>
+  </data>
+  <data name="Store_StoreManageType" xml:space="preserve">
+    <value>项目管理方式</value>
+  </data>
+  <data name="Store_StoreManageTypeVindicate" xml:space="preserve">
+    <value>项目管理方式维护</value>
+  </data>
+  <data name="Store_StoreName" xml:space="preserve">
+    <value>项目名称</value>
+  </data>
+  <data name="Store_StoreShortName" xml:space="preserve">
+    <value>项目简称</value>
+  </data>
+  <data name="Store_StoreType" xml:space="preserve">
+    <value>项目定位类型</value>
+  </data>
+  <data name="Store_UnderParking" xml:space="preserve">
+    <value>地下车位</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value>潜在商户名称</value>
+  </data>
+  <data name="Subs_FinanceInterfaceType" xml:space="preserve">
+    <value>财务接口类型维护</value>
+  </data>
+  <data name="Subs_SubCompanyBrowse" xml:space="preserve">
+    <value>子公司查看</value>
+  </data>
+  <data name="Subs_SubCompanyCode" xml:space="preserve">
+    <value>公司编码</value>
+  </data>
+  <data name="Subs_SubCompanyCurrentlyBrowse" xml:space="preserve">
+    <value>子公司---当前定义浏览</value>
+  </data>
+  <data name="Subs_SubCompanyDefinition" xml:space="preserve">
+    <value>子公司定义</value>
+  </data>
+  <data name="Subs_SubCompanyFinanceType" xml:space="preserve">
+    <value>财务类型</value>
+  </data>
+  <data name="Subs_SubCompanyManage" xml:space="preserve">
+    <value>子公司管理</value>
+  </data>
+  <data name="Subs_SubCompanyShortName" xml:space="preserve">
+    <value>公司简称</value>
+  </data>
+  <data name="Subs_SubCompanyVindicate" xml:space="preserve">
+    <value>子公司维护</value>
+  </data>
+  <data name="Tab_Info" xml:space="preserve">
+    <value>信息</value>
+  </data>
+  <data name="Tab_integral" xml:space="preserve">
+    <value>积分</value>
+  </data>
+  <data name="Tab_IssueCard" xml:space="preserve">
+    <value>发卡</value>
+  </data>
+  <data name="Tab_lblContractBase" xml:space="preserve">
+    <value>基本合同项目</value>
+  </data>
+  <data name="Tab_lblFormul" xml:space="preserve">
+    <value>结算公式</value>
+  </data>
+  <data name="Tab_lblLeaseBalanceItem" xml:space="preserve">
+    <value>结算条款</value>
+  </data>
+  <data name="Tab_lblLeaseItem" xml:space="preserve">
+    <value>租赁相关条款</value>
+  </data>
+  <data name="Tab_lblShopBaseInfo" xml:space="preserve">
+    <value>商铺基本信息</value>
+  </data>
+  <data name="Tab_lblShopInfo" xml:space="preserve">
+    <value>商铺信息</value>
+  </data>
+  <data name="Tab_lblUnionItem" xml:space="preserve">
+    <value>联营相关条款</value>
+  </data>
+  <data name="Tab_Query" xml:space="preserve">
+    <value>查询</value>
+  </data>
+  <data name="Theme_lblTheme" xml:space="preserve">
+    <value>推广促销主题设定</value>
+  </data>
+  <data name="Theme_lblThemeDesc" xml:space="preserve">
+    <value>主题描述</value>
+  </data>
+  <data name="Title_CustLicense" xml:space="preserve">
+    <value>商户证照维护</value>
+  </data>
+  <data name="Title_Palaver" xml:space="preserve">
+    <value>谈判记录</value>
+  </data>
+  <data name="Title_PotShop" xml:space="preserve">
+    <value>意向商铺录入</value>
+  </data>
+  <data name="TMenu_RptPurhistTitle" xml:space="preserve">
+    <value>会员消费查询</value>
+  </data>
+  <data name="TMenu_RptWAndETitle" xml:space="preserve">
+    <value>商铺水电费列表</value>
+  </data>
+  <data name="TMunu_GiftStock" xml:space="preserve">
+    <value>赠品库存管理</value>
+  </data>
+  <data name="Tool_UserList" xml:space="preserve">
+    <value>商户列表</value>
+  </data>
+  <data name="TpUse_lblAddUserTitle" xml:space="preserve">
+    <value>商铺收银员维护</value>
+  </data>
+  <data name="TpUse_lblBe_Concerned_With" xml:space="preserve">
+    <value>参与收款</value>
+  </data>
+  <data name="TpUse_lblBeginWorkDate" xml:space="preserve">
+    <value>上岗时间</value>
+  </data>
+  <data name="TpUse_lblGathering" xml:space="preserve">
+    <value>收款权限</value>
+  </data>
+  <data name="TpUse_lblSexMan" xml:space="preserve">
+    <value>男</value>
+  </data>
+  <data name="TpUse_lblSexWoman" xml:space="preserve">
+    <value>女</value>
+  </data>
+  <data name="TpUse_lblStation" xml:space="preserve">
+    <value>岗位</value>
+  </data>
+  <data name="TpUsr_REXJobTitleNm" xml:space="preserve">
+    <value>是否收款</value>
+  </data>
+  <data name="TpUsr_ShopList" xml:space="preserve">
+    <value>商铺列表</value>
+  </data>
+  <data name="TpUsr_ShopUserAdd" xml:space="preserve">
+    <value>收银员定义</value>
+  </data>
+  <data name="TpUsr_ShopUserList" xml:space="preserve">
+    <value>商铺当前收银员列表</value>
+  </data>
+  <data name="Transfer_Department" xml:space="preserve">
+    <value>调动部门选择</value>
+  </data>
+  <data name="TV_lblTV" xml:space="preserve">
+    <value>电视台设定</value>
+  </data>
+  <data name="TV_lblTVNm" xml:space="preserve">
+    <value>电视台名称</value>
+  </data>
+  <data name="Union_lblPalaver" xml:space="preserve">
+    <value>联营合同审批</value>
+  </data>
+  <data name="Union_lblWrite" xml:space="preserve">
+    <value>联营合同录入</value>
+  </data>
+  <data name="User_btnAdd" xml:space="preserve">
+    <value>添加</value>
+  </data>
+  <data name="User_btnCancel" xml:space="preserve">
+    <value>取消 </value>
+  </data>
+  <data name="User_btnChang" xml:space="preserve">
+    <value>修改 </value>
+  </data>
+  <data name="User_btnOk" xml:space="preserve">
+    <value>确定</value>
+  </data>
+  <data name="User_ErrorPassword" xml:space="preserve">
+    <value>密码错误!</value>
+  </data>
+  <data name="User_lblCreateTime" xml:space="preserve">
+    <value>创建时间</value>
+  </data>
+  <data name="User_lblCreateUserID" xml:space="preserve">
+    <value>创建用户编码</value>
+  </data>
+  <data name="User_lblEMail" xml:space="preserve">
+    <value>E_mail</value>
+  </data>
+  <data name="User_lblIdentity" xml:space="preserve">
+    <value>身份证号</value>
+  </data>
+  <data name="User_lblMobile1" xml:space="preserve">
+    <value>个人电话</value>
+  </data>
+  <data name="User_lblMobile2" xml:space="preserve">
+    <value>移动电话2</value>
+  </data>
+  <data name="User_lblModifyTime" xml:space="preserve">
+    <value>最后修改时间</value>
+  </data>
+  <data name="User_lblModifyUserID" xml:space="preserve">
+    <value>最后修改用户编码</value>
+  </data>
+  <data name="User_lblNote" xml:space="preserve">
+    <value>备注</value>
+  </data>
+  <data name="User_lblOfficeTel" xml:space="preserve">
+    <value>办公电话</value>
+  </data>
+  <data name="User_lblOprDeptID" xml:space="preserve">
+    <value>操作用户的部门编码</value>
+  </data>
+  <data name="User_lblOprRoleID" xml:space="preserve">
+    <value>操作用户的角色编码</value>
+  </data>
+  <data name="User_lblPassword" xml:space="preserve">
+    <value>密码</value>
+  </data>
+  <data name="User_lblPhoto" xml:space="preserve">
+    <value>照片</value>
+  </data>
+  <data name="User_lblQuery" xml:space="preserve">
+    <value>查询 </value>
+  </data>
+  <data name="User_lblUserCode" xml:space="preserve">
+    <value>编码</value>
+  </data>
+  <data name="User_lblUserID" xml:space="preserve">
+    <value>用户内码</value>
+  </data>
+  <data name="User_lblUserLoginCode" xml:space="preserve">
+    <value>登录名</value>
+  </data>
+  <data name="User_lblUserName" xml:space="preserve">
+    <value>姓名</value>
+  </data>
+  <data name="User_lblUserQuery" xml:space="preserve">
+    <value>查看</value>
+  </data>
+  <data name="User_lblUserStatus" xml:space="preserve">
+    <value>是否启用</value>
+  </data>
+  <data name="User_lblUserStatusStr" xml:space="preserve">
+    <value>状态</value>
+  </data>
+  <data name="User_lblValidDate" xml:space="preserve">
+    <value>有效期</value>
+  </data>
+  <data name="User_lblWorkNo" xml:space="preserve">
+    <value>工牌号</value>
+  </data>
+  <data name="User_List" xml:space="preserve">
+    <value>用户列表</value>
+  </data>
+  <data name="User_NewPwd" xml:space="preserve">
+    <value>新密码</value>
+  </data>
+  <data name="User_NewPwdT" xml:space="preserve">
+    <value>新密码确认</value>
+  </data>
+  <data name="User_OldPwd" xml:space="preserve">
+    <value>旧密码</value>
+  </data>
+  <data name="User_Transfer" xml:space="preserve">
+    <value>用户部门调动</value>
+  </data>
+  <data name="User_UserType" xml:space="preserve">
+    <value>商户类型维护</value>
+  </data>
+  <data name="VoucherInput＿lblFType" xml:space="preserve">
+    <value>财务接口类型</value>
+  </data>
+  <data name="WrkFlw_Activity" xml:space="preserve">
+    <value>活跃</value>
+  </data>
+  <data name="WrkFlw_btnCancel" xml:space="preserve">
+    <value>取消 </value>
+  </data>
+  <data name="WrkFlw_btnSave" xml:space="preserve">
+    <value>保存工作流</value>
+  </data>
+  <data name="WrkFlw_Delete" xml:space="preserve">
+    <value>删   除</value>
+  </data>
+  <data name="WrkFlw_DelNode" xml:space="preserve">
+    <value>删除该节点</value>
+  </data>
+  <data name="WrkFlw_Efficiency" xml:space="preserve">
+    <value>效率</value>
+  </data>
+  <data name="WrkFlw_EmailContent" xml:space="preserve">
+    <value>邮件正文</value>
+  </data>
+  <data name="WrkFlw_EmailSetUp" xml:space="preserve">
+    <value>工作流邮件设置</value>
+  </data>
+  <data name="WrkFlw_EmailTitle" xml:space="preserve">
+    <value>邮件主题</value>
+  </data>
+  <data name="WrkFlw_EndTime" xml:space="preserve">
+    <value>完成时间</value>
+  </data>
+  <data name="WrkFlw_lblBizCode" xml:space="preserve">
+    <value>业务组编码</value>
+  </data>
+  <data name="WrkFlw_lblBizGrp" xml:space="preserve">
+    <value>业务组定义</value>
+  </data>
+  <data name="WrkFlw_lblBizGrpID" xml:space="preserve">
+    <value>业务组</value>
+  </data>
+  <data name="WrkFlw_lblBizGrpName" xml:space="preserve">
+    <value>业务组名称</value>
+  </data>
+  <data name="WrkFlw_lblBizGrpNameTool" xml:space="preserve">
+    <value>业务组名称定义</value>
+  </data>
+  <data name="WrkFlw_lblBizGrpStatus" xml:space="preserve">
+    <value>是否启用</value>
+  </data>
+  <data name="WrkFlw_lblBizNote" xml:space="preserve">
+    <value>说明</value>
+  </data>
+  <data name="WrkFlw_lblEfficiency" xml:space="preserve">
+    <value>效率要求(天)</value>
+  </data>
+  <data name="WrkFlw_lblEfficiencyDay" xml:space="preserve">
+    <value>天</value>
+  </data>
+  <data name="WrkFlw_lblInitVoucher" xml:space="preserve">
+    <value>是否制单</value>
+  </data>
+  <data name="WrkFlw_lbllblNodeLongestDelayHour" xml:space="preserve">
+    <value>小时</value>
+  </data>
+  <data name="WrkFlw_lblNodeFuncAuthID" xml:space="preserve">
+    <value>业务处理</value>
+  </data>
+  <data name="WrkFlw_lblNodeLongestDelay" xml:space="preserve">
+    <value>最长滞留小时</value>
+  </data>
+  <data name="WrkFlw_lblNodeNodetName" xml:space="preserve">
+    <value>节点名称</value>
+  </data>
+  <data name="WrkFlw_lblNodePrintAfterConfirm" xml:space="preserve">
+    <value>单据可打印否</value>
+  </data>
+  <data name="WrkFlw_lblNodeProcessClass" xml:space="preserve">
+    <value>处理类</value>
+  </data>
+  <data name="WrkFlw_lblNodeRoleID" xml:space="preserve">
+    <value>业务角色</value>
+  </data>
+  <data name="WrkFlw_lblNodeSmtToMgr" xml:space="preserve">
+    <value>可否提交上级</value>
+  </data>
+  <data name="WrkFlw_lblNodeTimeoutHandler" xml:space="preserve">
+    <value>超时后处理</value>
+  </data>
+  <data name="WrkFlw_lblNodeValidAfterConfirm" xml:space="preserve">
+    <value>业务生效否</value>
+  </data>
+  <data name="WrkFlw_lblNodeWrkStep" xml:space="preserve">
+    <value>节点步数</value>
+  </data>
+  <data name="WrkFlw_lblTraceDay" xml:space="preserve">
+    <value>跟踪天数</value>
+  </data>
+  <data name="WrkFlw_lblTraceDays" xml:space="preserve">
+    <value>跟踪天数限制</value>
+  </data>
+  <data name="WrkFlw_lblTraceDaysDay" xml:space="preserve">
+    <value>天</value>
+  </data>
+  <data name="WrkFlw_lblTransit" xml:space="preserve">
+    <value>转接工作流</value>
+  </data>
+  <data name="WrkFlw_lblUpWorkFlow" xml:space="preserve">
+    <value>工作流维护</value>
+  </data>
+  <data name="WrkFlw_lblVoucherTypeID" xml:space="preserve">
+    <value>单据类别</value>
+  </data>
+  <data name="WrkFlw_lblWorkFlow" xml:space="preserve">
+    <value>工作流定义</value>
+  </data>
+  <data name="WrkFlw_lblWrkFlwName" xml:space="preserve">
+    <value>工作流名称</value>
+  </data>
+  <data name="WrkFlw_lblWrkFlwProcessClass" xml:space="preserve">
+    <value>接口类</value>
+  </data>
+  <data name="WrkFlw_lblWrkFlwStatus" xml:space="preserve">
+    <value>是否启用</value>
+  </data>
+  <data name="WrkFlw_MailConfigSet" xml:space="preserve">
+    <value>邮件模版设置</value>
+  </data>
+  <data name="WrkFlw_MailConfigStatus" xml:space="preserve">
+    <value>是否有效</value>
+  </data>
+  <data name="WrkFlw_Maintenance" xml:space="preserve">
+    <value>更新</value>
+  </data>
+  <data name="WrkFlw_NewNode" xml:space="preserve">
+    <value>      添加
+节点</value>
+  </data>
+  <data name="WrkFlw_NodeChange" xml:space="preserve">
+    <value>      修改
+节点</value>
+  </data>
+  <data name="WrkFlw_NodeDelete" xml:space="preserve">
+    <value>      删除
+节点</value>
+  </data>
+  <data name="WrkFlw_NodeID" xml:space="preserve">
+    <value>节点ID</value>
+  </data>
+  <data name="WrkFlw_Query" xml:space="preserve">
+    <value>工作流查看</value>
+  </data>
+  <data name="WrkFlw_QueryList" xml:space="preserve">
+    <value>工作流查询列表</value>
+  </data>
+  <data name="WrkFlw_Sequence" xml:space="preserve">
+    <value>序号</value>
+  </data>
+  <data name="WrkFlw_StartTime" xml:space="preserve">
+    <value>启动时间</value>
+  </data>
+  <data name="WrkFlw_UpdateNode" xml:space="preserve">
+    <value>更新节点</value>
+  </data>
+  <data name="WrkFlw_UpdateWrkFlw" xml:space="preserve">
+    <value>更新工作流</value>
+  </data>
+  <data name="WrkFlw_VoucherHints" xml:space="preserve">
+    <value>单据线索</value>
+  </data>
+  <data name="WrkFlw_VoucherID" xml:space="preserve">
+    <value>单据编码</value>
+  </data>
+  <data name="WrkFlw_VoucherMemo" xml:space="preserve">
+    <value>单据注释</value>
+  </data>
+  <data name="WrkFlw_WorkFlowID" xml:space="preserve">
+    <value>工作流ID</value>
+  </data>
+  <data name="WrkFlwEntity_backWrkFlw" xml:space="preserve">
+    <value>已成功驳回!</value>
+  </data>
+  <data name="WrkFlwEntity_btnMessage" xml:space="preserve">
+    <value>     意见
+     查看  </value>
+  </data>
+  <data name="WrkFlwEntity_lblConfirm" xml:space="preserve">
+    <value>已确认单据</value>
+  </data>
+  <data name="WrkFlwEntity_lblConfirmDate" xml:space="preserve">
+    <value>审批日期</value>
+  </data>
+  <data name="WrkFlwEntity_lblConfirmMessage" xml:space="preserve">
+    <value>审批意见</value>
+  </data>
+  <data name="WrkFlwEntity_lblConfirmUser" xml:space="preserve">
+    <value>提交人</value>
+  </data>
+  <data name="WrkFlwEntity_lblDisposaling" xml:space="preserve">
+    <value>处理中单据</value>
+  </data>
+  <data name="WrkFlwEntity_lblInitiativeOverrule" xml:space="preserve">
+    <value>驳回单据</value>
+  </data>
+  <data name="WrkFlwEntity_lblMessage" xml:space="preserve">
+    <value>审批意见</value>
+  </data>
+  <data name="WrkFlwEntity_lblOvertime" xml:space="preserve">
+    <value>超时未处理单据</value>
+  </data>
+  <data name="WrkFlwEntity_lblOvertimeOverrule" xml:space="preserve">
+    <value>超时驳回单据</value>
+  </data>
+  <data name="WrkFlwEntity_lblWrkFlwTrack" xml:space="preserve">
+    <value>工作流跟踪</value>
+  </data>
+  <data name="Account_ShopChargeInput" xml:space="preserve">
+    <value>商铺费用录入</value>
+  </data>
+  <data name="Account_ShopHdwTree" xml:space="preserve">
+    <value>商铺硬件树</value>
+  </data>
+  <data name="Rpt_MonthPaidAmt" xml:space="preserve">
+    <value>本月实收金额
+(元)</value>
+  </data>
+  <data name="Rpt_YearPaidAmt" xml:space="preserve">
+    <value>截至本月实收金额
+(元)</value>
+  </data>
+  <data name="RPT_GroupByStore" xml:space="preserve">
+    <value>按项目分组</value>
+  </data>
+  <data name="RPT_lblGroupBy" xml:space="preserve">
+    <value>分组选项</value>
+  </data>
+  <data name="RPT_lblOrderby" xml:space="preserve">
+    <value>排序顺序</value>
+  </data>
+  <data name="RPT_NoGroup" xml:space="preserve">
+    <value>无分组</value>
+  </data>
+  <data name="RPT_lblABA" xml:space="preserve">
+    <value>按权责发生制</value>
+  </data>
+  <data name="RPT_lblCBA" xml:space="preserve">
+    <value>按收付实现制</value>
+  </data>
+  <data name="RPT_lblRptType" xml:space="preserve">
+    <value>统计方式</value>
+  </data>
+  <data name="Rpt_OwnTotallblPeriod" xml:space="preserve">
+    <value>截至记账月</value>
+  </data>
+  <data name="Rpt_lblSalesMonth" xml:space="preserve">
+    <value>月份</value>
+  </data>
+  <data name="Rpt_lblYearSum" xml:space="preserve">
+    <value>年度累计</value>
+  </data>
+  <data name="Msg_InputDate" xml:space="preserve">
+    <value>请输入日期</value>
+  </data>
+  <data name="Rpt_invEndDate" xml:space="preserve">
+    <value>费用结束日期</value>
+  </data>
+  <data name="Rpt_invStartDate" xml:space="preserve">
+    <value>费用开始日期</value>
+  </data>
+  <data name="Menu_GroupManager" xml:space="preserve">
+    <value>集团信息报表</value>
+  </data>
+  <data name="OpenPageLog_ViewTime" xml:space="preserve">
+    <value>访问时间</value>
+  </data>
+  <data name="OpenPageLog_IPAddress" xml:space="preserve">
+    <value>IP地址</value>
+  </data>
+  <data name="Menu_FirstTitle" xml:space="preserve">
+    <value>租赁首期费用计算</value>
+  </data>
+  <data name="Rpt_OrderbyBrandID" xml:space="preserve">
+    <value>按品牌排序</value>
+  </data>
+  <data name="Rpt_OrderbyStoreID" xml:space="preserve">
+    <value>按项目排序</value>
+  </data>
+  <data name="Rpt_SelectMonth" xml:space="preserve">
+    <value>查询月份</value>
+  </data>
+  <data name="PotCustomer_CustAttractCount" xml:space="preserve">
+    <value>招商次数</value>
+  </data>
+  <data name="PotCustomer_CustAttractInfo" xml:space="preserve">
+    <value>招商信息</value>
+  </data>
+  <data name="PotCustomer_CustAttractQuery" xml:space="preserve">
+    <value>历次招商过程查询</value>
+  </data>
+  <data name="PotCustomer_CustAttractTime" xml:space="preserve">
+    <value>批次</value>
+  </data>
+  <data name="Rpt_InvPaidPrint" xml:space="preserve">
+    <value>付款凭证打印</value>
+  </data>
+  <data name="Menu_Investment" xml:space="preserve">
+    <value>招商管理</value>
+  </data>
+  <data name="PotCustomer_MenuBasic" xml:space="preserve">
+    <value>潜在商户基本信息</value>
+  </data>
+  <data name="Menu_PosServerVindicate" xml:space="preserve">
+    <value>POS服务器维护</value>
+  </data>
+  <data name="Menu_SystemManage" xml:space="preserve">
+    <value>系统管理</value>
+  </data>
+  <data name="Store_Availability" xml:space="preserve">
+    <value>有效</value>
+  </data>
+  <data name="Store_BusinessItemTree" xml:space="preserve">
+    <value>商业项目树</value>
+  </data>
+  <data name="Store_DateSourceOfTaskManage" xml:space="preserve">
+    <value>任务数据源维护</value>
+  </data>
+  <data name="Store_DateSourceTree" xml:space="preserve">
+    <value>数据源树</value>
+  </data>
+  <data name="Store_DBName" xml:space="preserve">
+    <value>数据库名称</value>
+  </data>
+  <data name="Store_DownLoad" xml:space="preserve">
+    <value>下载</value>
+  </data>
+  <data name="Store_FirstLevel" xml:space="preserve">
+    <value>第一级</value>
+  </data>
+  <data name="Store_HighestLevel" xml:space="preserve">
+    <value>最高级</value>
+  </data>
+  <data name="Store_NoEndDate" xml:space="preserve">
+    <value>无结束日期</value>
+  </data>
+  <data name="Store_Port" xml:space="preserve">
+    <value>端口</value>
+  </data>
+  <data name="Store_POSServerResourceVindicate" xml:space="preserve">
+    <value>POS服务器数据源维护</value>
+  </data>
+  <data name="Store_Priority" xml:space="preserve">
+    <value>优先级</value>
+  </data>
+  <data name="Store_ProcessClass" xml:space="preserve">
+    <value>处理类</value>
+  </data>
+  <data name="Store_RetryMark" xml:space="preserve">
+    <value>重试标志</value>
+  </data>
+  <data name="Store_RunOnce" xml:space="preserve">
+    <value>仅运行一次</value>
+  </data>
+  <data name="Store_RunTimes" xml:space="preserve">
+    <value>重复运行</value>
+  </data>
+  <data name="Store_RunType" xml:space="preserve">
+    <value>执行类型</value>
+  </data>
+  <data name="Store_SecondLevel" xml:space="preserve">
+    <value>第二级</value>
+  </data>
+  <data name="Store_ServerResource" xml:space="preserve">
+    <value>数据源</value>
+  </data>
+  <data name="Store_ServerResourceCode" xml:space="preserve">
+    <value>数据源编码</value>
+  </data>
+  <data name="Store_ServerResourceIP" xml:space="preserve">
+    <value>数据源IP</value>
+  </data>
+  <data name="Store_ServerResourceName" xml:space="preserve">
+    <value>数据源名称</value>
+  </data>
+  <data name="Store_Task" xml:space="preserve">
+    <value>任务</value>
+  </data>
+  <data name="Store_TaskItems" xml:space="preserve">
+    <value>任务列表</value>
+  </data>
+  <data name="Store_TaskManage" xml:space="preserve">
+    <value>任务维护</value>
+  </data>
+  <data name="Store_TaskName" xml:space="preserve">
+    <value>任务名称</value>
+  </data>
+  <data name="Store_TaskPlan" xml:space="preserve">
+    <value>任务计划</value>
+  </data>
+  <data name="Store_TaskType" xml:space="preserve">
+    <value>任务类别</value>
+  </data>
+  <data name="Store_TransTaskPlanManage" xml:space="preserve">
+    <value>任务计划维护</value>
+  </data>
+  <data name="Store_UnDefine" xml:space="preserve">
+    <value>未定义</value>
+  </data>
+  <data name="Store_UnUsed" xml:space="preserve">
+    <value>未启用</value>
+  </data>
+  <data name="Store_Update" xml:space="preserve">
+    <value>上传</value>
+  </data>
+  <data name="RentableArea_SkuClass" xml:space="preserve">
+    <value>商品分类</value>
+  </data>
+  <data name="RentableArea_SkuClassCode" xml:space="preserve">
+    <value>分类编码</value>
+  </data>
+  <data name="RentableArea_SkuClassName" xml:space="preserve">
+    <value>分类名称</value>
+  </data>
+  <data name="RentableArea_SkuClassStatus" xml:space="preserve">
+    <value>分类状态</value>
+  </data>
+  <data name="RentableArea_SkuClassTable" xml:space="preserve">
+    <value>商品分类列表</value>
+  </data>
+  <data name="RentableArea_SkuClassVindicate" xml:space="preserve">
+    <value>商品分类维护</value>
+  </data>
+  <data name="Srore_TaskProcessClassManage" xml:space="preserve">
+    <value>任务处理类维护</value>
+  </data>
+  <data name="Store_ClassName" xml:space="preserve">
+    <value>处理类名称</value>
+  </data>
+  <data name="Store_TaskDesc" xml:space="preserve">
+    <value>处理类描述</value>
+  </data>
+  <data name="Store_TaskStatus" xml:space="preserve">
+    <value>处理类状态</value>
+  </data>
+  <data name="Menu_PosStatusInfo" xml:space="preserve">
+    <value>POS监控</value>
+  </data>
+  <data name="ConShopBrand_BrandNameIsIn" xml:space="preserve">
+    <value>品牌名称已存在</value>
+  </data>
+  <data name="Rpt_SkuId_last" xml:space="preserve">
+    <value>商品编码后缀</value>
+  </data>
+  <data name="User_lblWorkNo_Last" xml:space="preserve">
+    <value>编号后缀</value>
+  </data>
+  <data name="Rpt_BrandID" xml:space="preserve">
+    <value>品牌号</value>
+  </data>
+  <data name="Rpt_BrandName" xml:space="preserve">
+    <value>品牌名称</value>
+  </data>
+  <data name="Rpt_ShopSKUInfo" xml:space="preserve">
+    <value>商铺商品信息列表</value>
+  </data>
+  <data name="Rpt_SkuClassName" xml:space="preserve">
+    <value>商品分类名称</value>
+  </data>
+  <data name="Rpt_SkuDeptID" xml:space="preserve">
+    <value>商品分类号</value>
+  </data>
+  <data name="Rpt_ShopID" xml:space="preserve">
+    <value>ShopID</value>
+  </data>
+  <data name="Rpt_ShopInfo" xml:space="preserve">
+    <value>商铺信息列表</value>
+  </data>
+  <data name="Menu_VoucherManager" xml:space="preserve">
+    <value>凭证管理</value>
+  </data>
+  <data name="Menu_SkuInput" xml:space="preserve">
+    <value>商品编码导入</value>
+  </data>
+  <data name="Lease_RptDay" xml:space="preserve">
+    <value>日报表</value>
+  </data>
+  <data name="Lease_RptMonth" xml:space="preserve">
+    <value>月报表</value>
+  </data>
+  <data name="Menu_ShopSellStatistics" xml:space="preserve">
+    <value>商铺销售均价分析列表</value>
+  </data>
+  <data name="Menu_ShopTypeSaleStatistics" xml:space="preserve">
+    <value>项目商铺类型销售均价分析列表</value>
+  </data>
+  <data name="Menu_TradeSaleStatistics" xml:space="preserve">
+    <value>项目业态销售均价分析列表</value>
+  </data>
+  <data name="Rpt_Date" xml:space="preserve">
+    <value>日期</value>
+  </data>
+  <data name="CashInformation_Add" xml:space="preserve">
+    <value>总收银信息操作</value>
+  </data>
+  <data name="CashInformation_balance" xml:space="preserve">
+    <value>差额</value>
+  </data>
+  <data name="CashInformation_message1" xml:space="preserve">
+    <value>请进行最终签退后再进行总收银</value>
+  </data>
+  <data name="CashInformation_message2" xml:space="preserve">
+    <value>收银员已进行总收，请使用修改功能</value>
+  </data>
+  <data name="CashInformation_PayAmt" xml:space="preserve">
+    <value>实收金额</value>
+  </data>
+  <data name="CashInformation_Query" xml:space="preserve">
+    <value>总收银信息查询</value>
+  </data>
+  <data name="Menu_NewCashInfo" xml:space="preserve">
+    <value>总收银录入</value>
+  </data>
+  <data name="Rpt_CasherCode" xml:space="preserve">
+    <value>收银员编码</value>
+  </data>
+  <data name="Rpt_CasherName" xml:space="preserve">
+    <value>收银员名称</value>
+  </data>
+  <data name="Rpt_GetTotalDate" xml:space="preserve">
+    <value>总收日期</value>
+  </data>
+  <data name="Rpt_DetailReport" xml:space="preserve">
+    <value>明细报表</value>
+  </data>
+  <data name="Rpt_DoneTotalCashes" xml:space="preserve">
+    <value>已做总收银</value>
+  </data>
+  <data name="Rpt_GetTotalCashes" xml:space="preserve">
+    <value>总收银收款列表</value>
+  </data>
+  <data name="Rpt_NoDoneTotalCashes" xml:space="preserve">
+    <value>未做总收银</value>
+  </data>
+  <data name="Rpt_TotalReport" xml:space="preserve">
+    <value>汇总报表</value>
+  </data>
+  <data name="Menu_POSData" xml:space="preserve">
+    <value>POS运行数据管理</value>
+  </data>
+  <data name="SkuInfo_SkuStatus" xml:space="preserve">
+    <value>状态</value>
+  </data>
+  <data name="SkuInfo_SkuNo" xml:space="preserve">
+    <value>无效</value>
+  </data>
+  <data name="SkuInfo_SkuYes" xml:space="preserve">
+    <value>有效</value>
+  </data>
+  <data name="Customer_lblCustInfo" xml:space="preserve">
+    <value>客户信息</value>
+  </data>
+  <data name="InvAdj_AdjBackAmt" xml:space="preserve">
+    <value>调整后金额</value>
+  </data>
+  <data name="InvoiceHeader_lblInvPayAmtSettlement" xml:space="preserve">
+    <value>结算金额</value>
+  </data>
+  <data name="Menu_BudgetInsert" xml:space="preserve">
+    <value>单元预算生成</value>
+  </data>
+  <data name="Menu_ContractExpensesDetail" xml:space="preserve">
+    <value>合同费用明细列表</value>
+  </data>
+  <data name="Menu_ContractExpensesSum" xml:space="preserve">
+    <value>合同费用汇总列表</value>
+  </data>
+  <data name="Rpt_ContractsActnotPayAmt" xml:space="preserve">
+    <value>欠款</value>
+  </data>
+  <data name="Rpt_ContractsActPayAmt" xml:space="preserve">
+    <value>已收</value>
+  </data>
+  <data name="Rpt_ContractsAmt" xml:space="preserve">
+    <value>应收</value>
+  </data>
+  <data name="InTrans" xml:space="preserve">
+    <value>传输中</value>
+  </data>
+  <data name="RptDateTransLog_ExecuteDate" xml:space="preserve">
+    <value>执行日期</value>
+  </data>
+  <data name="RptDateTransLog_TransStatus" xml:space="preserve">
+    <value>传输状态</value>
+  </data>
+  <data name="Rpt_DateTransLog" xml:space="preserve">
+    <value>数据传输日志列表</value>
+  </data>
+  <data name="Rpt_TransFlag" xml:space="preserve">
+    <value>传输状态</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>成功</value>
+  </data>
+  <data name="UnSuccess" xml:space="preserve">
+    <value>不成功</value>
+  </data>
+  <data name="Menu_RptSalesTrafficQuery" xml:space="preserve">
+    <value>项目日客流销售分析图表</value>
+  </data>
+  <data name="RptSalesTraffic_ReciptTraffic" xml:space="preserve">
+    <value>平均提袋率</value>
+  </data>
+  <data name="RptSalesTraffic_Traffic" xml:space="preserve">
+    <value>总客流数</value>
+  </data>
+  <data name="Menu_ShopSellDifferenceReceipt" xml:space="preserve">
+    <value>批量销售数据录入</value>
+  </data>
+  <data name="Qty_lblMonth" xml:space="preserve">
+    <value>月份</value>
+  </data>
+  <data name="Qty_lblYear" xml:space="preserve">
+    <value>年度</value>
+  </data>
+  <data name="Sell_SaleBeginDate" xml:space="preserve">
+    <value>销售开始日期</value>
+  </data>
+  <data name="Sell_SaleEndDate" xml:space="preserve">
+    <value>销售结束日期</value>
+  </data>
+  <data name="Menu_TrafficAccumAve" xml:space="preserve">
+    <value>4.5客流累计平均水平的对比分析</value>
+  </data>
+  <data name="Menu_TrafficAnalysis" xml:space="preserve">
+    <value>4.1客流量分析报告</value>
+  </data>
+  <data name="Menu_TrafficCompare" xml:space="preserve">
+    <value>4.2客流量比较分析</value>
+  </data>
+  <data name="Menu_TrafficDirection" xml:space="preserve">
+    <value>4.3客流走向分析报告</value>
+  </data>
+  <data name="Menu_TrafficMonth" xml:space="preserve">
+    <value>4.4当月客流量具体情况分析</value>
+  </data>
+  <data name="Menu_TrafficRpt" xml:space="preserve">
+    <value>客流相关报表</value>
+  </data>
+  <data name="Rpt_DayAve" xml:space="preserve">
+    <value>日平均</value>
+  </data>
+  <data name="Rpt_Rate" xml:space="preserve">
+    <value>差异</value>
+  </data>
+  <data name="Rpt_UntilMonthTotal" xml:space="preserve">
+    <value>截至该月本年执行情况</value>
+  </data>
+  <data name="Rpt_UntilMonthTotalLY" xml:space="preserve">
+    <value>截至该月去年执行情况</value>
+  </data>
+  <data name="Rpt_WeekEnd" xml:space="preserve">
+    <value>周末</value>
+  </data>
+  <data name="Rpt_WeekWordDay" xml:space="preserve">
+    <value>周工作日</value>
+  </data>
+  <data name="Rpt_Average" xml:space="preserve">
+    <value>平均</value>
+  </data>
+  <data name="Rpt_TrafficChange" xml:space="preserve">
+    <value>变动客流量</value>
+  </data>
+  <data name="Menu_PotCustomerManager" xml:space="preserve">
+    <value>潜在商户管理</value>
+  </data>
+  <data name="Rpt_lblLyYearPaidAmt" xml:space="preserve">
+    <value>截止该月
+去年累计情况</value>
+  </data>
+  <data name="Rpt_lblYearPaidAmt" xml:space="preserve">
+    <value>截止该月
+本年累计情况</value>
+  </data>
+  <data name="Rpt_YearAmtRate" xml:space="preserve">
+    <value>差异
+(%)</value>
+  </data>
+  <data name="Associator_ActivityInfomation" xml:space="preserve">
+    <value>活动讯息</value>
+  </data>
+  <data name="Associator_AgeArea" xml:space="preserve">
+    <value>年龄范围</value>
+  </data>
+  <data name="Associator_BonusArea" xml:space="preserve">
+    <value>积分范围</value>
+  </data>
+  <data name="Associator_BonusDate" xml:space="preserve">
+    <value>积分日期</value>
+  </data>
+  <data name="Associator_ConsumeInterest" xml:space="preserve">
+    <value>消费兴趣</value>
+  </data>
+  <data name="Associator_CountryOrArea" xml:space="preserve">
+    <value>国家/地区</value>
+  </data>
+  <data name="Associator_GiftName" xml:space="preserve">
+    <value>赠品名称</value>
+  </data>
+  <data name="Associator_GiftStockList" xml:space="preserve">
+    <value>赠品库存列表</value>
+  </data>
+  <data name="Associator_InfoExists" xml:space="preserve">
+    <value>信息已存在</value>
+  </data>
+  <data name="Associator_InvPayAmt" xml:space="preserve">
+    <value>消费金额</value>
+  </data>
+  <data name="Associator_MemberBirthday" xml:space="preserve">
+    <value>会员生日</value>
+  </data>
+  <data name="Associator_MemberBonus" xml:space="preserve">
+    <value>会员积分</value>
+  </data>
+  <data name="Associator_MemberChangeNum" xml:space="preserve">
+    <value>会员交易笔次</value>
+  </data>
+  <data name="Associator_MemberChangeNum2" xml:space="preserve">
+    <value>会员交易笔数</value>
+  </data>
+  <data name="Associator_MemberChangeSum" xml:space="preserve">
+    <value>会员交易金额</value>
+  </data>
+  <data name="Associator_MemberCode" xml:space="preserve">
+    <value>会员编码</value>
+  </data>
+  <data name="Associator_MemberMarryDate" xml:space="preserve">
+    <value>结婚纪念日</value>
+  </data>
+  <data name="Associator_MemberName" xml:space="preserve">
+    <value>会员姓名</value>
+  </data>
+  <data name="Associator_NOPOSReceipt" xml:space="preserve">
+    <value>非POS小票</value>
+  </data>
+  <data name="Associator_PersonFavor" xml:space="preserve">
+    <value>个人爱好</value>
+  </data>
+  <data name="Associator_POSReceipt" xml:space="preserve">
+    <value>POS小票</value>
+  </data>
+  <data name="Associator_ServicePaltform" xml:space="preserve">
+    <value>服务台</value>
+  </data>
+  <data name="Building" xml:space="preserve">
+    <value>大楼</value>
+  </data>
+  <data name="CardInput" xml:space="preserve">
+    <value>新发卡数据文件格式</value>
+  </data>
+  <data name="CardUpdateInput" xml:space="preserve">
+    <value>卡信息变动数据文件格式</value>
+  </data>
+  <data name="Floors" xml:space="preserve">
+    <value>楼层</value>
+  </data>
+  <data name="Member_BonusEnter" xml:space="preserve">
+    <value>会员积分录入</value>
+  </data>
+  <data name="Member_FreeGiftTransDate" xml:space="preserve">
+    <value>赠送日期</value>
+  </data>
+  <data name="Member_MembEnterTotal" xml:space="preserve">
+    <value>会员录入统计</value>
+  </data>
+  <data name="Menu_CardInformationInput" xml:space="preserve">
+    <value>联名卡信息导入</value>
+  </data>
+  <data name="Menu_MemberRedeemHList" xml:space="preserve">
+    <value>会员积分兑换历史查询</value>
+  </data>
+  <data name="Menu_MembPurReg" xml:space="preserve">
+    <value>积分录入统计</value>
+  </data>
+  <data name="Menu_MembTotal" xml:space="preserve">
+    <value>会员分析列表</value>
+  </data>
+  <data name="Menu_RptMemberAlterForBonus" xml:space="preserve">
+    <value>会员积分异常情况查询</value>
+  </data>
+  <data name="Menu_RptMemberExTrans" xml:space="preserve">
+    <value>小票换礼品列表</value>
+  </data>
+  <data name="Rdo_ShopCode" xml:space="preserve">
+    <value>商铺编号</value>
+  </data>
+  <data name="Rpt_BonusAmt" xml:space="preserve">
+    <value>本次积分大于</value>
+  </data>
+  <data name="Rpt_Bonusrate" xml:space="preserve">
+    <value>积分倍率大于</value>
+  </data>
+  <data name="Rpt_CheckType" xml:space="preserve">
+    <value>查询类别</value>
+  </data>
+  <data name="Rpt_JoinGroupDate" xml:space="preserve">
+    <value>入会开始日期</value>
+  </data>
+  <data name="Rpt_LeaveGroupDate" xml:space="preserve">
+    <value>入会结束日期</value>
+  </data>
+  <data name="Rpt_MemberDescType" xml:space="preserve">
+    <value>会员属性</value>
+  </data>
+  <data name="Rpt_MemberFreeGiftTrans" xml:space="preserve">
+    <value>会员赠送礼品历史查询</value>
+  </data>
+  <data name="Rpt_MemberInfoPicture" xml:space="preserve">
+    <value>会员信息分析图</value>
+  </data>
+  <data name="Rpt_MemberShopBonusList" xml:space="preserve">
+    <value>店铺积分分析列表</value>
+  </data>
+  <data name="Rpt_MemberShopSalesList" xml:space="preserve">
+    <value>会员销售占比分析列表</value>
+  </data>
+  <data name="Rpt_MembNumbers" xml:space="preserve">
+    <value>会员数量</value>
+  </data>
+  <data name="Rpt_PerSales" xml:space="preserve">
+    <value>销售比</value>
+  </data>
+  <data name="Rpt_Transrate" xml:space="preserve">
+    <value>交易频率大于</value>
+  </data>
+  <data name="TotalInfo" xml:space="preserve">
+    <value>汇总信息</value>
+  </data>
+  <data name="Budget_Insert" xml:space="preserve">
+    <value>生成</value>
+  </data>
+  <data name="Budget_lblUseArea" xml:space="preserve">
+    <value>使用面积</value>
+  </data>
+  <data name="Budget_MonthAmt" xml:space="preserve">
+    <value>月预算金额</value>
+  </data>
+  <data name="Budget_RentAmt" xml:space="preserve">
+    <value>单位预算金额</value>
+  </data>
+  <data name="Budget_RentType" xml:space="preserve">
+    <value>类型</value>
+  </data>
+  <data name="Budget_SelectUnit" xml:space="preserve">
+    <value>选择单元</value>
+  </data>
+  <data name="Budget_UnitPrice" xml:space="preserve">
+    <value>单位面积日预算</value>
+  </data>
+  <data name="Budget_UnitTypeName" xml:space="preserve">
+    <value>单元类型</value>
+  </data>
+  <data name="Budget_YearAmt" xml:space="preserve">
+    <value>年度预算金额</value>
+  </data>
+  <data name="Budget_Years" xml:space="preserve">
+    <value>费用年度</value>
+  </data>
+  <data name="Menu_Budget" xml:space="preserve">
+    <value>预算</value>
+  </data>
+  <data name="Menu_BudgetDeailAuditing" xml:space="preserve">
+    <value>预算审批</value>
+  </data>
+  <data name="Menu_BudgetDetail" xml:space="preserve">
+    <value>预算录入</value>
+  </data>
+  <data name="Menu_BudgetExamine" xml:space="preserve">
+    <value>单元预算查看</value>
+  </data>
+  <data name="Rpt_PrintDate" xml:space="preserve">
+    <value>打印日期</value>
+  </data>
+  <data name="Associator_BonusCurr" xml:space="preserve">
+    <value>兑换后积分</value>
+  </data>
+  <data name="Associator_BonusPrev" xml:space="preserve">
+    <value>兑换前积分</value>
+  </data>
+  <data name="Member_GiftID" xml:space="preserve">
+    <value>赠品编号</value>
+  </data>
+  <data name="Member_GiftQty" xml:space="preserve">
+    <value>赠品数量</value>
+  </data>
+  <data name="Member_MemberName" xml:space="preserve">
+    <value>会员姓名</value>
+  </data>
+  <data name="Rpt_GiftQtyAmount" xml:space="preserve">
+    <value>兑换数量合计</value>
+  </data>
+  <data name="Rpt_LogAmount" xml:space="preserve">
+    <value>兑换记录计数</value>
+  </data>
+  <data name="Rpt_RedeemAmtAmount" xml:space="preserve">
+    <value>兑换积分合计</value>
+  </data>
+  <data name="Rpt_TransAmount" xml:space="preserve">
+    <value>消费次数</value>
+  </data>
+  <data name="Page_Refresh" xml:space="preserve">
+    <value>刷新</value>
+  </data>
+  <data name="Menu_PotContrast" xml:space="preserve">
+    <value>商铺受关注查询</value>
+  </data>
+  <data name="Menu_SellInfoQuery" xml:space="preserve">
+    <value>销售数据查询</value>
+  </data>
+  <data name="Sell_QueryItem" xml:space="preserve">
+    <value>查询列</value>
+  </data>
+  <data name="Menu_MemberAct" xml:space="preserve">
+    <value>会员活动管理</value>
+  </data>
+  <data name="Menu_MemberCard" xml:space="preserve">
+    <value>会员卡管理</value>
+  </data>
+  <data name="Menu_MemberInfo" xml:space="preserve">
+    <value>会员信息管理</value>
+  </data>
+  <data name="Menu_QueryLeaseDetail" xml:space="preserve">
+    <value>商铺合同明细查询</value>
+  </data>
+  <data name="Menu_BrandSales" xml:space="preserve">
+    <value>项目品牌销售均价分析列表</value>
+  </data>
+  <data name="Dept_City" xml:space="preserve">
+    <value>城市</value>
+  </data>
+  <data name="Menu_CompanyBudgetIncomeSum" xml:space="preserve">
+    <value>集团预算收入汇总分析列表</value>
+  </data>
+  <data name="Menu_StoreBudgetIncomeDetail" xml:space="preserve">
+    <value>项目预算收入明细分析列表</value>
+  </data>
+  <data name="Rpt_BudgetCountVar" xml:space="preserve">
+    <value>与预算差异
+ Var(%)</value>
+  </data>
+  <data name="Account_btnTotalMoney" xml:space="preserve">
+    <value>合计</value>
+  </data>
+  <data name="AdBoard_lblAdBoardManagement" xml:space="preserve">
+    <value>广告位维护</value>
+  </data>
+  <data name="Builder_AuditingYear" xml:space="preserve">
+    <value>生成年份</value>
+  </data>
+  <data name="BuilderAuditing_CreditSide" xml:space="preserve">
+    <value>贷方</value>
+  </data>
+  <data name="BuilderAuditing_Debtor" xml:space="preserve">
+    <value>借方</value>
+  </data>
+  <data name="BuilderAuditing_OperationTime" xml:space="preserve">
+    <value>业务时间</value>
+  </data>
+  <data name="Invoice_BacthPrintAdBoard" xml:space="preserve">
+    <value>批量打印广告位结算单</value>
+  </data>
+  <data name="Invoice_BacthPrintArea" xml:space="preserve">
+    <value>批量打印场地结算单</value>
+  </data>
+  <data name="InvoiceAdPara_Title" xml:space="preserve">
+    <value>广告位结算单参数设置</value>
+  </data>
+  <data name="InvoiceAreaPara_Title" xml:space="preserve">
+    <value>场地结算单参数设置</value>
+  </data>
+  <data name="Lease_lblAdBoardAccount" xml:space="preserve">
+    <value>广告位费用计算</value>
+  </data>
+  <data name="Lease_lblAreaAccount" xml:space="preserve">
+    <value>场地费用计算</value>
+  </data>
+  <data name="Menu_AdBoardExpenseManagement" xml:space="preserve">
+    <value>广告位费用管理</value>
+  </data>
+  <data name="Menu_AdBoardModify" xml:space="preserve">
+    <value>修改已审批广告位合同</value>
+  </data>
+  <data name="Menu_ADContractInfo" xml:space="preserve">
+    <value>广告合同信息汇总列表</value>
+  </data>
+  <data name="Menu_AdContractQuery" xml:space="preserve">
+    <value>广告位场地合同查询</value>
+  </data>
+  <data name="Menu_AdContractStop" xml:space="preserve">
+    <value>广告位合同终止</value>
+  </data>
+  <data name="Menu_AdContractStopAdd" xml:space="preserve">
+    <value>广告位合同终止录入</value>
+  </data>
+  <data name="Menu_AdContractStopAuditing" xml:space="preserve">
+    <value>广告位合同终止审批</value>
+  </data>
+  <data name="Menu_AreaContractStop" xml:space="preserve">
+    <value>场地合同终止</value>
+  </data>
+  <data name="Menu_AreaContractStopAdd" xml:space="preserve">
+    <value>场地合同终止录入</value>
+  </data>
+  <data name="Menu_AreaContractStopAuditing" xml:space="preserve">
+    <value>场地合同终止审批</value>
+  </data>
+  <data name="Menu_AreaDefine" xml:space="preserve">
+    <value>场地定义</value>
+  </data>
+  <data name="Menu_AreaExpenseManagement" xml:space="preserve">
+    <value>场地费用管理</value>
+  </data>
+  <data name="Menu_AreaModify" xml:space="preserve">
+    <value>修改已审批场地合同</value>
+  </data>
+  <data name="Menu_Builder_Auditing" xml:space="preserve">
+    <value>商户对账单生成</value>
+  </data>
+  <data name="Menu_DefineBillArea" xml:space="preserve">
+    <value>租赁场地定义</value>
+  </data>
+  <data name="Menu_FirstAdBoard" xml:space="preserve">
+    <value>广告位首期费用计算</value>
+  </data>
+  <data name="Menu_FirstArea" xml:space="preserve">
+    <value>场地首期费用计算</value>
+  </data>
+  <data name="Menu_InvAdjRoll" xml:space="preserve">
+    <value>结算单调整历史生成</value>
+  </data>
+  <data name="Menu_RptAreaContractTotalInfo" xml:space="preserve">
+    <value>场地合同信息汇总列表</value>
+  </data>
+  <data name="Menu_RptBuilder_Auditing" xml:space="preserve">
+    <value>客户对账报表</value>
+  </data>
+  <data name="Menu_ShopAreaAnalysisOrder" xml:space="preserve">
+    <value>商铺坪效排序分析列表</value>
+  </data>
+  <data name="Rpt_AdjEndDate" xml:space="preserve">
+    <value>调整结束日期</value>
+  </data>
+  <data name="Rpt_AdjStartDate" xml:space="preserve">
+    <value>调整开始日期</value>
+  </data>
+  <data name="Rpt_AdUnit" xml:space="preserve">
+    <value>广告位</value>
+  </data>
+  <data name="Rpt_Area" xml:space="preserve">
+    <value>场地</value>
+  </data>
+  <data name="Rpt_AreaManagement" xml:space="preserve">
+    <value>场地维护</value>
+  </data>
+  <data name="Rpt_AreaName" xml:space="preserve">
+    <value>场地名称</value>
+  </data>
+  <data name="Rpt_ChargeDetail" xml:space="preserve">
+    <value>商铺费用明细列表</value>
+  </data>
+  <data name="Rpt_InvAdjDetail" xml:space="preserve">
+    <value>结算单调整明细列表</value>
+  </data>
+  <data name="Rpt_InvoiceDatailList" xml:space="preserve">
+    <value>合同费用流水明细列表</value>
+  </data>
+  <data name="Rpt_InvoiceDate" xml:space="preserve">
+    <value>费用发生日期</value>
+  </data>
+  <data name="RptLeaseInvDetailTickt_Title" xml:space="preserve">
+    <value>租赁结算单开票明细报表</value>
+  </data>
+  <data name="Menu_AdManager" xml:space="preserve">
+    <value>场地管理</value>
+  </data>
+  <data name="Menu_StoreIncomeZLDetail" xml:space="preserve">
+    <value>项目租赁收入账龄分析明细报表</value>
+  </data>
+  <data name="Menu_StoreIncomeZLSum" xml:space="preserve">
+    <value>3.8子公司租赁收入账龄分析汇总列表</value>
+  </data>
+  <data name="Rpt_Benchmark" xml:space="preserve">
+    <value>坪效</value>
+  </data>
+  <data name="Rpt_City" xml:space="preserve">
+    <value>城市</value>
+  </data>
+  <data name="Rpt_FloorArea" xml:space="preserve">
+    <value>面积
+(平米)</value>
+  </data>
+  <data name="Rpt_RentSaleCompare" xml:space="preserve">
+    <value>租售比</value>
+  </data>
+  <data name="Rpt_StoreShopTypeRentalSaleAnalyse" xml:space="preserve">
+    <value>集团项目商铺类型租金销售比分析列表</value>
+  </data>
+  <data name="Rpt_StoreShopTypeSaleAnalyse" xml:space="preserve">
+    <value>集团项目商铺类型坪效分析报表</value>
+  </data>
+  <data name="Rpt_StoreShopTypeSaleDetailAnalyse" xml:space="preserve">
+    <value>集团项目商铺类型销售明细分析列表</value>
+  </data>
+  <data name="Rpt_YearMonth" xml:space="preserve">
+    <value>年度月份</value>
+  </data>
+  <data name="Rpt_yearTotalMPaidAmt" xml:space="preserve">
+    <value>同比累计销售额
+(元)</value>
+  </data>
+  <data name="Rpt_YearTotalSellCount" xml:space="preserve">
+    <value>当年累计销售额
+(元)</value>
+  </data>
+  <data name="Rpt_yearTotleRate" xml:space="preserve">
+    <value>年累计差异</value>
+  </data>
+  <data name="Menu_CompanyIncomeZLAnalyse" xml:space="preserve">
+    <value>集团租赁收入账龄分析列表</value>
+  </data>
+  <data name="Menu_StoreIncomeZLAnalyse" xml:space="preserve">
+    <value>子公司租赁收入账龄分析列表</value>
+  </data>
+  <data name="Rpt_ShowType" xml:space="preserve">
+    <value>显示方式</value>
+  </data>
+  <data name="Menu_CompanyRunCaseAnalyse" xml:space="preserve">
+    <value>3.7集团商户经营情况分析列表</value>
+  </data>
+  <data name="Menu_ContractChange" xml:space="preserve">
+    <value>合同修改</value>
+  </data>
+  <data name="Menu_ContractList" xml:space="preserve">
+    <value>合同查询</value>
+  </data>
+  <data name="Menu_ComputerInv" xml:space="preserve">
+    <value>费用计算</value>
+  </data>
+  <data name="Menu_InvPay" xml:space="preserve">
+    <value>费用结算</value>
+  </data>
+  <data name="Menu_ADContractSelect" xml:space="preserve">
+    <value>广告位合同查询</value>
+  </data>
+  <data name="Menu_GroupManager_MonthRpt" xml:space="preserve">
+    <value>经营月报报表</value>
+  </data>
+  <data name="Rpt_Chart" xml:space="preserve">
+    <value>图表</value>
+  </data>
+  <data name="Rpt_DetailGroupShopTypeRentalRate" xml:space="preserve">
+    <value>集团项目商铺类型出租率明细报表</value>
+  </data>
+  <data name="Rpt_GroupItemLettingRate" xml:space="preserve">
+    <value>集团项目整体出租率报表</value>
+  </data>
+  <data name="Rpt_List" xml:space="preserve">
+    <value>列表</value>
+  </data>
+  <data name="Menu_UnitLeaseAnalyse" xml:space="preserve">
+    <value>单元招商分析列表</value>
+  </data>
+  <data name="ISS_Schedule_YES" xml:space="preserve">
+    <value>完成</value>
+  </data>
+  <data name="RentableArea_UnderWay" xml:space="preserve">
+    <value>流转中</value>
+  </data>
+  <data name="ShopBrand_lblBrandQuery" xml:space="preserve">
+    <value>招商辅助查询</value>
+  </data>
+  <data name="WrkFlwEntity_WrkFlwProcessQuery" xml:space="preserve">
+    <value>工作流业务办理查询</value>
+  </data>
+  <data name="Tab_lblADInfo" xml:space="preserve">
+    <value>广告位信息</value>
+  </data>
+  <data name="Tab_lblAreaInfo" xml:space="preserve">
+    <value>场地信息</value>
+  </data>
+  <data name="Menu_AreaContractSelect" xml:space="preserve">
+    <value>场地合同查询</value>
+  </data>
+  <data name="Menu_BuildingEntryManage" xml:space="preserve">
+    <value>大楼出入口信息维护</value>
+  </data>
+  <data name="Menu_EntryCounterManage" xml:space="preserve">
+    <value>出入口客流点信息维护</value>
+  </data>
+  <data name="Traffic_TrafficCounterID" xml:space="preserve">
+    <value>客流点编号</value>
+  </data>
+  <data name="Traffic_TrafficDoorName" xml:space="preserve">
+    <value>出入口名称</value>
+  </data>
+  <data name="Traffic_TrafficPoint" xml:space="preserve">
+    <value>客流点</value>
+  </data>
+  <data name="Menu_RentAreaOverview" xml:space="preserve">
+    <value>2.1总体租赁概况</value>
+  </data>
+  <data name="Menu_RentAreaOverviewDetail" xml:space="preserve">
+    <value>2.1总体租赁概况明细列表</value>
+  </data>
+  <data name="Menu_RentAreaOverviewSum" xml:space="preserve">
+    <value>2.1总体租赁概况汇总列表</value>
+  </data>
+  <data name="Menu_AttractParametersManage" xml:space="preserve">
+    <value>招商参数</value>
+  </data>
+  <data name="Menu_ChargeParametersManage" xml:space="preserve">
+    <value>费用参数</value>
+  </data>
+  <data name="Menu_MembParametersManage" xml:space="preserve">
+    <value>会员参数</value>
+  </data>
+  <data name="Menu_PopularizeParametersManage" xml:space="preserve">
+    <value>推广参数</value>
+  </data>
+  <data name="Menu_RentalParametersManage" xml:space="preserve">
+    <value>租约参数</value>
+  </data>
+  <data name="Menu_SysParametersManage" xml:space="preserve">
+    <value>系统参数</value>
+  </data>
+  <data name="Ad_lblMakeAdBoardContract" xml:space="preserve">
+    <value>广告位出租合同</value>
+  </data>
+  <data name="Prompt_norentDays" xml:space="preserve">
+    <value>请输入免租期！</value>
+  </data>
+  <data name="Prompt_refID" xml:space="preserve">
+    <value>请输入相关档案号！</value>
+  </data>
+  <data name="Menu_ADpqReport" xml:space="preserve">
+    <value>广告位排期列表</value>
+  </data>
+  <data name="Menu_RptDepositDetail" xml:space="preserve">
+    <value>商户押金明细列表</value>
+  </data>
+  <data name="Menu_RptDepositSum" xml:space="preserve">
+    <value>押金汇总列表</value>
+  </data>
+  <data name="Page_CurPos" xml:space="preserve">
+    <value>当前位置:</value>
+  </data>
+  <data name="AdBoard_UserArea" xml:space="preserve">
+    <value>展示面面积</value>
+  </data>
+  <data name="Menu_PayTypeManage" xml:space="preserve">
+    <value>押金方式维护</value>
+  </data>
+  <data name="AdContract_lblAdTypeDefend" xml:space="preserve">
+    <value>广告位类型维护</value>
+  </data>
+  <data name="LeaseAreaType_AreaTypeDefend" xml:space="preserve">
+    <value>场地类型维护</value>
+  </data>
+  <data name="TpUse_lblAddDirectUserTitle" xml:space="preserve">
+    <value>联营收银员维护</value>
+  </data>
+  <data name="Rpt_ShopRentalThan" xml:space="preserve">
+    <value>商铺租售比分析列表</value>
+  </data>
+  <data name="Rpt_StoreBrandRentalThan" xml:space="preserve">
+    <value>项目品牌租售比分析列表</value>
+  </data>
+  <data name="Rpt_StoreBrandSalesAnalysis" xml:space="preserve">
+    <value>项目品牌销售分析列表</value>
+  </data>
+  <data name="Rpt_StoreTradeRentalThan" xml:space="preserve">
+    <value>项目业态租售比分析列表</value>
+  </data>
+  <data name="Rpt_StoreTradeSalesAnalysis" xml:space="preserve">
+    <value>项目业态销售分析列表</value>
+  </data>
+  <data name="Rpt_AreaTypeName" xml:space="preserve">
+    <value>场地类型</value>
+  </data>
+  <data name="Rpt_InvMonth" xml:space="preserve">
+    <value>合同月租金统计列表</value>
+  </data>
+  <data name="Rpt_StoreSaleMth" xml:space="preserve">
+    <value>项目销售情况统计月报</value>
+  </data>
+  <data name="Menu_AddUnits" xml:space="preserve">
+    <value>新增单元</value>
+  </data>
+  <data name="Menu_EditUnits" xml:space="preserve">
+    <value>修改单元</value>
+  </data>
+  <data name="Menu_ContractExclusive" xml:space="preserve">
+    <value>合同排他列表</value>
+  </data>
+  <data name="Menu_EmphasisContract" xml:space="preserve">
+    <value>重点关注合同列表</value>
+  </data>
+  <data name="Menu_MoreContract" xml:space="preserve">
+    <value>多合同商户列表</value>
+  </data>
+  <data name="Menu_PosSvrinfoQuery" xml:space="preserve">
+    <value>POS服务器信息列表</value>
+  </data>
+  <data name="Menu_RptQuery" xml:space="preserve">
+    <value>查询报表</value>
+  </data>
+  <data name="Rpt_DeptUser" xml:space="preserve">
+    <value>部门用户列表</value>
+  </data>
+  <data name="Menu_MallComposite" xml:space="preserve">
+    <value>项目综合情况统计表</value>
+  </data>
+  <data name="Menu_VAFloorLayout" xml:space="preserve">
+    <value>楼层商铺分布维护</value>
+  </data>
+  <data name="Menu_PasswordInitialize" xml:space="preserve">
+    <value>密码初始化</value>
+  </data>
+  <data name="Menu_MoreContractQuery" xml:space="preserve">
+    <value>商户多合同查询报表</value>
+  </data>
+</root>

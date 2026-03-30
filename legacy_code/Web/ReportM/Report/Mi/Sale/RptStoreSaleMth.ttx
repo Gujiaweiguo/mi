@@ -1,0 +1,9 @@
+shopcode	String	32
+shopname	String	32
+tradename	String	32
+rentarea	Number
+totalreceipt	Number
+paidamt	Number
+lypamt	Number
+lmpamt	Number
+month	DateTime

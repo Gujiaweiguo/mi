@@ -1,0 +1,50 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "E:\...\JKLREPORTWEB\", ".", "{2CCBFBA1-1706-481D-847D-DEE79A52F599}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.VirtualPath = "/JKLREPORTWEB"
+		Debug.AspNetCompiler.PhysicalPath = "..\JKLREPORTWEB\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\JKLREPORTWEB\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "true"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/JKLREPORTWEB"
+		Release.AspNetCompiler.PhysicalPath = "..\JKLREPORTWEB\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\JKLREPORTWEB\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "true"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "1247"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|.NET = Debug|.NET
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Release|.NET = Release|.NET
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2CCBFBA1-1706-481D-847D-DEE79A52F599}.Debug|.NET.ActiveCfg = Debug|.NET
+		{2CCBFBA1-1706-481D-847D-DEE79A52F599}.Debug|.NET.Build.0 = Debug|.NET
+		{2CCBFBA1-1706-481D-847D-DEE79A52F599}.Debug|Any CPU.ActiveCfg = Debug|.NET
+		{2CCBFBA1-1706-481D-847D-DEE79A52F599}.Debug|Mixed Platforms.ActiveCfg = Debug|.NET
+		{2CCBFBA1-1706-481D-847D-DEE79A52F599}.Debug|Mixed Platforms.Build.0 = Debug|.NET
+		{2CCBFBA1-1706-481D-847D-DEE79A52F599}.Release|.NET.ActiveCfg = Debug|.NET
+		{2CCBFBA1-1706-481D-847D-DEE79A52F599}.Release|.NET.Build.0 = Debug|.NET
+		{2CCBFBA1-1706-481D-847D-DEE79A52F599}.Release|Any CPU.ActiveCfg = Debug|.NET
+		{2CCBFBA1-1706-481D-847D-DEE79A52F599}.Release|Mixed Platforms.ActiveCfg = Debug|.NET
+		{2CCBFBA1-1706-481D-847D-DEE79A52F599}.Release|Mixed Platforms.Build.0 = Debug|.NET
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		VisualSVNWorkingCopyRoot = 
+	EndGlobalSection
+EndGlobal

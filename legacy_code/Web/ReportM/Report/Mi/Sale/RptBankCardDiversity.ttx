@@ -1,0 +1,9 @@
+BizDate	Date		
+CustCode	String	16	
+CustName	String	64	
+EFTId	String	16	
+CardID	String	32	
+Status	String	10	
+GrossAmt	Currency		
+CommChg	Currency		
+NetAmt	Currency		

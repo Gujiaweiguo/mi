@@ -1,0 +1,13 @@
+storeid	Number		
+storeshortname	String	50
+TradeCode	Number		1234
+TradeName	String	50	efqwerqwe
+PaidAmt	Number		1234
+TrNum	Number		1234
+shoptype	Number		1234
+shopCount	Number		1234
+rat	Number		1234
+srRate	Number		1234
+RentalAmt	Number		1234
+contractCount	Number		1234
+totalArea	Number		1234

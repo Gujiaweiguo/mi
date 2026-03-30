@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Chart baseFontSize="12" caption="" showBorder="0" showValues="1" PYAxisName="" canvasbgColor="ffffff" canvasbgAlpha="40" aboutMenuItemLabel="About Wincor Nixdorf" aboutMenuItemLink="n-http://www.wincor-nixdorf.com">
+  <categories>
+    <category label="2009/1/1 0:00:00" />
+    <category label="2009/2/1 0:00:00" />
+    <category label="2009/3/1 0:00:00" />
+    <category label="2009/4/1 0:00:00" />
+    <category label="2009/5/1 0:00:00" />
+    <category label="2009/6/1 0:00:00" />
+    <category label="2009/7/1 0:00:00" />
+    <category label="2009/8/1 0:00:00" />
+    <category label="2009/9/1 0:00:00" />
+    <category label="2009/10/1 0:00:00" />
+    <category label="2009/11/1 0:00:00" />
+  </categories>
+  <dataset seriesName="本月" parentYAxis="S">
+    <set value="1020264.38" />
+    <set value="921152.78" />
+    <set value="1250244.10" />
+    <set value="1035087.60" />
+    <set value="1262839.40" />
+    <set value="1235080.00" />
+    <set value="1262839.40" />
+    <set value="1262839.40" />
+    <set value="1173934.04" />
+    <set value="1088304.44" />
+    <set value="899830.86" />
+  </dataset>
+  <dataset seriesName="环比">
+    <set value="6430165.00" />
+    <set value="26810.00" />
+    <set value="26810.00" />
+    <set value="26810.00" />
+    <set value="26810.00" />
+    <set value="79158.82" />
+    <set value="110497.32" />
+    <set value="0.00" />
+    <set value="713815.02" />
+    <set value="602120.52" />
+    <set value="382855.62" />
+  </dataset>
+  <dataset seriesName="同比">
+    <set value="427227.22" />
+    <set value="1020264.38" />
+    <set value="921152.78" />
+    <set value="1250244.10" />
+    <set value="1035087.60" />
+    <set value="1262839.40" />
+    <set value="1235080.00" />
+    <set value="1262839.40" />
+    <set value="1262839.40" />
+    <set value="1173934.04" />
+    <set value="1088304.44" />
+  </dataset>
+</Chart>

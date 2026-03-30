@@ -1,0 +1,10 @@
+E:\work\mi_net\Code\Base\bin\Debug\Base.dll
+E:\work\mi_net\Code\Base\bin\Debug\Base.pdb
+E:\work\mi_net\Code\Base\obj\Debug\ResolveAssemblyReference.cache
+E:\work\mi_net\Code\Base\obj\Debug\Base.dll
+E:\work\mi_net\Code\Base\obj\Debug\Base.pdb
+E:\WORK\MI_NET\CodeYG20091126\Code\Base\bin\Debug\Base.dll
+E:\WORK\MI_NET\CodeYG20091126\Code\Base\bin\Debug\Base.pdb
+E:\WORK\MI_NET\CodeYG20091126\Code\Base\obj\Debug\ResolveAssemblyReference.cache
+E:\WORK\MI_NET\CodeYG20091126\Code\Base\obj\Debug\Base.dll
+E:\WORK\MI_NET\CodeYG20091126\Code\Base\obj\Debug\Base.pdb

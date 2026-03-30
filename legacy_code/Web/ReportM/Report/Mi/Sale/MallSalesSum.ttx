@@ -1,0 +1,5 @@
+storeid	Number		
+storeshortname	String	50	
+BizDate	DateTime		
+TrNum	Number		
+PaidAmt	Currency		

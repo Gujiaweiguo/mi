@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BuildingInfor nm="大楼">
+  <mall locaID="" cityID="" mallID="106" buildID="102" desc="宁发商城" adress="天津市河西区气象台路98号增1号" Img="../../VAGraphic/Img/zjs.png" remark="" url="" />
+  <mall locaID="" cityID="" mallID="109" buildID="107" desc="十里堡乙2号院5-6号楼东" adress="" Img="../../VAGraphic/Img/azt.png" remark="" url="" />
+</BuildingInfor>

@@ -1,0 +1,105 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage" %>
+<%@ Register Src="buttom.ascx" TagName="buttom" TagPrefix="uc3" %>
+<%@ Register Src="ShowMenu.ascx" TagName="ShowMenu" TagPrefix="uc2" %>
+<%@ Register Src="ShowTree.ascx" TagName="ShowTree" TagPrefix="uc1" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <link href="../../App_Themes/CSS/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<!-- BOF new tpl -->
+<form id="form1" runat="server">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td align="left" valign="top">
+			<!-- BOF HEADER TBL -->
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td align="left" valign="top" style="width:400px;"><img src="../../App_Themes/CSS/Images/logo.jpg" width="400" height="76" alt="" /></td>
+					<td align="right" valign="top" class="headerColor" style="width:500px;">&nbsp;</td>
+				</tr>
+				<tr>
+					<td colspan="2" align="left" valign="middle" style="height:25px">
+						<table width="100%" border="0" cellpadding="0" cellspacing="0">
+							<tr>
+								<td style="background-color:#5a5a5a;">
+                                    <uc2:ShowMenu ID="ShowMenu1" runat="server" />
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+			<!-- EOF HEADER TBL -->
+		</td>
+	</tr>
+	<tr>
+        <td style="width:1px;" colspan="2" align="left" valign="middle"><img src="../../App_Themes/CSS/Images/spacer.gif" width="1" height="1" alt="" /></td>
+	</tr>
+	<tr>
+    	<td align="left" valign="top">
+			<!-- BOF MID TBL -->	
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td id="leftPart" style="width:240px;" valign="top">
+                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                             <tr>
+                                <td valign="top" class="leftTitleBar">&nbsp;</td>
+                             </tr>
+                             <tr>
+                                <td valign="top">&nbsp;</td>
+                             </tr>
+                             <tr>
+                                <td valign="top" style="padding-left:15px;"><uc1:ShowTree ID="ShowTree1" runat="server" /></td>
+                             </tr>
+                         </table>						 
+					</td>
+					<td id="midPart"width="7" align="center" valign="middle" bgcolor="#F0F0F0" style="cursor:move;" onMouseDown="MouseDown(this)" onMouseMove="MouseMove()" onMouseUp="MouseUp()"><img id="myTabArrow" src="../../App_Themes/CSS/Images/btnTabLeft.gif" onClick="shutAndOpenLeftTab()" style="cursor:hand;" /></td>
+					<td id="rightPart" class="workareaColor" valign="top">
+						<table width="100%" border="0" cellspacing="0" cellpadding="0" class="workAreaTblPST">
+							<tr>
+								<td>
+									<asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+										<span style="color: #0000ff; text-decoration: underline">&nbsp;&nbsp;</span></asp:ContentPlaceHolder>            
+								</td>
+							</tr>
+							<tr>
+								<td>&nbsp;</td>
+							</tr>
+							<tr>
+								<td>&nbsp;</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+			<!-- EOF MID TBL -->			
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+			<!-- BOF FOOTER -->    
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td height="5" bgcolor="#F0F0F0"><img src="../../App_Themes/CSS/Images/spacer.gif" width="1" height="1" /></td>
+				</tr>
+				<tr>
+					<td height="20" align="right" valign="middle" bgcolor="#999999" class="footerPureEng"><img src="../../App_Themes/CSS/Images/spacer.gif" width="1" height="1" />&copy; 2002 Ess.com Inc. All rights reserved. </td>
+				</tr>
+				<tr>
+					<td height="2" bgcolor="#666666"><img src="../../App_Themes/CSS/Images/spacer.gif" width="1" height="1" /></td>
+				</tr>
+				<tr>
+					<td height="80" bgcolor="#F0F0F0" style="text-align:right;"><uc3:buttom ID="Buttom1" runat="server" /></td>
+				</tr>
+			</table>
+			<!-- EOF FOOTER -->        
+		</td>
+	</tr>
+</table>
+</form>
+<!-- EOF new tpl -->
+<script type="text/javascript" src="../../App_Themes/CSS/JS/BaseClass.js"></script>
+</body>
+</html>

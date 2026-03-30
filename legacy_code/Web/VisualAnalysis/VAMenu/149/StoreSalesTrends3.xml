@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<graph xAxisName="" yAxisName="" subCaption="" baseFontSize="12" caption="项目近12个月交易笔数趋势图(单位:笔)" decimalPrecision="0" showValues="0" formatNumberScale="0" showNames="1" divLineColor="ff5904" divLineAlpha="20" alternateHGridAlpha="5" showAlternateHGridColor="1" AlternateHGridColor="ff5904" aboutMenuItemLabel="About Wincor Nixdorf" aboutMenuItemLink="n-http://www.wincor-nixdorf.com">
+  <set name="1月" value="2835" hoverText="2010-01" />
+  <set name="2月" value="6714" hoverText="2010-02" />
+  <set name="3月" value="9388" hoverText="2010-03" />
+  <set name="4月" value="10714" hoverText="2010-04" />
+</graph>

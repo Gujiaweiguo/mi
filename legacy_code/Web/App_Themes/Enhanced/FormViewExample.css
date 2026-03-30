@@ -1,0 +1,137 @@
+﻿.foo {} /* W3C CSS validator likes CSS files to start with a class rather than a comment. Soooooo.... */
+
+/* This style sheet is intended to contain OFTEN CHANGED rules used when the FormView control adapter is enabled. */
+/* Empty rules are provided merely as a convenience for your future use or experimentation. */
+/* See DetailsViewExample.css for comparison of similar rules. */
+
+
+
+/* The whole FormView, including the header, footer, pagination and data regions. */
+.PrettyFormView .AspNet-FormView
+{
+    width: 22em; /*300px;*/
+    background-color: White;
+    border:3px solid #959595;
+    padding:0px;
+}
+
+/* HeaderText or <HeaderTemplate> */
+.PrettyFormView .AspNet-FormView-Header
+{
+    background: #E9F5DA;
+    font-weight: bold;
+    text-align:center;
+    color:#465239;
+    text-transform:uppercase;
+    padding:10px 0;
+    font-size:1.2em;
+}
+
+/* FooterText or <FooterTemplate> */
+.PrettyFormView .AspNet-FormView-Footer
+{
+}
+
+/* Controls the appearance of whatever you define in the <ItemTemplate> */
+.PrettyFormView .AspNet-FormView-Data
+{
+    padding:0 4px;
+}
+
+/* Controls the appearance of whatever you define in the pagination region. */
+.PrettyFormView .AspNet-FormView-Pagination
+{
+    color: #F7F6F3;
+    background: #E9F5DA;
+    font-weight: bold;
+    text-align:center;
+    color:#465239;
+    text-transform:uppercase;
+    padding:10px 0;
+    width:100%;
+}
+
+/* This controls the appearance of the "current page" listed in the pagination region. */
+/* This is NOT a link */
+.PrettyFormView .AspNet-FormView-ActivePage
+{
+    padding:2px;
+    color:#999;
+    font-family:Verdana, Sans-Serif;
+}
+
+/* Controls the numbers used to navigate to other pages. */
+.PrettyFormView .AspNet-FormView-OtherPage
+{
+    padding:2px; 
+}
+
+/* This is a link. */
+.PrettyFormView a.AspNet-FormView-OtherPage
+{
+    padding:2px;
+}
+
+.PrettyFormView a.AspNet-FormView-OtherPage:link
+{
+
+}
+
+.PrettyFormView a.AspNet-FormView-OtherPage:visited
+{
+
+}
+
+
+.PrettyFormView a.AspNet-FormView-OtherPage:hover
+{
+    text-decoration:none;
+    background:#FFF;
+    color:#000;
+}
+
+/* ------------------------------------------------------------------- */
+/* Specific to this sample web site. */
+/* These rules are probably not useful in your site. */
+
+#SampleFormView .Sample-Contact
+{
+    border-top: solid 1px #E7E7E7;
+    border-right: solid 1px #D2D2D2;
+    border-bottom: solid 1px #D2D2D2;
+    border-left: solid 1px #E7E7E7;
+    padding:12px 6px;
+    background:url(bg-fade-light.png) repeat-x bottom;
+    color:#000;
+    font-size:.8em; 
+    font-family:Verdana, Sans-Serif;
+    margin:10px;
+}
+
+#SampleFormView .Sample-Name
+{    
+    font-weight:bold;
+    color:#465239;
+}
+
+#SampleFormView .Sample-Address
+{
+    color:Gray;
+    padding:6px 0;
+}
+
+#SampleFormView .Sample-Phone
+{
+    color: #333333;
+    text-align:right;
+    white-space:nowrap; 
+}
+
+/* --------------------------------------------------------------------------------------------------- */
+/* Used when the FormView adapter is NOT used. */
+/* These styles are used by the FormView's skin, found in this theme's skin file. */
+
+.FormView-Skin-Header
+{
+    text-transform:uppercase;
+}

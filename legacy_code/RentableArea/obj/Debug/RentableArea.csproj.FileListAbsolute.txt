@@ -1,0 +1,17 @@
+E:\Work\MI_NET\Code\RentableArea\bin\Debug\RentableArea.dll
+E:\Work\MI_NET\Code\RentableArea\bin\Debug\RentableArea.pdb
+E:\Work\MI_NET\Code\RentableArea\bin\Debug\Base.dll
+E:\Work\MI_NET\Code\RentableArea\bin\Debug\Base.pdb
+E:\Work\MI_NET\Code\RentableArea\obj\Debug\ResolveAssemblyReference.cache
+E:\Work\MI_NET\Code\RentableArea\obj\Debug\RentableArea.dll
+E:\Work\MI_NET\Code\RentableArea\obj\Debug\RentableArea.pdb
+E:\Work\MI_NET\Code_sun\Code\RentableArea\bin\Debug\RentableArea.dll
+E:\Work\MI_NET\Code_sun\Code\RentableArea\bin\Debug\RentableArea.pdb
+E:\Work\MI_NET\Code_sun\Code\RentableArea\bin\Debug\Base.dll
+E:\Work\MI_NET\Code_sun\Code\RentableArea\bin\Debug\Base.pdb
+E:\Work\MI_NET\Code_sun\Code\RentableArea\obj\Debug\ResolveAssemblyReference.cache
+E:\Work\MI_NET\Code_sun\Code\RentableArea\obj\Debug\RentableArea.dll
+E:\Work\MI_NET\Code_sun\Code\RentableArea\obj\Debug\RentableArea.pdb
+E:\work\mi_net\Code\RentableArea\bin\Debug\Microsoft.Vbe.Interop.dll
+E:\work\mi_net\Code\RentableArea\bin\Debug\Microsoft.Office.Interop.Excel.dll
+E:\work\mi_net\Code\RentableArea\bin\Debug\office.dll

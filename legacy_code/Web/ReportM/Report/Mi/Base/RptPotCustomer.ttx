@@ -1,0 +1,9 @@
+StoreShortName	String	16
+CustCode	String	16
+CustName	String	64
+CustShortName	String	32
+LegalRep	String	16
+RegCap	Number
+RegAddr	String	64
+UserName	String	32
+SourceTypeName	String	32

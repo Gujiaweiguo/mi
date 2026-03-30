@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BuildingMenu>
+	<Menu ID="1">
+		<MenuDesc>项目整体销售分析</MenuDesc>
+		<MenuUrl>VisualAnalysis/report/StoreSales.aspx?funcid=358</MenuUrl>
+	</Menu>
+	<Menu ID="2">
+		<MenuDesc>项目楼层销售分析</MenuDesc>
+		<MenuUrl>VisualAnalysis/report/FloorsSales.aspx?funcid=358</MenuUrl>
+	</Menu>
+	<Menu ID="3">
+		<MenuDesc>项目出租情况分析</MenuDesc>
+		<MenuUrl>VisualAnalysis/report/StoreConStatus.aspx?funcid=358</MenuUrl>
+	</Menu>
+	<Menu ID="4">
+		<MenuDesc>项目费用情况统计</MenuDesc>
+		<MenuUrl>VisualAnalysis/report/StoreInv.aspx?funcid=358</MenuUrl>
+	</Menu>
+	<Menu ID="5">
+		<MenuDesc>项目业态(楼层)评效分析</MenuDesc>
+		<MenuUrl>FusionCharts/TradePX.html?funcid=358</MenuUrl>
+	</Menu>
+</BuildingMenu>

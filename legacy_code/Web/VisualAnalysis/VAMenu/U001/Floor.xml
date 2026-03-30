@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FloorInfor nm="楼层">
+  <floor locaID="" cityID="" mallID="106" buildID="102" floorID="105" desc="一层" adress="天津市河西区气象台路98号增1号" Img="" remark="" url="" />
+  <floor locaID="" cityID="" mallID="106" buildID="102" floorID="106" desc="二层" adress="天津市河西区气象台路98号增1号" Img="" remark="" url="" />
+  <floor locaID="" cityID="" mallID="109" buildID="107" floorID="114" desc="一层" adress="" Img="" remark="" url="" />
+  <floor locaID="" cityID="" mallID="109" buildID="107" floorID="115" desc="二层" adress="" Img="" remark="" url="" />
+  <floor locaID="" cityID="" mallID="109" buildID="107" floorID="116" desc="三层" adress="" Img="" remark="" url="" />
+  <floor locaID="" cityID="" mallID="109" buildID="107" floorID="117" desc="四层" adress="" Img="" remark="" url="" />
+</FloorInfor>

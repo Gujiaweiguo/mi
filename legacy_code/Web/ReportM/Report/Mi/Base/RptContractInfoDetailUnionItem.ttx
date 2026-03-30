@@ -1,0 +1,12 @@
+contractcode	String	32
+billcycle	Number
+curtypename	String	32
+accountcycle	Number
+monthsettledays	Number
+rentinc	Number
+intaxrate	Number
+outtaxrate	Number
+latepayint	Number
+intday	Number
+taxrate	Number
+taxtype	String	32

@@ -1,0 +1,14 @@
+bin\Debug\BaseInfo.dll
+bin\Debug\BaseInfo.pdb
+bin\Debug\Base.dll
+bin\Debug\Base.pdb
+obj\Debug\ResolveAssemblyReference.cache
+obj\Debug\BaseInfo.dll
+obj\Debug\BaseInfo.pdb
+bin\Release\BaseInfo.dll
+bin\Release\BaseInfo.pdb
+bin\Release\Base.dll
+bin\Release\Base.pdb
+obj\Release\ResolveAssemblyReference.cache
+obj\Release\BaseInfo.dll
+obj\Release\BaseInfo.pdb

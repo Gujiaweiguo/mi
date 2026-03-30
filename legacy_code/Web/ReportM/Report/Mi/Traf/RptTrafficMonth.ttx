@@ -1,0 +1,4 @@
+storeid	Number
+StoreShortName	String	16
+bizdate	DateTime
+innum	Number

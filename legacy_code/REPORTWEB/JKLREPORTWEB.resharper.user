@@ -1,0 +1,54 @@
+<Configuration>
+  <CompletionStatisticsManager>
+    <ItemStatistics item="Qualified:@CrystalDecisions.Enterprise">
+      <Item value="Desktop" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@CrystalDecisions">
+      <Item value="Enterprise" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Web.UI.WebControls.HiddenField">
+      <Item value="Value" priority="4" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Web.UI.WebControls.TextBox">
+      <Item value="Text" priority="0" />
+    </ItemStatistics>
+  </CompletionStatisticsManager>
+  <EditorManager>
+    <RecentFiles>
+      <File id="2CCBFBA1-1706-481D-847D-DEE79A52F599/f:ClearSession.aspx.cs" caret="729" scrollPosition="" />
+      <File id="2CCBFBA1-1706-481D-847D-DEE79A52F599/f:ClearSession.aspx" caret="0" scrollPosition="" />
+      <File id="2CCBFBA1-1706-481D-847D-DEE79A52F599/f:CrystalReport_Test.aspx" caret="711" scrollPosition="" />
+      <File id="2CCBFBA1-1706-481D-847D-DEE79A52F599/f:CrystalReport1.aspx" caret="561" scrollPosition="" />
+      <File id="2CCBFBA1-1706-481D-847D-DEE79A52F599/d:webback/f:web.config" caret="2576" scrollPosition="" />
+      <File id="2CCBFBA1-1706-481D-847D-DEE79A52F599/d:aspnet_client/f:web.config" caret="0" scrollPosition="" />
+      <File id="2CCBFBA1-1706-481D-847D-DEE79A52F599/d:aspnet_client/d:system_web/d:2_0_50727/d:CrystalReportWebFormViewer3/d:js/f:calendar_param.js" caret="5246" scrollPosition="" />
+      <File id="2CCBFBA1-1706-481D-847D-DEE79A52F599/f:Web.Config" caret="610" scrollPosition="0|0" />
+      <File id="2CCBFBA1-1706-481D-847D-DEE79A52F599/f:CrystalReport_Test.aspx.cs" caret="0" scrollPosition="0|112" />
+      <File id="2CCBFBA1-1706-481D-847D-DEE79A52F599/f:Default.aspx.cs" caret="0" scrollPosition="0|0" />
+      <File id="2CCBFBA1-1706-481D-847D-DEE79A52F599/f:CrystalReport.aspx" caret="0" scrollPosition="0|0" />
+      <File id="2CCBFBA1-1706-481D-847D-DEE79A52F599/f:CrystalReport.aspx.cs" caret="15162" scrollPosition="0|320" />
+      <File id="2CCBFBA1-1706-481D-847D-DEE79A52F599/f:CryMiddle.aspx" caret="0" scrollPosition="0|0" />
+      <File id="2CCBFBA1-1706-481D-847D-DEE79A52F599/f:CryMiddle.aspx.cs" caret="602" scrollPosition="0|0" />
+      <File id="2CCBFBA1-1706-481D-847D-DEE79A52F599/f:Default.aspx" caret="401" scrollPosition="0|0" />
+    </RecentFiles>
+  </EditorManager>
+  <FileStructureView>
+    <AutoScrollToSource>False</AutoScrollToSource>
+    <TrackCaretLocation>False</TrackCaretLocation>
+  </FileStructureView>
+  <NAntValidationSettings>
+    <NAntPath value="" />
+  </NAntValidationSettings>
+  <ReFormatCode>
+    <ReorderMembers>False</ReorderMembers>
+    <OptimizeUsings>False</OptimizeUsings>
+    <RemoveRedundantThis>False</RemoveRedundantThis>
+    <ShortenReferences>False</ShortenReferences>
+  </ReFormatCode>
+  <SharedSolutionDisabledTemplatesManager>
+    <DisabledTemplates />
+  </SharedSolutionDisabledTemplatesManager>
+  <UserSolutionDisabledTemplatesManager>
+    <DisabledTemplates />
+  </UserSolutionDisabledTemplatesManager>
+</Configuration>

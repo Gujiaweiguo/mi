@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encodingbb="utf-8"?>
+<ToolBar>
+    <toolbar toolbarID="C101" desc="2万以下" rb="0" gb="255" bb="0" />
+    <toolbar toolbarID="C102" desc="2-5万元" rb="255" gb="0" bb="0" />
+    <toolbar toolbarID="C103" desc="5万元以上" rb="0" gb="0" bb="255" />
+</ToolBar>

@@ -1,0 +1,8 @@
+﻿<chart bgColor='ffffff' showBorder="0" baseFontSize='12'　palette='4' decimals='0' showvalues='1' bleSmartLabels='1' enableRotation='0' bgAlpha='40,100' bgRatio='0,100' bgAngle='360' showBorder='1' startingAngle='170' numberScaleValue='W' formatNumber='1' caption='09年08月各业态费用贡献占比分析'>
+            <set label='服装' value='31992' />
+            <set label='餐饮' value='45450' />
+            <set label='珠宝' value='31607' />
+            <set label='超市' value='8443' isSliced='1' />
+            <set label='电器' value='41508' isSliced='1' />
+             <set label='自营' value='110912' />
+</chart>

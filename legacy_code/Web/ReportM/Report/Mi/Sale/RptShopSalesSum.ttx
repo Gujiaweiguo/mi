@@ -1,0 +1,12 @@
+PaidAmt	Number		
+TotalReceipt	Number		
+TotalQty	Number		
+ReceiptAve	Number		
+QtyAve	Number		
+StoreID	Number		
+StoreName	String	32	
+FloorID	Number		
+FloorName	String	64	
+ShopName	String	64	
+ShopID	Number
+Date	String	64		

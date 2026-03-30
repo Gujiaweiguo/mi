@@ -1,0 +1,191 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="AddUnit.aspx.cs" Inherits="LeaseArea_AddUnit"  %>
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head id="Head1" runat="server">
+    <title></title>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+       
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+            <td rowspan="2" style="width: 40px" valign="middle">
+                <img alt="" height="32" src="../../App_Themes/CSS/Images/iconNew32x32.gif" width="32" /></td>
+            <td class="workAreaMainTitle" style="height: 20px" valign="middle">
+                <asp:Label ID="lblUnit" runat="server" Text="<%$ Resources:BaseInfo,RentableArea_lblUnit %>"></asp:Label></td>
+        </tr>
+        <tr>
+            <td class="workAreaMainTitleMemo" style="height: 18px" valign="middle">
+            </td>
+        </tr>
+    </table>
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+            <td style="width: 50%; height: 238px" valign="middle">
+                <table bgcolor="#fff4ae" border="0" cellpadding="10" cellspacing="0" width="100%">
+                    <tr>
+                        <td style="height: 10px">
+                            <div class="boxTitle">
+                                单元定义</div>
+                        </td>
+                    </tr>
+                    <tr align="center">
+                        <td style="height: 185px" valign="middle">
+                            <table align="center">
+                                <tr>
+                                    <td style="width: 98px">
+                                        <asp:Label ID="lblBuildingID" runat="server" Text="<%$ Resources:BaseInfo,RentableArea_lblBuildingName %>" CssClass="label"></asp:Label></td>
+                                    <td style="width: 209px">
+                                        <asp:DropDownList ID="cmbBuildingID" runat="server" Width="159px">
+                                        </asp:DropDownList></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 98px">
+                                        <asp:Label ID="lblUnitTypeID" runat="server" Text="<%$ Resources:BaseInfo,RentableArea_lblUnitTypeName %>" CssClass="label"></asp:Label></td>
+                                    <td style="width: 209px">
+                                        <asp:DropDownList ID="cmbUnitTypeID" runat="server" Width="159px">
+                                        </asp:DropDownList></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 98px; height: 24px;">
+                                        <asp:Label ID="lblAreaID" runat="server" Text="<%$ Resources:BaseInfo,RentableArea_lblAreaName %>" CssClass="label"></asp:Label></td>
+                                    <td style="width: 209px; height: 24px;">
+                                        <asp:DropDownList ID="cmbAreaID" runat="server" Width="159px">
+                                        </asp:DropDownList></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 98px">
+                                        <asp:Label ID="lblFloorID" runat="server" Text="<%$ Resources:BaseInfo,RentableArea_lblFloorName %>" CssClass="label"></asp:Label></td>
+                                    <td style="width: 209px">
+                                        <asp:DropDownList ID="cmbFloorID" runat="server" Width="159px">
+                                        </asp:DropDownList></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 98px">
+                                        <asp:Label ID="Label2" runat="server" Text="<%$ Resources:BaseInfo,RentableArea_lblTradeName %>" CssClass="label"></asp:Label></td>
+                                    <td style="width: 209px">
+                                        <asp:DropDownList ID="cmbTradeRelation" runat="server" Width="159px">
+                                        </asp:DropDownList></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 98px">
+                                        <asp:Label ID="lblLocationID" runat="server" Text="<%$ Resources:BaseInfo,RentableArea_lblLocationName %>" CssClass="label"></asp:Label></td>
+                                    <td style="width: 209px">
+                                        <asp:DropDownList ID="cmbLocationID" runat="server" Width="159px">
+                                        </asp:DropDownList></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 98px">
+                                        <asp:Label ID="Label3" runat="server" Text="<%$ Resources:BaseInfo,RentableArea_lblAreaSize %>" CssClass="label"></asp:Label></td>
+                                    <td style="width: 209px">
+                                        <asp:DropDownList ID="cmbAreaSizes" runat="server" Width="159px">
+                                        </asp:DropDownList></td>
+                                </tr>
+                                 <tr>
+                                    <td style="width: 98px">
+                                        <asp:Label ID="Label1" runat="server" Text="<%$ Resources:BaseInfo,RentableArea_lblAreaLeveName %>" CssClass="label"></asp:Label></td>
+                                    <td style="width: 209px">
+                                        <asp:DropDownList ID="cmbAreaLevel" runat="server" Width="159px">
+                                        </asp:DropDownList></td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="width: 98px; height: 25px;">
+                                        <asp:Label ID="lblUnitCode" runat="server" Text="<%$ Resources:BaseInfo,RentableArea_lblUnitCode %>" CssClass="label"></asp:Label></td>
+                                    <td style="width: 209px; height: 25px;">
+                                        <asp:TextBox ID="txtUnitCode" runat="server" CssClass="ipt160px"></asp:TextBox></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 98px">
+                                        <asp:Label ID="lblUnitDesc" runat="server" Text="<%$ Resources:BaseInfo,RentableArea_lblUnitDesc %>" CssClass="label"></asp:Label></td>
+                                    <td style="width: 209px">
+                                        <asp:TextBox ID="txtUnitDesc" runat="server" CssClass="ipt160px"></asp:TextBox></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 98px">
+                                        <asp:Label ID="lblUnitTel" runat="server" Text="<%$ Resources:BaseInfo,Dept_lblTel %>" CssClass="label"></asp:Label></td>
+                                    <td style="width: 209px">
+                                        <asp:TextBox ID="txtUnitTel" runat="server" CssClass="ipt160px"></asp:TextBox></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 98px">
+                                        <asp:Label ID="lblFloorArea" runat="server" Text="<%$ Resources:BaseInfo,RentableArea_lblFloorArea %>" CssClass="label"></asp:Label></td>
+                                    <td style="width: 209px">
+                                        <asp:TextBox ID="txtFloorArea" runat="server" CssClass="ipt160px"></asp:TextBox></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 98px; height: 21px">
+                                        <asp:Label ID="lblUseArea" runat="server" Text="<%$ Resources:BaseInfo,RentableArea_lblUseArea %>" CssClass="label"></asp:Label></td>
+                                    <td style="width: 209px; height: 21px">
+                                        <asp:TextBox ID="txtUseArea" runat="server" CssClass="ipt160px"></asp:TextBox></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 98px; height: 26px;">
+                                        <asp:Label ID="lblRentArea" runat="server" Text="<%$ Resources:BaseInfo,RentableArea_lblRentArea %>" CssClass="label"></asp:Label></td>
+                                    <td style="width: 209px; height: 26px;">
+                                        <asp:TextBox ID="txtRentArea" runat="server" CssClass="ipt160px"></asp:TextBox></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 98px">
+                                        <asp:Label ID="lblPlan" runat="server" Text="<%$ Resources:BaseInfo,RentableArea_lblPlan %>" CssClass="label"></asp:Label></td>
+                                    <td style="width: 209px">
+                                        <asp:TextBox ID="txtPlan" runat="server" Style="position: relative" CssClass="ipt160px"></asp:TextBox></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 98px">
+                                        <asp:Label ID="lblIsRentable" runat="server" Text="<%$ Resources:BaseInfo,RentableArea_lblIsRentable %>" CssClass="label"></asp:Label></td>
+                                    <td style="width: 209px">
+                                        <asp:DropDownList ID="cmbIsRentable" runat="server" Width="107px" CssClass="cmb160px">
+                                        </asp:DropDownList></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 98px">
+                                        <asp:Label ID="lblUnitStatus" runat="server" Text="<%$ Resources:BaseInfo,RentableArea_lblUnitStatus %>" CssClass="label"></asp:Label></td>
+                                    <td style="width: 209px">
+                                        <asp:DropDownList ID="cmbUnitStatus" runat="server" Width="107px" CssClass="cmb160px">
+                                        </asp:DropDownList></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 98px; height: 24px;">
+                                        <asp:Label ID="lblIsBlankOut" runat="server" Text="<%$ Resources:BaseInfo,RentableArea_lblIsBlankOut %>" CssClass="label"></asp:Label></td>
+                                    <td style="width: 209px; height: 24px;">
+                                        <asp:DropDownList ID="cmbIsBlankOut" runat="server" Width="107px" CssClass="cmb160px">
+                                        </asp:DropDownList></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 98px">
+                                        <asp:Label ID="lblNode" runat="server" Text="<%$ Resources:BaseInfo,User_lblNote %>" CssClass="label"></asp:Label></td>
+                                    <td style="width: 209px">
+                                        <asp:TextBox ID="txtNode" runat="server" TextMode="MultiLine" CssClass="mipt"></asp:TextBox></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 98px">
+                                    </td>
+                                    <td style="width: 209px">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 98px; height: 25px;">
+                                    </td>
+                                    <td style="width: 209px; height: 25px;">
+                                        <asp:Button ID="btnOk" runat="server" CssClass="btnOn50px" OnClick="btnOk_Click"
+                                            Text="确定" />
+                                        &nbsp;&nbsp;
+                                        <asp:Button ID="btnCancel" runat="server" CssClass="btnOn50px" OnClick="btnCancel_Click"
+                                            Text="取消" /></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    </div>
+    </form>
+</body>
+</html>

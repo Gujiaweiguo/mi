@@ -1,0 +1,65 @@
+<chart   baseFontSize='12' palette='3' caption='' showValues='0'  chartOrder='line,area,column' endAngX='35' endAngY='-20'
+rotateNames="1" slantLabels="1" areaOverColumns="0" formatNumberScale="0" canvasBaseColor ='ffffff' canvasBgColor  ='ffffff'canvasBgDepth  ='10'
+ yAxisMinValue='-90' yAxisMaxValue='30' >
+
+   <categories>
+     <category label='一月' />
+      <category label='二月' />
+      <category label='三月' />
+      <category label='四月' />
+      <category label='五月' />
+      <category label='六月' />
+     
+   </categories>
+
+   <dataset seriesName='销售同比'>
+      <set value='21.4' />
+      <set value='-56.40'/>
+      <set value='0.17' />
+      <set value='-0.89' />
+      <set value='4.35' />
+      <set value='2.32' />
+	 
+    
+     
+   </dataset>
+
+   <dataset seriesName='毛利同比' renderAs='line'>
+      <set value='8.65'  />
+      <set value='-62.84' />
+      <set value='-10.39' />
+      <set value='-7.04'/>
+      <set value='0.96' />
+      <set value='2.81' />
+   </dataset>
+
+   <dataset seriesName='综合毛利同比' renderAs='arae'>
+      <set value='7.76'/>
+      <set value='-30.77'/>
+      <set value='5.81'/>
+      <set value='-22.62'/>
+      <set value='21.60' />
+      <set value='23.57' />     
+   </dataset>
+
+   
+<trendlines>
+      <line startValue='22000' color='91C728' displayValue='Target' showOnTop='1'/>
+   </trendlines>
+
+   <styles>
+
+      <definition>
+         <style name='CanvasAnim' type='animation' param='_xScale' start='0' duration='1' />
+      </definition>
+
+      <application>
+         <apply toObject='BACKGROUND' styles='bgAnim' />
+      </application>   
+	  <application>
+         <apply toObject='Canvas' styles='CanvasAnim' />
+      </application>  
+
+   </styles>
+
+</chart> 

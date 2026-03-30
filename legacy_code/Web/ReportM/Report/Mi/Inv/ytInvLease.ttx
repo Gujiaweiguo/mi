@@ -1,0 +1,47 @@
+PostCode	String	16	
+PostAddr	String	64	
+CustName	String	64	
+ContactorName	String	32
+ContactMan	String	32	
+ShopCode	String	16	
+BrandName	String	32	
+DeptName	String	32	
+BankName	String	64	
+BankAcct	String	32	
+ContractCode	String	32	
+InvCode	String	32	
+ChargeTypeName	String	32	
+InvActPayAmt	Currency		
+InvStartDate	DateTime		
+InvEndDate	DateTime		
+HdwName	String	64	
+ChgName	String	32	
+StartDate	DateTime		
+EndDate	DateTime		
+LastQty	Number		
+CurQty	Number		
+CostQty	Number		
+Price	Currency		
+ChgAmt	Currency		
+CurTypeName	String	16	
+OfficeTel	String	32	
+OfficeAddr	String	64	
+Note	String	128
+amt	Currency
+period	DateTime
+actPayAmt	Currency
+iActAmt	Currency
+ContractID	Number
+RentType	Number
+InvHeader	String	128
+InvSubhead	String	128	
+InvH1	String	128
+InvH2	String	128
+InvH3	String	128
+InvH4	String	128
+InvH5	String	128
+InvF1	String	128
+InvF2	String	128
+InvF3	String	128
+InvF4	String	128
+InvF5	String	128

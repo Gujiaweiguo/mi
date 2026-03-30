@@ -1,0 +1,9 @@
+storeid	Number
+storename	String	50
+period	DateTime
+monthamt	Number
+YearBudget	Number
+YearBudgetTotal	Number
+InvPayAmt	Number
+YearInvPayAmt	Number
+chargetypename	String	50

@@ -1,0 +1,14 @@
+storeid	Number		
+storeshortname	String	50
+CustCode	String	50	efqwerqwe
+CustName	String	50	efqwerqwe
+ShopCode	String	50	efqwerqwe
+ShopName	String	50	efqwerqwe
+TradeName	String	50	efqwerqwe
+InvPeriod	DateTime	2008-1-1
+InvAmt	Number		1234
+salesAmt	Number		1234
+PayPaidAmt	Number		1234
+RentArea	Number		1234
+FloorName	String	50
+ShopTypeName	String	50

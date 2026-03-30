@@ -1,0 +1,5655 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Account_lblAccountMon" xml:space="preserve">
+    <value>Exp A/C month</value>
+  </data>
+  <data name="Account_lblAgainPrint" xml:space="preserve">
+    <value>Reprint bill</value>
+  </data>
+  <data name="Account_lblChargeMoney" xml:space="preserve">
+    <value>Expense</value>
+  </data>
+  <data name="Account_lblChargeType" xml:space="preserve">
+    <value>Exp type</value>
+  </data>
+  <data name="Account_lblCostQty" xml:space="preserve">
+    <value>Usage</value>
+  </data>
+  <data name="Account_lblCur" xml:space="preserve">
+    <value>Current</value>
+  </data>
+  <data name="Account_lblCurQty" xml:space="preserve">
+    <value>Current reading</value>
+  </data>
+  <data name="Account_lblFreeQty" xml:space="preserve">
+    <value>Free usage</value>
+  </data>
+  <data name="Account_lblInvoiceStutas" xml:space="preserve">
+    <value>Bill status</value>
+  </data>
+  <data name="Account_lblLast" xml:space="preserve">
+    <value>Last</value>
+  </data>
+  <data name="Account_lblLastRead" xml:space="preserve">
+    <value>Last reading</value>
+  </data>
+  <data name="Account_lblMCharegType" xml:space="preserve">
+    <value>Exp by meter</value>
+  </data>
+  <data name="Account_lblOtherCharge" xml:space="preserve">
+    <value>Enter other expenses</value>
+  </data>
+  <data name="Account_lblOtherChargePalaver" xml:space="preserve">
+    <value>Approve other expenses</value>
+  </data>
+  <data name="Account_lblPrice" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="Account_lblQty" xml:space="preserve">
+    <value>Usage</value>
+  </data>
+  <data name="Account_lblTimes" xml:space="preserve">
+    <value>Expence ratio</value>
+  </data>
+  <data name="Account_lblTotalMoney" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="Account_lblWaterElectCharge" xml:space="preserve">
+    <value>Input water and electro expense data</value>
+  </data>
+  <data name="Account_lblWaterElectChargePalaver" xml:space="preserve">
+    <value>Approve utility expense data</value>
+  </data>
+  <data name="Activity_lblBound" xml:space="preserve">
+    <value>Bound</value>
+  </data>
+  <data name="Activity_lblContentsNm" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Activity_lblEstCosts" xml:space="preserve">
+    <value>Estimated Costs</value>
+  </data>
+  <data name="Activity_lblintention" xml:space="preserve">
+    <value>Intention</value>
+  </data>
+  <data name="Activity_lblMcompany" xml:space="preserve">
+    <value>Mcompany</value>
+  </data>
+  <data name="Activity_lblMIntrenet" xml:space="preserve">
+    <value>A&amp;P Record - Activity</value>
+  </data>
+  <data name="Activity_lblPcompany" xml:space="preserve">
+    <value>Pcompany</value>
+  </data>
+  <data name="Activity_lblsitus" xml:space="preserve">
+    <value>Situs</value>
+  </data>
+  <data name="Ad_lblAgree" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="Ad_lblCheckAdBoardContract" xml:space="preserve">
+    <value>Approve billboard leasing agreement</value>
+  </data>
+  <data name="Ad_lblCheckIdea" xml:space="preserve">
+    <value>Advice</value>
+  </data>
+  <data name="Ad_lblFastAdBoard" xml:space="preserve">
+    <value>Fixed billboard</value>
+  </data>
+  <data name="Ad_lblFastAdBoardDefine" xml:space="preserve">
+    <value>Define and maintain fixed billboard </value>
+  </data>
+  <data name="Ad_lblMakeAdBoardContract" xml:space="preserve">
+    <value>Prepare billboard leasing contract</value>
+  </data>
+  <data name="AdBoard_lblAdBoardCode" xml:space="preserve">
+    <value>Billboard ID</value>
+  </data>
+  <data name="AdBoard_lblAdBoardName" xml:space="preserve">
+    <value>Billboard name</value>
+  </data>
+  <data name="AdBoard_lblAdBoardStatus" xml:space="preserve">
+    <value>Billboard status</value>
+  </data>
+  <data name="AdBoard_lblAdContractCode" xml:space="preserve">
+    <value>Leasing contract ID</value>
+  </data>
+  <data name="AdBoard_lblContractID" xml:space="preserve">
+    <value>Contract ID</value>
+  </data>
+  <data name="AdBoard_lblCustName" xml:space="preserve">
+    <value>Customer name</value>
+  </data>
+  <data name="AdBoard_lblEndDate" xml:space="preserve">
+    <value>Contract expiring date</value>
+  </data>
+  <data name="AdBoard_NewConEndDate" xml:space="preserve">
+    <value>Expiring date</value>
+  </data>
+  <data name="AdBoard_NewConStartDate" xml:space="preserve">
+    <value>Effective date</value>
+  </data>
+  <data name="AdContract_lblAdContractCode" xml:space="preserve">
+    <value>Contract ID</value>
+  </data>
+  <data name="AdContract_lblAdDesc" xml:space="preserve">
+    <value>Billboard description</value>
+  </data>
+  <data name="AdContract_lblAdMaker" xml:space="preserve">
+    <value>Agency</value>
+  </data>
+  <data name="AdContract_lblAdType" xml:space="preserve">
+    <value>Billboard type</value>
+  </data>
+  <data name="AdContract_lblEndDate" xml:space="preserve">
+    <value>Expiring date</value>
+  </data>
+  <data name="AdContract_lblFastnessAd" xml:space="preserve">
+    <value>Fixed billboard</value>
+  </data>
+  <data name="AdContract_lblLastPaymentDate" xml:space="preserve">
+    <value>Last payment</value>
+  </data>
+  <data name="AdContract_lblPayingCycle" xml:space="preserve">
+    <value>Payment cycle</value>
+  </data>
+  <data name="AdContract_lblPaymentPerCycle" xml:space="preserve">
+    <value>Termly amount</value>
+  </data>
+  <data name="AdContract_lblPrepayment" xml:space="preserve">
+    <value>Advance / First</value>
+  </data>
+  <data name="AdContract_lblStartDate" xml:space="preserve">
+    <value>Effective date</value>
+  </data>
+  <data name="AdContract_lblStopDate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AdContract_lblTotalMoney" xml:space="preserve">
+    <value>Contract Amt</value>
+  </data>
+  <data name="AdContract_rbtnCommonly" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="AdContract_rbtnFastness" xml:space="preserve">
+    <value>Fixed</value>
+  </data>
+  <data name="AddAuth_AuthDef" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AddAuth_Contract" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AddAuth_rdoAll" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AddAuth_rdoFloor" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AddAuth_rdoOnlyDept" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AddAuth_rdoOnlyOne" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AddRole_labBizGrp" xml:space="preserve">
+    <value>Work group</value>
+  </data>
+  <data name="AddRole_labRoleFunctionVindicate" xml:space="preserve">
+    <value>Role Auth</value>
+  </data>
+  <data name="AddRole_labRoleTitle" xml:space="preserve">
+    <value>Cur role lst</value>
+  </data>
+  <data name="AddRole_labRoleUpdateTitle" xml:space="preserve">
+    <value>Defined role list</value>
+  </data>
+  <data name="AddUnits_NoStoreID" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AddUnits_UnitStatusIsErr" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AddUser_labUserDefine" xml:space="preserve">
+    <value>Define system user</value>
+  </data>
+  <data name="AddUser_labUserInfo" xml:space="preserve">
+    <value>Current user list </value>
+  </data>
+  <data name="AddUser_labUserTree" xml:space="preserve">
+    <value>Dept list</value>
+  </data>
+  <data name="AreaSize_lblAreaSizeCode" xml:space="preserve">
+    <value>Level ID</value>
+  </data>
+  <data name="AreaSize_lblAreaSizeName" xml:space="preserve">
+    <value>Level name</value>
+  </data>
+  <data name="AreaSize_lblAreaSizeStatus" xml:space="preserve">
+    <value>Validity status</value>
+  </data>
+  <data name="AreaSize_lblNote" xml:space="preserve">
+    <value>Memory</value>
+  </data>
+  <data name="AreaVindicate_labAreaCode" xml:space="preserve">
+    <value>Group ID</value>
+  </data>
+  <data name="AreaVindicate_labAreaName" xml:space="preserve">
+    <value>Grp name</value>
+  </data>
+  <data name="AreaVindicate_labAreaTitle" xml:space="preserve">
+    <value>Tenant group</value>
+  </data>
+  <data name="AreaVindicate_labAreaVindicate" xml:space="preserve">
+    <value>Define and maintaion tenant group</value>
+  </data>
+  <data name="Associator_AssociatorAddress" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="Associator_AssociatorBeFondOf" xml:space="preserve">
+    <value>BeFondOf</value>
+  </data>
+  <data name="Associator_AssociatorBirthday" xml:space="preserve">
+    <value>Birthday</value>
+  </data>
+  <data name="Associator_AssociatorCode" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="Associator_AssociatorCommemorate" xml:space="preserve">
+    <value>Commemorate</value>
+  </data>
+  <data name="Associator_AssociatorCustom" xml:space="preserve">
+    <value>Custom</value>
+  </data>
+  <data name="Associator_AssociatorDistance" xml:space="preserve">
+    <value>Distance</value>
+  </data>
+  <data name="Associator_AssociatorDuty" xml:space="preserve">
+    <value>Duty</value>
+  </data>
+  <data name="Associator_AssociatorEarning" xml:space="preserve">
+    <value>Earning</value>
+  </data>
+  <data name="Associator_AssociatorEmail" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Associator_AssociatorEnrollment" xml:space="preserve">
+    <value>Enrollment</value>
+  </data>
+  <data name="Associator_AssociatorFolk" xml:space="preserve">
+    <value>Folk</value>
+  </data>
+  <data name="Associator_AssociatorGender" xml:space="preserve">
+    <value>Gender</value>
+  </data>
+  <data name="Associator_AssociatorIdentity" xml:space="preserve">
+    <value>Identity</value>
+  </data>
+  <data name="Associator_AssociatorInterest" xml:space="preserve">
+    <value>Interest</value>
+  </data>
+  <data name="Associator_AssociatorLargess" xml:space="preserve">
+    <value>Largess</value>
+  </data>
+  <data name="Associator_AssociatorMarriage" xml:space="preserve">
+    <value>Martial Status</value>
+  </data>
+  <data name="Associator_AssociatorMobileTel" xml:space="preserve">
+    <value>Mobile Number</value>
+  </data>
+  <data name="Associator_AssociatorName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Associator_AssociatorNationality" xml:space="preserve">
+    <value>Nationality</value>
+  </data>
+  <data name="Associator_AssociatorOccupation" xml:space="preserve">
+    <value>Occupation</value>
+  </data>
+  <data name="Associator_AssociatorOfficeTel" xml:space="preserve">
+    <value>Office Number</value>
+  </data>
+  <data name="Associator_AssociatorOrigin" xml:space="preserve">
+    <value>Member Origin</value>
+  </data>
+  <data name="Associator_AssociatorPostCode" xml:space="preserve">
+    <value>Postal Code</value>
+  </data>
+  <data name="Associator_AssociatorPwd" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="Associator_AssociatorRemark" xml:space="preserve">
+    <value>Remarks</value>
+  </data>
+  <data name="Associator_AssociatorTel" xml:space="preserve">
+    <value>Home Number</value>
+  </data>
+  <data name="Associator_AssociatorVehicle" xml:space="preserve">
+    <value>Mode of Transport</value>
+  </data>
+  <data name="Associator_BadCard" xml:space="preserve">
+    <value>Replacement Fee</value>
+  </data>
+  <data name="Associator_btnChargeRecord" xml:space="preserve">
+    <value>Exchange Records</value>
+  </data>
+  <data name="Associator_btnExpenditureSurvey" xml:space="preserve">
+    <value>Expenditure Records</value>
+  </data>
+  <data name="Associator_CardID" xml:space="preserve">
+    <value>Card ID</value>
+  </data>
+  <data name="Associator_CardIDInput" xml:space="preserve">
+    <value>Card Number Entry Method</value>
+  </data>
+  <data name="Associator_CardLevel" xml:space="preserve">
+    <value>Member Tier ID</value>
+  </data>
+  <data name="Associator_CardLevelName" xml:space="preserve">
+    <value>Member Tier Name</value>
+  </data>
+  <data name="Associator_chkCardDegrade" xml:space="preserve">
+    <value>Member Tier can be Downgraded</value>
+  </data>
+  <data name="Associator_chkCardInvalidation" xml:space="preserve">
+    <value>Member Tier can be Disabled</value>
+  </data>
+  <data name="Associator_chkCardUpgrade" xml:space="preserve">
+    <value>Member Tier can be Upgraded</value>
+  </data>
+  <data name="Associator_chkChangeInto" xml:space="preserve">
+    <value>Points Redemption</value>
+  </data>
+  <data name="Associator_chkExtend" xml:space="preserve">
+    <value>Distribution of Free Gift</value>
+  </data>
+  <data name="Associator_chkInvalidationYear" xml:space="preserve">
+    <value>Expiry Date (Year)</value>
+  </data>
+  <data name="Associator_chkTicketChangeInto" xml:space="preserve">
+    <value>Gift Exchange using Receipt</value>
+  </data>
+  <data name="Associator_DayAvailability" xml:space="preserve">
+    <value>Valid for today only</value>
+  </data>
+  <data name="Associator_ExCharge" xml:space="preserve">
+    <value>Transaction Information</value>
+  </data>
+  <data name="Associator_Integral" xml:space="preserve">
+    <value>Points Value (%)</value>
+  </data>
+  <data name="Associator_Itegral" xml:space="preserve">
+    <value>Points</value>
+  </data>
+  <data name="Associator_Largess" xml:space="preserve">
+    <value>Free Gifts</value>
+  </data>
+  <data name="Associator_LargessCAB" xml:space="preserve">
+    <value>Free Gifts Redeem/Exchange</value>
+  </data>
+  <data name="Associator_lblAccociatorID" xml:space="preserve">
+    <value>Member Number</value>
+  </data>
+  <data name="Associator_lblAccountItegrtal" xml:space="preserve">
+    <value>Compute Points</value>
+  </data>
+  <data name="Associator_lblAccumulateIntegral" xml:space="preserve">
+    <value>Accumulated Points</value>
+  </data>
+  <data name="Associator_lblActivity" xml:space="preserve">
+    <value>Activity</value>
+  </data>
+  <data name="Associator_lblActivityDate" xml:space="preserve">
+    <value>Activity Date</value>
+  </data>
+  <data name="Associator_lblActivityPostil" xml:space="preserve">
+    <value>Activity Approved</value>
+  </data>
+  <data name="Associator_lblAdmonition" xml:space="preserve">
+    <value>Month Alert letter sent out</value>
+  </data>
+  <data name="Associator_lblAdmonitionMes" xml:space="preserve">
+    <value>Alert Points/Value</value>
+  </data>
+  <data name="Associator_lblApplicationDate" xml:space="preserve">
+    <value>Gift Application Date</value>
+  </data>
+  <data name="Associator_lblApplicationNum" xml:space="preserve">
+    <value>Gift Application Number</value>
+  </data>
+  <data name="Associator_lblAssociatorCard" xml:space="preserve">
+    <value>Member Card Number</value>
+  </data>
+  <data name="Associator_lblAssociatorQuery" xml:space="preserve">
+    <value>Member Query</value>
+  </data>
+  <data name="Associator_lblAssociatorSort" xml:space="preserve">
+    <value>Member Card Type</value>
+  </data>
+  <data name="Associator_lblBargaining" xml:space="preserve">
+    <value>Transaction Amount</value>
+  </data>
+  <data name="Associator_lblBaseLine" xml:space="preserve">
+    <value>Downgrade base points/values</value>
+  </data>
+  <data name="Associator_lblBewrite" xml:space="preserve">
+    <value>Activity Description</value>
+  </data>
+  <data name="Associator_lblCardID" xml:space="preserve">
+    <value>Member Card Number</value>
+  </data>
+  <data name="Associator_lblCardInfo" xml:space="preserve">
+    <value>Card Information</value>
+  </data>
+  <data name="Associator_lblCardLevel" xml:space="preserve">
+    <value>Member Tier</value>
+  </data>
+  <data name="Associator_lblCarDnature" xml:space="preserve">
+    <value>Card Type</value>
+  </data>
+  <data name="Associator_lblCardNumInput" xml:space="preserve">
+    <value>Card Number Entry Method</value>
+  </data>
+  <data name="Associator_lblCardRule" xml:space="preserve">
+    <value>Card Usage Rules</value>
+  </data>
+  <data name="Associator_lblCardState" xml:space="preserve">
+    <value>Card Status</value>
+  </data>
+  <data name="Associator_lblCardType" xml:space="preserve">
+    <value>Card Type</value>
+  </data>
+  <data name="Associator_lblChangeIntoM" xml:space="preserve">
+    <value>Required Receipt Amount</value>
+  </data>
+  <data name="Associator_lblChangeIntoOne" xml:space="preserve">
+    <value>Per Receipt can only redeem 1 item</value>
+  </data>
+  <data name="Associator_lblContact" xml:space="preserve">
+    <value>Contact Mode</value>
+  </data>
+  <data name="Associator_lblCustomerCard" xml:space="preserve">
+    <value>Customer Card</value>
+  </data>
+  <data name="Associator_lblDate" xml:space="preserve">
+    <value>Trans Date</value>
+  </data>
+  <data name="Associator_lblDateToZero" xml:space="preserve">
+    <value>Set as 0 Date</value>
+  </data>
+  <data name="Associator_lblDemotion" xml:space="preserve">
+    <value>Downgrade rule</value>
+  </data>
+  <data name="Associator_lblDemotionLevel" xml:space="preserve">
+    <value>Downgrade to the card level</value>
+  </data>
+  <data name="Associator_lblDoCardDate" xml:space="preserve">
+    <value>Card Handling Date</value>
+  </data>
+  <data name="Associator_lblEmployeeCard" xml:space="preserve">
+    <value>Employee Card</value>
+  </data>
+  <data name="Associator_lblExchangeDate" xml:space="preserve">
+    <value>Exchange Date</value>
+  </data>
+  <data name="Associator_lblExchangeIntegral" xml:space="preserve">
+    <value>Exchange Points</value>
+  </data>
+  <data name="Associator_lblExchangeNumber" xml:space="preserve">
+    <value>Exchange Quantity</value>
+  </data>
+  <data name="Associator_lblExchangeOK" xml:space="preserve">
+    <value>Confirm Exchange</value>
+  </data>
+  <data name="Associator_lblExchangeTotalIntegral" xml:space="preserve">
+    <value>Total Exchange Points</value>
+  </data>
+  <data name="Associator_lblExChgDate" xml:space="preserve">
+    <value>Transaction Date</value>
+  </data>
+  <data name="Associator_lblExChgMoney" xml:space="preserve">
+    <value>Transaction Amount</value>
+  </data>
+  <data name="Associator_lblExChgTime" xml:space="preserve">
+    <value>Transaction Time</value>
+  </data>
+  <data name="Associator_lblExtendDate" xml:space="preserve">
+    <value>Gift Distribution Date</value>
+  </data>
+  <data name="Associator_lblGoodsDepict" xml:space="preserve">
+    <value>Item Description</value>
+  </data>
+  <data name="Associator_lblHistoryInfo" xml:space="preserve">
+    <value>Card History</value>
+  </data>
+  <data name="Associator_lblHolding" xml:space="preserve">
+    <value>Membership renewal required points / amount</value>
+  </data>
+  <data name="Associator_lblInitiateDate" xml:space="preserve">
+    <value>Member Join Date</value>
+  </data>
+  <data name="Associator_lblIntegralChange" xml:space="preserve">
+    <value>Points Conversion</value>
+  </data>
+  <data name="Associator_lblIntegralInfo" xml:space="preserve">
+    <value>Points Information</value>
+  </data>
+  <data name="Associator_lblIntegralToZero" xml:space="preserve">
+    <value>Reset Points to 0</value>
+  </data>
+  <data name="Associator_lblIntegralType" xml:space="preserve">
+    <value>Points Balance Type</value>
+  </data>
+  <data name="Associator_lblInvalidationRule" xml:space="preserve">
+    <value>Invalid Rules</value>
+  </data>
+  <data name="Associator_lblIssueDate" xml:space="preserve">
+    <value>Card Issue Date</value>
+  </data>
+  <data name="Associator_lblIssueNewCard" xml:space="preserve">
+    <value>Issue New Card</value>
+  </data>
+  <data name="Associator_lblIssueOK" xml:space="preserve">
+    <value>Confirm Issue</value>
+  </data>
+  <data name="Associator_lblItegral" xml:space="preserve">
+    <value>Balance Points</value>
+  </data>
+  <data name="Associator_lbllargessBack" xml:space="preserve">
+    <value>Gift Return</value>
+  </data>
+  <data name="Associator_lblLargessBewrite" xml:space="preserve">
+    <value>Gift Description</value>
+  </data>
+  <data name="Associator_lblLargessCharge" xml:space="preserve">
+    <value>Gift Distribution</value>
+  </data>
+  <data name="Associator_lbllargessExcharg" xml:space="preserve">
+    <value>Gift Redemption</value>
+  </data>
+  <data name="Associator_lblLevel" xml:space="preserve">
+    <value>Level</value>
+  </data>
+  <data name="Associator_lblLeveLenactment" xml:space="preserve">
+    <value>Define Card Level</value>
+  </data>
+  <data name="Associator_lblLevelMes" xml:space="preserve">
+    <value>Card Level Information</value>
+  </data>
+  <data name="Associator_lblMainCardInfo" xml:space="preserve">
+    <value>Principle Card Information</value>
+  </data>
+  <data name="Associator_lblMesPutIn" xml:space="preserve">
+    <value>Information Input Date</value>
+  </data>
+  <data name="Associator_lblModifyDate" xml:space="preserve">
+    <value>Information Input Date</value>
+  </data>
+  <data name="Associator_lblName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Associator_lblNeedChangeInto" xml:space="preserve">
+    <value>Points Required for Redemption</value>
+  </data>
+  <data name="Associator_lblNewCard" xml:space="preserve">
+    <value>New Card Number</value>
+  </data>
+  <data name="Associator_lblNo" xml:space="preserve">
+    <value>Number</value>
+  </data>
+  <data name="Associator_lblNowNumber" xml:space="preserve">
+    <value>Current Quantity</value>
+  </data>
+  <data name="Associator_lblNumber" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="Associator_lblOfficeTel" xml:space="preserve">
+    <value>Office Number</value>
+  </data>
+  <data name="Associator_lblOneActivity" xml:space="preserve">
+    <value>Send once per Activity</value>
+  </data>
+  <data name="Associator_lblOneDate" xml:space="preserve">
+    <value>Send once Everyday</value>
+  </data>
+  <data name="Associator_lblOtherCard" xml:space="preserve">
+    <value>Other Identity Card</value>
+  </data>
+  <data name="Associator_lblOtherPassPort" xml:space="preserve">
+    <value>Other Identity Card Number</value>
+  </data>
+  <data name="Associator_lblOverDate" xml:space="preserve">
+    <value>Overdue Date</value>
+  </data>
+  <data name="Associator_lblParticular" xml:space="preserve">
+    <value>Detail Information</value>
+  </data>
+  <data name="Associator_lblPOSItegrtal" xml:space="preserve">
+    <value>Compution of Points at POS</value>
+  </data>
+  <data name="Associator_lblPostil" xml:space="preserve">
+    <value>Activity Approved</value>
+  </data>
+  <data name="Associator_lblPurchaseM" xml:space="preserve">
+    <value>Purchase Date</value>
+  </data>
+  <data name="Associator_lblQueryCondition" xml:space="preserve">
+    <value>Search By</value>
+  </data>
+  <data name="Associator_lblRule" xml:space="preserve">
+    <value>Expiry Rules</value>
+  </data>
+  <data name="Associator_lblSelAssciator" xml:space="preserve">
+    <value>Select Member</value>
+  </data>
+  <data name="Associator_lblSelect" xml:space="preserve">
+    <value>Select Gift</value>
+  </data>
+  <data name="Associator_lblSelServiceDesk" xml:space="preserve">
+    <value>Select Service Desk</value>
+  </data>
+  <data name="Associator_lblShop" xml:space="preserve">
+    <value>Outlet</value>
+  </data>
+  <data name="Associator_lblshopID" xml:space="preserve">
+    <value>Shop ID</value>
+  </data>
+  <data name="Associator_lblStaffID" xml:space="preserve">
+    <value>Staff ID</value>
+  </data>
+  <data name="Associator_lblStat" xml:space="preserve">
+    <value>Compution Month</value>
+  </data>
+  <data name="Associator_lblStatMonth" xml:space="preserve">
+    <value>Compution Month</value>
+  </data>
+  <data name="Associator_lblSurplus" xml:space="preserve">
+    <value>Surplus</value>
+  </data>
+  <data name="Associator_lblSymbol" xml:space="preserve">
+    <value>Gift Code</value>
+  </data>
+  <data name="Associator_lblTermDate" xml:space="preserve">
+    <value>Expiry Date</value>
+  </data>
+  <data name="Associator_lblTicketID" xml:space="preserve">
+    <value>Receipt Number</value>
+  </data>
+  <data name="Associator_lblTicketM" xml:space="preserve">
+    <value>Required Receipt Amount</value>
+  </data>
+  <data name="Associator_lblTime" xml:space="preserve">
+    <value>Activity Time</value>
+  </data>
+  <data name="Associator_lblTotal" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="Associator_lblTotalItegrtal" xml:space="preserve">
+    <value>Total Points</value>
+  </data>
+  <data name="Associator_lblType" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="Associator_lblUnder" xml:space="preserve">
+    <value>Alert Points/Value</value>
+  </data>
+  <data name="Associator_lblUpdateCardInfo" xml:space="preserve">
+    <value>Edit Card Information</value>
+  </data>
+  <data name="Associator_lblUpgrade" xml:space="preserve">
+    <value>Upgrade Rules</value>
+  </data>
+  <data name="Associator_lblUpgradeLevel" xml:space="preserve">
+    <value>Upgrade Card Level</value>
+  </data>
+  <data name="Associator_lblUpgradeM" xml:space="preserve">
+    <value>Points/Value Required for Upgrade</value>
+  </data>
+  <data name="Associator_LongTime" xml:space="preserve">
+    <value>Valid for Multiple Day</value>
+  </data>
+  <data name="Associator_LoseCard" xml:space="preserve">
+    <value>Replacement Fee</value>
+  </data>
+  <data name="Associator_NewCardCharge" xml:space="preserve">
+    <value>New Card Charge</value>
+  </data>
+  <data name="Associator_NotEnrolAssociator" xml:space="preserve">
+    <value>Maintain Non-Member Information</value>
+  </data>
+  <data name="Associator_OnceAvailability" xml:space="preserve">
+    <value>Valid for Once</value>
+  </data>
+  <data name="Associator_Particular" xml:space="preserve">
+    <value>Member Detail Information</value>
+  </data>
+  <data name="Associator_QueryAssociator" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_rabBackCard" xml:space="preserve">
+    <value>Return Card</value>
+  </data>
+  <data name="Associator_rabCardStuta" xml:space="preserve">
+    <value>Card Status</value>
+  </data>
+  <data name="Associator_rabDamage" xml:space="preserve">
+    <value>Damaged</value>
+  </data>
+  <data name="Associator_rabDegrade" xml:space="preserve">
+    <value>Downgrade</value>
+  </data>
+  <data name="Associator_rabInvalid" xml:space="preserve">
+    <value>Invalid</value>
+  </data>
+  <data name="Associator_rabLose" xml:space="preserve">
+    <value>Lost</value>
+  </data>
+  <data name="Associator_rabNewCard" xml:space="preserve">
+    <value>New Card</value>
+  </data>
+  <data name="Associator_rabRise" xml:space="preserve">
+    <value>Upgrade</value>
+  </data>
+  <data name="Associator_rabUpdateCard" xml:space="preserve">
+    <value>Renew Card</value>
+  </data>
+  <data name="Associator_radCardMac" xml:space="preserve">
+    <value>Member Number via Card Reader</value>
+  </data>
+  <data name="Associator_radKeyboard" xml:space="preserve">
+    <value>Member Number via Keyboard</value>
+  </data>
+  <data name="Associator_Ranking" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_rdoCardReader" xml:space="preserve">
+    <value>Member Number via Card Reader</value>
+  </data>
+  <data name="Associator_rdoConsumption" xml:space="preserve">
+    <value>Base on Sales Value</value>
+  </data>
+  <data name="Associator_rdoEveryDay" xml:space="preserve">
+    <value>Send once everyday</value>
+  </data>
+  <data name="Associator_rdoEveryTime" xml:space="preserve">
+    <value>Send once per Activity</value>
+  </data>
+  <data name="Associator_rdoKeyset" xml:space="preserve">
+    <value>Keyset</value>
+  </data>
+  <data name="Associator_rdoMoney" xml:space="preserve">
+    <value>Money</value>
+  </data>
+  <data name="Associator_rdoNo" xml:space="preserve">
+    <value>NO</value>
+  </data>
+  <data name="Associator_rdoYes" xml:space="preserve">
+    <value>YES</value>
+  </data>
+  <data name="Associator_SelAssociator" xml:space="preserve">
+    <value>SelAssociator</value>
+  </data>
+  <data name="Associator_ServerItegral" xml:space="preserve">
+    <value>ServerItegral</value>
+  </data>
+  <data name="Associator_ServiceDesk" xml:space="preserve">
+    <value>ServiceDesk</value>
+  </data>
+  <data name="Associator_Setup" xml:space="preserve">
+    <value>Setup</value>
+  </data>
+  <data name="Associator_TicketChargeGift" xml:space="preserve">
+    <value>TicketChargeGift</value>
+  </data>
+  <data name="Associator_TicketM" xml:space="preserve">
+    <value>TicketM</value>
+  </data>
+  <data name="Associator_UserID" xml:space="preserve">
+    <value>UserID</value>
+  </data>
+  <data name="BankCard_BankAmt" xml:space="preserve">
+    <value>Trans Amt</value>
+  </data>
+  <data name="BankCard_BankCard" xml:space="preserve">
+    <value>Card No.</value>
+  </data>
+  <data name="BankCard_BankCardVerify" xml:space="preserve">
+    <value>Reconciliate credit card transactions</value>
+  </data>
+  <data name="BankCard_BankEFTID" xml:space="preserve">
+    <value>Terminal ID</value>
+  </data>
+  <data name="BankCard_BankTransTime" xml:space="preserve">
+    <value>Trans-time</value>
+  </data>
+  <data name="BankCard_BankTransTimeBagin" xml:space="preserve">
+    <value>Starting time</value>
+  </data>
+  <data name="BankCard_BankTransTimeEnd" xml:space="preserve">
+    <value>Ending time</value>
+  </data>
+  <data name="BankCard_btnTransmit" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="BankCard_btnTransmitBank" xml:space="preserve">
+    <value>Credit card transaction data import</value>
+  </data>
+  <data name="BankCard_btnTransmitPos" xml:space="preserve">
+    <value>Credit card transaction data export</value>
+  </data>
+  <data name="BankCard_Disposal" xml:space="preserve">
+    <value>Processed</value>
+  </data>
+  <data name="BankCard_Month" xml:space="preserve">
+    <value>Month</value>
+  </data>
+  <data name="BankCard_MonthBigen" xml:space="preserve">
+    <value>Starting Month</value>
+  </data>
+  <data name="BankCard_MonthEnd" xml:space="preserve">
+    <value>Ending Month</value>
+  </data>
+  <data name="BankCard_NotSelect" xml:space="preserve">
+    <value>No empty</value>
+  </data>
+  <data name="BankCard_Transmit" xml:space="preserve">
+    <value>Import credit card transaction data</value>
+  </data>
+  <data name="BankCard_TransmitClount" xml:space="preserve">
+    <value />
+  </data>
+  <data name="BankCard_TransmitLost" xml:space="preserve">
+    <value>Failed to import transaction data</value>
+  </data>
+  <data name="BankCard_TransmitSelect" xml:space="preserve">
+    <value>Select Path</value>
+  </data>
+  <data name="BankCard_TransmitSucceed" xml:space="preserve">
+    <value>Finished to import transaction data</value>
+  </data>
+  <data name="BankCardVerify_BtnBegin" xml:space="preserve">
+    <value>Begin</value>
+  </data>
+  <data name="BankCardVerify_BtnBinag" xml:space="preserve">
+    <value />
+  </data>
+  <data name="BankPayIn_TitBankPayIn" xml:space="preserve">
+    <value>Generate Receivable</value>
+  </data>
+  <data name="BizGrp_MessageError" xml:space="preserve">
+    <value>Failure, work group name has existed.</value>
+  </data>
+  <data name="BizGrp_Title" xml:space="preserve">
+    <value>Current work group list</value>
+  </data>
+  <data name="BrandLevel_BrandLevelAdd" xml:space="preserve">
+    <value>BrandLevelRef</value>
+  </data>
+  <data name="BrandLevel_BrandLevelCode" xml:space="preserve">
+    <value>BrandLevelCode</value>
+  </data>
+  <data name="BrandLevel_BrandLevelName" xml:space="preserve">
+    <value>BrandLevel</value>
+  </data>
+  <data name="Btn_Del" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Btn_Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="btn_lblPrint" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="But_AddAuth" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Button_back" xml:space="preserve">
+    <value>PageUp</value>
+  </data>
+  <data name="Button_next" xml:space="preserve">
+    <value>PageDown</value>
+  </data>
+  <data name="Button_Pass" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="ChangeLease_NotUpdate" xml:space="preserve">
+    <value>Original Type</value>
+  </data>
+  <data name="ChangeLease_Update" xml:space="preserve">
+    <value>Current Type</value>
+  </data>
+  <data name="Charge_InterestAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Charge_InterestRate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Charge_LatePayAmt" xml:space="preserve">
+    <value>Penalty Principle Amount</value>
+  </data>
+  <data name="Charge_NoInterest" xml:space="preserve">
+    <value>Not Generated Penalty</value>
+  </data>
+  <data name="ChargeAccount_ContractCodeNull" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ChargeType_lblChargeClass" xml:space="preserve">
+    <value>Expense type</value>
+  </data>
+  <data name="ChargeType_lblChargeTypeCode" xml:space="preserve">
+    <value>Exp type ID</value>
+  </data>
+  <data name="ChargeType_lblChargeTypeDefine" xml:space="preserve">
+    <value>Maintain Exp Type</value>
+  </data>
+  <data name="ChargeType_lblChargeTypeName" xml:space="preserve">
+    <value>Exp type name</value>
+  </data>
+  <data name="ChargeType_lblIsChargeCross" xml:space="preserve">
+    <value>Date overlapped</value>
+  </data>
+  <data name="ChargeType_lblNote" xml:space="preserve">
+    <value>Memory</value>
+  </data>
+  <data name="ckck_selectAll" xml:space="preserve">
+    <value>Select All</value>
+  </data>
+  <data name="ConFormulaMod_ModReason" xml:space="preserve">
+    <value>Reason for change</value>
+  </data>
+  <data name="ConFormulaMod_NullContractID" xml:space="preserve">
+    <value>Empty Contract ID</value>
+  </data>
+  <data name="ConLease_butAddAll" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="ConLease_butDel" xml:space="preserve">
+    <value>Discard</value>
+  </data>
+  <data name="ConLease_butSaveTemp" xml:space="preserve">
+    <value>Save draft</value>
+  </data>
+  <data name="ConLease_InvoiceType" xml:space="preserve">
+    <value>Taxed invoice</value>
+  </data>
+  <data name="ConLease_labBalanceDeduct" xml:space="preserve">
+    <value>Rate</value>
+  </data>
+  <data name="ConLease_labBaseAmt" xml:space="preserve">
+    <value>Rent base</value>
+  </data>
+  <data name="ConLease_labChargeTypeID" xml:space="preserve">
+    <value>Exp type</value>
+  </data>
+  <data name="ConLease_labDeductAndKeep" xml:space="preserve">
+    <value>Variable Rental</value>
+  </data>
+  <data name="ConLease_labDegree" xml:space="preserve">
+    <value>Limit</value>
+  </data>
+  <data name="ConLease_labDistill" xml:space="preserve">
+    <value>Rate</value>
+  </data>
+  <data name="ConLease_labEndDate" xml:space="preserve">
+    <value>End date</value>
+  </data>
+  <data name="ConLease_labFastnessHire" xml:space="preserve">
+    <value>Fix Rental</value>
+  </data>
+  <data name="ConLease_labFixedRental" xml:space="preserve">
+    <value>Amt</value>
+  </data>
+  <data name="ConLease_labFormulaType" xml:space="preserve">
+    <value>Formula</value>
+  </data>
+  <data name="ConLease_labMinSumSell" xml:space="preserve">
+    <value>Minimum</value>
+  </data>
+  <data name="ConLease_labRentalThan" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ConLease_labSellCount" xml:space="preserve">
+    <value>Sales</value>
+  </data>
+  <data name="ConLease_labUnitHire" xml:space="preserve">
+    <value>Rental rate</value>
+  </data>
+  <data name="ConLease_LalKeepMin" xml:space="preserve">
+    <value>Minimum</value>
+  </data>
+  <data name="ConLease_lblTaxFrank" xml:space="preserve">
+    <value>Tax rate</value>
+  </data>
+  <data name="ConLease_rabDayHire" xml:space="preserve">
+    <value>Day rent</value>
+  </data>
+  <data name="ConLease_rabFastness" xml:space="preserve">
+    <value>Fix</value>
+  </data>
+  <data name="ConLease_rabLevel" xml:space="preserve">
+    <value>Level</value>
+  </data>
+  <data name="ConLease_rabMonopole" xml:space="preserve">
+    <value>Single</value>
+  </data>
+  <data name="ConLease_rabMonthHire" xml:space="preserve">
+    <value>Mthly rate</value>
+  </data>
+  <data name="ConLease_rabMultilevel" xml:space="preserve">
+    <value>Multi</value>
+  </data>
+  <data name="Conshop_Confirm" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="ConShopBaseInfo_RentAreaErr" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ConTerminateBill_ConTerminateBill" xml:space="preserve">
+    <value>Maintain relet contract</value>
+  </data>
+  <data name="ConTerminateBill_lblTerReason" xml:space="preserve">
+    <value>Reason for Early Termination</value>
+  </data>
+  <data name="Contract_ChargeStartDate" xml:space="preserve">
+    <value>Invalid Formula Start/End Date, Please Check</value>
+  </data>
+  <data name="Contract_ContractType" xml:space="preserve">
+    <value>Contract Type</value>
+  </data>
+  <data name="Contract_ContractTypeVindicate" xml:space="preserve">
+    <value>Contract Type</value>
+  </data>
+  <data name="Contract_ManageCompany" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="ConUnionMod_Lease" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ConUnionMod_Union" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Customer_labCustomerNameNotNull" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Customer_labCustomerQuery" xml:space="preserve">
+    <value>Inquire customer  data</value>
+  </data>
+  <data name="Customer_labCustomerUpdate" xml:space="preserve">
+    <value>Maintain customer data</value>
+  </data>
+  <data name="CustPalaver_butConsent" xml:space="preserve">
+    <value>Approve</value>
+  </data>
+  <data name="CustPalaver_butLeadPalaver" xml:space="preserve">
+    <value>Submit to superior</value>
+  </data>
+  <data name="CustPalaver_butOverrule" xml:space="preserve">
+    <value>Reject</value>
+  </data>
+  <data name="CustPalaver_labPalaverNote" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="CustType_lblCustType" xml:space="preserve">
+    <value>Maintain customer type</value>
+  </data>
+  <data name="CustType_lblCustTypeCode" xml:space="preserve">
+    <value>Type ID</value>
+  </data>
+  <data name="CustType_lblCustTypeName" xml:space="preserve">
+    <value>Type name</value>
+  </data>
+  <data name="CustType_lblCustTypeStatus" xml:space="preserve">
+    <value>Type status</value>
+  </data>
+  <data name="CustType_lblNote" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="DataSource_InPut" xml:space="preserve">
+    <value />
+  </data>
+  <data name="DataSource_Manual" xml:space="preserve">
+    <value />
+  </data>
+  <data name="DataSource_POS" xml:space="preserve">
+    <value />
+  </data>
+  <data name="DataSource_Put" xml:space="preserve">
+    <value />
+  </data>
+  <data name="DataSource_TrandPOS" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Dept_lblCity" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="Dept_lblConcessionAuth" xml:space="preserve">
+    <value>Tenant Scope</value>
+  </data>
+  <data name="Dept_lblContractAuth" xml:space="preserve">
+    <value>Contract Scope</value>
+  </data>
+  <data name="Dept_lblDept" xml:space="preserve">
+    <value>Define department</value>
+  </data>
+  <data name="Dept_lblDeptAuth" xml:space="preserve">
+    <value>Department authority</value>
+  </data>
+  <data name="Dept_lblDeptCode" xml:space="preserve">
+    <value>Dept ID</value>
+  </data>
+  <data name="Dept_lblDeptLevel" xml:space="preserve">
+    <value>Dept level</value>
+  </data>
+  <data name="Dept_lblDeptName" xml:space="preserve">
+    <value>Dept name</value>
+  </data>
+  <data name="Dept_lblDeptType" xml:space="preserve">
+    <value>Dept type</value>
+  </data>
+  <data name="Dept_lblDeptUpdate" xml:space="preserve">
+    <value>Modify</value>
+  </data>
+  <data name="Dept_lblFax" xml:space="preserve">
+    <value>Fax</value>
+  </data>
+  <data name="Dept_lblFeeAuth" xml:space="preserve">
+    <value>Exp range</value>
+  </data>
+  <data name="Dept_lblIndepBalance" xml:space="preserve">
+    <value>Independent</value>
+  </data>
+  <data name="Dept_lblOfficeAddr" xml:space="preserve">
+    <value>Office Addr1</value>
+  </data>
+  <data name="Dept_lblOfficeTel" xml:space="preserve">
+    <value>Office phone</value>
+  </data>
+  <data name="Dept_lblOrderID" xml:space="preserve">
+    <value>Order NO</value>
+  </data>
+  <data name="Dept_lblOtherAuth" xml:space="preserve">
+    <value>Dept scope</value>
+  </data>
+  <data name="Dept_lblPDeptID" xml:space="preserve">
+    <value>Superior Dept.</value>
+  </data>
+  <data name="Dept_lblPostAddr" xml:space="preserve">
+    <value>Post Addr</value>
+  </data>
+  <data name="Dept_lblPostCode" xml:space="preserve">
+    <value>Postcode</value>
+  </data>
+  <data name="Dept_lblRegAddr" xml:space="preserve">
+    <value>Register Addr</value>
+  </data>
+  <data name="Dept_lblStatus" xml:space="preserve">
+    <value>Effective</value>
+  </data>
+  <data name="Dept_lblTel" xml:space="preserve">
+    <value>Phone No.</value>
+  </data>
+  <data name="Dept_lblTradeAuth" xml:space="preserve">
+    <value>Industry</value>
+  </data>
+  <data name="Dept_MallAdd" xml:space="preserve">
+    <value>Define Shopping Mall</value>
+  </data>
+  <data name="Dept_MallName" xml:space="preserve">
+    <value>Shopping Mall Name</value>
+  </data>
+  <data name="Dept_MallNameQuery" xml:space="preserve">
+    <value>Enquiry Shopping Mall</value>
+  </data>
+  <data name="Dept_Other" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="Dept_rbtnAllShop" xml:space="preserve">
+    <value>All tenants</value>
+  </data>
+  <data name="Dept_rbtnAllTreaty" xml:space="preserve">
+    <value>All contracts</value>
+  </data>
+  <data name="Dept_rbtnAllVocation" xml:space="preserve">
+    <value>All industries</value>
+  </data>
+  <data name="Dept_rbtNoRrestrict" xml:space="preserve">
+    <value>No restriction</value>
+  </data>
+  <data name="Dept_rbtnRrestrict" xml:space="preserve">
+    <value>Other restriction</value>
+  </data>
+  <data name="Dept_rbtnShop" xml:space="preserve">
+    <value>Some tenants</value>
+  </data>
+  <data name="Dept_rbtnTreaty" xml:space="preserve">
+    <value>Some contracts</value>
+  </data>
+  <data name="Dept_rbtnVocation" xml:space="preserve">
+    <value>Some industries</value>
+  </data>
+  <data name="Dept_Title" xml:space="preserve">
+    <value>Browse Department</value>
+  </data>
+  <data name="Dept_TitleAdd" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="DeptTree_labDeptAdd" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="DeptTree_labDeptContext" xml:space="preserve">
+    <value>Sub-departments</value>
+  </data>
+  <data name="Dict_Exist" xml:space="preserve">
+    <value>Exist</value>
+  </data>
+  <data name="Dict_NotExist" xml:space="preserve">
+    <value>Not Exist</value>
+  </data>
+  <data name="Formula_lblContent" xml:space="preserve">
+    <value>Formula items</value>
+  </data>
+  <data name="Formula_lblDefine" xml:space="preserve">
+    <value>Formula list</value>
+  </data>
+  <data name="Hidden_AreaNotSelect" xml:space="preserve">
+    <value>Specified tenant group first</value>
+  </data>
+  <data name="Hidden_DateTime" xml:space="preserve">
+    <value>Expense Start Date cannot be earlier than Contract Start Date</value>
+  </data>
+  <data name="Hidden_DeptCodeBeing" xml:space="preserve">
+    <value>Department ID already existed</value>
+  </data>
+  <data name="Hidden_Error" xml:space="preserve">
+    <value>Data Error</value>
+  </data>
+  <data name="Hidden_hidAdd" xml:space="preserve">
+    <value>Successfully added.</value>
+  </data>
+  <data name="Hidden_hidCondition" xml:space="preserve">
+    <value>Specify the conditions</value>
+  </data>
+  <data name="Hidden_hidContrac" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Hidden_hidCustContact" xml:space="preserve">
+    <value>Missing contact information</value>
+  </data>
+  <data name="Hidden_hidCustID" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Hidden_hidCustLicense" xml:space="preserve">
+    <value>Missing certificate information</value>
+  </data>
+  <data name="Hidden_hidCustName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Hidden_hidDateTime" xml:space="preserve">
+    <value>Wrong date range</value>
+  </data>
+  <data name="Hidden_hidDelete" xml:space="preserve">
+    <value>Successfully deleted</value>
+  </data>
+  <data name="Hidden_hidFloorArea" xml:space="preserve">
+    <value>Missing or wrong gross area information</value>
+  </data>
+  <data name="Hidden_hidInsert" xml:space="preserve">
+    <value>Failed to insert data</value>
+  </data>
+  <data name="Hidden_hidMessage" xml:space="preserve">
+    <value>Data item cannot be empty</value>
+  </data>
+  <data name="Hidden_hidNoBuilding" xml:space="preserve">
+    <value>Invalid geographical info</value>
+  </data>
+  <data name="Hidden_hidNoData" xml:space="preserve">
+    <value>No Data</value>
+  </data>
+  <data name="Hidden_hidNoMessage" xml:space="preserve">
+    <value>No data for specified terms</value>
+  </data>
+  <data name="Hidden_hidNotNullFloor" xml:space="preserve">
+    <value>Floor cannot be empty</value>
+  </data>
+  <data name="Hidden_hidNotNullLocation" xml:space="preserve">
+    <value>Geographical information cannot be empty</value>
+  </data>
+  <data name="Hidden_hidRepeat" xml:space="preserve">
+    <value>Failure, existed ID for specified object.</value>
+  </data>
+  <data name="Hidden_hidRoleCodeBeing" xml:space="preserve">
+    <value>Failure, existed role ID</value>
+  </data>
+  <data name="Hidden_hidSelect" xml:space="preserve">
+    <value>Specified department first</value>
+  </data>
+  <data name="Hidden_hidSelectLocation" xml:space="preserve">
+    <value>Please specified geographic information (direction).</value>
+  </data>
+  <data name="Hidden_hidUnitCode" xml:space="preserve">
+    <value>Unit ID cannot be empty, you must select one.</value>
+  </data>
+  <data name="Hidden_hidUpdate" xml:space="preserve">
+    <value>Successfully updated.</value>
+  </data>
+  <data name="Hidden_hidUpdateLost" xml:space="preserve">
+    <value>Failed to update data.</value>
+  </data>
+  <data name="Hidden_hidUseArea" xml:space="preserve">
+    <value>Rentable/Net area cannot be empty</value>
+  </data>
+  <data name="Hidden_hidUserCodeBeing" xml:space="preserve">
+    <value>User ID already exists</value>
+  </data>
+  <data name="Hidden_hidWrite" xml:space="preserve">
+    <value>Must specify required information</value>
+  </data>
+  <data name="Hidden_hidYesBulidingCode" xml:space="preserve">
+    <value>Building ID already exists</value>
+  </data>
+  <data name="Hidden_hidYesFloor" xml:space="preserve">
+    <value>Floor ID already exists</value>
+  </data>
+  <data name="Hidden_hidYesLocationCode" xml:space="preserve">
+    <value>Location ID already exists</value>
+  </data>
+  <data name="Hidden_IntError" xml:space="preserve">
+    <value>Must be numberic value</value>
+  </data>
+  <data name="Hidden_Shop" xml:space="preserve">
+    <value>Preferred</value>
+  </data>
+  <data name="Internet_lblInternet" xml:space="preserve">
+    <value>Maintain Internet Media</value>
+  </data>
+  <data name="Internet_lblInternetNm" xml:space="preserve">
+    <value>Internet Company Name</value>
+  </data>
+  <data name="Internet_optDaily" xml:space="preserve">
+    <value>Daily</value>
+  </data>
+  <data name="Internet_optMthly" xml:space="preserve">
+    <value>Monthly</value>
+  </data>
+  <data name="Internet_optWeekly" xml:space="preserve">
+    <value>Weekly</value>
+  </data>
+  <data name="Inv_lableBatch" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Inv_lableSingle" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Inv_lblChargeTypeName" xml:space="preserve">
+    <value>Exp name</value>
+  </data>
+  <data name="Inv_lblDepAmL" xml:space="preserve">
+    <value>Deposit</value>
+  </data>
+  <data name="Inv_lblDepBal" xml:space="preserve">
+    <value>Handle deposit</value>
+  </data>
+  <data name="Inv_lblInvPayID" xml:space="preserve">
+    <value>Bill ID</value>
+  </data>
+  <data name="Inv_lblPayOut" xml:space="preserve">
+    <value>Return</value>
+  </data>
+  <data name="Inv_lblPayOutAmt" xml:space="preserve">
+    <value>Paid out</value>
+  </data>
+  <data name="Inv_lblPayOutSum" xml:space="preserve">
+    <value>Total Paid out</value>
+  </data>
+  <data name="InvAdj_AdjAmt" xml:space="preserve">
+    <value>Adjusted</value>
+  </data>
+  <data name="InvAdj_AdjDate" xml:space="preserve">
+    <value>Adjust date</value>
+  </data>
+  <data name="InvAdj_AdjOpr" xml:space="preserve">
+    <value>Handler</value>
+  </data>
+  <data name="InvAdj_AdjReason" xml:space="preserve">
+    <value>Reason</value>
+  </data>
+  <data name="InvAdj_InvExRate" xml:space="preserve">
+    <value>Invalid Exchange Rate, Please Check</value>
+  </data>
+  <data name="InvAdj_KeepAccountsMth" xml:space="preserve">
+    <value>A/C month</value>
+  </data>
+  <data name="InvAdjDisc_DiscRateNotNull" xml:space="preserve">
+    <value>Please Enter Discount %</value>
+  </data>
+  <data name="InvAdjDise_SelInvfullInfo" xml:space="preserve">
+    <value>Please Select Discount Voucher</value>
+  </data>
+  <data name="InvCancel_InvCancel" xml:space="preserve">
+    <value>Reason</value>
+  </data>
+  <data name="InvCancel_lblInv" xml:space="preserve">
+    <value>Modify invoice</value>
+  </data>
+  <data name="InvCancel_lblInvAuditing" xml:space="preserve">
+    <value>Approve modified invoice</value>
+  </data>
+  <data name="InvCancel_lblInvCancel" xml:space="preserve">
+    <value>Cancel leasing settlement bill</value>
+  </data>
+  <data name="InvCancel_lblInvCancelAuditing" xml:space="preserve">
+    <value>Examine leasing settlement bill</value>
+  </data>
+  <data name="InvDiscDet_DiscDetCausation" xml:space="preserve">
+    <value>Reason</value>
+  </data>
+  <data name="InvDiscDet_DiscDetMoney" xml:space="preserve">
+    <value>Discount</value>
+  </data>
+  <data name="InvDiscDet_DiscDetRatio" xml:space="preserve">
+    <value>Disc rate</value>
+  </data>
+  <data name="InvDiscDet_InvDiscDe" xml:space="preserve">
+    <value>Prepare leasing settlement discount bill</value>
+  </data>
+  <data name="Invoice_BacthPrint" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Invoice_chkDefault" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="Invoice_InvBalan" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Invoice_InvUnionDeductMoney" xml:space="preserve">
+    <value>Discount Amount</value>
+  </data>
+  <data name="Invoice_InvUnionMoneyP" xml:space="preserve">
+    <value>Sales Amount Subject to Rental</value>
+  </data>
+  <data name="Invoice_InvUnionPayment" xml:space="preserve">
+    <value>Sales Amount</value>
+  </data>
+  <data name="Invoice_InvUnionReturnMoney" xml:space="preserve">
+    <value>Refund Amount</value>
+  </data>
+  <data name="Invoice_InvUnionReturnTotalMoney" xml:space="preserve">
+    <value>Total Refund Amount</value>
+  </data>
+  <data name="Invoice_InvUnionTaxMoney" xml:space="preserve">
+    <value>Tax Amount</value>
+  </data>
+  <data name="Invoice_InvUnionTicket" xml:space="preserve">
+    <value>Receipt Amount</value>
+  </data>
+  <data name="Invoice_JVBacthPrint" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Invoice_lblcbType" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Invoice_lblSurAmt" xml:space="preserve">
+    <value>Residue</value>
+  </data>
+  <data name="Invoice_lblSurBal" xml:space="preserve">
+    <value>Balance</value>
+  </data>
+  <data name="Invoice_lblSurBalAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Invoice_lblSurBalInvID" xml:space="preserve">
+    <value>Bill ID</value>
+  </data>
+  <data name="Invoice_lblSurBalType" xml:space="preserve">
+    <value>Deal type</value>
+  </data>
+  <data name="Invoice_lblTotalSurBalAmt" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="InvoiceHeader_InvPaidAmt" xml:space="preserve">
+    <value>Paid out</value>
+  </data>
+  <data name="InvoiceHeader_lblBalance" xml:space="preserve">
+    <value>Balance</value>
+  </data>
+  <data name="InvoiceHeader_lblInvDate" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="InvoiceHeader_lblInvID" xml:space="preserve">
+    <value>Invoice ID</value>
+  </data>
+  <data name="InvoiceHeader_lblInvPaidAmt" xml:space="preserve">
+    <value>Expense</value>
+  </data>
+  <data name="InvoiceHeader_lblInvPaidAmtSum" xml:space="preserve">
+    <value>Total payment</value>
+  </data>
+  <data name="InvoiceHeader_lblInvPayAmt" xml:space="preserve">
+    <value>Expense</value>
+  </data>
+  <data name="InvoiceHeader_lblInvPayCurID" xml:space="preserve">
+    <value>Currency</value>
+  </data>
+  <data name="InvoiceHeader_lblInvPayDate" xml:space="preserve">
+    <value>Pay-date</value>
+  </data>
+  <data name="InvoiceHeader_lblInvPayExRate" xml:space="preserve">
+    <value>Exchange rate</value>
+  </data>
+  <data name="InvoiceHeader_lblInvPayType" xml:space="preserve">
+    <value>Pay-method</value>
+  </data>
+  <data name="InvoiceHeader_lblPayment" xml:space="preserve">
+    <value>A/C Payable</value>
+  </data>
+  <data name="InvoiceHeader_lblShouldPayment" xml:space="preserve">
+    <value>Payment</value>
+  </data>
+  <data name="InvoiceHeader_lblSurAmt" xml:space="preserve">
+    <value>Available</value>
+  </data>
+  <data name="InvoiceHeader_TitInvoiceHeader" xml:space="preserve">
+    <value>Invoice Header</value>
+  </data>
+  <data name="InvoicePara_ReportBewrite" xml:space="preserve">
+    <value />
+  </data>
+  <data name="InvoicePara_ReportName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="InvoicePara_ReportRemark" xml:space="preserve">
+    <value>Invoice Footers</value>
+  </data>
+  <data name="InvoicePara_ReportSubhead" xml:space="preserve">
+    <value>Subhead</value>
+  </data>
+  <data name="InvoicePara_ReportTitle" xml:space="preserve">
+    <value>Invoice Headers</value>
+  </data>
+  <data name="InvoicePara_Title" xml:space="preserve">
+    <value />
+  </data>
+  <data name="InvoicePara_TitleUnion" xml:space="preserve">
+    <value />
+  </data>
+  <data name="InvoicePay_INVPAYTYPE_BANK_CARD" xml:space="preserve">
+    <value>Credit card</value>
+  </data>
+  <data name="InvoicePay_INVPAYTYPE_CASH" xml:space="preserve">
+    <value>Cash</value>
+  </data>
+  <data name="InvoicePay_INVPAYTYPE_CHECK" xml:space="preserve">
+    <value>Cheque</value>
+  </data>
+  <data name="InvoicePay_INVPAYTYPE_DEPOSIT_MORTAGAGE" xml:space="preserve">
+    <value>Deposit</value>
+  </data>
+  <data name="InvoicePay_INVPAYTYPE_P_O" xml:space="preserve">
+    <value>Draft</value>
+  </data>
+  <data name="InvoicePay_INVPAYTYPE_REPLACE_FUND" xml:space="preserve">
+    <value>Commission to receive</value>
+  </data>
+  <data name="InvoicePay_INVPAYTYPE_RESIDUAL_MORTAGAGE" xml:space="preserve">
+    <value>Residue</value>
+  </data>
+  <data name="INVPAYTYPE_OTHER" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="lblChargeType_AccountNumber" xml:space="preserve">
+    <value>Account of finance number</value>
+  </data>
+  <data name="LblDate_EndDate" xml:space="preserve">
+    <value>End date</value>
+  </data>
+  <data name="Lease_Addrentalformula" xml:space="preserve">
+    <value>Add/Modify rental formula</value>
+  </data>
+  <data name="Lease_AddrentalFormulaMod" xml:space="preserve">
+    <value>New Formula</value>
+  </data>
+  <data name="Lease_Approveatriumlease" xml:space="preserve">
+    <value>Approve atrium lease</value>
+  </data>
+  <data name="Lease_Approvechargesreduction" xml:space="preserve">
+    <value>Approve charges reduction </value>
+  </data>
+  <data name="Lease_Approverenewedlease" xml:space="preserve">
+    <value>Lease_Approverenewedlease</value>
+  </data>
+  <data name="Lease_Approverentalformulachanges" xml:space="preserve">
+    <value>Approve rental formula changes</value>
+  </data>
+  <data name="Lease_Approveterminatedlease" xml:space="preserve">
+    <value>Approve terminated lease</value>
+  </data>
+  <data name="Lease_ChargeDateError" xml:space="preserve">
+    <value>Invalid settlement Date</value>
+  </data>
+  <data name="Lease_ContractAccountIng" xml:space="preserve">
+    <value>Generating contract number (ID)</value>
+  </data>
+  <data name="Lease_ContractType" xml:space="preserve">
+    <value>Contract type</value>
+  </data>
+  <data name="Lease_ExistInterestRate" xml:space="preserve">
+    <value>Expense Type already exist in Late Payment Rate</value>
+  </data>
+  <data name="Lease_ExpressionMod" xml:space="preserve">
+    <value>Basic data</value>
+  </data>
+  <data name="Lease_FirstInvoice" xml:space="preserve">
+    <value>Generate initial fees</value>
+  </data>
+  <data name="Lease_FormulaPSet" xml:space="preserve">
+    <value>Rate</value>
+  </data>
+  <data name="Lease_InterestRateModi" xml:space="preserve">
+    <value>Maintain Late Payment Rate</value>
+  </data>
+  <data name="Lease_KeepMinSet" xml:space="preserve">
+    <value>Minimum</value>
+  </data>
+  <data name="Lease_lbBalance" xml:space="preserve">
+    <value>Formula</value>
+  </data>
+  <data name="Lease_lblBasic" xml:space="preserve">
+    <value>Basic data</value>
+  </data>
+  <data name="Lease_lblChargeDate" xml:space="preserve">
+    <value>A/C Month</value>
+  </data>
+  <data name="Lease_lblComm" xml:space="preserve">
+    <value>(ShopCode:Area)</value>
+  </data>
+  <data name="Lease_lblCommOper" xml:space="preserve">
+    <value>Acct Mgr</value>
+  </data>
+  <data name="Lease_lblConChargeType" xml:space="preserve">
+    <value>Exp type</value>
+  </data>
+  <data name="Lease_lblCurExRate" xml:space="preserve">
+    <value>Maintain Exchange Rate</value>
+  </data>
+  <data name="Lease_lblCurrencyType" xml:space="preserve">
+    <value>Maintain Currency Type</value>
+  </data>
+  <data name="Lease_lblCurTypeID" xml:space="preserve">
+    <value>Type ID</value>
+  </data>
+  <data name="Lease_lblCurTypeName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Lease_lblCurTypeStatus" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="Lease_lblEnterCurTypeName" xml:space="preserve">
+    <value>Please Enter Currency Type</value>
+  </data>
+  <data name="Lease_lblExRate" xml:space="preserve">
+    <value>Exchange Rate</value>
+  </data>
+  <data name="Lease_lblExRateDate" xml:space="preserve">
+    <value>Exchange Date</value>
+  </data>
+  <data name="Lease_lblExRateError" xml:space="preserve">
+    <value>Rates Error</value>
+  </data>
+  <data name="Lease_lblIsLocal" xml:space="preserve">
+    <value>Local Currency</value>
+  </data>
+  <data name="Lease_lblLeaseAccount" xml:space="preserve">
+    <value>Computer Charge</value>
+  </data>
+  <data name="Lease_lblNorentDays" xml:space="preserve">
+    <value>Rent free period</value>
+  </data>
+  <data name="Lease_lblPayInAmt" xml:space="preserve">
+    <value>Comm. Receivable</value>
+  </data>
+  <data name="Lease_lblPayInCode" xml:space="preserve">
+    <value>Bill ID</value>
+  </data>
+  <data name="Lease_lblPayInDataSource" xml:space="preserve">
+    <value>Data source</value>
+  </data>
+  <data name="Lease_lblPayInDate" xml:space="preserve">
+    <value>Pay date</value>
+  </data>
+  <data name="Lease_lblPayInEdit" xml:space="preserve">
+    <value>Modify</value>
+  </data>
+  <data name="Lease_lblPayInPeriod" xml:space="preserve">
+    <value>A/C Month</value>
+  </data>
+  <data name="Lease_lblPayInPut" xml:space="preserve">
+    <value>Input leasing receivable on commission</value>
+  </data>
+  <data name="Lease_lblPayInStatus" xml:space="preserve">
+    <value>Invoice status</value>
+  </data>
+  <data name="Lease_lblPayInType" xml:space="preserve">
+    <value>Type of commission to receive</value>
+  </data>
+  <data name="Lease_lblShopCode" xml:space="preserve">
+    <value>Tenant ID</value>
+  </data>
+  <data name="Lease_lblStatus" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="Lease_lblToCurTypeID" xml:space="preserve">
+    <value>To Currency Type ID</value>
+  </data>
+  <data name="Lease_LeaseQuery" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Lease_NewLineBtnPutIn" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="Lease_NewLineBtnTemp" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Lease_RadioAccountPrint" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="Lease_RadioAllContract" xml:space="preserve">
+    <value>All contracts</value>
+  </data>
+  <data name="Lease_RadioNoPrint" xml:space="preserve">
+    <value>No print</value>
+  </data>
+  <data name="Lease_RadioOneContract" xml:space="preserve">
+    <value>Single</value>
+  </data>
+  <data name="Lease_Renewjointventurelease" xml:space="preserve">
+    <value>Renew joint venture lease</value>
+  </data>
+  <data name="Lease_RenewjointventureUnion" xml:space="preserve">
+    <value>Approve new joint venture lease</value>
+  </data>
+  <data name="Lease_Renewlease" xml:space="preserve">
+    <value>Renew lease</value>
+  </data>
+  <data name="Lease_RenewleaseBill" xml:space="preserve">
+    <value>Approve Renew lease</value>
+  </data>
+  <data name="Lease_RptType" xml:space="preserve">
+    <value>Report Type</value>
+  </data>
+  <data name="Lease_UnionCount" xml:space="preserve">
+    <value>Joint Venture Expenses</value>
+  </data>
+  <data name="LeaseAreaType_AreaAdd" xml:space="preserve">
+    <value>Prepare TRU leasing contract</value>
+  </data>
+  <data name="LeaseAreaType_AreaConsent" xml:space="preserve">
+    <value>Approve leasing agreement</value>
+  </data>
+  <data name="LeaseAreaType_AreaType" xml:space="preserve">
+    <value>TRU type</value>
+  </data>
+  <data name="LeaseAreaType_AreaTypeCode" xml:space="preserve">
+    <value>TRU type ID</value>
+  </data>
+  <data name="LeaseAreaType_AreaTypeDesc" xml:space="preserve">
+    <value>Type Desc.</value>
+  </data>
+  <data name="LeaseAreaType_AreaTypeStatus" xml:space="preserve">
+    <value>Type status</value>
+  </data>
+  <data name="LeaseAreaType_CustCode" xml:space="preserve">
+    <value>Customer ID</value>
+  </data>
+  <data name="LeaseAreaType_lblAreaDesc" xml:space="preserve">
+    <value>Site Desc.</value>
+  </data>
+  <data name="LeaseAreaType_lblAreaMaker" xml:space="preserve">
+    <value>Decorating Agency</value>
+  </data>
+  <data name="LeaseAreaType_NoStop" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="LeaseAreaType_Stop" xml:space="preserve">
+    <value>Terminated</value>
+  </data>
+  <data name="LeaseBargain_lblPostil" xml:space="preserve">
+    <value>Approve lease agreement</value>
+  </data>
+  <data name="LeaseBargain_lblWrite" xml:space="preserve">
+    <value>Prepare leasing contract</value>
+  </data>
+  <data name="LeaseConUnion_InTaxRate" xml:space="preserve">
+    <value>Import Tax (%)</value>
+  </data>
+  <data name="LeaseConUnion_OutTaxRate" xml:space="preserve">
+    <value>GST (%)</value>
+  </data>
+  <data name="LeaseHdw_lblHdwType" xml:space="preserve">
+    <value>Hardware Type</value>
+  </data>
+  <data name="LeaseHdw_lblHdwTypeModi" xml:space="preserve">
+    <value>Maintain Hardware Type</value>
+  </data>
+  <data name="LeaseHdw_lblHdwTypeStatus" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="LeaseholdContract_labAccountCycle" xml:space="preserve">
+    <value>Col. Period</value>
+  </data>
+  <data name="LeaseholdContract_labAdditionalItem" xml:space="preserve">
+    <value>Additional terms</value>
+  </data>
+  <data name="LeaseholdContract_labBillCycle" xml:space="preserve">
+    <value>Billing Cycle</value>
+  </data>
+  <data name="LeaseholdContract_labChargeEndDate" xml:space="preserve">
+    <value>End date</value>
+  </data>
+  <data name="LeaseholdContract_labChargeStartDate" xml:space="preserve">
+    <value>Start date</value>
+  </data>
+  <data name="LeaseholdContract_labConEndDate" xml:space="preserve">
+    <value>End date</value>
+  </data>
+  <data name="LeaseholdContract_labConStartDate" xml:space="preserve">
+    <value>Start date</value>
+  </data>
+  <data name="LeaseholdContract_labContractCode" xml:space="preserve">
+    <value>Contract Code</value>
+  </data>
+  <data name="LeaseholdContract_labContractStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="LeaseholdContract_labConUnionRentInc" xml:space="preserve">
+    <value>Incremenent rate</value>
+  </data>
+  <data name="LeaseholdContract_labCurrencyType" xml:space="preserve">
+    <value>Currency</value>
+  </data>
+  <data name="LeaseholdContract_labEConURL" xml:space="preserve">
+    <value>Web Site</value>
+  </data>
+  <data name="LeaseholdContract_labFirstAccountMonth" xml:space="preserve">
+    <value>First A/C Mo</value>
+  </data>
+  <data name="LeaseholdContract_labIntDay" xml:space="preserve">
+    <value>Late fee days</value>
+  </data>
+  <data name="LeaseholdContract_labLatePayInt" xml:space="preserve">
+    <value>Late fee rate</value>
+  </data>
+  <data name="LeaseholdContract_labMonthSettleDays" xml:space="preserve">
+    <value>Days</value>
+  </data>
+  <data name="LeaseholdContract_labNote" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="LeaseholdContract_labNotice" xml:space="preserve">
+    <value>Notice Period</value>
+  </data>
+  <data name="LeaseholdContract_labPayTypeID" xml:space="preserve">
+    <value>Deposit</value>
+  </data>
+  <data name="LeaseholdContract_labPenalty" xml:space="preserve">
+    <value>Early Term. Penalty</value>
+  </data>
+  <data name="LeaseholdContract_labPenaltyItem" xml:space="preserve">
+    <value>Advanced term. terms</value>
+  </data>
+  <data name="LeaseholdContract_labRefID" xml:space="preserve">
+    <value>Reference</value>
+  </data>
+  <data name="LeaseholdContract_labRentInc" xml:space="preserve">
+    <value>Rent rise rate</value>
+  </data>
+  <data name="LeaseholdContract_labSettleMode" xml:space="preserve">
+    <value />
+  </data>
+  <data name="LeaseholdContract_labShopCode" xml:space="preserve">
+    <value>Tenant ID</value>
+  </data>
+  <data name="LeaseholdContract_labTradeID" xml:space="preserve">
+    <value>Trade</value>
+  </data>
+  <data name="LeaseholdContract_labYesNoMin" xml:space="preserve">
+    <value>Collect guarantee amt</value>
+  </data>
+  <data name="LeaseholdContractAuditing_labAttract" xml:space="preserve">
+    <value>Acct Mgr</value>
+  </data>
+  <data name="LeaseholdContractAuditing_labOverruleMust" xml:space="preserve">
+    <value>Must enter</value>
+  </data>
+  <data name="LeaseModify_Title" xml:space="preserve">
+    <value>Maintain Contract Information</value>
+  </data>
+  <data name="LeaseModify_TitleAutiding" xml:space="preserve">
+    <value>Approve Contract Information Change</value>
+  </data>
+  <data name="LeaseShopHdw_lblHdwCode" xml:space="preserve">
+    <value>Hardware Code</value>
+  </data>
+  <data name="LeaseShopHdw_lblHdwCond" xml:space="preserve">
+    <value>Hardware Condition</value>
+  </data>
+  <data name="LeaseShopHdw_lblHdwName" xml:space="preserve">
+    <value>Hardware Name</value>
+  </data>
+  <data name="LeaseShopHdw_lblHdwQty" xml:space="preserve">
+    <value>Hardware Quantity</value>
+  </data>
+  <data name="LeaseShopHdw_lblHdwStd" xml:space="preserve">
+    <value>Hardware Standard</value>
+  </data>
+  <data name="LeaseShopHdw_lblHdwTypeName" xml:space="preserve">
+    <value>Hardware Type Name</value>
+  </data>
+  <data name="LeaseShopHdw_lblHdwUnit" xml:space="preserve">
+    <value>Hardware Unit</value>
+  </data>
+  <data name="LeaseShopHdw_lblOwner" xml:space="preserve">
+    <value>Property Owner</value>
+  </data>
+  <data name="Login_Backhome" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Login_lblLoginTit" xml:space="preserve">
+    <value>Log</value>
+  </data>
+  <data name="Login_lblOK" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="Login_Loginout" xml:space="preserve">
+    <value>Log out</value>
+  </data>
+  <data name="Login_UserID" xml:space="preserve">
+    <value>User ID</value>
+  </data>
+  <data name="Login_UserLang" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="Login_UserPwd" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="Main_Operation_Interface" xml:space="preserve">
+    <value>Operation Interface</value>
+  </data>
+  <data name="MakePoolVoucher_ComeAndGoCo" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MakePoolVoucher_FYear" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MakePoolVoucher_lblRentalInt" xml:space="preserve">
+    <value>Make finance Voucher</value>
+  </data>
+  <data name="MakePoolVoucher_lblSubs" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MakePoolVoucher_NoPara" xml:space="preserve">
+    <value>No Para,Please Insert.</value>
+  </data>
+  <data name="MakePoolVoucher_VoucherInput" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MakePoolVoucher_WarrantName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Master_cmdActivity" xml:space="preserve">
+    <value>Activity</value>
+  </data>
+  <data name="Master_cmdDisplay" xml:space="preserve">
+    <value>Display</value>
+  </data>
+  <data name="Master_cmdInternat" xml:space="preserve">
+    <value>Internat</value>
+  </data>
+  <data name="Master_cmdPrints" xml:space="preserve">
+    <value>Print Media</value>
+  </data>
+  <data name="Master_cmdRadio" xml:space="preserve">
+    <value>Radio</value>
+  </data>
+  <data name="Master_cmdTV" xml:space="preserve">
+    <value>TV</value>
+  </data>
+  <data name="Master_lblAnPNm" xml:space="preserve">
+    <value>AnP Name</value>
+  </data>
+  <data name="Master_lblAnPRecord" xml:space="preserve">
+    <value>Maintain AnP Record</value>
+  </data>
+  <data name="Master_lblAnPRecordParticular" xml:space="preserve">
+    <value>Maintain AnP Information</value>
+  </data>
+  <data name="Master_lblAnPTheme" xml:space="preserve">
+    <value>AnP Theme</value>
+  </data>
+  <data name="Master_lblEnd" xml:space="preserve">
+    <value>End Date</value>
+  </data>
+  <data name="Master_lblSales" xml:space="preserve">
+    <value>Targeted Sales</value>
+  </data>
+  <data name="Master_lblStart" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
+  <data name="Master_lblTargetPeopletime" xml:space="preserve">
+    <value>TargetPeopletime</value>
+  </data>
+  <data name="MDisplay_lblDisplayDesc" xml:space="preserve">
+    <value>DisplayDesc</value>
+  </data>
+  <data name="MDisplay_lblDisplayNm" xml:space="preserve">
+    <value>Display Name</value>
+  </data>
+  <data name="MDisplay_lblintention" xml:space="preserve">
+    <value>Intention</value>
+  </data>
+  <data name="MDisplay_lblLocationDesc" xml:space="preserve">
+    <value>LocationDesc</value>
+  </data>
+  <data name="MDisplay_lblMcompany" xml:space="preserve">
+    <value>Make Company</value>
+  </data>
+  <data name="MDisplay_lblMDisplay" xml:space="preserve">
+    <value>Display</value>
+  </data>
+  <data name="MediaInfo_AddMember" xml:space="preserve">
+    <value>Display Member</value>
+  </data>
+  <data name="MediaInfo_CardTypeD" xml:space="preserve">
+    <value>CardTypeD</value>
+  </data>
+  <data name="MediaInfo_CardTypeF" xml:space="preserve">
+    <value>CardTypeF</value>
+  </data>
+  <data name="MediaInfo_ChangAuto" xml:space="preserve">
+    <value>ChangAuto</value>
+  </data>
+  <data name="MediaInfo_CMediaMNo" xml:space="preserve">
+    <value>CMediaMNo</value>
+  </data>
+  <data name="MediaInfo_CMediaNo" xml:space="preserve">
+    <value>CMediaNo</value>
+  </data>
+  <data name="MediaInfo_ComMall" xml:space="preserve">
+    <value>ComMall</value>
+  </data>
+  <data name="MediaInfo_ComTenant" xml:space="preserve">
+    <value>ComTenant</value>
+  </data>
+  <data name="MediaInfo_Display" xml:space="preserve">
+    <value>Display Type</value>
+  </data>
+  <data name="MediaInfo_MediaDesc" xml:space="preserve">
+    <value>Media Desc</value>
+  </data>
+  <data name="MediaInfo_MediaMDesc" xml:space="preserve">
+    <value>MediaMDesc</value>
+  </data>
+  <data name="MediaInfo_MediaMNo" xml:space="preserve">
+    <value>MediaMNo</value>
+  </data>
+  <data name="MediaInfo_MediaNo" xml:space="preserve">
+    <value>Media No</value>
+  </data>
+  <data name="MediaInfo_RMediaMNo" xml:space="preserve">
+    <value>Return Media MNo</value>
+  </data>
+  <data name="MediaInfo_RMediaNo" xml:space="preserve">
+    <value>Return Media No</value>
+  </data>
+  <data name="Mem_All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="Mem_ByMonth" xml:space="preserve">
+    <value>By Month</value>
+  </data>
+  <data name="Mem_ByYear" xml:space="preserve">
+    <value>By Year</value>
+  </data>
+  <data name="Mem_Generated" xml:space="preserve">
+    <value>Generated</value>
+  </data>
+  <data name="Mem_NoGenerated" xml:space="preserve">
+    <value>No Generated</value>
+  </data>
+  <data name="Memb_EnterCardID" xml:space="preserve">
+    <value>Please Enter Member Card Number!</value>
+  </data>
+  <data name="Memb_NOMemberCard" xml:space="preserve">
+    <value>Member Card does not exist!</value>
+  </data>
+  <data name="Member_lblOldCardIssue" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Member_lblQueryLargess" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Member_lblSetBounsF" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Member_NoMemberID" xml:space="preserve">
+    <value>Member Card Number does not exist!</value>
+  </data>
+  <data name="Member_YesCardID" xml:space="preserve">
+    <value>Card Number already exist!</value>
+  </data>
+  <data name="Menber_lblQueryBonus" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menber_lblQueryPurhist" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_AreaManage" xml:space="preserve">
+    <value>Area Manage</value>
+  </data>
+  <data name="Menu_Associator" xml:space="preserve">
+    <value>Membership</value>
+  </data>
+  <data name="Menu_AssociatorMes" xml:space="preserve">
+    <value>Member Information</value>
+  </data>
+  <data name="Menu_BackHome" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_BillboardContractInformationList" xml:space="preserve">
+    <value>Billboard Contract Information List</value>
+  </data>
+  <data name="Menu_BillboardManagement" xml:space="preserve">
+    <value>Billboard Management</value>
+  </data>
+  <data name="Menu_Billreprint" xml:space="preserve">
+    <value>Bill reprint</value>
+  </data>
+  <data name="Menu_BookGift" xml:space="preserve">
+    <value>Book Gift</value>
+  </data>
+  <data name="Menu_BrandManagement" xml:space="preserve">
+    <value>Brand Management</value>
+  </data>
+  <data name="Menu_BrowsingandUpdatingWorkflows" xml:space="preserve">
+    <value>Maintain Workflows</value>
+  </data>
+  <data name="Menu_BrowsingCurrentDepartmentDefinitions" xml:space="preserve">
+    <value>Browse Department</value>
+  </data>
+  <data name="Menu_BrowsingCurrentRoles" xml:space="preserve">
+    <value>Browse Role Definations</value>
+  </data>
+  <data name="Menu_BrowsingMallGeographicalInformation" xml:space="preserve">
+    <value>Browsing Mall Geographical Information</value>
+  </data>
+  <data name="Menu_BrowsingRegularUnits" xml:space="preserve">
+    <value>Browse Units</value>
+  </data>
+  <data name="Menu_BrowsingTenantGroups" xml:space="preserve">
+    <value>Browsing Tenant Groups</value>
+  </data>
+  <data name="Menu_BuildingFloors" xml:space="preserve">
+    <value>Building</value>
+  </data>
+  <data name="Menu_BusinessParametersManagement" xml:space="preserve">
+    <value>Business Parameters Management</value>
+  </data>
+  <data name="Menu_CalculateTenancyExpense" xml:space="preserve">
+    <value>Calculate Tenancy Expense</value>
+  </data>
+  <data name="Menu_CommissionedReceivableManagement" xml:space="preserve">
+    <value>Commissioned Receivable Management</value>
+  </data>
+  <data name="Menu_ContractAlert" xml:space="preserve">
+    <value>Contract Alert</value>
+  </data>
+  <data name="Menu_ContractInformationSummary" xml:space="preserve">
+    <value>Contract Information Summary</value>
+  </data>
+  <data name="Menu_CreditCardTransactionsManagement" xml:space="preserve">
+    <value>Credit Card Transactions Management</value>
+  </data>
+  <data name="Menu_CurUserName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_CustomerInformation" xml:space="preserve">
+    <value>Customer Information</value>
+  </data>
+  <data name="Menu_CustomerManager" xml:space="preserve">
+    <value>Customer Manage</value>
+  </data>
+  <data name="Menu_CustomerTypeManagement" xml:space="preserve">
+    <value>Customer Type Management</value>
+  </data>
+  <data name="Menu_CustPalaver" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_DefineBillboard" xml:space="preserve">
+    <value>Billboard Operation &amp; Management</value>
+  </data>
+  <data name="Menu_DefineMallDepartments" xml:space="preserve">
+    <value>Maintain Departments</value>
+  </data>
+  <data name="Menu_DefineMallGeographicalInformation" xml:space="preserve">
+    <value>Maintain Mall Geographical Information</value>
+  </data>
+  <data name="Menu_DefineRegularUnits" xml:space="preserve">
+    <value>Maintain Units</value>
+  </data>
+  <data name="Menu_DefineTenantGroups" xml:space="preserve">
+    <value>Maintain Concession</value>
+  </data>
+  <data name="Menu_DefineWorkGroups" xml:space="preserve">
+    <value>Workgroup Management</value>
+  </data>
+  <data name="Menu_DepositManagement" xml:space="preserve">
+    <value>Deposit Management</value>
+  </data>
+  <data name="Menu_ElementaryBusinessInformationQuery" xml:space="preserve">
+    <value>Basic Information Query &amp; Reports</value>
+  </data>
+  <data name="Menu_ExChangeGift" xml:space="preserve">
+    <value>ExChange Gift</value>
+  </data>
+  <data name="Menu_ExpenseReportingSystem" xml:space="preserve">
+    <value>Expense Reports</value>
+  </data>
+  <data name="Menu_ExpenseTypeManagement" xml:space="preserve">
+    <value>Expense Type Management</value>
+  </data>
+  <data name="Menu_FirstInvoice" xml:space="preserve">
+    <value>Generate initial fees</value>
+  </data>
+  <data name="Menu_FirstLease" xml:space="preserve">
+    <value>Compute Initial Rental</value>
+  </data>
+  <data name="Menu_FirstUnion" xml:space="preserve">
+    <value>Compute Initial Joint Venture Rental</value>
+  </data>
+  <data name="Menu_GenerateReceivables" xml:space="preserve">
+    <value>Generate Receivables</value>
+  </data>
+  <data name="Menu_GiveGift" xml:space="preserve">
+    <value>Give Gift</value>
+  </data>
+  <data name="Menu_Help" xml:space="preserve">
+    <value>SysTems Help</value>
+  </data>
+  <data name="Menu_ImportTransactionsData" xml:space="preserve">
+    <value>Import Transactions Data</value>
+  </data>
+  <data name="Menu_InActionAnalysis" xml:space="preserve">
+    <value>InAction Analysis</value>
+  </data>
+  <data name="Menu_InputReceivables" xml:space="preserve">
+    <value>Input Receivables</value>
+  </data>
+  <data name="Menu_InquireCustomerInformation" xml:space="preserve">
+    <value>Inquire Customer Information</value>
+  </data>
+  <data name="Menu_InquirePotentialCustomerInformation" xml:space="preserve">
+    <value>Inquire Potential Customer Information</value>
+  </data>
+  <data name="Menu_InsufficientBonus" xml:space="preserve">
+    <value>Insufficient Bonus</value>
+  </data>
+  <data name="Menu_InterestPrint" xml:space="preserve">
+    <value>Reprint Penalty Invoice</value>
+  </data>
+  <data name="Menu_InterestRate" xml:space="preserve">
+    <value>Interest Rate</value>
+  </data>
+  <data name="Menu_InvJVAccept" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_InvoiceInterest" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_InvoiceList" xml:space="preserve">
+    <value>Invoice Listing For Period</value>
+  </data>
+  <data name="Menu_InvUnionReturn" xml:space="preserve">
+    <value>Joint Venture Expenses</value>
+  </data>
+  <data name="Menu_IssueNewCard" xml:space="preserve">
+    <value>Issue New Member Card</value>
+  </data>
+  <data name="Menu_lblHandBonus" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_lblShopHdwModi" xml:space="preserve">
+    <value>Maintain Hardware Information</value>
+  </data>
+  <data name="Menu_Lease" xml:space="preserve">
+    <value>Expense</value>
+  </data>
+  <data name="Menu_LeaseAccountManagementGroup" xml:space="preserve">
+    <value>Lease Acc. Group</value>
+  </data>
+  <data name="Menu_LeaseContractInformationList" xml:space="preserve">
+    <value>Lease Contract Information List</value>
+  </data>
+  <data name="Menu_LeaseContractManagement" xml:space="preserve">
+    <value>Misc Contract</value>
+  </data>
+  <data name="Menu_LeaseContractStop" xml:space="preserve">
+    <value>Terminate Lease Contract</value>
+  </data>
+  <data name="Menu_LeaseContractStopAdd" xml:space="preserve">
+    <value>Terminate Contract Entry</value>
+  </data>
+  <data name="Menu_LeaseContractStopAuditing" xml:space="preserve">
+    <value>Approve Lease Contract Termination</value>
+  </data>
+  <data name="Menu_LeaseItemModify" xml:space="preserve">
+    <value>Modify Contract Basic Information</value>
+  </data>
+  <data name="Menu_LeaseItemModifyAutiding" xml:space="preserve">
+    <value>Approve Contract Basic Information Modification</value>
+  </data>
+  <data name="Menu_LeaseModify" xml:space="preserve">
+    <value>Maintain Contract Information</value>
+  </data>
+  <data name="Menu_LeaseQuery" xml:space="preserve">
+    <value>Contract Listing</value>
+  </data>
+  <data name="Menu_LeaseUnionItemModify" xml:space="preserve">
+    <value>Maintain Joint Venture Information</value>
+  </data>
+  <data name="Menu_LeaseUnionItemModifyAuditing" xml:space="preserve">
+    <value>Approve Joint Venture Information Change</value>
+  </data>
+  <data name="Menu_MaintainCustomerInformation" xml:space="preserve">
+    <value>Maintain Customer Information</value>
+  </data>
+  <data name="Menu_MaintainPotentialCustomerInformation" xml:space="preserve">
+    <value>Maintain Potential Customer Information</value>
+  </data>
+  <data name="Menu_MallOrganizationStructureManagement" xml:space="preserve">
+    <value>Mall Structure Management</value>
+  </data>
+  <data name="Menu_ManualReceipt" xml:space="preserve">
+    <value>Manual Receipt input</value>
+  </data>
+  <data name="Menu_MediaInfo" xml:space="preserve">
+    <value>Media Input</value>
+  </data>
+  <data name="Menu_MemberBonusComparison" xml:space="preserve">
+    <value>Member Bonus Comparison</value>
+  </data>
+  <data name="Menu_MemberInforAnalysis" xml:space="preserve">
+    <value>Member Information Analysis</value>
+  </data>
+  <data name="Menu_MemberInformation" xml:space="preserve">
+    <value>Member Information</value>
+  </data>
+  <data name="Menu_MemberProfileAnalysis" xml:space="preserve">
+    <value>Member Profile Analysis</value>
+  </data>
+  <data name="Menu_MemberStatistics" xml:space="preserve">
+    <value>Member Statistics</value>
+  </data>
+  <data name="Menu_MenuInfo" xml:space="preserve">
+    <value>Menu Info</value>
+  </data>
+  <data name="Menu_ModifyanExistedUser" xml:space="preserve">
+    <value>Modify an Existed User</value>
+  </data>
+  <data name="Menu_ModifyReceivables" xml:space="preserve">
+    <value>Modify Receivables</value>
+  </data>
+  <data name="Menu_NewPassword" xml:space="preserve">
+    <value>Change Password</value>
+  </data>
+  <data name="Menu_NewRole" xml:space="preserve">
+    <value>New Role</value>
+  </data>
+  <data name="Menu_NewUser" xml:space="preserve">
+    <value>New User</value>
+  </data>
+  <data name="Menu_NewWorkflow" xml:space="preserve">
+    <value>New Workflow</value>
+  </data>
+  <data name="Menu_NoUserName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_PayOutList" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_PerchaseRank" xml:space="preserve">
+    <value>Perchase Rank</value>
+  </data>
+  <data name="Menu_PlanUnitShopTypeColor" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_PotCustomer" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_ProcessReceivables" xml:space="preserve">
+    <value>Process Receivables</value>
+  </data>
+  <data name="Menu_Receipt" xml:space="preserve">
+    <value>Manual Import Receipt</value>
+  </data>
+  <data name="Menu_ReceiptQuery" xml:space="preserve">
+    <value>Receipt Query</value>
+  </data>
+  <data name="Menu_RedeemGift" xml:space="preserve">
+    <value>RedeemGift</value>
+  </data>
+  <data name="Menu_RegularRentableSpacesManagement" xml:space="preserve">
+    <value>Property</value>
+  </data>
+  <data name="Menu_RegularUnitsInformationSummary" xml:space="preserve">
+    <value>Units Information Summary</value>
+  </data>
+  <data name="Menu_RegularUnitsTypeVindicate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_ReplacementCharges" xml:space="preserve">
+    <value>ReplacementCharges</value>
+  </data>
+  <data name="Menu_ReportingSystem" xml:space="preserve">
+    <value>Reports</value>
+  </data>
+  <data name="Menu_ResidueManagement" xml:space="preserve">
+    <value>Unused Payment Processing</value>
+  </data>
+  <data name="Menu_RptBankCardDiversitylblTrans" xml:space="preserve">
+    <value>Credit Card Transactions Audit Report</value>
+  </data>
+  <data name="Menu_RptBankCrdSumRpt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_RptGoodsRejected" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_RptMediaSum" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_RptSalesMediaSumCust_Title" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_SalesBrand" xml:space="preserve">
+    <value>Brand Store Sales</value>
+  </data>
+  <data name="Menu_SalesReportingSystem" xml:space="preserve">
+    <value>Sales Reporting System</value>
+  </data>
+  <data name="Menu_SEfrmGpcmdAp" xml:space="preserve">
+    <value>Adv n Pro</value>
+  </data>
+  <data name="Menu_Sell" xml:space="preserve">
+    <value>Sales</value>
+  </data>
+  <data name="Menu_Sellins" xml:space="preserve">
+    <value>Manual Import Daily Sales</value>
+  </data>
+  <data name="Menu_Sellint" xml:space="preserve">
+    <value>Sales Interface</value>
+  </data>
+  <data name="Menu_ServiceDesk" xml:space="preserve">
+    <value>Service Desk</value>
+  </data>
+  <data name="Menu_SettlementBillOperation" xml:space="preserve">
+    <value>Settlement Bill Operation</value>
+  </data>
+  <data name="Menu_ShopDaySales" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_ShopMemberSales" xml:space="preserve">
+    <value>ShopMemberSales</value>
+  </data>
+  <data name="Menu_ShopMonthSales" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_ShopSalesVSMemberSales" xml:space="preserve">
+    <value>ShopSales VS MemberSales</value>
+  </data>
+  <data name="Menu_ShopSellReceipt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_ShopTotalSalesVSMemberSales" xml:space="preserve">
+    <value>ShopTotalSales VS MemberSales</value>
+  </data>
+  <data name="Menu_ShopTypeManagement" xml:space="preserve">
+    <value>ShopType Management</value>
+  </data>
+  <data name="Menu_SkuInfo" xml:space="preserve">
+    <value>Sku Master Input</value>
+  </data>
+  <data name="Menu_SMSPara" xml:space="preserve">
+    <value>System parameter</value>
+  </data>
+  <data name="Menu_StoreSalesYearAnalysis" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_SystemElementaryDataManagement" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="Menu_SystemOperationRoleManagemsnt" xml:space="preserve">
+    <value>System Operation Role Managemsnt</value>
+  </data>
+  <data name="Menu_SystemUserManagement" xml:space="preserve">
+    <value>System User Management</value>
+  </data>
+  <data name="Menu_TenancyExpenseSettlement" xml:space="preserve">
+    <value>Tenancy Expense Settlement</value>
+  </data>
+  <data name="Menu_TicketChargeGift" xml:space="preserve">
+    <value>Gift Exchange using Receipt</value>
+  </data>
+  <data name="Menu_TimeSalesAnalysis" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_TitleDeductMoney" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_TradeRelation" xml:space="preserve">
+    <value>Maintain Trade Relationship</value>
+  </data>
+  <data name="Menu_TransactionsReconciliation" xml:space="preserve">
+    <value>Transactions Reconciliation</value>
+  </data>
+  <data name="Menu_TRUContractInformation" xml:space="preserve">
+    <value>TRU Contract Information</value>
+  </data>
+  <data name="Menu_UnionBillreprint" xml:space="preserve">
+    <value>Reprint Joint Venture Invoice</value>
+  </data>
+  <data name="Menu_UnitManage" xml:space="preserve">
+    <value>Unit Manage</value>
+  </data>
+  <data name="Menu_UnregisteredCard" xml:space="preserve">
+    <value>Unregistered Card</value>
+  </data>
+  <data name="Menu_VAtongzhou" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_VisualAnalysis" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_Workflow" xml:space="preserve">
+    <value>Workflow Management</value>
+  </data>
+  <data name="Menu_WorkflowManagement" xml:space="preserve">
+    <value>Workflow Management</value>
+  </data>
+  <data name="MesPublic_InvCancel" xml:space="preserve">
+    <value>Invoice cancel</value>
+  </data>
+  <data name="MesPublic_lblHaveMesPutIn" xml:space="preserve">
+    <value>Already submit data</value>
+  </data>
+  <data name="MiInfoVindicate_labAttractTel" xml:space="preserve">
+    <value>Contact phone</value>
+  </data>
+  <data name="MiInfoVindicate_labContentTel" xml:space="preserve">
+    <value>Property phone</value>
+  </data>
+  <data name="Mneu_SalesMediaSumDay" xml:space="preserve">
+    <value />
+  </data>
+  <data name="msg_NotFindData" xml:space="preserve">
+    <value>Data not found.</value>
+  </data>
+  <data name="Munu_Auth" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Munu_WorkbencNavigator" xml:space="preserve">
+    <value>Workbench / Navigator</value>
+  </data>
+  <data name="OpenPageLog_MainName" xml:space="preserve">
+    <value>Main Page</value>
+  </data>
+  <data name="OpenPageLog_PageName" xml:space="preserve">
+    <value>Page Name</value>
+  </data>
+  <data name="OpenPageLog_PagePath" xml:space="preserve">
+    <value>Page Path</value>
+  </data>
+  <data name="OpenPageLog_PageQuery" xml:space="preserve">
+    <value>User's PagesList</value>
+  </data>
+  <data name="PayOut_PayOutAmtBig" xml:space="preserve">
+    <value>Returned amount exceeds that of commissioned to receive.</value>
+  </data>
+  <data name="PayOut_PayOutAmtZero" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_ADDArchives" xml:space="preserve">
+    <value>Initiator</value>
+  </data>
+  <data name="PotCustomer_Basic" xml:space="preserve">
+    <value>Basic info.</value>
+  </data>
+  <data name="PotCustomer_BrandOperateType" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_btnExamine" xml:space="preserve">
+    <value>Submit to approve</value>
+  </data>
+  <data name="PotCustomer_BusinessItem" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_butAdd" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="PotCustomer_butCancelEdit" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="PotCustomer_butSave" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="PotCustomer_butUpdate" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="PotCustomer_CheckMainBrand" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_CheckPcent" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_CheckPotShopFalse" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_CheckRentalPrice" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_CheckRentArea" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_CheckRentInc" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_CheckSEDate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_ClientCard" xml:space="preserve">
+    <value>Certificates</value>
+  </data>
+  <data name="PotCustomer_Contact" xml:space="preserve">
+    <value>Contactor</value>
+  </data>
+  <data name="PotCustomer_ContactVindicate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_CreditLevel" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_CustAttractProcessType" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_CustContactorName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_CustCreditLevel" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_CustMostlyTitle" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_CustPalaverNote" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_CustPalaverPlace" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_CustPalaverResult" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_CustPalaverRound" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_CustRentInc" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_CustSource" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_CustTakeOutRate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_CustUnSolved" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_hiddenInformation" xml:space="preserve">
+    <value>Maintain potential customer basic information</value>
+  </data>
+  <data name="PotCustomer_InputPeople" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_IntentUnits" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_labCustomerQuery" xml:space="preserve">
+    <value>Inquire potential customer information</value>
+  </data>
+  <data name="PotCustomer_labCustomerUptate" xml:space="preserve">
+    <value>Maintain potential customer information</value>
+  </data>
+  <data name="PotCustomer_lblBankAcct" xml:space="preserve">
+    <value>Bank account</value>
+  </data>
+  <data name="PotCustomer_lblBankName" xml:space="preserve">
+    <value>Bank</value>
+  </data>
+  <data name="PotCustomer_lblBrandTradeType" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_lblContactorName" xml:space="preserve">
+    <value>Contact name</value>
+  </data>
+  <data name="PotCustomer_lblCreateUserTitle" xml:space="preserve">
+    <value>Prepare contract for tenant enroll</value>
+  </data>
+  <data name="PotCustomer_lblCustAge" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_lblCustCode" xml:space="preserve">
+    <value>Customer ID</value>
+  </data>
+  <data name="PotCustomer_lblCustLicenseCode" xml:space="preserve">
+    <value>Certificate ID</value>
+  </data>
+  <data name="PotCustomer_lblCustLicenseName" xml:space="preserve">
+    <value>Certificate name</value>
+  </data>
+  <data name="PotCustomer_lblCustLicenseType" xml:space="preserve">
+    <value>Certificate type</value>
+  </data>
+  <data name="PotCustomer_lblCustName" xml:space="preserve">
+    <value>Customer name</value>
+  </data>
+  <data name="PotCustomer_lblCustSex" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_lblCustShortName" xml:space="preserve">
+    <value>Short name</value>
+  </data>
+  <data name="PotCustomer_lblCustTitle" xml:space="preserve">
+    <value>Prepare potential customer data</value>
+  </data>
+  <data name="PotCustomer_lblCustTradeBrand" xml:space="preserve">
+    <value>Customer Brand</value>
+  </data>
+  <data name="PotCustomer_lblCustType" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="PotCustomer_lblCustUnitPrice" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_lblEMail" xml:space="preserve">
+    <value>email</value>
+  </data>
+  <data name="PotCustomer_lblLegalRep" xml:space="preserve">
+    <value>Legal person</value>
+  </data>
+  <data name="PotCustomer_lblLegalRepTitle" xml:space="preserve">
+    <value>Legal person title</value>
+  </data>
+  <data name="PotCustomer_lblMobileTel" xml:space="preserve">
+    <value>Mobile</value>
+  </data>
+  <data name="PotCustomer_lblOfficeAddr" xml:space="preserve">
+    <value>Office</value>
+  </data>
+  <data name="PotCustomer_lblOfficeAddr2" xml:space="preserve">
+    <value>Office Addr2</value>
+  </data>
+  <data name="PotCustomer_lblOfficeAddr3" xml:space="preserve">
+    <value>Office Addr3</value>
+  </data>
+  <data name="PotCustomer_lblOfficeTel" xml:space="preserve">
+    <value>Phone</value>
+  </data>
+  <data name="PotCustomer_lblPostAddr" xml:space="preserve">
+    <value>Address1</value>
+  </data>
+  <data name="PotCustomer_lblPostAddr2" xml:space="preserve">
+    <value>Address2</value>
+  </data>
+  <data name="PotCustomer_lblPostAddr3" xml:space="preserve">
+    <value>Address3</value>
+  </data>
+  <data name="PotCustomer_lblPostCode" xml:space="preserve">
+    <value>Postcode</value>
+  </data>
+  <data name="PotCustomer_lblRegAddr" xml:space="preserve">
+    <value>Register Addr.</value>
+  </data>
+  <data name="PotCustomer_lblRegCap" xml:space="preserve">
+    <value>Reg. capital</value>
+  </data>
+  <data name="PotCustomer_lblRegCode" xml:space="preserve">
+    <value>Register ID</value>
+  </data>
+  <data name="PotCustomer_lblTaxCode" xml:space="preserve">
+    <value>Tax No.</value>
+  </data>
+  <data name="PotCustomer_lblTitle" xml:space="preserve">
+    <value>Contact title</value>
+  </data>
+  <data name="PotCustomer_lblTradeBrand" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_lblTradeType" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_lblVoucherTitle" xml:space="preserve">
+    <value>Approve potential customer</value>
+  </data>
+  <data name="PotCustomer_lblWeb" xml:space="preserve">
+    <value>Wed Site</value>
+  </data>
+  <data name="PotCustomer_LevelName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_LinkmanVindicate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_PalaverUser" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_ProcessType" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_SourceType" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_TakeChargeArea" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotShop_BizMode" xml:space="preserve">
+    <value>Biz mode</value>
+  </data>
+  <data name="PotShop_lblMainBrand" xml:space="preserve">
+    <value>Brand</value>
+  </data>
+  <data name="PotShop_lblPalaverAim" xml:space="preserve">
+    <value>Objectives</value>
+  </data>
+  <data name="PotShop_lblPalaverNode" xml:space="preserve">
+    <value>Negotiation Notes</value>
+  </data>
+  <data name="PotShop_lblPalaverTime" xml:space="preserve">
+    <value>Negotiation date</value>
+  </data>
+  <data name="PotShop_lblPalaverUser" xml:space="preserve">
+    <value>Negotiators</value>
+  </data>
+  <data name="PotShop_lblPotShopName" xml:space="preserve">
+    <value>Shop name</value>
+  </data>
+  <data name="PotShop_lblRentalPrice" xml:space="preserve">
+    <value>Rental rate</value>
+  </data>
+  <data name="PotShop_lblRentArea" xml:space="preserve">
+    <value>Preferred area</value>
+  </data>
+  <data name="PotShop_lblShopEndDate" xml:space="preserve">
+    <value>Termination</value>
+  </data>
+  <data name="PotShop_lblShopStartDate" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
+  <data name="PotShop_lblShopType" xml:space="preserve">
+    <value>Tenant type</value>
+  </data>
+  <data name="PotShop_lblShopTypeCode" xml:space="preserve">
+    <value>ShopTypeCode</value>
+  </data>
+  <data name="PotShop_lblShopTypeName" xml:space="preserve">
+    <value>ShopTypeName</value>
+  </data>
+  <data name="PotShop_lblShopTypeTitle" xml:space="preserve">
+    <value>ShopType Management</value>
+  </data>
+  <data name="PotShop_Selected" xml:space="preserve">
+    <value>Selected</value>
+  </data>
+  <data name="Print_soptBnW" xml:space="preserve">
+    <value>Black and White</value>
+  </data>
+  <data name="Print_soptColour" xml:space="preserve">
+    <value>Colour</value>
+  </data>
+  <data name="Prints_chkFri" xml:space="preserve">
+    <value>Friday</value>
+  </data>
+  <data name="Prints_chkMon" xml:space="preserve">
+    <value>Monday</value>
+  </data>
+  <data name="Prints_chkSat" xml:space="preserve">
+    <value>Saturday</value>
+  </data>
+  <data name="Prints_chkSun" xml:space="preserve">
+    <value>Sunday</value>
+  </data>
+  <data name="Prints_chkThu" xml:space="preserve">
+    <value>Thursday</value>
+  </data>
+  <data name="Prints_chkTue" xml:space="preserve">
+    <value>Tuesday</value>
+  </data>
+  <data name="Prints_chkWed" xml:space="preserve">
+    <value>Wednesday</value>
+  </data>
+  <data name="Prints_lblAddr" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="Prints_lblOffPhone" xml:space="preserve">
+    <value>Office Phone</value>
+  </data>
+  <data name="Prints_lblPrints" xml:space="preserve">
+    <value>Maintain Print Media</value>
+  </data>
+  <data name="Prints_lblPrintSizeNm" xml:space="preserve">
+    <value>Media Size</value>
+  </data>
+  <data name="Prints_lblPrintsNm" xml:space="preserve">
+    <value>Media Name</value>
+  </data>
+  <data name="Prints_lblWeb" xml:space="preserve">
+    <value>Web Site</value>
+  </data>
+  <data name="Prompt_AccountDate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Prompt_AdjAmt" xml:space="preserve">
+    <value>Adjust Amount error</value>
+  </data>
+  <data name="Prompt_Before_Charge_No" xml:space="preserve">
+    <value>Failure, prophase expense has not been generated.</value>
+  </data>
+  <data name="Prompt_CheckIdeaNoEmpty" xml:space="preserve">
+    <value>Please input examination advice.</value>
+  </data>
+  <data name="Prompt_ConfirmOK" xml:space="preserve">
+    <value>Submit Success!</value>
+  </data>
+  <data name="Prompt_conLeaseBalanceMonth" xml:space="preserve">
+    <value>Please enter computation month!</value>
+  </data>
+  <data name="Prompt_conLeaseBillCycle" xml:space="preserve">
+    <value>Please select billing cycle!</value>
+  </data>
+  <data name="Prompt_conLeaseIfPrepay" xml:space="preserve">
+    <value>Please select if receive prepaid!</value>
+  </data>
+  <data name="Prompt_conLeaseMonthSettleDays" xml:space="preserve">
+    <value>Please enter fixed number of days in month!</value>
+  </data>
+  <data name="Prompt_conLeasePayTypeID" xml:space="preserve">
+    <value>Please select deposit!</value>
+  </data>
+  <data name="Prompt_conLeaseSettleMode" xml:space="preserve">
+    <value>Settlement</value>
+  </data>
+  <data name="Prompt_Contact_Date_No" xml:space="preserve">
+    <value>Failure, settlement date range conflicts with contract items.</value>
+  </data>
+  <data name="Prompt_Contract_Info_No" xml:space="preserve">
+    <value>No contract found.</value>
+  </data>
+  <data name="Prompt_Contract_No" xml:space="preserve">
+    <value>Invalid contract.</value>
+  </data>
+  <data name="Prompt_Contract_No_Data" xml:space="preserve">
+    <value>No Expenses data!</value>
+  </data>
+  <data name="Prompt_contractCode" xml:space="preserve">
+    <value>Please enter Contract ID!</value>
+  </data>
+  <data name="Prompt_Exist" xml:space="preserve">
+    <value>Failure, existed ID.</value>
+  </data>
+  <data name="Prompt_ExistHCode" xml:space="preserve">
+    <value>Hardware record already exist!</value>
+  </data>
+  <data name="Prompt_ExistUnitCode" xml:space="preserve">
+    <value>Already save under this unit!</value>
+  </data>
+  <data name="Prompt_ExistUnitCodeError" xml:space="preserve">
+    <value>Invalid Unit Code</value>
+  </data>
+  <data name="Prompt_First_Charge_No" xml:space="preserve">
+    <value>First phase expense has not been generated!</value>
+  </data>
+  <data name="Prompt_InputChargeDate" xml:space="preserve">
+    <value>Please enter expenses period</value>
+  </data>
+  <data name="Prompt_InputFloat" xml:space="preserve">
+    <value>Must specify value up to decimal digits</value>
+  </data>
+  <data name="Prompt_InputInt" xml:space="preserve">
+    <value>Must be integer value.</value>
+  </data>
+  <data name="Prompt_InputQuery" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Prompt_invAdjAmtError" xml:space="preserve">
+    <value>Adjust Amount Out of Range!</value>
+  </data>
+  <data name="Prompt_invDiscAmtError" xml:space="preserve">
+    <value>Discount Amount Out of Range!</value>
+  </data>
+  <data name="Prompt_invOver" xml:space="preserve">
+    <value>Invoice already fully paid!</value>
+  </data>
+  <data name="Prompt_InvPaidAmtYes" xml:space="preserve">
+    <value>Partial Paid Invoice!</value>
+  </data>
+  <data name="Prompt_LeaseChargeAccount" xml:space="preserve">
+    <value>Percentage lease contract cannot calculate here.</value>
+  </data>
+  <data name="Prompt_LeaseContractBeginDate" xml:space="preserve">
+    <value>Please enter Contract Start Date!</value>
+  </data>
+  <data name="Prompt_LeaseContractEndDate" xml:space="preserve">
+    <value>Please enter Contract End Date!</value>
+  </data>
+  <data name="Prompt_LeaseTradeID" xml:space="preserve">
+    <value>Please select Trade</value>
+  </data>
+  <data name="Prompt_Message" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Prompt_Month_Charge_Yes" xml:space="preserve">
+    <value>Expenses already generated for selected month!</value>
+  </data>
+  <data name="Prompt_NatureMonth" xml:space="preserve">
+    <value>Month:0</value>
+  </data>
+  <data name="Prompt_paidAmtSum" xml:space="preserve">
+    <value>Please enter payment amount!</value>
+  </data>
+  <data name="Prompt_PalaverYes" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="Prompt_PayInAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Prompt_PayInPayOut" xml:space="preserve">
+    <value>Total returned equals to receivable on commission</value>
+  </data>
+  <data name="Prompt_selectPayType" xml:space="preserve">
+    <value>Please select Payment Type!</value>
+  </data>
+  <data name="Prompt_SessionIsNull" xml:space="preserve">
+    <value>Overtime,login again,please!/网页已过时,请重新登录!</value>
+  </data>
+  <data name="Prompt_subAuthYes" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Prompt_Succed" xml:space="preserve">
+    <value>Successfully generated!</value>
+  </data>
+  <data name="Prompt_Success" xml:space="preserve">
+    <value>Success!</value>
+  </data>
+  <data name="Prompt_thisPaidGreaterPaid" xml:space="preserve">
+    <value>Sum of individual invoice payment greater than total payment</value>
+  </data>
+  <data name="Prompt_thisPaidMoreList" xml:space="preserve">
+    <value>Total Payment Amount is greater than Detail Amount</value>
+  </data>
+  <data name="Prompt_WorkLose" xml:space="preserve">
+    <value>General operation failure.</value>
+  </data>
+  <data name="Promt_First_Charge_Cancel" xml:space="preserve">
+    <value>Undo initial fees</value>
+  </data>
+  <data name="Promt_First_Charge_Yes" xml:space="preserve">
+    <value>Initial Invoice already generated!</value>
+  </data>
+  <data name="PublicMes_AddLeaseFormulaH" xml:space="preserve">
+    <value>Please fill in settlement formula</value>
+  </data>
+  <data name="PublicMes_AddLeaseItem" xml:space="preserve">
+    <value>Please fill in lease information</value>
+  </data>
+  <data name="PublicMes_AddLeaseShop" xml:space="preserve">
+    <value>Please fill in shop information</value>
+  </data>
+  <data name="PublicMes_BillOfDocumentDelete" xml:space="preserve">
+    <value>Confirm delete Invoice?</value>
+  </data>
+  <data name="PublicMes_ContractCode" xml:space="preserve">
+    <value>Contract ID already exist!</value>
+  </data>
+  <data name="PublicMes_DateError" xml:space="preserve">
+    <value>Invalid Date</value>
+  </data>
+  <data name="PublicMes_Default" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PublicMes_ErrorLog" xml:space="preserve">
+    <value>Abnormality occurs, please refer to error log</value>
+  </data>
+  <data name="PublicMes_FormulaSave" xml:space="preserve">
+    <value>Please save formula</value>
+  </data>
+  <data name="PublicMes_Lease" xml:space="preserve">
+    <value>Lease</value>
+  </data>
+  <data name="PublicMes_NotContract" xml:space="preserve">
+    <value>Not a valid contract</value>
+  </data>
+  <data name="PublicMes_NotNode" xml:space="preserve">
+    <value>Error in saving, no connection nodes.</value>
+  </data>
+  <data name="PublicMes_OnlyDefault" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PublicMes_OverruleMessage" xml:space="preserve">
+    <value>rejection remarks</value>
+  </data>
+  <data name="PublicMes_Union" xml:space="preserve">
+    <value>Joint Venture</value>
+  </data>
+  <data name="PubMessage_ContractStop" xml:space="preserve">
+    <value>Terminate Contract</value>
+  </data>
+  <data name="PubMessage_OnlySelected" xml:space="preserve">
+    <value>Please select at lease 1 option</value>
+  </data>
+  <data name="Radio_lblAirtime" xml:space="preserve">
+    <value>Air Time</value>
+  </data>
+  <data name="Radio_lblContentsNm" xml:space="preserve">
+    <value>Contents</value>
+  </data>
+  <data name="Radio_lblEstCosts" xml:space="preserve">
+    <value>Estimated Costs</value>
+  </data>
+  <data name="Radio_lblRadio" xml:space="preserve">
+    <value>Maintain Radio Station</value>
+  </data>
+  <data name="Radio_lblRadioNm" xml:space="preserve">
+    <value>Radio Station Name</value>
+  </data>
+  <data name="RentableArea_AreaRate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RentableArea_AvgRentalAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RentableArea_BlankOut" xml:space="preserve">
+    <value>Nonrentable</value>
+  </data>
+  <data name="RentableArea_labBuildingTitle" xml:space="preserve">
+    <value>Maintain mall geographical information</value>
+  </data>
+  <data name="RentableArea_labUnitTitle" xml:space="preserve">
+    <value>Browse rentable units</value>
+  </data>
+  <data name="RentableArea_lblArea" xml:space="preserve">
+    <value>Tenant group</value>
+  </data>
+  <data name="RentableArea_lblAreaCode" xml:space="preserve">
+    <value>Grp ID</value>
+  </data>
+  <data name="RentableArea_lblAreaLeveCode" xml:space="preserve">
+    <value>Level ID</value>
+  </data>
+  <data name="RentableArea_lblAreaLevel" xml:space="preserve">
+    <value>Maintain area level</value>
+  </data>
+  <data name="RentableArea_lblAreaLeveName" xml:space="preserve">
+    <value>Level name</value>
+  </data>
+  <data name="RentableArea_lblAreaLeveStatus" xml:space="preserve">
+    <value>Level status</value>
+  </data>
+  <data name="RentableArea_lblAreaName" xml:space="preserve">
+    <value>Tenant group name</value>
+  </data>
+  <data name="RentableArea_lblAreaQuery" xml:space="preserve">
+    <value>AreaList</value>
+  </data>
+  <data name="RentableArea_lblAreaSize" xml:space="preserve">
+    <value>Area</value>
+  </data>
+  <data name="RentableArea_lblAreaSizeCode" xml:space="preserve">
+    <value>Area ID</value>
+  </data>
+  <data name="RentableArea_lblAreaSizeName" xml:space="preserve">
+    <value>Area name</value>
+  </data>
+  <data name="RentableArea_lblAreaSizeStatus" xml:space="preserve">
+    <value>Area status</value>
+  </data>
+  <data name="RentableArea_lblAreaStatus" xml:space="preserve">
+    <value>Inquire rentable area status</value>
+  </data>
+  <data name="RentableArea_lblBuilding" xml:space="preserve">
+    <value>Building</value>
+  </data>
+  <data name="RentableArea_lblBuildingAddr" xml:space="preserve">
+    <value>Location</value>
+  </data>
+  <data name="RentableArea_lblBuildingCode" xml:space="preserve">
+    <value>Building ID</value>
+  </data>
+  <data name="RentableArea_lblBuildingName" xml:space="preserve">
+    <value>Building name</value>
+  </data>
+  <data name="RentableArea_lblBuildingStatus" xml:space="preserve">
+    <value>Building status</value>
+  </data>
+  <data name="RentableArea_lblBuildingtit" xml:space="preserve">
+    <value>Browsing Mall geographic definitions</value>
+  </data>
+  <data name="RentableArea_lblBuildingtitrig" xml:space="preserve">
+    <value>Maintain mall geographical information</value>
+  </data>
+  <data name="RentableArea_lblFloorArea" xml:space="preserve">
+    <value>Floor area</value>
+  </data>
+  <data name="RentableArea_lblFloorCode" xml:space="preserve">
+    <value>Floor ID</value>
+  </data>
+  <data name="RentableArea_lblFloorName" xml:space="preserve">
+    <value>Floor</value>
+  </data>
+  <data name="RentableArea_lblFloors" xml:space="preserve">
+    <value>Floor</value>
+  </data>
+  <data name="RentableArea_lblFloorStatus" xml:space="preserve">
+    <value>Floor status</value>
+  </data>
+  <data name="RentableArea_lblIsBlankOut" xml:space="preserve">
+    <value>Discard</value>
+  </data>
+  <data name="RentableArea_lblIsRentable" xml:space="preserve">
+    <value>Maintain rentable areas</value>
+  </data>
+  <data name="RentableArea_lblLocation" xml:space="preserve">
+    <value>Location</value>
+  </data>
+  <data name="RentableArea_lblLocationCode" xml:space="preserve">
+    <value>Location ID</value>
+  </data>
+  <data name="RentableArea_lblLocationName" xml:space="preserve">
+    <value>Location name</value>
+  </data>
+  <data name="RentableArea_lblLocationStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="RentableArea_lblNoeUnitCollect" xml:space="preserve">
+    <value>Leased Units</value>
+  </data>
+  <data name="RentableArea_lblPlan" xml:space="preserve">
+    <value>Ichnography</value>
+  </data>
+  <data name="RentableArea_lblPostCode" xml:space="preserve">
+    <value>Post code</value>
+  </data>
+  <data name="RentableArea_lblPTradeID" xml:space="preserve">
+    <value>Higher ID</value>
+  </data>
+  <data name="RentableArea_lblRentArea" xml:space="preserve">
+    <value>Total area</value>
+  </data>
+  <data name="RentableArea_lblSelArea" xml:space="preserve">
+    <value>Tenant group</value>
+  </data>
+  <data name="RentableArea_lblSelAreaLevel" xml:space="preserve">
+    <value>Rental level</value>
+  </data>
+  <data name="RentableArea_lblSelBuildingID" xml:space="preserve">
+    <value>Building</value>
+  </data>
+  <data name="RentableArea_lblSelectUnit" xml:space="preserve">
+    <value>Selected Unit</value>
+  </data>
+  <data name="RentableArea_lblSelFloorID" xml:space="preserve">
+    <value>Floor ID</value>
+  </data>
+  <data name="RentableArea_lblSelLocationID" xml:space="preserve">
+    <value>Location</value>
+  </data>
+  <data name="RentableArea_lblSelUnitStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="RentableArea_lblShopName" xml:space="preserve">
+    <value>Shop name</value>
+  </data>
+  <data name="RentableArea_lblTradeAdd" xml:space="preserve">
+    <value>Define Trade</value>
+  </data>
+  <data name="RentableArea_lblTradeCode" xml:space="preserve">
+    <value>Assortment ID</value>
+  </data>
+  <data name="RentableArea_lblTradeLevel" xml:space="preserve">
+    <value>Assortment level</value>
+  </data>
+  <data name="RentableArea_lblTradeName" xml:space="preserve">
+    <value>Assortment name</value>
+  </data>
+  <data name="RentableArea_lblTradeRelation" xml:space="preserve">
+    <value>Define and maintain merchandise assortments</value>
+  </data>
+  <data name="RentableArea_lblTradeStatus" xml:space="preserve">
+    <value>Assortment status</value>
+  </data>
+  <data name="RentableArea_lblTradeTable" xml:space="preserve">
+    <value>Assortment List</value>
+  </data>
+  <data name="RentableArea_lblUnit" xml:space="preserve">
+    <value>Deifne and maintain unit</value>
+  </data>
+  <data name="RentableArea_lblUnitCode" xml:space="preserve">
+    <value>Unit ID</value>
+  </data>
+  <data name="RentableArea_lblUnitDesc" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="RentableArea_lblUnitStatus" xml:space="preserve">
+    <value>Unit status</value>
+  </data>
+  <data name="RentableArea_lblUnitType" xml:space="preserve">
+    <value>Unit type</value>
+  </data>
+  <data name="RentableArea_lblUnitTypeCode" xml:space="preserve">
+    <value>Unit type ID</value>
+  </data>
+  <data name="RentableArea_lblUnitTypeName" xml:space="preserve">
+    <value>Unit type name</value>
+  </data>
+  <data name="RentableArea_lblUnitTypeStatus" xml:space="preserve">
+    <value>Unit type status </value>
+  </data>
+  <data name="RentableArea_lblUseArea" xml:space="preserve">
+    <value>Usable area</value>
+  </data>
+  <data name="RentableArea_LeaseOut" xml:space="preserve">
+    <value>Occupied</value>
+  </data>
+  <data name="RentableArea_NoLeaseOut" xml:space="preserve">
+    <value>Vacant</value>
+  </data>
+  <data name="RentableArea_Rentareas" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RentableArea_UseRate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Role_lblFunc" xml:space="preserve">
+    <value>Function groups of role</value>
+  </data>
+  <data name="Role_lblFuncID" xml:space="preserve">
+    <value>Function group ID</value>
+  </data>
+  <data name="Role_lblLeader" xml:space="preserve">
+    <value>Supervisor</value>
+  </data>
+  <data name="Role_lblRoleCode" xml:space="preserve">
+    <value>Role ID</value>
+  </data>
+  <data name="Role_lblRoleID" xml:space="preserve">
+    <value>Internal ID</value>
+  </data>
+  <data name="Role_lblRoleName" xml:space="preserve">
+    <value>Role name</value>
+  </data>
+  <data name="Role_lblRoleStatus" xml:space="preserve">
+    <value>Role status</value>
+  </data>
+  <data name="Role_lblSubAuth" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Role_lblSubAuthExport" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_AdContractCode" xml:space="preserve">
+    <value>AdContractCode</value>
+  </data>
+  <data name="Rpt_AdvAmt" xml:space="preserve">
+    <value>Advanced Amt</value>
+  </data>
+  <data name="Rpt_AreaAdContractCode" xml:space="preserve">
+    <value>AreaAdContractCode</value>
+  </data>
+  <data name="Rpt_AreaSales" xml:space="preserve">
+    <value>SalesPerArea</value>
+  </data>
+  <data name="Rpt_AreaTypeCode" xml:space="preserve">
+    <value>Area Code</value>
+  </data>
+  <data name="Rpt_BatchId" xml:space="preserve">
+    <value>BatchId</value>
+  </data>
+  <data name="Rpt_BonusGpPer" xml:space="preserve">
+    <value>BonusGpPer</value>
+  </data>
+  <data name="Rpt_Brand" xml:space="preserve">
+    <value>Brand</value>
+  </data>
+  <data name="Rpt_ChangeAmt" xml:space="preserve">
+    <value>Change Amt</value>
+  </data>
+  <data name="Rpt_ChargeAmt" xml:space="preserve">
+    <value>Charge Amt</value>
+  </data>
+  <data name="Rpt_color" xml:space="preserve">
+    <value>color</value>
+  </data>
+  <data name="Rpt_ComAmt" xml:space="preserve">
+    <value>Commission</value>
+  </data>
+  <data name="Rpt_CompareDate" xml:space="preserve">
+    <value>Compare To Date</value>
+  </data>
+  <data name="Rpt_Component" xml:space="preserve">
+    <value>Component</value>
+  </data>
+  <data name="Rpt_ConDeposit" xml:space="preserve">
+    <value>ConDeposit</value>
+  </data>
+  <data name="Rpt_CurrentMonthSales" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_CurrentYear" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_CustLicenseEndDate" xml:space="preserve">
+    <value>End Date</value>
+  </data>
+  <data name="Rpt_CustLicenseStartDate" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
+  <data name="Rpt_CycleCompare" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_DeptId" xml:space="preserve">
+    <value>CatgId</value>
+  </data>
+  <data name="Rpt_DiscountPcentRate" xml:space="preserve">
+    <value>DiscountPcentRate</value>
+  </data>
+  <data name="Rpt_DownYear" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_dPriceMax" xml:space="preserve">
+    <value>MaxPrice</value>
+  </data>
+  <data name="Rpt_dPriceMin" xml:space="preserve">
+    <value>MinPrice</value>
+  </data>
+  <data name="Rpt_EDate" xml:space="preserve">
+    <value>End Date</value>
+  </data>
+  <data name="Rpt_Efficiency" xml:space="preserve">
+    <value>Efficiency</value>
+  </data>
+  <data name="Rpt_EndMonthCount" xml:space="preserve">
+    <value>End Month budget</value>
+  </data>
+  <data name="Rpt_EndTime" xml:space="preserve">
+    <value>End Time</value>
+  </data>
+  <data name="Rpt_FloorStair" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_GrossProfit" xml:space="preserve">
+    <value>Gross Profit</value>
+  </data>
+  <data name="Rpt_GrossSales" xml:space="preserve">
+    <value>Sales Amt</value>
+  </data>
+  <data name="Rpt_InPeriodPaidAmt" xml:space="preserve">
+    <value>PaidAmtInPeriod</value>
+  </data>
+  <data name="Rpt_InvAddsTitile" xml:space="preserve">
+    <value>Bill</value>
+  </data>
+  <data name="Rpt_InvAdjAmt" xml:space="preserve">
+    <value>Adjusted Amt</value>
+  </data>
+  <data name="Rpt_InvComTitile" xml:space="preserve">
+    <value>Company Name</value>
+  </data>
+  <data name="Rpt_InvDate" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Rpt_InvPaidAmt" xml:space="preserve">
+    <value>Paid Amt</value>
+  </data>
+  <data name="Rpt_InvPayAmt" xml:space="preserve">
+    <value>Amt</value>
+  </data>
+  <data name="Rpt_InvPeriod" xml:space="preserve">
+    <value>Inv Period</value>
+  </data>
+  <data name="Rpt_IsBlacklist" xml:space="preserve">
+    <value>Black Listed</value>
+  </data>
+  <data name="Rpt_IsClassCode" xml:space="preserve">
+    <value>IsClassCode</value>
+  </data>
+  <data name="Rpt_isDiscountCode" xml:space="preserve">
+    <value>DiscountCode</value>
+  </data>
+  <data name="Rpt_LaseYearPeriod" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_lblCustBalanceDetail" xml:space="preserve">
+    <value>Tenancy Arrearage Information List</value>
+  </data>
+  <data name="Rpt_lblCustInfo" xml:space="preserve">
+    <value>Customer Information Report</value>
+  </data>
+  <data name="Rpt_lblCustInvSum" xml:space="preserve">
+    <value>Tenancy Settlement Summary</value>
+  </data>
+  <data name="Rpt_lblCustPaidDetail" xml:space="preserve">
+    <value>Tenancy Settlement Received List</value>
+  </data>
+  <data name="Rpt_lblFloatSaleQuery" xml:space="preserve">
+    <value>Realtime Sale Summary Report</value>
+  </data>
+  <data name="Rpt_lblFloorSaleRate" xml:space="preserve">
+    <value>Sales by level</value>
+  </data>
+  <data name="Rpt_lblHireType" xml:space="preserve">
+    <value>RentalType</value>
+  </data>
+  <data name="Rpt_lblInvChargeCountLog" xml:space="preserve">
+    <value>Enquiry Invoice log</value>
+  </data>
+  <data name="Rpt_lblLastOweDetail" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_lblLeaseInvDetail" xml:space="preserve">
+    <value>Tenancy Settlement Bill Information List</value>
+  </data>
+  <data name="Rpt_lblMallSalesSum" xml:space="preserve">
+    <value>Mall Daily Sales Summary Report</value>
+  </data>
+  <data name="Rpt_lblSalesComparison" xml:space="preserve">
+    <value>Sales Comparison Analysis Report</value>
+  </data>
+  <data name="Rpt_lblSalesDetails" xml:space="preserve">
+    <value>Detailed Sales Information List</value>
+  </data>
+  <data name="Rpt_lblSalesMediaSum" xml:space="preserve">
+    <value>Payment Methods Summary Report</value>
+  </data>
+  <data name="Rpt_lblShopAreaAnalysis" xml:space="preserve">
+    <value>Tenancy Sales-per-square-meter Report</value>
+  </data>
+  <data name="Rpt_lblShopAreaBasedRental" xml:space="preserve">
+    <value>Tenant Rent and Area Analysis Report</value>
+  </data>
+  <data name="Rpt_lblShopEfficiency" xml:space="preserve">
+    <value>Tenancy Sales-to-Expense Analysis</value>
+  </data>
+  <data name="Rpt_lblShopSalesRank" xml:space="preserve">
+    <value>Tenancy Order List by Sales</value>
+  </data>
+  <data name="Rpt_lblShopSalesSum" xml:space="preserve">
+    <value>Tanancy Sale Summary Report</value>
+  </data>
+  <data name="Rpt_lblTimeSalesAnalysis" xml:space="preserve">
+    <value>Hourly Sales Summary Report</value>
+  </data>
+  <data name="Rpt_lblTradeSaleRate" xml:space="preserve">
+    <value>Sales by Trade</value>
+  </data>
+  <data name="Rpt_lblTradeSalesAnalysis" xml:space="preserve">
+    <value>Sales Gravity Analysis by Merchandise Assortments</value>
+  </data>
+  <data name="Rpt_leaseColor" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_Level" xml:space="preserve">
+    <value>Level</value>
+  </data>
+  <data name="Rpt_LicenseEndDate" xml:space="preserve">
+    <value>License End Date</value>
+  </data>
+  <data name="Rpt_LicenseStartDate" xml:space="preserve">
+    <value>License Start Date</value>
+  </data>
+  <data name="Rpt_Location" xml:space="preserve">
+    <value>Location</value>
+  </data>
+  <data name="Rpt_MediaDesc" xml:space="preserve">
+    <value>Media Desc</value>
+  </data>
+  <data name="Rpt_MediaMDesc" xml:space="preserve">
+    <value>Media M Desc</value>
+  </data>
+  <data name="Rpt_MonthAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_MonthBetCount" xml:space="preserve">
+    <value>Month budget Difference</value>
+  </data>
+  <data name="Rpt_MonthCount" xml:space="preserve">
+    <value>Month budget</value>
+  </data>
+  <data name="Rpt_MonthSellCount" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_MReceipt" xml:space="preserve">
+    <value>Ticket Start</value>
+  </data>
+  <data name="Rpt_NetAmt" xml:space="preserve">
+    <value>Net Amt</value>
+  </data>
+  <data name="Rpt_NumberRank" xml:space="preserve">
+    <value>Number Of Shops to Rank</value>
+  </data>
+  <data name="Rpt_oldMPaidAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_oldMRate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_OldPPRate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_OtherCharge" xml:space="preserve">
+    <value>Other Charge</value>
+  </data>
+  <data name="Rpt_PaidEndDate" xml:space="preserve">
+    <value>PaidEDate</value>
+  </data>
+  <data name="Rpt_PaidStartDate" xml:space="preserve">
+    <value>PaidSDate</value>
+  </data>
+  <data name="Rpt_PayAmt" xml:space="preserve">
+    <value>MonthPayAmt</value>
+  </data>
+  <data name="Rpt_Pcode" xml:space="preserve">
+    <value>Pcode</value>
+  </data>
+  <data name="Rpt_Period" xml:space="preserve">
+    <value>For period</value>
+  </data>
+  <data name="Rpt_POSId" xml:space="preserve">
+    <value>POS ID</value>
+  </data>
+  <data name="Rpt_Prepayment" xml:space="preserve">
+    <value>Prepayment</value>
+  </data>
+  <data name="Rpt_Price" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="Rpt_Produce" xml:space="preserve">
+    <value>Produce</value>
+  </data>
+  <data name="Rpt_rdoAll" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="Rpt_rdoFormula" xml:space="preserve">
+    <value>Formula</value>
+  </data>
+  <data name="Rpt_ReceiptUp" xml:space="preserve">
+    <value>TotalReceiptUp</value>
+  </data>
+  <data name="Rpt_ReceiptUpRate" xml:space="preserve">
+    <value>UpRate</value>
+  </data>
+  <data name="Rpt_ReprintFlag" xml:space="preserve">
+    <value>Reprint Flag</value>
+  </data>
+  <data name="Rpt_RingThan" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_RptInvoiceheader" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_RReceipt" xml:space="preserve">
+    <value>TicketS End</value>
+  </data>
+  <data name="Rpt_SaleDetail" xml:space="preserve">
+    <value>SalesDatail</value>
+  </data>
+  <data name="Rpt_SalesAmt" xml:space="preserve">
+    <value>SalesAmt</value>
+  </data>
+  <data name="Rpt_SalesBalance" xml:space="preserve">
+    <value>Balance</value>
+  </data>
+  <data name="Rpt_SalesBalanceRate" xml:space="preserve">
+    <value>BalanceRate</value>
+  </data>
+  <data name="Rpt_SalesDate" xml:space="preserve">
+    <value>Sales Date</value>
+  </data>
+  <data name="Rpt_SalesDetails" xml:space="preserve">
+    <value>Sales Details Report</value>
+  </data>
+  <data name="Rpt_SalesMonth" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_SalesPer" xml:space="preserve">
+    <value>SalesPer</value>
+  </data>
+  <data name="Rpt_SalesTime" xml:space="preserve">
+    <value>SalesAtTime</value>
+  </data>
+  <data name="Rpt_Salevalue" xml:space="preserve">
+    <value>SalesAmt</value>
+  </data>
+  <data name="Rpt_SameCompare" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_SDate" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
+  <data name="Rpt_SearcheDate" xml:space="preserve">
+    <value>Period</value>
+  </data>
+  <data name="Rpt_SearchSDate" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
+  <data name="Rpt_ShopDetail" xml:space="preserve">
+    <value>ShopDetail</value>
+  </data>
+  <data name="Rpt_ShopMonthSalesCompareInfo" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_ShopSum" xml:space="preserve">
+    <value>ShopTotal</value>
+  </data>
+  <data name="Rpt_ShopTypeColor" xml:space="preserve">
+    <value>ShopTypeColor</value>
+  </data>
+  <data name="Rpt_SignDate" xml:space="preserve">
+    <value>Sign Date</value>
+  </data>
+  <data name="Rpt_SkuDesc" xml:space="preserve">
+    <value>SKU Desc</value>
+  </data>
+  <data name="Rpt_SkuId" xml:space="preserve">
+    <value>SKU ID</value>
+  </data>
+  <data name="Rpt_SkuPercent" xml:space="preserve">
+    <value>Sku Percent</value>
+  </data>
+  <data name="Rpt_SKUSum" xml:space="preserve">
+    <value>SKU Sum</value>
+  </data>
+  <data name="Rpt_SkuTotalQty" xml:space="preserve">
+    <value>Qty</value>
+  </data>
+  <data name="Rpt_Spec" xml:space="preserve">
+    <value>Spec</value>
+  </data>
+  <data name="Rpt_StartTime" xml:space="preserve">
+    <value>StartTime</value>
+  </data>
+  <data name="Rpt_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Rpt_Stock" xml:space="preserve">
+    <value>Stock</value>
+  </data>
+  <data name="Rpt_StoreInvDetail" xml:space="preserve">
+    <value>Store Invoice Detail</value>
+  </data>
+  <data name="Rpt_StoreMSalesSum" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_StoreRentalDetail" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_StoreRentalHeader" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_StoreRentalInfo" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_StoreRentInfo" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_StoreRentInfoDetail" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_StoreShopTypeRentalThan" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_Sumtype" xml:space="preserve">
+    <value>Total Type</value>
+  </data>
+  <data name="Rpt_SurplusAmt" xml:space="preserve">
+    <value>SurplusAmt</value>
+  </data>
+  <data name="Rpt_ThisMonth" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_Title_lblAdvisContractInfoItem" xml:space="preserve">
+    <value>Advertising Contract Basic Information List</value>
+  </data>
+  <data name="Rpt_Title_lblAreaContractInfoItem" xml:space="preserve">
+    <value>Area Contract Basic Information List</value>
+  </data>
+  <data name="Rpt_Title_lblContractInfo" xml:space="preserve">
+    <value>TRU Contract Basic Information List</value>
+  </data>
+  <data name="Rpt_Title_lblContractSumInfo" xml:space="preserve">
+    <value>Lease Contracts General Summary </value>
+  </data>
+  <data name="Rpt_Title_lblUnitInfo" xml:space="preserve">
+    <value>Unit Information Report by Status</value>
+  </data>
+  <data name="Rpt_TotalReceipt" xml:space="preserve">
+    <value>TotalReceipt</value>
+  </data>
+  <data name="Rpt_TpUsrTitle" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_TradeSalesAnalysis" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_TransId" xml:space="preserve">
+    <value>Trans ID</value>
+  </data>
+  <data name="Rpt_TransTime" xml:space="preserve">
+    <value>Trans Time</value>
+  </data>
+  <data name="Rpt_Unit" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="Rpt_UnitAll" xml:space="preserve">
+    <value>All Units</value>
+  </data>
+  <data name="Rpt_UnitPrice" xml:space="preserve">
+    <value>Unit Price</value>
+  </data>
+  <data name="Rpt_UnitTypeSalesSum" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_UserID" xml:space="preserve">
+    <value>UserID</value>
+  </data>
+  <data name="Rpt_VisualAnalysisRent" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_Year" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_YearCount" xml:space="preserve">
+    <value>Year budget difference</value>
+  </data>
+  <data name="Rpt_YearDiff" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_YearLYRate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_yearMPaidAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_YearPayAmt" xml:space="preserve">
+    <value>YearPayAmt</value>
+  </data>
+  <data name="Rpt_yearRate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptInv_OweDetailTitle" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptInv_OweTitle" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptStoreInvInfo_title" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptStoreRentInfo_lblRentAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptTotalSales_Title" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rtp_SearchEDate" xml:space="preserve">
+    <value>End Date</value>
+  </data>
+  <data name="Sale_lblCancelDaily" xml:space="preserve">
+    <value>Undo Daily Sales Import</value>
+  </data>
+  <data name="Sale_lblMaxTransID" xml:space="preserve">
+    <value>Closing receipt No</value>
+  </data>
+  <data name="Sale_lblMinTransID" xml:space="preserve">
+    <value>Opening receipt No</value>
+  </data>
+  <data name="Sale_lblTransNumber" xml:space="preserve">
+    <value>Number of Transaction</value>
+  </data>
+  <data name="Sale_NoShopID" xml:space="preserve">
+    <value>TenantID not found, please check transaction file.</value>
+  </data>
+  <data name="Sale_OtherBank" xml:space="preserve">
+    <value>Other Bank Card</value>
+  </data>
+  <data name="Select_Select" xml:space="preserve">
+    <value>Please select</value>
+  </data>
+  <data name="Sell_lblBatch" xml:space="preserve">
+    <value>Batch ID</value>
+  </data>
+  <data name="Sell_lblCnlBatch" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Sell_SellData" xml:space="preserve">
+    <value>Sell data</value>
+  </data>
+  <data name="Shop_lblHdwCode" xml:space="preserve">
+    <value>Hardware ID</value>
+  </data>
+  <data name="ShopBaseInfo_NoInConShopUnit" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ShopBaseInfo_SaveBuildingIDErr" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ShopBrand_lblBrandLevel" xml:space="preserve">
+    <value>Brand level</value>
+  </data>
+  <data name="ShopBrand_lblBrandName" xml:space="preserve">
+    <value>Brand name</value>
+  </data>
+  <data name="ShopBrand_lblBrandProduce" xml:space="preserve">
+    <value>Brand location</value>
+  </data>
+  <data name="ShopBrand_lblBrandRegDesc" xml:space="preserve">
+    <value>Registered city</value>
+  </data>
+  <data name="ShopBrand_lblBrandSelect" xml:space="preserve">
+    <value>Select Brand</value>
+  </data>
+  <data name="ShopBrand_lblBrandTargetCust" xml:space="preserve">
+    <value>Customer</value>
+  </data>
+  <data name="ShopBrand_lblConShopBrandDefine" xml:space="preserve">
+    <value>Maintain brands</value>
+  </data>
+  <data name="ShopSell_InputDate" xml:space="preserve">
+    <value>Input Date</value>
+  </data>
+  <data name="ShopXml_NameX" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ShopXml_NameY" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ShopXml_NoX" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ShopXml_NoY" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ShopXml_ShopAttrVindicate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ShopXml_ShopMap" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ShopXml_UnitAttrVindicate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ShopXml_X" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ShopXml_Y" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ShowInfo_DelFail" xml:space="preserve">
+    <value>Failed to delete data.</value>
+  </data>
+  <data name="ShowInfo_SelUserfullInfo" xml:space="preserve">
+    <value>Please specified valid data.</value>
+  </data>
+  <data name="SkuInfo_GoUpNum" xml:space="preserve">
+    <value />
+  </data>
+  <data name="SkuMaster_lblSkuLocked" xml:space="preserve">
+    <value>Locked</value>
+  </data>
+  <data name="SMSPara_InPuth" xml:space="preserve">
+    <value>Create folders</value>
+  </data>
+  <data name="SMSpara_lblSubAuthExport" xml:space="preserve">
+    <value>MI OUT</value>
+  </data>
+  <data name="SMSpara_lblSubAuthInput" xml:space="preserve">
+    <value>MI IN</value>
+  </data>
+  <data name="SMSPara_MailSMTP" xml:space="preserve">
+    <value>SMTP</value>
+  </data>
+  <data name="SMSPara_MailSMTPPassword" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="SMSPara_MailSMTPUser" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="sort" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_AttentionVarietyList" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_BackdropExplain" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_BusinessItemBackdroptenance" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_BusinessItemBasicInfobrowse" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_BusinessItemBasicInfoMaintenance" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_BusinessItemBrowse" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_BusinessItemCardtenance" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_BusinessItemDefinition" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_BusinessItemList" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_CardInfo" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_CardSize" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_CardType" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_ContentName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_DesignUse" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_FloorCompleteDate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_FloorConfigurationType" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_FloorThing" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_GroundParking" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_ItemAttentionVariety" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_ItemBackdrop" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_ItemCode" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_LicenseCardVindicate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_OccurDate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_Owner" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_PaperDate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_SaveFileThing" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_StoreAddr" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_StoreAmbit" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_StoreManageType" xml:space="preserve">
+    <value>Mall Manage Type</value>
+  </data>
+  <data name="Store_StoreManageTypeVindicate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_StoreName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_StoreShortName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_StoreType" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_UnderParking" xml:space="preserve">
+    <value />
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="String1Associator_RptQAssociator" xml:space="preserve">
+    <value />
+  </data>
+  <data name="String2Associator_btnChargeRecordRPT" xml:space="preserve">
+    <value>ChargeRec</value>
+  </data>
+  <data name="Subs_FinanceInterfaceType" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Subs_SubCompanyBrowse" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Subs_SubCompanyCode" xml:space="preserve">
+    <value>Subsidiary Code</value>
+  </data>
+  <data name="Subs_SubCompanyCurrentlyBrowse" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Subs_SubCompanyDefinition" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Subs_SubCompanyFinanceType" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Subs_SubCompanyManage" xml:space="preserve">
+    <value>Subsidiary</value>
+  </data>
+  <data name="Subs_SubCompanyShortName" xml:space="preserve">
+    <value>Subsidiary</value>
+  </data>
+  <data name="Subs_SubCompanyVindicate" xml:space="preserve">
+    <value>Subsidiary</value>
+  </data>
+  <data name="Tab_Info" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="Tab_integral" xml:space="preserve">
+    <value>integral</value>
+  </data>
+  <data name="Tab_IssueCard" xml:space="preserve">
+    <value>IssueCard</value>
+  </data>
+  <data name="Tab_lblContractBase" xml:space="preserve">
+    <value>Basic contract terms</value>
+  </data>
+  <data name="Tab_lblFormul" xml:space="preserve">
+    <value>Formula</value>
+  </data>
+  <data name="Tab_lblLeaseItem" xml:space="preserve">
+    <value>Terms and Conditions</value>
+  </data>
+  <data name="Tab_lblShopBaseInfo" xml:space="preserve">
+    <value>Shop Data</value>
+  </data>
+  <data name="Tab_lblUnionItem" xml:space="preserve">
+    <value>Percentage Lease related terms</value>
+  </data>
+  <data name="Tab_Query" xml:space="preserve">
+    <value>Query</value>
+  </data>
+  <data name="Theme_lblTheme" xml:space="preserve">
+    <value>Maintain AnP Theme</value>
+  </data>
+  <data name="Theme_lblThemeDesc" xml:space="preserve">
+    <value>Theme Description</value>
+  </data>
+  <data name="Title_CustLicense" xml:space="preserve">
+    <value>CustLicense</value>
+  </data>
+  <data name="Title_Palaver" xml:space="preserve">
+    <value>Negotiate record</value>
+  </data>
+  <data name="Title_PotShop" xml:space="preserve">
+    <value>PotShop</value>
+  </data>
+  <data name="TMenu_RptWAndETitle" xml:space="preserve">
+    <value />
+  </data>
+  <data name="TMunu_GiftStock" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Tool_UserList" xml:space="preserve">
+    <value>Customer list</value>
+  </data>
+  <data name="TpUse_lblAddUserTitle" xml:space="preserve">
+    <value />
+  </data>
+  <data name="TpUse_lblBe_Concerned_With" xml:space="preserve">
+    <value />
+  </data>
+  <data name="TpUse_lblBeginWorkDate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="TpUse_lblGathering" xml:space="preserve">
+    <value />
+  </data>
+  <data name="TpUse_lblStation" xml:space="preserve">
+    <value />
+  </data>
+  <data name="TpUsr_REXJobTitleNm" xml:space="preserve">
+    <value />
+  </data>
+  <data name="TpUsr_ShopList" xml:space="preserve">
+    <value />
+  </data>
+  <data name="TpUsr_ShopUserAdd" xml:space="preserve">
+    <value />
+  </data>
+  <data name="TpUsr_ShopUserList" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Transfer_Department" xml:space="preserve">
+    <value>Transfer department</value>
+  </data>
+  <data name="TV_lblTV" xml:space="preserve">
+    <value>Maintain TV Station</value>
+  </data>
+  <data name="TV_lblTVNm" xml:space="preserve">
+    <value>TV Station Name</value>
+  </data>
+  <data name="Union_lblPalaver" xml:space="preserve">
+    <value>Examine percentage lease contract</value>
+  </data>
+  <data name="Union_lblWrite" xml:space="preserve">
+    <value>Prepare percentage lease contract</value>
+  </data>
+  <data name="User_btnAdd" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="User_btnCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="User_btnChang" xml:space="preserve">
+    <value>Modify</value>
+  </data>
+  <data name="User_btnOk" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="User_ErrorPassword" xml:space="preserve">
+    <value>Password Error!</value>
+  </data>
+  <data name="User_lblCreateTime" xml:space="preserve">
+    <value>Built time</value>
+  </data>
+  <data name="User_lblCreateUserID" xml:space="preserve">
+    <value>Creator ID</value>
+  </data>
+  <data name="User_lblEMail" xml:space="preserve">
+    <value>E-Mail</value>
+  </data>
+  <data name="User_lblIdentity" xml:space="preserve">
+    <value>Identity No.</value>
+  </data>
+  <data name="User_lblMobile1" xml:space="preserve">
+    <value>Phone</value>
+  </data>
+  <data name="User_lblMobile2" xml:space="preserve">
+    <value>Mobile</value>
+  </data>
+  <data name="User_lblModifyTime" xml:space="preserve">
+    <value>Last update time</value>
+  </data>
+  <data name="User_lblModifyUserID" xml:space="preserve">
+    <value>Last updater ID</value>
+  </data>
+  <data name="User_lblNote" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="User_lblOfficeTel" xml:space="preserve">
+    <value>Office phone</value>
+  </data>
+  <data name="User_lblOprDeptID" xml:space="preserve">
+    <value>User department ID</value>
+  </data>
+  <data name="User_lblOprRoleID" xml:space="preserve">
+    <value>User role ID</value>
+  </data>
+  <data name="User_lblPassword" xml:space="preserve">
+    <value>User password</value>
+  </data>
+  <data name="User_lblPhoto" xml:space="preserve">
+    <value>Photo</value>
+  </data>
+  <data name="User_lblQuery" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="User_lblUserCode" xml:space="preserve">
+    <value>User ID</value>
+  </data>
+  <data name="User_lblUserID" xml:space="preserve">
+    <value>User internal ID</value>
+  </data>
+  <data name="User_lblUserLoginCode" xml:space="preserve">
+    <value />
+  </data>
+  <data name="User_lblUserName" xml:space="preserve">
+    <value>User name</value>
+  </data>
+  <data name="User_lblUserQuery" xml:space="preserve">
+    <value>See</value>
+  </data>
+  <data name="User_lblUserStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="User_lblUserStatusStr" xml:space="preserve">
+    <value>User status</value>
+  </data>
+  <data name="User_lblValidDate" xml:space="preserve">
+    <value>Validity period</value>
+  </data>
+  <data name="User_lblWorkNo" xml:space="preserve">
+    <value>Badge</value>
+  </data>
+  <data name="User_List" xml:space="preserve">
+    <value>User list</value>
+  </data>
+  <data name="User_NewPwd" xml:space="preserve">
+    <value>New Password</value>
+  </data>
+  <data name="User_NewPwdT" xml:space="preserve">
+    <value>New Password Again</value>
+  </data>
+  <data name="User_OldPwd" xml:space="preserve">
+    <value>Old Password</value>
+  </data>
+  <data name="User_Transfer" xml:space="preserve">
+    <value>User transfer</value>
+  </data>
+  <data name="User_UserType" xml:space="preserve">
+    <value>Define and maintain customer type</value>
+  </data>
+  <data name="VoucherInput＿lblFType" xml:space="preserve">
+    <value>Financial Type</value>
+  </data>
+  <data name="WrkFlw_Activity" xml:space="preserve">
+    <value>Activity</value>
+  </data>
+  <data name="WrkFlw_btnCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="WrkFlw_btnSave" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="WrkFlw_Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="WrkFlw_DelNode" xml:space="preserve">
+    <value>Remove node</value>
+  </data>
+  <data name="WrkFlw_Efficiency" xml:space="preserve">
+    <value>Efficiency</value>
+  </data>
+  <data name="WrkFlw_EmailContent" xml:space="preserve">
+    <value>Email Content</value>
+  </data>
+  <data name="WrkFlw_EmailSetUp" xml:space="preserve">
+    <value>Work Flow Email Setup</value>
+  </data>
+  <data name="WrkFlw_EmailTitle" xml:space="preserve">
+    <value>Email Subject</value>
+  </data>
+  <data name="WrkFlw_EndTime" xml:space="preserve">
+    <value>Completed Time</value>
+  </data>
+  <data name="WrkFlw_lblBizCode" xml:space="preserve">
+    <value>Work group ID</value>
+  </data>
+  <data name="WrkFlw_lblBizGrp" xml:space="preserve">
+    <value>Define and maintain work group</value>
+  </data>
+  <data name="WrkFlw_lblBizGrpID" xml:space="preserve">
+    <value>Work group</value>
+  </data>
+  <data name="WrkFlw_lblBizGrpName" xml:space="preserve">
+    <value>Work group Name</value>
+  </data>
+  <data name="WrkFlw_lblBizGrpNameTool" xml:space="preserve">
+    <value>DefineNm</value>
+  </data>
+  <data name="WrkFlw_lblBizGrpStatus" xml:space="preserve">
+    <value>Effective</value>
+  </data>
+  <data name="WrkFlw_lblBizNote" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="WrkFlw_lblEfficiency" xml:space="preserve">
+    <value>Duration limit</value>
+  </data>
+  <data name="WrkFlw_lblEfficiencyDay" xml:space="preserve">
+    <value>Duration limit</value>
+  </data>
+  <data name="WrkFlw_lblInitVoucher" xml:space="preserve">
+    <value>Vou. Triggerred</value>
+  </data>
+  <data name="WrkFlw_lbllblNodeLongestDelayHour" xml:space="preserve">
+    <value>Hour</value>
+  </data>
+  <data name="WrkFlw_lblNodeFuncAuthID" xml:space="preserve">
+    <value>Function</value>
+  </data>
+  <data name="WrkFlw_lblNodeLongestDelay" xml:space="preserve">
+    <value>Duration limit</value>
+  </data>
+  <data name="WrkFlw_lblNodeNodetName" xml:space="preserve">
+    <value>Node name</value>
+  </data>
+  <data name="WrkFlw_lblNodePrintAfterConfirm" xml:space="preserve">
+    <value>Voucher printable</value>
+  </data>
+  <data name="WrkFlw_lblNodeProcessClass" xml:space="preserve">
+    <value>Process class</value>
+  </data>
+  <data name="WrkFlw_lblNodeRoleID" xml:space="preserve">
+    <value>Role ID</value>
+  </data>
+  <data name="WrkFlw_lblNodeSmtToMgr" xml:space="preserve">
+    <value>Submitable</value>
+  </data>
+  <data name="WrkFlw_lblNodeTimeoutHandler" xml:space="preserve">
+    <value>Overdue Handling</value>
+  </data>
+  <data name="WrkFlw_lblNodeValidAfterConfirm" xml:space="preserve">
+    <value>Take effect</value>
+  </data>
+  <data name="WrkFlw_lblNodeWrkStep" xml:space="preserve">
+    <value>Node step</value>
+  </data>
+  <data name="WrkFlw_lblTraceDay" xml:space="preserve">
+    <value>Tracing days</value>
+  </data>
+  <data name="WrkFlw_lblTraceDays" xml:space="preserve">
+    <value>Tracing limit</value>
+  </data>
+  <data name="WrkFlw_lblTraceDaysDay" xml:space="preserve">
+    <value>Days</value>
+  </data>
+  <data name="WrkFlw_lblTransit" xml:space="preserve">
+    <value>Workflow transition</value>
+  </data>
+  <data name="WrkFlw_lblUpWorkFlow" xml:space="preserve">
+    <value>Maintain Workflow</value>
+  </data>
+  <data name="WrkFlw_lblVoucherTypeID" xml:space="preserve">
+    <value>Voucher type</value>
+  </data>
+  <data name="WrkFlw_lblWorkFlow" xml:space="preserve">
+    <value>Define work flow</value>
+  </data>
+  <data name="WrkFlw_lblWrkFlwName" xml:space="preserve">
+    <value>Workflow name</value>
+  </data>
+  <data name="WrkFlw_lblWrkFlwProcessClass" xml:space="preserve">
+    <value>Process class</value>
+  </data>
+  <data name="WrkFlw_lblWrkFlwStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="WrkFlw_MailConfigSet" xml:space="preserve">
+    <value>Email System Setup</value>
+  </data>
+  <data name="WrkFlw_MailConfigStatus" xml:space="preserve">
+    <value>Activity</value>
+  </data>
+  <data name="WrkFlw_Maintenance" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="WrkFlw_NewNode" xml:space="preserve">
+    <value>New node</value>
+  </data>
+  <data name="WrkFlw_NodeChange" xml:space="preserve">
+    <value>Update node</value>
+  </data>
+  <data name="WrkFlw_NodeDelete" xml:space="preserve">
+    <value>Remove node</value>
+  </data>
+  <data name="WrkFlw_NodeID" xml:space="preserve">
+    <value>Node ID</value>
+  </data>
+  <data name="WrkFlw_Query" xml:space="preserve">
+    <value>Inquire existed work flow</value>
+  </data>
+  <data name="WrkFlw_QueryList" xml:space="preserve">
+    <value>Maintain Workflow</value>
+  </data>
+  <data name="WrkFlw_Sequence" xml:space="preserve">
+    <value>Sequence</value>
+  </data>
+  <data name="WrkFlw_StartTime" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
+  <data name="WrkFlw_UpdateNode" xml:space="preserve">
+    <value>Update Node</value>
+  </data>
+  <data name="WrkFlw_UpdateWrkFlw" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="WrkFlw_VoucherHints" xml:space="preserve">
+    <value>Vou. Hints</value>
+  </data>
+  <data name="WrkFlw_VoucherID" xml:space="preserve">
+    <value>Vou. ID</value>
+  </data>
+  <data name="WrkFlw_VoucherMemo" xml:space="preserve">
+    <value>Workflow ID</value>
+  </data>
+  <data name="WrkFlw_WorkFlowID" xml:space="preserve">
+    <value>WrkFlwID</value>
+  </data>
+  <data name="WrkFlwEntity_backWrkFlw" xml:space="preserve">
+    <value>Rejected Successfully</value>
+  </data>
+  <data name="WrkFlwEntity_btnMessage" xml:space="preserve">
+    <value />
+  </data>
+  <data name="WrkFlwEntity_lblConfirm" xml:space="preserve">
+    <value>Confirmed</value>
+  </data>
+  <data name="WrkFlwEntity_lblConfirmDate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="WrkFlwEntity_lblConfirmMessage" xml:space="preserve">
+    <value />
+  </data>
+  <data name="WrkFlwEntity_lblConfirmUser" xml:space="preserve">
+    <value />
+  </data>
+  <data name="WrkFlwEntity_lblDisposaling" xml:space="preserve">
+    <value>Processing</value>
+  </data>
+  <data name="WrkFlwEntity_lblInitiativeOverrule" xml:space="preserve">
+    <value>Reject Invoice</value>
+  </data>
+  <data name="WrkFlwEntity_lblMessage" xml:space="preserve">
+    <value />
+  </data>
+  <data name="WrkFlwEntity_lblOvertime" xml:space="preserve">
+    <value>Timeout and unprocessed</value>
+  </data>
+  <data name="WrkFlwEntity_lblOvertimeOverrule" xml:space="preserve">
+    <value>Timeout and rejected</value>
+  </data>
+  <data name="WrkFlwEntity_lblWrkFlwTrack" xml:space="preserve">
+    <value>Workflow tracing</value>
+  </data>
+  <data name="Account_ShopChargeInput" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Account_ShopHdwTree" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_MonthPaidAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_YearPaidAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RPT_GroupByStore" xml:space="preserve">
+    <value>Group By Store</value>
+  </data>
+  <data name="RPT_lblGroupBy" xml:space="preserve">
+    <value>Group By</value>
+  </data>
+  <data name="RPT_lblOrderby" xml:space="preserve">
+    <value>Order By</value>
+  </data>
+  <data name="RPT_NoGroup" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RPT_lblRptType" xml:space="preserve">
+    <value>Sum Type</value>
+  </data>
+  <data name="RPT_lblABA" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RPT_lblCBA" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_OwnTotallblPeriod" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_lblSalesMonth" xml:space="preserve">
+    <value>Month</value>
+  </data>
+  <data name="Rpt_lblYearSum" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Msg_InputDate" xml:space="preserve">
+    <value>Please Input Date</value>
+  </data>
+  <data name="Rpt_invEndDate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_invStartDate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_GroupManager" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_StoreManager_CaiWu" xml:space="preserve">
+    <value />
+  </data>
+  <data name="OpenPageLog_ViewTime" xml:space="preserve">
+    <value />
+  </data>
+  <data name="OpenPageLog_IPAddress" xml:space="preserve">
+    <value>IP Address</value>
+  </data>
+  <data name="Menu_FirstTitle" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_OrderbyBrandID" xml:space="preserve">
+    <value>Order By BrandID</value>
+  </data>
+  <data name="Rpt_OrderbyStoreID" xml:space="preserve">
+    <value>Order By StoreID</value>
+  </data>
+  <data name="Rpt_SelectMonth" xml:space="preserve">
+    <value>Month</value>
+  </data>
+  <data name="PotCustomer_CustAttractCount" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_CustAttractInfo" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_CustAttractQuery" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PotCustomer_CustAttractTime" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_InvPaidPrint" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_Investment" xml:space="preserve">
+    <value>Investment</value>
+  </data>
+  <data name="PotCustomer_MenuBasic" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_PosServerVindicate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_SystemManage" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_Availability" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_BusinessItemTree" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_DateSourceOfTaskManage" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_DateSourceTree" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_DBName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_DownLoad" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_FirstLevel" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_HighestLevel" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_NoEndDate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_Port" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_POSServerResourceVindicate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_Priority" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_ProcessClass" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_RetryMark" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_RunOnce" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_RunTimes" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_RunType" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_SecondLevel" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_ServerResource" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_ServerResourceCode" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_ServerResourceIP" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_ServerResourceName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_Task" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_TaskItems" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_TaskManage" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_TaskName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_TaskPlan" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_TaskType" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_TransTaskPlanManage" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_UnDefine" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_UnUsed" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_Update" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RentableArea_SkuClass" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RentableArea_SkuClassCode" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RentableArea_SkuClassName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RentableArea_SkuClassStatus" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RentableArea_SkuClassTable" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RentableArea_SkuClassVindicate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Srore_TaskProcessClassManage" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_ClassName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_TaskDesc" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Store_TaskStatus" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_PosStatusInfo" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ConShopBrand_BrandNameIsIn" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_SkuId_last" xml:space="preserve">
+    <value />
+  </data>
+  <data name="User_lblWorkNo_Last" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_BrandID" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_BrandName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_ShopSKUInfo" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_SkuClassName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_SkuDeptID" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_ShopID" xml:space="preserve">
+    <value>ShopID</value>
+  </data>
+  <data name="Rpt_ShopInfo" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_VoucherManager" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_SkuInput" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Lease_RptDay" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Lease_RptMonth" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_ShopSellStatistics" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_ShopTypeSaleStatistics" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_TradeSaleStatistics" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_Date" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CashInformation_Add" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CashInformation_balance" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CashInformation_message1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CashInformation_message2" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CashInformation_PayAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CashInformation_Query" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_NewCashInfo" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_CasherCode" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_CasherName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_GetTotalDate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_DetailReport" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_DoneTotalCashes" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_GetTotalCashes" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_NoDoneTotalCashes" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_TotalReport" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_POSData" xml:space="preserve">
+    <value />
+  </data>
+  <data name="SkuInfo_SkuStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="SkuInfo_SkuNo" xml:space="preserve">
+    <value />
+  </data>
+  <data name="SkuInfo_SkuYes" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptMallSalesSumday_Title" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptMallSalesSummth_Title" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptReceiptAve" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptShopSellSumday_Title" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptShopSellSummth_Title" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptShopTypeSaleSumday" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptShopTypeSaleSummth" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptTradeSaleSumday" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptTradeSaleSummth" xml:space="preserve">
+    <value />
+  </data>
+  <data name="InTrans" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptDateTransLog_ExecuteDate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptDateTransLog_TransStatus" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_DateTransLog" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_TransFlag" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UnSuccess" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_RptSalesTrafficQuery" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptSalesTraffic_ReciptTraffic" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptSalesTraffic_Traffic" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_ShopSellDifferenceReceipt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Qty_lblMonth" xml:space="preserve">
+    <value>Month</value>
+  </data>
+  <data name="Qty_lblYear" xml:space="preserve">
+    <value>Year</value>
+  </data>
+  <data name="Sell_SaleBeginDate" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
+  <data name="Sell_SaleEndDate" xml:space="preserve">
+    <value>End Date</value>
+  </data>
+  <data name="Menu_TrafficAccumAve" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_TrafficAnalysis" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_TrafficCompare" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_TrafficDirection" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_TrafficMonth" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_TrafficRpt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_DayAve" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_Rate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_UntilMonthTotal" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_UntilMonthTotalLY" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_WeekEnd" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_WeekWordDay" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_Average" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_TrafficChange" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_PotCustomerManager" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_lblLyYearPaidAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_lblYearPaidAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_YearAmtRate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_ActivityInfomation" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_AgeArea" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_BonusArea" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_BonusDate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_ConsumeInterest" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_CountryOrArea" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_GiftName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_GiftStockList" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_InfoExists" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_InvPayAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_MemberBirthday" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_MemberBonus" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_MemberChangeNum" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_MemberChangeNum2" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_MemberChangeSum" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_MemberCode" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_MemberMarryDate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_MemberName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_NOPOSReceipt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_PersonFavor" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_POSReceipt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_ServicePaltform" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Building" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CardInput" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CardUpdateInput" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Floors" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Member_BonusEnter" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Member_FreeGiftTransDate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Member_MembEnterTotal" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_CardInformationInput" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_MemberRedeemHList" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_MembPurReg" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_MembTotal" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_RptMemberAlterForBonus" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_RptMemberExTrans" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rdo_ShopCode" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_BonusAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_Bonusrate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_CheckType" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_JoinGroupDate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_LeaveGroupDate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_MemberDescType" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_MemberFreeGiftTrans" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_MemberInfoPicture" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_MemberShopBonusList" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_MemberShopSalesList" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_MembNumbers" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_PerSales" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_Transrate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="TotalInfo" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Budget_Insert" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Budget_lblUseArea" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Budget_MonthAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Budget_RentAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Budget_RentType" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Budget_SelectUnit" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Budget_UnitPrice" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Budget_UnitTypeName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Budget_YearAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Budget_Years" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_Budget" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_BudgetDeailAuditing" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_BudgetDetail" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_BudgetExamine" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_PrintDate" xml:space="preserve">
+    <value>Print Date</value>
+  </data>
+  <data name="Associator_BonusCurr" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_BonusPrev" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Member_GiftID" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Member_GiftQty" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Member_MemberName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_GiftQtyAmount" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_LogAmount" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_RedeemAmtAmount" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_TransAmount" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Page_Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="Menu_SellInfoQuery" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Sell_QueryItem" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_MemberAct" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_MemberCard" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_MemberInfo" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_QueryLeaseDetail" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_BrandSales" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Dept_City" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_CompanyBudgetIncomeSum" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_StoreBudgetIncomeDetail" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_BudgetCountVar" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_AdManager" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_StoreIncomeZLDetail" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_StoreIncomeZLSum" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_Benchmark" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_City" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_FloorArea" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_RentSaleCompare" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_StoreShopTypeRentalSaleAnalyse" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_StoreShopTypeSaleAnalyse" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_StoreShopTypeSaleDetailAnalyse" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_YearMonth" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_yearTotalMPaidAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_YearTotalSellCount" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_yearTotleRate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_CompanyIncomeZLAnalyse" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_StoreIncomeZLAnalyse" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_ShowType" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_CompanyRunCaseAnalyse" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_ContractChange" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_ContractList" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_ADContractSelect" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_GroupManager_MonthRpt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_Chart" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_DetailGroupShopTypeRentalRate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_GroupItemLettingRate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_List" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_UnitLeaseAnalyse" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ShopBrand_lblBrandQuery" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Tab_lblADInfo" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Tab_lblAreaInfo" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_AreaContractSelect" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_BuildingEntryManage" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_EntryCounterManage" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Traffic_TrafficCounterID" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Traffic_TrafficDoorName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Traffic_TrafficPoint" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_RentAreaOverview" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_RentAreaOverviewDetail" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_RentAreaOverviewSum" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_AttractParametersManage" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_ChargeParametersManage" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_MembParametersManage" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_PopularizeParametersManage" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_RentalParametersManage" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_SysParametersManage" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Prompt_norentDays" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Prompt_refID" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_ADpqReport" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_RptDepositDetail" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_RptDepositSum" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Page_CurPos" xml:space="preserve">
+    <value>Current Position:</value>
+  </data>
+  <data name="AdBoard_UserArea" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_PayTypeManage" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AdContract_lblAdTypeDefend" xml:space="preserve">
+    <value />
+  </data>
+  <data name="LeaseAreaType_AreaTypeDefend" xml:space="preserve">
+    <value />
+  </data>
+  <data name="TpUse_lblAddDirectUserTitle" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_ShopRentalThan" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_StoreBrandRentalThan" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_StoreBrandSalesAnalysis" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_StoreTradeRentalThan" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_StoreTradeSalesAnalysis" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_AreaTypeName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_InvMonth" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_StoreSaleMth" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_AddUnits" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="Menu_EditUnits" xml:space="preserve">
+    <value>Modify Units</value>
+  </data>
+  <data name="Menu_ContractExclusive" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_EmphasisContract" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_MoreContract" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_PosSvrinfoQuery" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_RptQuery" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_DeptUser" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_MallComposite" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_VAFloorLayout" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_PasswordInitialize" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_MoreContractQuery" xml:space="preserve">
+    <value />
+  </data>
+</root>

@@ -1,0 +1,4 @@
+id	Number
+name	String	32
+date	String	32
+innum	Number

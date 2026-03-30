@@ -1,0 +1,59 @@
+﻿<chart baseFontSize='12' caption='月销售额 2007 - 2009 (业态：珠宝；单位:百万元)' showBorder='0' showValues='0' PYAxisName='金额' canvasbgColor='ffffff' canvasbgAlpha='40'> 
+   <categories>
+      <category label='一月' />
+      <category label='二月' />
+      <category label='三月' />
+      <category label='四月' />
+      <category label='五月' />
+      <category label='六月' />
+      <category label='七月' />
+      <category label='八月' />
+      <category label='九月' />
+      <category label='十月' />
+      <category label='十一月' />
+      <category label='十二月' />
+   </categories>
+
+   <dataset seriesName='2009'  color='75edff'>
+      <set value='192' />
+      <set value='234'/>
+      <set value='186' />
+      <set value='237' />
+      <set value='90' />
+      <set value='189' />
+      <set value='229' />
+   </dataset>
+   <dataset seriesName='2008' parentYAxis='S' color='ff5959'>
+      <set value='233'  />
+      <set value='228' />
+      <set value='185' />
+      <set value='286'/>
+      <set value='185' />
+      <set value='269' />
+      <set value='251' />
+      <set value='299' />
+      <set value='373' />
+      <set value='288' />
+      <set value='282' />
+      <set value='298' />
+   </dataset>
+   <dataset seriesName='2007' color='ceff00'>
+      <set value='215'/>
+      <set value='314'/>
+      <set value='188'/>
+      <set value='177'/>
+      <set value='163' />
+      <set value='155' />
+      <set value='179' />
+      <set value='193' />
+      <set value='259' />
+      <set value='222' />
+      <set value='229' />
+      <set value='253' />
+   </dataset>
+
+   <trendlines>
+      <line startValue='300' color='91C728' displayValue='' showOnTop='1'/>
+   </trendlines>
+
+</chart>

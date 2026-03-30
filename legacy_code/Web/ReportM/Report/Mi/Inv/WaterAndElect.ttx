@@ -1,0 +1,16 @@
+storeid	Number		
+storeshortname	String	50
+ChgName	String	32	
+StartDate	DateTime
+EndDate	DateTime
+LastQty	Number		
+CurQty	Number		
+CostQty	Number		
+FreeQty	Number		
+Price	Currency		
+Times	Number		
+ChgAmt	Currency
+ContractCode	String	32
+ShopName	String	64
+ShopCode	String	16
+CustName	String	64		

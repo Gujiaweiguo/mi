@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ShopMenu>
+	<Menu ID="1">
+		<MenuDesc>合同明细查询</MenuDesc>
+		<MenuUrl>Lease/AuditingLease/SelectLease.aspx?funcid=210</MenuUrl>
+	</Menu>
+	<Menu ID="2">
+		<MenuDesc>招商立项</MenuDesc>
+		<MenuUrl>Lease/PotCustomer/PotCustomerNew.aspx?WrkFlwID=150&NodeID=228&Type=New</MenuUrl>
+	</Menu>
+	<Menu ID="3">
+		<MenuDesc>商铺销售查询</MenuDesc>
+		<MenuUrl>ReportM/RptSale/RptShopSalesSum.aspx?funcid=389</MenuUrl>
+	</Menu>
+	<Menu ID="4">
+		<MenuDesc>商铺受关注查询</MenuDesc>
+		<MenuUrl>Lease/PotCustomer/PotContrast.aspx?funcid=389&UnitID=107</MenuUrl>
+	</Menu>
+</ShopMenu>

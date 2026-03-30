@@ -1,0 +1,199 @@
+﻿body
+{    
+    font-family:"Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+    font-size: smaller;
+    margin: 0;
+    padding: 0;
+}
+
+/**** HEADINGS ****/
+
+h1
+{
+    font-size: x-large;
+}
+
+h2
+{
+    background-color: #E8F3F9;
+    font-size: large;
+    padding:5px 12px;
+}
+
+h3 
+{
+    font-size: small;
+    margin:0 0 2px 0;
+}
+
+p 
+{
+    margin:10px 0 10px 15px;
+}
+
+pre
+{
+    font-size: small;
+}
+
+.logo 
+{
+    position:absolute;
+    top:0;
+    right:-1px;
+}
+
+.logo a
+{
+    border-width:0;
+}
+
+#corner-top-left 
+{
+    position:absolute;
+    top:0;
+    left:0;
+    background:url(corner-top-left.png) no-repeat;
+    width:56px;
+    height:45px;
+}
+
+#Banner
+{
+    position: absolute;
+    top: 11px;
+    left: 10%;
+    z-index: 200;
+}
+
+#BreadCrumb
+{
+    position: absolute;
+    top: 50px;
+    right: 60px;
+    z-index: 200;
+}
+
+#TheGoods
+{
+    margin:85px 50px 50px 50px;
+    position:relative;
+}
+
+#WhatsNew img.RunIt
+{
+    border: none;
+    vertical-align: text-top;
+}
+
+#WhatsNew ul
+{
+    margin-top: 0;
+}
+
+/* Selectors for menu inside the banner */
+
+.MainMenu .AspNet-Menu-Horizontal ul ul
+{
+    background: #E6F0FA;
+}
+
+.MainMenu .AspNet-Menu-Horizontal ul.AspNet-Menu
+{
+    width: 21em;
+}
+
+.MainMenu .AspNet-Menu-Horizontal ul.AspNet-Menu ul
+{
+    left: 2px;
+    top: 100%;
+    width: 7em;
+    padding: 5px;
+    border:2px solid #165EA9;
+}
+
+.MainMenu .AspNet-Menu-Horizontal ul.AspNet-Menu ul ul
+{
+    left: 6.8em;
+    top: -1em;
+    width: 9em;
+}
+
+.MainMenu .AspNet-Menu-Horizontal ul.AspNet-Menu li
+{
+    width: 7em;
+    padding: 2px 0 2px 0;
+}
+
+.MainMenu .AspNet-Menu-Horizontal ul.AspNet-Menu ul ul li
+{
+    width:9em;
+}
+
+/* Start: rules to make the horizontal menu's top tier use proportional width for its items. */
+.MainMenu .AspNet-Menu-Horizontal ul.AspNet-Menu li a,
+.MainMenu .AspNet-Menu-Horizontal ul.AspNet-Menu li span
+{
+    display: inline;
+}
+
+.MainMenu .AspNet-Menu-Horizontal ul.AspNet-Menu ul li a,
+.MainMenu .AspNet-Menu-Horizontal ul.AspNet-Menu ul li span
+{
+    display: block;
+}
+/* End: proportional rules */
+
+.MainMenu .AspNet-Menu-Horizontal ul.AspNet-Menu li a,
+.MainMenu .AspNet-Menu-Horizontal ul.AspNet-Menu li span
+{
+    color: #124500;
+    border-style: none;
+    text-align: center;
+    padding:0 5px;
+}
+
+.MainMenu .AspNet-Menu-Horizontal ul.AspNet-Menu ul li a,
+.MainMenu .AspNet-Menu-Horizontal ul.AspNet-Menu ul li span
+{
+    background: transparent url(arrowRight.gif) right center no-repeat;
+}
+
+.MainMenu .AspNet-Menu-Horizontal ul.AspNet-Menu li ul li a:hover,
+.MainMenu .AspNet-Menu-Horizontal ul.AspNet-Menu li ul li.Asp-Menu-Hover span
+{
+    background: transparent url(activeArrowRight.gif) right center no-repeat;
+}
+
+.MainMenu .AspNet-Menu-Horizontal ul.AspNet-Menu li.AspNet-Menu-Leaf a,
+.MainMenu .AspNet-Menu-Horizontal ul.AspNet-Menu li.Asp-Menu-Leaf span
+{
+    background-image: none !important;
+}
+
+.MainMenu .AspNet-Menu-Horizontal ul.AspNet-Menu li li a,
+.MainMenu .AspNet-Menu-Horizontal ul.AspNet-Menu li li span
+{
+    text-align: left;
+}
+
+.MainMenu .AspNet-Menu-Horizontal ul.AspNet-Menu li:hover,
+.MainMenu .AspNet-Menu-Horizontal ul.AspNet-Menu li.AspNet-Menu-Hover
+{
+    background: #165EA9 url(bg-menu-main.png) repeat-x;
+}
+
+.MainMenu .AspNet-Menu-Horizontal ul.AspNet-Menu li a:hover,
+.MainMenu .AspNet-Menu-Horizontal ul.AspNet-Menu li.Asp-Menu-Hover span
+{
+    color: White;
+}
+
+/* --------------------------------------------------------------------------------------------------- */
+/* Used when the Menu adapter is NOT used. */
+/* These styles are used by the Menu's skin, found in this theme's skin file. */
+
+.Menu-Skin-DynamicHover
+{
+    background: #165EA9 url(bg-menu-main.png) repeat-x;
+}

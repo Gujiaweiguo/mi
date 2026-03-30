@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ADCONTRACT_MONTH" xml:space="preserve">
+    <value>月付</value>
+  </data>
+  <data name="ADCONTRACT_QUARTER" xml:space="preserve">
+    <value>季付</value>
+  </data>
+  <data name="ADCONTRACT_SEMIYEARLY" xml:space="preserve">
+    <value>半年付</value>
+  </data>
+  <data name="ADCONTRACT_SETTLE_UP" xml:space="preserve">
+    <value>一次付清</value>
+  </data>
+  <data name="ADCONTRACT_YEAR" xml:space="preserve">
+    <value>年付</value>
+  </data>
+  <data name="ADTYPE_COMM" xml:space="preserve">
+    <value>一般广告位</value>
+  </data>
+  <data name="ADTYPE_FAST" xml:space="preserve">
+    <value>固定广告位</value>
+  </data>
+  <data name="Application_Form" xml:space="preserve">
+    <value>申请单</value>
+  </data>
+  <data name="BIZ_MODE_LEASE" xml:space="preserve">
+    <value>租赁</value>
+  </data>
+  <data name="BIZ_MODE_UNIT" xml:space="preserve">
+    <value>联营</value>
+  </data>
+  <data name="BizGrp_NO" xml:space="preserve">
+    <value>无效</value>
+  </data>
+  <data name="BizGrp_YES" xml:space="preserve">
+    <value>有效</value>
+  </data>
+  <data name="Change_Request_Form" xml:space="preserve">
+    <value>变更单</value>
+  </data>
+  <data name="CHARGECLASS_APPORTION" xml:space="preserve">
+    <value>分摊费用</value>
+  </data>
+  <data name="CHARGECLASS_DEPOSIT" xml:space="preserve">
+    <value>押金</value>
+  </data>
+  <data name="CHARGECLASS_FANST" xml:space="preserve">
+    <value>每月固定费用</value>
+  </data>
+  <data name="CHARGECLASS_INTEREST" xml:space="preserve">
+    <value>滞纳金</value>
+  </data>
+  <data name="CHARGECLASS_LEASE" xml:space="preserve">
+    <value>租金</value>
+  </data>
+  <data name="CHARGECLASS_MAINTAIN" xml:space="preserve">
+    <value>维修费</value>
+  </data>
+  <data name="CHARGECLASS_OTHER" xml:space="preserve">
+    <value>其他费用</value>
+  </data>
+  <data name="CHARGECLASS_PREDICT" xml:space="preserve">
+    <value>预付款</value>
+  </data>
+  <data name="CHARGECLASS_UNION" xml:space="preserve">
+    <value>联营结算</value>
+  </data>
+  <data name="CHARGECLASS_UNION_INNERCARDRATE" xml:space="preserve">
+    <value>联营内卡手续费</value>
+  </data>
+  <data name="CHARGECLASS_UNION_OUTERCARDRATE" xml:space="preserve">
+    <value>联营外卡手续费</value>
+  </data>
+  <data name="CHARGECLASS_WATERORDLECT" xml:space="preserve">
+    <value>计表费用(水电费)</value>
+  </data>
+  <data name="CHARGECLASS_YEAREND" xml:space="preserve">
+    <value>年终结算</value>
+  </data>
+  <data name="ConShopBrand_Domestic" xml:space="preserve">
+    <value>全国</value>
+  </data>
+  <data name="ConShopBrand_International" xml:space="preserve">
+    <value>国际</value>
+  </data>
+  <data name="ConShopBrand_Province" xml:space="preserve">
+    <value>省级</value>
+  </data>
+  <data name="CONTRACTSTATUS_TYPE_ATTREM" xml:space="preserve">
+    <value>到期</value>
+  </data>
+  <data name="CONTRACTSTATUS_TYPE_END" xml:space="preserve">
+    <value>终止</value>
+  </data>
+  <data name="CONTRACTSTATUS_TYPE_FIRST" xml:space="preserve">
+    <value>初始状态</value>
+  </data>
+  <data name="CONTRACTSTATUS_TYPE_INGEAR" xml:space="preserve">
+    <value>正常</value>
+  </data>
+  <data name="CONTRACTSTATUS_TYPE_PAUSE" xml:space="preserve">
+    <value>暂停执行</value>
+  </data>
+  <data name="CONTRACTSTATUS_TYPE_TEMP" xml:space="preserve">
+    <value>草稿状态</value>
+  </data>
+  <data name="CUST_DEAL_IN_LICENCE" xml:space="preserve">
+    <value>营业执照</value>
+  </data>
+  <data name="CUST_OTHER" xml:space="preserve">
+    <value>其他</value>
+  </data>
+  <data name="CUST_SANITATION_APPROBATE" xml:space="preserve">
+    <value>卫生许可证</value>
+  </data>
+  <data name="CUST_TYPE_STATUS_INVALID" xml:space="preserve">
+    <value>无效</value>
+  </data>
+  <data name="CUST_TYPE_STATUS_VALID" xml:space="preserve">
+    <value>有效</value>
+  </data>
+  <data name="DEPT_TYPE_CHILD_COMPANY" xml:space="preserve">
+    <value>集团</value>
+  </data>
+  <data name="DEPT_TYPE_CHILD_SONLD" xml:space="preserve">
+    <value>子公司</value>
+  </data>
+  <data name="DEPT_TYPE_DEPT" xml:space="preserve">
+    <value>部门</value>
+  </data>
+  <data name="DEPT_TYPE_MALL" xml:space="preserve">
+    <value>商业项目</value>
+  </data>
+  <data name="DEPTSTATUS_INVALID" xml:space="preserve">
+    <value>停用</value>
+  </data>
+  <data name="DEPTSTATUS_VALID" xml:space="preserve">
+    <value>启用</value>
+  </data>
+  <data name="FAXTYPE_TYPE_COMM" xml:space="preserve">
+    <value>普通发票</value>
+  </data>
+  <data name="FAXTYPE_TYPE_INCRE" xml:space="preserve">
+    <value>增值税</value>
+  </data>
+  <data name="FAXTYPE_TYPE_OTHER" xml:space="preserve">
+    <value>其它</value>
+  </data>
+  <data name="FORMULATYPE_TYPE_ONE" xml:space="preserve">
+    <value>固定</value>
+  </data>
+  <data name="FORMULATYPE_TYPE_THREE" xml:space="preserve">
+    <value>一次性收取</value>
+  </data>
+  <data name="FORMULATYPE_TYPE_TWO" xml:space="preserve">
+    <value>抽成保底</value>
+  </data>
+  <data name="HdwClass_Meter" xml:space="preserve">
+    <value>读表类</value>
+  </data>
+  <data name="HdwClass_Money" xml:space="preserve">
+    <value>收款类</value>
+  </data>
+  <data name="HdwCond_BAD" xml:space="preserve">
+    <value>损坏</value>
+  </data>
+  <data name="IFPREPAY_TYPE_NO" xml:space="preserve">
+    <value>否</value>
+  </data>
+  <data name="IFPREPAY_TYPE_YES" xml:space="preserve">
+    <value>是</value>
+  </data>
+  <data name="INDEPBALANCE_STATUS_INVALID" xml:space="preserve">
+    <value>否</value>
+  </data>
+  <data name="INDEPBALANCE_STATUS_VALID" xml:space="preserve">
+    <value>是</value>
+  </data>
+  <data name="InvoicePay_INVPAYTYPE_CASH" xml:space="preserve">
+    <value>现金</value>
+  </data>
+  <data name="InvoicePay_INVPAYTYPE_CHECK" xml:space="preserve">
+    <value>支票</value>
+  </data>
+  <data name="InvoicePay_INVPAYTYPE_P_O" xml:space="preserve">
+    <value>汇票</value>
+  </data>
+  <data name="INVSTATUS_CEL" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="INVSTATUS_HALFINV" xml:space="preserve">
+    <value>部分结算</value>
+  </data>
+  <data name="INVSTATUS_INV" xml:space="preserve">
+    <value>已结算</value>
+  </data>
+  <data name="INVSTATUS_NOINV" xml:space="preserve">
+    <value>有效(未结算)</value>
+  </data>
+  <data name="IS_LEADER_NO" xml:space="preserve">
+    <value>否</value>
+  </data>
+  <data name="IS_LEADER_YES" xml:space="preserve">
+    <value>是</value>
+  </data>
+  <data name="IS_ROLESTATUS_NO" xml:space="preserve">
+    <value>无效</value>
+  </data>
+  <data name="IS_ROLESTATUS_YES" xml:space="preserve">
+    <value>有效</value>
+  </data>
+  <data name="ISCHARGECROSS_NO" xml:space="preserve">
+    <value>不允许交叉</value>
+  </data>
+  <data name="ISCHARGECROSS_YES" xml:space="preserve">
+    <value>允许交叉</value>
+  </data>
+  <data name="Memb_MembCardNo" xml:space="preserve">
+    <value>无效</value>
+  </data>
+  <data name="Memb_MembCardNoUse" xml:space="preserve">
+    <value>未启用</value>
+  </data>
+  <data name="Memb_MembCardYes" xml:space="preserve">
+    <value>有效</value>
+  </data>
+  <data name="NOTICE_PERIOD0" xml:space="preserve">
+    <value>不通知</value>
+  </data>
+  <data name="NOTICE_PERIOD1" xml:space="preserve">
+    <value>提前1个月</value>
+  </data>
+  <data name="NOTICE_PERIOD2" xml:space="preserve">
+    <value>提前2个月</value>
+  </data>
+  <data name="NOTICE_PERIOD3" xml:space="preserve">
+    <value>提前3个月</value>
+  </data>
+  <data name="NOTICE_PERIOD4" xml:space="preserve">
+    <value>提前6个月</value>
+  </data>
+  <data name="PayInput_BankCard" xml:space="preserve">
+    <value>银行卡代收款</value>
+  </data>
+  <data name="PayInput_Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="PayInput_Cash" xml:space="preserve">
+    <value>临时代收款</value>
+  </data>
+  <data name="PayInput_DeductExpenses" xml:space="preserve">
+    <value>押金扣款</value>
+  </data>
+  <data name="PayInput_ManualEntry" xml:space="preserve">
+    <value>手工录入</value>
+  </data>
+  <data name="PayInput_Non_Settlement" xml:space="preserve">
+    <value>未结算</value>
+  </data>
+  <data name="PayInput_OffsetPayment" xml:space="preserve">
+    <value>抵扣费用</value>
+  </data>
+  <data name="PayInput_Others" xml:space="preserve">
+    <value>其他代收款</value>
+  </data>
+  <data name="PayInput_PartialSettlement" xml:space="preserve">
+    <value>部分结算</value>
+  </data>
+  <data name="PayInput_Return" xml:space="preserve">
+    <value>返还</value>
+  </data>
+  <data name="PayInput_Settlement" xml:space="preserve">
+    <value>已结算</value>
+  </data>
+  <data name="PayInput_SystemGenerate" xml:space="preserve">
+    <value>系统自动生成</value>
+  </data>
+  <data name="PAYTYPEID_TYPE_FOREGIFONE" xml:space="preserve">
+    <value>押一付一</value>
+  </data>
+  <data name="PAYTYPEID_TYPE_FOREGIFONETHREE" xml:space="preserve">
+    <value>押一付三</value>
+  </data>
+  <data name="PAYTYPEID_TYPE_FOREGIFRIVET" xml:space="preserve">
+    <value>固定押金</value>
+  </data>
+  <data name="PAYTYPEID_TYPE_FOREGIFTHREE" xml:space="preserve">
+    <value>押三付一</value>
+  </data>
+  <data name="PAYTYPEID_TYPE_FOREGIFTWO" xml:space="preserve">
+    <value>押二付一</value>
+  </data>
+  <data name="PENALTY_TYPE_NO" xml:space="preserve">
+    <value>否</value>
+  </data>
+  <data name="PENALTY_TYPE_YES" xml:space="preserve">
+    <value>是</value>
+  </data>
+  <data name="POT_SHOP_ADMIRAL" xml:space="preserve">
+    <value>旗舰店</value>
+  </data>
+  <data name="POT_SHOP_MAIN" xml:space="preserve">
+    <value>主力店</value>
+  </data>
+  <data name="POT_SHOP_REFINEMENT" xml:space="preserve">
+    <value>精品店</value>
+  </data>
+  <data name="Public_Sealed" xml:space="preserve">
+    <value>未知</value>
+  </data>
+  <data name="RentableArea_NoLeaseOut" xml:space="preserve">
+    <value>未出租</value>
+  </data>
+  <data name="SETTLEMODE_TYPE_FIRST" xml:space="preserve">
+    <value>首月对齐</value>
+  </data>
+  <data name="SETTLEMODE_TYPE_LAST" xml:space="preserve">
+    <value>次月对齐</value>
+  </data>
+  <data name="SETTLEMODE_TYPE_NO" xml:space="preserve">
+    <value>不做调整</value>
+  </data>
+  <data name="ShopHdw_Mall" xml:space="preserve">
+    <value>购物中心</value>
+  </data>
+  <data name="ShopHdw_Shop" xml:space="preserve">
+    <value>商铺</value>
+  </data>
+  <data name="Store_USAGE_HABITATION" xml:space="preserve">
+    <value>居住</value>
+  </data>
+  <data name="Store_USAGE_NO_HABITATION" xml:space="preserve">
+    <value>非居住</value>
+  </data>
+  <data name="Unit_LeaseOut" xml:space="preserve">
+    <value>已出租</value>
+  </data>
+  <data name="Unit_NoLeaseOut" xml:space="preserve">
+    <value>未出租</value>
+  </data>
+  <data name="Unit_Nonrentable" xml:space="preserve">
+    <value>已作废</value>
+  </data>
+  <data name="User_StatusDisabled" xml:space="preserve">
+    <value>禁用</value>
+  </data>
+  <data name="User_StatusEnabled" xml:space="preserve">
+    <value>有效</value>
+  </data>
+  <data name="User_StatusResigned" xml:space="preserve">
+    <value>离职</value>
+  </data>
+  <data name="WrkFlw_Disabled" xml:space="preserve">
+    <value>无效</value>
+  </data>
+  <data name="WrkFlw_Draft" xml:space="preserve">
+    <value>草稿</value>
+  </data>
+  <data name="WrkFlw_Enabled" xml:space="preserve">
+    <value>有效</value>
+  </data>
+  <data name="WrkFlw_IfTransitNO" xml:space="preserve">
+    <value>不转接</value>
+  </data>
+  <data name="WrkFlw_IfTransitYES" xml:space="preserve">
+    <value>转接</value>
+  </data>
+  <data name="WrkFlw_VouTriggerredNO" xml:space="preserve">
+    <value>不制单</value>
+  </data>
+  <data name="WrkFlw_VouTriggerredYES" xml:space="preserve">
+    <value>制单</value>
+  </data>
+  <data name="WrkFlwNode_Back" xml:space="preserve">
+    <value>驳回到工作流起点</value>
+  </data>
+  <data name="WrkFlwNode_Pending" xml:space="preserve">
+    <value>不做处理</value>
+  </data>
+  <data name="WrkFlwNode_Proceed" xml:space="preserve">
+    <value>自动通过</value>
+  </data>
+  <data name="WrkFlwNode_Submit" xml:space="preserve">
+    <value>提交上级审批</value>
+  </data>
+</root>

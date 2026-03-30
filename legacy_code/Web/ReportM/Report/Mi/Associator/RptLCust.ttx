@@ -1,0 +1,12 @@
+MembCode	String	16	
+LOtherId	String	18	
+MemberName	String	30	
+DateJoint	DateTime	
+MobilPhone	String	18	
+email	String	40	
+Dob	DateTime
+NatNm	String	24	
+BizNm	String	24	
+SexNm	String	10	
+MStatusNm	String	10	
+MembCardId	String	16	

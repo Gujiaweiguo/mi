@@ -1,0 +1,79 @@
+﻿.foo {} /* W3C CSS validator likes CSS files to start with a class rather than a comment. Soooooo.... */
+
+/* This style sheet is intended to contain OFTEN CHANGED rules used when the DataList control adapter is enabled. */
+/* Empty rules are provided merely as a convenience for your future use or experimentation. */
+
+
+/* Individual "items" in the DataList. */
+.PrettyDataList .AspNet-DataList table tbody tr td
+{
+    padding:5px;         
+    vertical-align: top; 
+}
+
+/* Header of the DataList. */
+.PrettyDataList .AspNet-DataList table thead tr th,
+.PrettyDataList .AspNet-DataList table caption
+{
+    border-top: solid 20px #9C0001;
+    text-align:right;
+    height: 90px;
+    font-family: Arial;
+    font-weight: bold;
+    font-size: x-large;
+    color: white;
+    background-color:#D3C9C7;
+    vertical-align: bottom;
+    padding: 0 8px 8px 0;
+}
+
+/* Footer. */
+.PrettyDataList .AspNet-DataList table tfoot tr td
+{
+    border-top: solid 20px #9C0001;
+}
+
+/* ------------------------------------------------------------------- */
+/* Specific to this sample web site. */
+/* These rules are probably not useful in your site. */
+
+#SampleDataList .Sample-Contact
+{
+    border: solid 2px #648ABD;
+    padding: 4px;
+    background:#B9D3EE;
+    color:Maroon;
+    font-size:small; 
+}
+
+#SampleDataList .Sample-Name
+{    
+}
+
+#SampleDataList .Sample-Address
+{
+    color: Black;
+}
+
+#SampleDataList .Sample-Phone
+{
+    color: #333333;
+    text-align:right;
+    white-space:nowrap; 
+}
+
+
+/* --------------------------------------------------------------------------------------------------- */
+/* Used when the DataList adapter is NOT used. */
+/* These styles are used by the DataList's skin, found in this theme's skin file. */
+#SampleDataList .DataList-Skin-Header
+{
+    border-top: solid 20px #9C0001;
+    padding: 0 8px 8px 0;
+}
+
+#SampleDataList .DataList-Skin-Footer
+{
+    border-top: solid 20px #9C0001;
+}
+

@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title></title>
+<script language="javascript" type="text/javascript" src="../JavaScript/TabTools.js"></script>
+<script language="JavaScript" src="../FusionCharts/JS/FusionCharts.js"></script>
+<script language="javascript" type="text/javascript"> 
+
+</script>
+<style type="text/css">
+<!--
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+-->
+</style>
+
+</head>
+<body>
+        <div id="chartDiv2" align="left">FusionCharts.</div>
+        <script type="text/javascript">
+            var myChart2 = new FusionCharts("../FusionCharts/SWF/AngularGauge.swf", "myChartId", "207.5", "180");
+            myChart2.setDataURL(parent.document.getElementById("xmlFiles").innerText);
+            myChart2.setTransparent(true);
+            myChart2.render("chartDiv2");
+        </script>
+        <div id ="charDiv3" align="left">FusionCharts.</div>
+         <script type="text/javascript">
+             var myChart2 = new FusionCharts("../FusionCharts/SWF/Pie3D.swf", "myChartId", "207.5", "180");
+             myChart2.setDataURL(parent.document.getElementById("xmlFiles2").innerText);
+            myChart2.setTransparent(true);
+            myChart2.render("charDiv3");       
+          </script>
+        </div>
+        <div id ="charDiv4" align="left">FusionCharts.</div>
+         <script type="text/javascript">
+             var myChart2 = new FusionCharts("../FusionCharts/SWF/Pie3D.swf", "myChartId", "207.5", "180");
+             myChart2.setDataURL(parent.document.getElementById("xmlFiles3").innerText);
+             myChart2.setTransparent(true);
+             myChart2.render("charDiv4");       
+          </script>
+        </div>
+</body>

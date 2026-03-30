@@ -1,0 +1,14 @@
+ShopID	Number
+ShopCode	String	50
+ShopName	String	50
+FloorID	Number
+SkuID	String	50
+SkuDesc	String	50
+DeptID	String	50
+ClassName	String	50
+Brand	String	50
+BrandName	String	50
+DiscountPcentRate	Number
+BonusGpPer	Number
+SkuPrice	Number
+deptname	String	50

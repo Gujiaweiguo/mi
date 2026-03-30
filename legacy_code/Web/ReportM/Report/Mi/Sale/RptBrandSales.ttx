@@ -1,0 +1,12 @@
+PaidAmt	Number		
+TotalReceipt	Number		
+TotalQty	Number		
+ReceiptAve	Number		
+QtyAve	Number		
+StoreID	Number		
+StoreName	String	32	
+BrandName	String	64	
+BrandID	Number
+Date	String	64
+BrandLevelID	Number	
+BrandLevelName	String	64	

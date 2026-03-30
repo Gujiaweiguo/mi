@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<chart bgColor="FFFFFF" lowerLimit="100" upperLimit="300" tickValueDistance="20" showValue="0" showBorder="0" paletteThemeColor="669933" chartLeftMargin="25" chartRightMargin="25" decimals="3" aboutMenuItemLabel="About Wincor Nixdorf" aboutMenuItemLink="n-http://www.wincor-nixdorf.com">
+  <colorRange>
+    <color minValue="0" maxValue="150" code="FF654F" />
+    <color minValue="150" maxValue="250" code="8efdfe" />
+    <color minValue="250" maxValue="300" code="F6BD0F" />
+  </colorRange>
+  <dials>
+    <dial value="250" Tooltext="1-7月" rearExtension="10" tooltext="231" />
+  </dials>
+  <trendpoints>
+    <point startValue="160" valueInside="0" displayValue="" color="666666" useMarker="1" markerColor="F1f1f1" markerBorderColor="666666" markerRadius="5" markerTooltext="160" />
+  </trendpoints>
+  <annotations>
+    <annotationGroup id="Grp1">
+      <annotation type="text" x="85" y="30" label="北京市2009年预算完成情况" font="宋体" fontcolor="333333" fontSize="12" />
+      <annotation type="text" x="87" y="46" label="单位:元" font="宋体" fontcolor="333333" fontSize="11" />
+    </annotationGroup>
+  </annotations>
+</chart>

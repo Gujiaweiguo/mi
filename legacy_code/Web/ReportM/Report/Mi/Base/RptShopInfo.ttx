@@ -1,0 +1,10 @@
+StoreName	String	32	
+FloorName	String	64	
+TradeName	String	64	
+ShopCode	String	16	
+ShopName	String	64	
+ShopID	Number		
+ContractCode	String	32	
+CustName	String	64	
+BrandName	String	32	
+CustCode	String	16	

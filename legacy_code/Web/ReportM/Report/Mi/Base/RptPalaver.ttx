@@ -1,0 +1,11 @@
+storeshortname	String	50	efqwerqwe
+custname	String	64	
+processtypename	String	16	
+PalaverRound	Number		
+PalaverPlace	String	32	
+PalaverName	String	32	
+ContactorName	String	16	
+PalaverAim	String	64	
+PalaverResult	String	256	
+UnSolved	String	256	
+PalaverTime	DateTime		

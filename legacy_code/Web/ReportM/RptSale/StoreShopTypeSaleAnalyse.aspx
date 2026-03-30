@@ -1,0 +1,251 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="StoreShopTypeSaleAnalyse.aspx.cs" Inherits="ReportM_RptSale_StoreShopTypeSaleAnalyse" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"  >
+<head id="Head1" runat="server">
+    <title><%=baseInfo%></title>
+    <link href="../../App_Themes/Main/style.css" rel="stylesheet" type="text/css" />
+    <link href="../../App_Themes/CSS/ToolStyle.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+            table.mainTbl {width:572px;height:401px;}
+            
+            tr{height:28px;}
+            td.lable{padding-right:5px;text-align:right;}
+    </style>
+    <script type="text/javascript" src="../../JavaScript/Common.js"></script>
+    <script type="text/javascript" src="../../JavaScript/setPeriod.js" charset="gb2312"></script>
+        <script language="javascript" type="text/javascript" src="../../JavaScript/TabTools.js"></script>
+        <script type="text/javascript">
+        function Load()
+	    {
+	        addTabTool("刷新,ReportM/RptSale/StoreShopTypeSaleAnalyse.aspx");
+	        loadTitle();
+	    }
+	</script>
+</head>
+<body style="margin:0px"  onload ="Load();">
+    <form id="form1" runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server" AsyncPostBackTimeout="1200">
+        </asp:ScriptManager>
+        <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+            <ContentTemplate>
+                                            <table style="width:100%;" border="0" cellpadding="0" cellspacing="0">
+                                                <tr>
+                                                    <td style="width:5px" class="tdTopRightBackColor">
+                                                     <img class="imageLeftBack" />
+                                                    </td>
+                                                    <td class="tdTopRightBackColor" style="text-align:left;">
+                                                        <asp:Label ID="Label1" runat="server" Text="<%$ Resources:BaseInfo,Rpt_StoreShopTypeSaleAnalyse %>"></asp:Label>
+                                                    </td>
+                                                    <td style="width:5px" class="tdTopRightBackColor">
+                                                        <img class="imageRightBack"/>
+                                                    </td>
+                                                </tr>
+                                                <tr style="height:1px">
+                                                    <td colspan="3" style="background-color:White; height:1px">
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <table style="width:100%" class="tdBackColor">
+                                                <tr class="bodyTbl">
+                                                    <td style="width: 89px; height: 21px;" class="lable">
+                                                        </td>
+                                                    <td style="width: 218px; height: 21px;">
+                                                        </td>
+                                                    <td style="width: 14px; height: 21px;">
+                                                        </td>
+                                                    <td style="height: 21px; width: 1055px;">
+                                                        </td>
+                                                </tr>
+                                                <tr style="height:10px">
+                                                    <td style="width: 89px" align="right">
+                                                        <asp:Label ID="Label15" runat="server" CssClass="labelStyle" 
+                                                            Text="<%$ Resources:BaseInfo,AreaVindicate_labAreaTitle %>"> </asp:Label>
+                                                        &nbsp;
+                                                    </td>
+                                                    <td style="width: 218px">
+                                                        
+                                                        <asp:DropDownList ID="ddlArea" runat="server" Width="165px">
+                                                        </asp:DropDownList>
+                                                        
+                                                    </td>
+                                                    <td style="width: 14px">
+                                                        <asp:Label ID="Label13" runat="server" CssClass="labelStyle" Height="17px" 
+                                                            Text="<%$ Resources:BaseInfo,Rpt_ShowType %>" Width="73px"></asp:Label>
+                                                    </td>
+                                                    <td style="width: 1055px">
+                                                        <asp:RadioButton ID="RB1" runat="server" Checked="True" CssClass="labelStyle" 
+                                                            GroupName="a" Text="<%$ Resources:BaseInfo,Rpt_Chart %>" />
+                                                    </td>
+                                                </tr>
+                                                <tr class="bodyTbl">
+                                                    <td class="lable" style="width: 89px">
+                                                        <asp:Label ID="Label16" runat="server" CssClass="labelStyle" 
+                                                            Text="<%$ Resources:BaseInfo,Rpt_City %>"></asp:Label>
+                                                    </td>
+                                                    <td style="width: 218px">
+                                                        <asp:DropDownList ID="ddlCity" runat="server" Width="165px">
+                                                        </asp:DropDownList>
+                                                    </td>
+                                                    <td style="width: 14px">
+                                                        &nbsp;</td>
+                                                    <td style="width: 1055px">
+                                                        <asp:RadioButton ID="RB2" runat="server" CssClass="labelStyle" GroupName="a" 
+                                                            Text="<%$ Resources:BaseInfo,Rpt_List %>" />
+                                                    </td>
+                                                </tr>
+                                                <tr class="bodyTbl">
+                                                    <td class="lable" style="width: 89px">
+                                                        <asp:Label ID="labShopType" runat="server" CssClass="labelStyle" Text="<%$ Resources:BaseInfo,PotShop_lblShopType %>"></asp:Label></td>
+                                                    <td style="width: 218px">
+                                                        <asp:DropDownList ID="ddlShopType" runat="server" BackColor="White" 
+                                                            Width="165px" Height="16px">
+                                                        </asp:DropDownList></td>
+                                                    <td style="width: 14px">
+                                                        </td>
+                                                    <td style="width: 1055px">
+                                                        </td>
+                                                </tr>
+                                                <tr class="bodyTbl">
+                                                    <td class="lable" style="width: 89px">
+                                                        <asp:Label ID="labShopType0" runat="server" CssClass="labelStyle" 
+                                                            Text="<%$ Resources:BaseInfo,Rpt_Year %>"></asp:Label>
+                                                    </td>
+                                                    <td style="width: 218px">
+                                                        <asp:DropDownList ID="ddlYear" runat="server" BackColor="White" Width="165px">
+                                                        </asp:DropDownList>
+                                                    </td>
+                                                    <td style="width: 14px">
+                                                        &nbsp;</td>
+                                                    <td style="width: 1055px">
+                                                        &nbsp;</td>
+                                                </tr>
+                                                <tr class="bodyTbl">
+                                                    <td class="lable" style="width: 89px">
+                                                        <asp:Label ID="labShopType1" runat="server" CssClass="labelStyle" 
+                                                            Text="<%$ Resources:BaseInfo,Rpt_lblSalesMonth %>"></asp:Label>
+                                                    </td>
+                                                    <td style="width: 218px">
+                                                        <asp:DropDownList ID="ddlMonth" runat="server" BackColor="White" Width="165px">
+                                                        </asp:DropDownList>
+                                                    </td>
+                                                    <td style="width: 14px">
+                                                        &nbsp;</td>
+                                                    <td style="width: 1055px">
+                                                        &nbsp;</td>
+                                                </tr>
+                                                <tr class="bodyTbl">
+                                                    <td class="lable" style="width: 89px">
+                                                        <asp:Label ID="Label17" runat="server" CssClass="labelStyle" 
+                                                            Text="<%$ Resources:BaseInfo,RPT_lblGroupBy %>"></asp:Label>
+                                                    </td>
+                                                    <td style="width: 258px">
+                                                        <asp:CheckBox ID="ckbArea" runat="server" 
+                                                            Text="<%$ Resources:BaseInfo,AreaVindicate_labAreaTitle %>" 
+                                                            Font-Size="Small" />
+                                                        <asp:CheckBox ID="ckbCity" runat="server" 
+                                                            Text="<%$ Resources:BaseInfo,Rpt_City %>" Font-Size="Small" />
+                                                        <asp:CheckBox ID="ckbShopType" runat="server" 
+                                                            Text="<%$ Resources:BaseInfo,PotShop_lblShopType %>" Font-Size="Small" />
+                                                    </td>
+                                                    <td style="width: 14px">
+                                                        &nbsp;</td>
+                                                    <td style="width: 1005px">
+                                                        &nbsp;</td>
+                                                </tr>
+                                                <tr class="bodyTbl">
+                                                    <td class="lable" style="width: 89px">
+                                                        </td>
+                                                    <td style="width: 218px">
+                                                        <asp:Button ID="btnQuery" runat="server" CssClass="buttonQuery" 
+                                                            Text="<%$ Resources:BaseInfo,User_lblQuery %> " onmouseover="BtnOver(this.id);" 
+                                                            onmouseout="BtnUp(this.id);" onmouseup="BtnUp(this.id);" 
+                                                            onclick="btnQuery_Click"/>
+                                                        <asp:Button ID="BtnCancel" runat="server" CssClass="buttonCancel" 
+                                                            Text="<%$ Resources:BaseInfo,User_btnCancel %> " OnClick="BtnCancel_Click" 
+                                                            onmouseover="BtnOver(this.id);" onmouseout="BtnUp(this.id);" 
+                                                            onmouseup="BtnUp(this.id);"/></td>
+                                                    <td style="width: 14px">
+                                                    </td>
+                                                    <td style="width: 1055px">
+                                                    </td>
+                                                </tr>
+                                                <tr class="bodyTbl">
+                                                    <td style="width: 89px; height: 21px;" class="lable">
+                                                        </td>
+                                                    <td style="width: 218px; height: 21px;">
+                                                        </td>
+                                                    <td style="width: 14px; height: 21px;">
+                                                        </td>
+                                                    <td style="height: 21px; width: 1055px;">
+                                                        </td>
+                                                </tr>
+                                                <tr class="bodyTbl">
+                                                    <td style="width: 89px; height: 21px;" class="lable">
+                                                        </td>
+                                                    <td style="width: 218px; height: 21px;">
+                                                        </td>
+                                                    <td style="width: 14px; height: 21px;" class="lable" align="right">
+                                                        </td>
+                                                    <td style="height: 21px; width: 1055px;">
+                                                        </td>
+                                                </tr>
+                                                <tr class="bodyTbl">
+                                                    <td class="lable" style="width: 89px; height: 22px;">
+                                                        </td>
+                                                    <td style="width: 218px; height: 22px;">
+                                                        &nbsp;</td>
+                                                    <td align="right" class="lable" style="width: 14px; height: 22px;">
+                                                    </td>
+                                                    <td style="height: 22px; width: 1055px;">
+                                                        </td>
+                                                </tr>
+                                                <tr class="bodyTbl">
+                                                    <td class="lable" style="width: 89px">
+                                                        </td>
+                                                    <td style="width: 218px">
+                                                        &nbsp;</td>
+                                                    <td align="right" class="lable" style="width: 14px">
+                                                        &nbsp;</td>
+                                                    <td style="width: 1055px">
+                                                        </td>
+                                                </tr>
+                                                <tr class="bodyTbl">
+                                                    <td style="width: 89px; height: 26px;" class="lable">
+                                                        </td>
+                                                    <td style="width: 218px; height: 26px;">
+                                                        </td>
+                                                    <td style="width: 14px; height: 26px;">
+                                                    </td>
+                                                    <td style="height: 26px; width: 1055px;">
+                                                        </td>
+                                                </tr>
+                                                <tr class="bodyTbl">
+                                                    <td style="width: 89px; height: 15px;" class="lable">
+                                                        </td>
+                                                    <td style="width: 218px; height: 15px;">
+                                                        </td>
+                                                    <td style="width: 14px; height: 15px;">
+                                                    </td>
+                                                    <td style="height: 15px; width: 1055px;">
+                                                        </td>
+                                                </tr>
+                                                <tr class="bodyTbl">
+                                                    <td class="lable" style="width: 89px; height: 28px;">
+                                                        </td>
+                                                    <td style="width: 218px; height: 28px;">
+                                                        </td>
+                                                    <td style="width: 14px; height: 28px;">
+                                                    </td>
+                                                    <td style="height: 28px; width: 1055px;">
+                                                        </td>
+                                                </tr>
+                                            </table>
+            </ContentTemplate>
+        </asp:UpdatePanel>
+        &nbsp;
+    </form>
+</body>
+</html>
+

@@ -1,0 +1,34 @@
+<chart formatNumber='0' showBorder='0' bgColor='FFFfFF' defaultNumberScale='W' numberScaleValue='W' divLineDashGap ='20' formatNumberScale='1'  baseFontSize='12' palette='1' caption='品类部销售指标达成' showvalues='1'   showSum='1' decimals='0'  numDivLines ='3' useRoundEdges='1' chartRightMargin='60'  >
+<categories>
+<category label='副食' />
+<category label='日化' />
+<category label='日用' />
+<category label='生鲜' />
+<category label='食品' />
+<category label='针棉' />
+<category label='自有' />
+</categories>
+
+<dataset seriesName='已完成' color='8BBA00' showValues='0'>
+<set value='22764' />
+<set value='24694' />
+<set value='9756' />
+<set value='47031' />
+<set value='79208' />
+
+<set value='6111' />
+<set value='7314' />
+</dataset>
+<dataset seriesName='未完成' color='adadad' showValues='0'>
+<set value='40538' />
+<set value='33902' />
+<set value='14974' />
+<set value='86144' />
+<set value='101659' />
+
+<set value='10004' />
+
+</dataset>
+
+
+</chart>

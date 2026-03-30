@@ -1,0 +1,10 @@
+ShopCode	String	32
+ShopName	String	32
+tradename	String	32
+RentArea	Number
+baseRental	Number
+Pcent		Number
+pcrate		Number
+months		Number
+ConEndDate	DateTime
+Storename	String	32

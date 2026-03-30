@@ -1,0 +1,17 @@
+<chart bgColor='FFFFFF' showBorder='0' baseFontSize='12' caption='项目整体出租率'  showValues='1' decimals='0' formatNumberScale='1' useRoundEdges='14' zeroPlaneColor='000000' zeroPlaneThickness='1' zeroPlaneAlpha='80' yAxisMinValue='0' yAxisMaxValue='80'  setAdaptiveYMin='1' adjustDiv='0' numberScaleValue='分'>
+<set label='通州项目' value='80' toolText='80%' link='javascript:changeXML("../../FusionCharts/xml/xsPie3D10.xml","chartIframe");'/>
+<set label='紫金山项目' value='99' toolText='99%' link='javascript:changeXML("../../FusionCharts/xml/xsPie3D11.xml","chartIframe");'/>
+<set label='苏州项目' value='100' toolText='100%'link='javascript:changeXML("../../FusionCharts/xml/xsPie3D12.xml","chartIframe");'/>
+<set label='天山项目' value='100' toolText='100%' link='javascript:changeXML("../../FusionCharts/xml/xsPie3D13.xml","chartIframe");'/>
+<set label='青岛项目' value='70' toolText='70%' link='javascript:changeXML("../../FusionCharts/xml/xsPie3D14.xml","chartIframe");'/>
+<set label='抚顺项目' value='100' toolText='100%' link='javascript:changeXML("../../FusionCharts/xml/xsPie3D15.xml","chartIframe");'/>
+
+  <styles>
+        <definition>
+            <style name='myShadow' type='shadow' angle='45' distance='3' color='000000'/>
+        </definition>
+        <application>
+            <apply toObject='DIVLINES' styles='myShadow' />
+        </application>
+    </styles>
+</chart>

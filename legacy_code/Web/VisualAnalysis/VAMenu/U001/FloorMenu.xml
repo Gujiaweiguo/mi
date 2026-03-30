@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FloorMenu>
+	<Menu ID="1">
+		<MenuDesc>楼层出租率分析</MenuDesc>
+		<MenuUrl>VisualAnalysis/report/FloorRentRate.aspx?funcid=358</MenuUrl>
+	</Menu>
+	<Menu ID="2">
+		<MenuDesc>楼层预算收入汇总分析</MenuDesc>
+		<MenuUrl>VisualAnalysis/report/FloorYSRentTotal.aspx?funcid=358</MenuUrl>
+	</Menu>
+</FloorMenu>

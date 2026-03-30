@@ -1,0 +1,13 @@
+contractcode	String	50
+custcode	String	50
+custshortname	String	50
+ContractStatus	String	50
+constartdate	DateTime
+conenddate	DateTime
+adboardcode	String	50
+adboardname	String	50
+adboardtypename	String	50
+airtime	Number
+freq	String	50
+betwe	String	50
+

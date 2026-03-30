@@ -1,0 +1,8 @@
+storeid	Number		
+storeName	String	50	
+TransTime	String	50	
+PAmt	Number		
+InNum	Number		
+OutNum	Number		
+AtNum	Number		
+totalrecipt	Number		

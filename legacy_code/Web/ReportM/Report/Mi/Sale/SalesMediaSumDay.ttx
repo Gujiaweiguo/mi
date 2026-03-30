@@ -1,0 +1,12 @@
+ContractCode	String	32
+CustCode	String	50	efqwerqwe
+CustName	String	50	efqwerqwe
+ShopCode	String	50	efqwerqwe
+ShopName	String	50	efqwerqwe
+MediaMDesc	String	50	efqwerqwe
+MediaDesc	String	50	efqwerqwe
+PaidAmt	Number		1234
+CommChg	Number		1234
+NetAmt	Number		1234
+MediaMNo	Number		1234
+BizDate	DateTime	2008-1-1

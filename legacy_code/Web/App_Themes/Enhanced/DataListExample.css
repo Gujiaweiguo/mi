@@ -1,0 +1,101 @@
+﻿.foo {} /* W3C CSS validator likes CSS files to start with a class rather than a comment. Soooooo.... */
+
+/* This style sheet is intended to contain OFTEN CHANGED rules used when the DataList control adapter is enabled. */
+/* Empty rules are provided merely as a convenience for your future use or experimentation. */
+
+/* The outermost DataList table. */
+.PrettyDataList .AspNet-DataList table
+{
+    border:solid 3px #959595;
+    border-top: none;
+    padding:6px;
+}
+
+/* Individual "items" in the DataList. */
+.PrettyDataList .AspNet-DataList table tbody tr td
+{
+    padding:3px;         
+    vertical-align: top; 
+}
+
+/* Header and Footer of the DataList. */
+.PrettyDataList .AspNet-DataList table thead tr th,
+.PrettyDataList .AspNet-DataList table tfoot tr td,
+.PrettyDataList .AspNet-DataList table caption
+{
+    font-weight: bold;
+    font-size:1.8em;
+    background:#E9F5DA;
+    vertical-align: middle;
+    text-align:center;
+    color:#465239;
+    text-transform:uppercase;
+}
+
+/* Header of the DataList. */
+.PrettyDataList .AspNet-DataList table thead tr th
+{
+    border-bottom:3px solid #FFFFFF;
+    height: 60px;
+}
+
+.PrettyDataList .AspNet-DataList table caption
+{
+    border:3px solid #959595;
+    border-bottom: none;
+    height: 72px;
+    line-height: 72px;
+}
+
+/* Footer of the DataList. */
+.PrettyDataList .AspNet-DataList table tfoot tr td
+{
+    border-top:3px solid #FFFFFF;
+    height:20px;
+}
+
+/* ------------------------------------------------------------------- */
+/* Specific to this sample web site. */
+/* These rules are probably not useful in your site. */
+
+#SampleDataList .Sample-Contact
+{
+    border-top: solid 1px #E7E7E7;
+    border-right: solid 1px #D2D2D2;
+    border-bottom: solid 1px #D2D2D2;
+    border-left: solid 1px #E7E7E7;
+    padding:12px 6px;
+    background:url(bg-fade-light.png) repeat-x bottom;
+    color:#000;
+    font-size:.8em; 
+    font-family:Verdana, Sans-Serif;
+}
+
+#SampleDataList .Sample-Name
+{    
+    font-weight:bold;
+    color:#465239;
+}
+
+#SampleDataList .Sample-Address
+{
+    color:Gray;
+    padding:6px 0;
+}
+
+#SampleDataList .Sample-Phone
+{
+    color: #333333;
+    text-align:right;
+    white-space:nowrap; 
+}
+
+
+/* --------------------------------------------------------------------------------------------------- */
+/* Used when the DataList adapter is NOT used. */
+/* These styles are used by the DataList's skin, found in this theme's skin file. */
+
+.DataList-Skin-Header
+{
+    text-transform:uppercase;
+}

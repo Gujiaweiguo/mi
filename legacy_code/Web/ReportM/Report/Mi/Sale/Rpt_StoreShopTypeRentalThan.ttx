@@ -1,0 +1,7 @@
+storename	String	50	efqwerqwe
+shoptypename	String	50	efqwerqwe
+period	DateTime		
+paidamt	Currency	
+invamt	Currency
+Rate	Number
+		

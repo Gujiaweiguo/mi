@@ -1,0 +1,182 @@
+﻿using System;
+using System.Data;
+using System.Configuration;
+using System.Collections;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+
+using Base.Biz;
+using Base.DB;
+using Base;
+using Lease;
+using Lease.PotCustLicense;
+using Lease.ConShop;
+using RentableArea;
+using Lease.PotBargain;
+using Lease.Formula;
+using Lease.Customer;
+using Lease.Contract;
+using WorkFlow.WrkFlw;
+using WorkFlow;
+using WorkFlow.Uiltil;
+using BaseInfo.User;
+using System.Text;
+using Base.Page;
+using Shop.ShopType;
+using Base.Util;
+using Lease.SMSPara;
+using Lease.AdContract;
+
+
+public partial class Lease_AdContract_AreaBoardListPalaver : BasePage
+{
+    BaseBO baseBo = new BaseBO();
+    Resultset rs = new Resultset();
+    BaseTrans baseTrans = new BaseTrans();
+    DataSet ds = new DataSet();
+    DataTable dt = new DataTable();
+    private ConAdBoard conAdBoard;
+    public string beginEndDate;
+    private static int CONSHOPID_NULL = 1;
+    private static int CONSHOPID_NOTNULL = 2;
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!this.IsPostBack)
+        {
+            /*绑定广告位类型*/
+            BindShopType();
+
+
+            /*获取合同对应的商铺*/
+            GetAllShopInfo(1);
+
+
+            if (Request.QueryString["modify"] == null && (Request.Cookies["Info"]["modify"] == null || Request.Cookies["Info"]["modify"] == "")) //非修改合同
+
+            {
+                rdoYes.Enabled = false;
+                rdoNo.Enabled = false;
+            }
+            else if (Request.QueryString["modify"] == "1" || Request.Cookies["Info"]["modify"] == "1")
+            {
+                rdoConfirm.Enabled = false;
+                rdoYes.Checked = true;
+            }
+        }
+    }
+
+    //绑定广告位类型
+
+    protected void BindShopType()
+    {
+        rs = baseBo.Query(new AdBoardType());
+        cmbAdBoardType.Items.Clear();
+        foreach (AdBoardType adBoardType in rs)
+        {
+            cmbAdBoardType.Items.Add(new ListItem(adBoardType.AdBoardTypeName, adBoardType.AdBoardTypeID.ToString()));
+        }
+
+    }
+
+
+    protected void gvShop_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        int shopId = Convert.ToInt32(gvShop.SelectedRow.Cells[0].Text);
+        ViewState["delShopID"] = shopId;
+        GetShopBaseInfo(shopId);
+        GetAllShopInfo(0);
+        ViewState["shopFlag"] = "modify";
+
+    }
+    protected void GetShopBaseInfo(int conAdBoardID)
+    {
+        baseBo.WhereClause = "";
+        baseBo.WhereClause = " ConAdBoardID = " + conAdBoardID;
+        //baseBo.WhereClause = "ContractID = " + Convert.ToInt32(ViewState["contractID"]);
+        rs = baseBo.Query(new ConAdBoard());
+        if (rs.Count == 1)
+        {
+            ConAdBoard conAdBoard = rs.Dequeue() as ConAdBoard;
+
+            txtConAdBoardCode.Text = conAdBoard.ConAdBoardCode;
+            txtConAdBoardName.Text = conAdBoard.ConAdBoardName;
+            cmbAdBoardType.SelectedValue = conAdBoard.ConAdBoardTypeID.ToString();
+            txtEndDate.Text = conAdBoard.ConAdBoardEndDate.ToString("yyyy-MM-dd");
+            txtStartDate.Text = conAdBoard.ConAdBoardStartDate.ToString("yyyy-MM-dd");
+            txtNote.Text = conAdBoard.ConAdBoardDesc;
+
+            if (Request.QueryString["modify"] == null && (Request.Cookies["Info"]["modify"] == null || Request.Cookies["Info"]["modify"] == "")) //非修改合同
+
+            {
+                rdoConfirm.Checked = true;
+            }
+            else if (Request.QueryString["modify"] == "1" || Request.Cookies["Info"]["modify"] == "1")
+            {
+                if (conAdBoard.ConAdBoardStatus == ConAdBoard.BLANKOUT_STATUS_INVALID)
+                {
+                    rdoYes.Checked = true;
+                }
+                else if (conAdBoard.ConAdBoardStatus == ConAdBoard.BLANKOUT_STATUS_LEASEOUT)
+                {
+                    rdoNo.Checked = true;
+                }
+            }
+
+            ViewState["ShopId"] = conAdBoard.ConAdBoardID;
+            ViewState["delShopID"] = conAdBoardID;
+        }
+    }
+
+    private void GetAllShopInfo(int FirstStatus)
+    {
+        baseBo.WhereClause = "";
+        baseBo.OrderBy = "";
+
+        int contractID = 0;
+        if (Request.Cookies["Info"].Values["conID"] != "")
+        {
+            contractID = Convert.ToInt32(Request.Cookies["Info"].Values["conID"]);
+        }
+        baseBo.WhereClause = "ContractID = " + contractID;
+        DataSet shopDs = baseBo.QueryDataSet(new ConAdBoard());
+        DataTable shopDt = shopDs.Tables[0];
+        int shopCount = shopDt.Rows.Count;
+
+        decimal ss = 0;
+        for (int j = 0; j < shopCount; j++)
+        {
+            ss += Convert.ToDecimal(shopDt.Rows[j]["RentArea"]);
+        }
+        ViewState["shopArea"] = ss;  //所有商铺面积之和
+
+
+
+
+        int countNull = 13 - shopCount;
+        for (int i = 0; i < countNull; i++)
+        {
+            shopDt.Rows.Add(shopDt.NewRow());
+        }
+        gvShop.DataSource = shopDt;
+        gvShop.DataBind();
+        int gvCount = gvShop.Rows.Count;
+        for (int j = shopCount; j < gvCount; j++)
+            gvShop.Rows[j].Cells[3].Text = "";
+
+        if (FirstStatus == 1)
+        {
+            if (shopCount > 0)
+            {
+                GetShopBaseInfo(Convert.ToInt32(shopDt.Rows[0]["ConAdBoardID"]));
+            }
+        }
+    }
+    protected void LinkButton1_Click(object sender, EventArgs e)
+    {
+
+    }
+}

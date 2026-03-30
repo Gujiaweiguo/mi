@@ -1,0 +1,10 @@
+StoreID	Number		
+StoreShortName	String	16	
+ShopTypeName	String	32	
+MPaidAmt	Number		
+oldMPaidAmt	Number		
+oldMRate	Number		
+yearMPaidAmt	Number		
+yearRate	Number	
+yearpaidamt	Number	
+lyyearpaidamt	Number	

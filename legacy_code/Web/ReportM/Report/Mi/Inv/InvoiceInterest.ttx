@@ -1,0 +1,30 @@
+ShopID	Number		
+ShopCode	String	16	
+ShopName	String	64	
+ContractCode	String	32	
+CurTypeID	Number		
+CurTypeName	String	16	
+InvCode	String	32	
+CustID	Number		
+CustCode	String	16	
+CustName	String	64	
+ContractID	Number		
+BankName	String	64	
+BankAcct	String	32	
+OfficeAddr	String	64	
+OfficeTel	String	16	
+ChargeTypeID	Number		
+ChargeTypeCode	String	32	
+ChargeTypeName	String	32	
+InvStartDate	DateTime		
+InvEndDate	DateTime		
+InvActPayAmt	Currency		
+IntStartDate	DateTime
+IntEndDate	DateTime
+InterestDay	Number		
+InterestAmt	Currency		
+PrtName	String	32
+CreateTime	DateTime
+Note	String	128
+InterestRate	Currency
+contactMan	String	32

@@ -1,0 +1,13 @@
+storeid	Number		
+storeshortname	String	50
+ContractID	String	50	efqwerqwe
+ContractCode	String	50	efqwerqwe
+CustCode	String	50	efqwerqwe
+CustName	String	50	efqwerqwe
+InvCode		String	50	efqwerqwe
+InvPeriod	DateTime	2008-1-1
+InvPayAmt	Number		1234
+SInvPaidAmt	Number		1234
+InvPayDate	DateTime	2008-1-1
+chargetypename		String	50	efqwerqwe
+

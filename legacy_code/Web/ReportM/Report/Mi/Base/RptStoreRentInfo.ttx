@@ -1,0 +1,10 @@
+storeshortname	String	50	efqwerqwe
+period	DateTime		
+shoptypefloors	String	64	
+areas	Number		
+useareas	Number		
+rentareas	Number		
+arearate	Number		
+userate	Number		
+RentalAmt	Currency		
+avgRentalAmt	Currency		

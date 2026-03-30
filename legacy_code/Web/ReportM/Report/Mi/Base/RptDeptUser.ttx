@@ -1,0 +1,9 @@
+userid	Number
+usercode	String	50
+username	String	50
+deptid	Number
+deptcode	String	50
+deptname	String	50
+orderid	Number
+userstatus	Number
+status	String	50

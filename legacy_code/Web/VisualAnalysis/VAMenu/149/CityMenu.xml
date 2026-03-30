@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<MIGroupMenu>
+	<Menu ID="1">
+		<MenuDesc>项目整体出租率</MenuDesc>
+		<MenuUrl>VisualAnalysis/report/CityRentRate.aspx?funcid=358</MenuUrl>
+	</Menu>
+	<Menu ID="2">
+		<MenuDesc>项目商铺类型出租率分析</MenuDesc>
+		<MenuUrl>VisualAnalysis/report/CityShopTypeCon.aspx?funcid=358</MenuUrl>
+	</Menu>
+	<Menu ID="3">
+		<MenuDesc>城市预算收入汇总分析</MenuDesc>
+		<MenuUrl>VisualAnalysis/report/CityYSRentTotal.aspx?funcid=358</MenuUrl>
+	</Menu>
+	<Menu ID="4">
+		<MenuDesc>项目预算收入明细分析</MenuDesc>
+		<MenuUrl>VisualAnalysis/report/CityYSRentDetail.aspx?funcid=358</MenuUrl>
+	</Menu>
+	<Menu ID="5">
+		<MenuDesc>城市租赁收入账龄分析</MenuDesc>
+		<MenuUrl>VisualAnalysis/report/CityZltotal.aspx?funcid=358</MenuUrl>
+	</Menu>
+	<Menu ID="6">
+		<MenuDesc>项目商铺类型租售比分析</MenuDesc>
+		<MenuUrl>VisualAnalysis/report/CityShopTypeInvSale.aspx?funcid=358</MenuUrl>
+	</Menu>
+	<Menu ID="7">
+		<MenuDesc>项目销售汇总分析</MenuDesc>
+		<MenuUrl>VisualAnalysis/report/CityShopTypeSaleDetail.aspx?funcid=358</MenuUrl>
+	</Menu>
+</MIGroupMenu>

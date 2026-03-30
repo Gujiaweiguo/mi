@@ -1,0 +1,6 @@
+StoreShortName	String	16
+innum	Number
+lminnum	Number
+lyinnum	Number
+total	Number
+lytotal	Number

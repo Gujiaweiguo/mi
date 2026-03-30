@@ -1,0 +1,673 @@
+﻿using System;
+using System.Data;
+using System.Configuration;
+using System.Collections;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+using System.Text;
+
+using WorkFlow.WrkFlw;
+using WorkFlow;
+using WorkFlow.Uiltil;
+
+using Base.Biz;
+using Base;
+using Lease.PotCustLicense;
+using Base.Page;
+using BaseInfo.User;
+using Base.DB;
+using BaseInfo.Dept;
+using Lease.PotCust;
+public partial class Lease_PotCustomer_PotCustomer : BasePage
+{
+    private static int DISPROVE_ID = 1;
+    private int numCount = 0;
+    
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        txtCustCode.Focus();
+
+        txtLicenseBeginDate.Attributes.Add("onclick", "setday(txtLicenseBeginDate)");
+        txtLicenseEndDate.Attributes.Add("onclick", "setday(txtLicenseEndDate)");
+
+        txtRegCap.Attributes.Add("onkeydown", "TextLeave()");
+        txtPostCode.Attributes.Add("onkeydown", "TextLeave()");
+
+        txtLicenseID.Attributes.Add("onblur", "TextIsNotNull(txtLicenseID,hidMessage.value)");
+        txtLicenseName.Attributes.Add("onblur", "TextIsNotNull(txtLicenseName,hidMessage.value)");
+        txtCustCode.Attributes.Add("onblur", "TextIsNotNull(txtCustCode,ImgCustCode)");
+        txtCustShortName.Attributes.Add("onblur", "TextIsNotNull(txtCustShortName,hidMessage.value)");
+
+        btnSave.Attributes.Add("OnMouseOver", "this.style.background='url(../../App_Themes/CSS/BtnImage/BtnSaveing.gif) no-repeat left top';this.style.fontWeight='bold';");
+        btnSave.Attributes.Add("OnMouseOut", "this.style.background='url(../../App_Themes/CSS/BtnImage/BtnSave.gif) no-repeat left top';this.style.fontWeight='normal';");
+
+        btnCancel.Attributes.Add("OnMouseOver", "this.style.background='url(../../App_Themes/CSS/BtnImage/BtnCanceling.gif) no-repeat left top';this.style.fontWeight='bold';");
+        btnCancel.Attributes.Add("OnMouseOut", "this.style.background='url(../../App_Themes/CSS/BtnImage/BtnCancel.gif) no-repeat left top';this.style.fontWeight='normal';");
+
+        btnAdd.Attributes.Add("OnMouseOver", "this.style.background='url(../../App_Themes/CSS/BtnImage/BtnSaveing.gif) no-repeat left top';this.style.fontWeight='bold';");
+        btnAdd.Attributes.Add("OnMouseOut", "this.style.background='url(../../App_Themes/CSS/BtnImage/BtnSave.gif) no-repeat left top';this.style.fontWeight='normal';");
+
+        btnQuit.Attributes.Add("OnMouseOver", "this.style.background='url(../../App_Themes/CSS/BtnImage/BtnCanceling.gif) no-repeat left top';this.style.fontWeight='bold';");
+        btnQuit.Attributes.Add("OnMouseOut", "this.style.background='url(../../App_Themes/CSS/BtnImage/BtnCancel.gif) no-repeat left top';this.style.fontWeight='normal';");
+
+        btnEdit.Attributes.Add("OnMouseOver", "this.style.background='url(../../App_Themes/CSS/BtnImage/BtnCanceling.gif) no-repeat left top';this.style.fontWeight='bold';");
+        btnEdit.Attributes.Add("OnMouseOut", "this.style.background='url(../../App_Themes/CSS/BtnImage/BtnCancel.gif) no-repeat left top';this.style.fontWeight='normal';");
+
+        btnBack.Attributes.Add("OnMouseOver", "this.style.background='url(../../App_Themes/CSS/BtnImage/Btnbacking.gif) no-repeat left top';this.style.fontWeight='bold';");
+        btnBack.Attributes.Add("OnMouseOut", "this.style.background='url(../../App_Themes/CSS/BtnImage/Btnback.gif) no-repeat left top';this.style.fontWeight='normal';");
+        btnNext.Attributes.Add("OnMouseOver", "this.style.background='url(../../App_Themes/CSS/BtnImage/Btnnexting.gif) no-repeat left top';this.style.fontWeight='bold';");
+        btnNext.Attributes.Add("OnMouseOut", "this.style.background='url(../../App_Themes/CSS/BtnImage/Btnnext.gif) no-repeat left top';this.style.fontWeight='normal';");
+        btnSave.Attributes.Add("onclick", "return CustomrtBoxValidator(form1)");
+        btnAdd.Attributes.Add("onclick", "return LicenseBoxValidator(txtLicenseBeginDate,txtLicenseEndDate,hidDateTime.value)");
+        page();
+        BaseBO baseBO = new BaseBO();
+        Resultset rs = new Resultset();
+        if (!IsPostBack)
+        {
+
+            btnAdd.Enabled = true;
+
+            PotCustomer potCustomer = new PotCustomer();
+
+            /*商户类型*/
+            baseBO.WhereClause = "CustTypeStatus=" + CustType.CUST_TYPE_STATUS_VALID;
+            rs = baseBO.Query(new CustType());
+            foreach(CustType custtype in rs)
+            {
+                cmbCustType.Items.Add(new ListItem(custtype.CustTypeName, custtype.CustTypeID.ToString()));
+            }
+
+            /*招商员选择列表*/
+            baseBO.WhereClause = "UserStatus=" + UserInfo.USER_STATUS_VALID;
+            baseBO.GroupBy = "a.userid,UserName,a.UserCode,WorkNo,OfficeTel,UserStatus";
+            rs = baseBO.Query(new UserInfo());
+            foreach (UserInfo user in rs)
+            {
+                cmbCommOper.Items.Add(new ListItem(user.UserName, user.UserID.ToString()));
+            }
+
+            /*证照类型*/
+            int[] status2 = PotCustLicenseInfo.GetPotCustLicenseType();
+            for (int i = 0; i < status2.Length; i++)
+            {
+                cmbLicenseType.Items.Add(new ListItem((String)GetGlobalResourceObject("Parameter",PotCustLicenseInfo.GetPotCustLicenseTypeDesc(status2[i])), status2[i].ToString()));
+            }
+
+            if (Request.QueryString["Sequence"] != null)
+            {
+                baseBO.WhereClause = "a.CustID=" + Request.QueryString["VoucherID"];
+                baseBO.GroupBy = "";
+                rs = baseBO.Query(new PotCustomerQuery());
+                if (rs != null)
+                {
+                    PotCustomerQuery potCustomerQuery = rs.Dequeue() as PotCustomerQuery;
+                    txtCustCode.Text = potCustomerQuery.CustCode;
+                    txtCustName.Text = potCustomerQuery.CustName;
+                    txtCustShortName.Text = potCustomerQuery.CustShortName;
+                    cmbCustType.SelectedValue = potCustomerQuery.CustTypeID.ToString();
+                    txtLegalRep.Text = potCustomerQuery.LegalRep;
+                    txtLegalRepTitle.Text = potCustomerQuery.LegalRepTitle;
+                    txtRegCap.Text = potCustomerQuery.RegCap.ToString();
+                    txtRegAddr.Text = potCustomerQuery.RegAddr;
+                    txtRegCode.Text = potCustomerQuery.RegCode;
+                    txtTaxCode.Text = potCustomerQuery.TaxCode;
+                    txtBankName.Text = potCustomerQuery.BankName;
+                    txtBankAcct.Text = potCustomerQuery.BankAcct;
+                    txtOfficeAddr.Text = potCustomerQuery.OfficeAddr;
+                    txtPostAddr.Text = potCustomerQuery.PostAddr;
+                    txtPostCode.Text = potCustomerQuery.PostCode;
+                    txtWeb.Text = potCustomerQuery.WebURL;
+                    txtContactorName.Text = potCustomerQuery.ContactorName;
+                    txtTitle.Text = potCustomerQuery.Title;
+                    txtOfficeTel.Text = potCustomerQuery.OfficeTel;
+                    txtMobileTel.Text = potCustomerQuery.MobileTel;
+                    txtEMail.Text = potCustomerQuery.EMail;
+                    pageDisprove("CustID=" + Request.QueryString["VoucherID"]);
+                    ViewState["Disprove"] = DISPROVE_ID;
+                }
+            }
+        }
+    }
+    public void BindGridView()
+    {
+
+        ////BaseBO basebo = new BaseBO();
+        //////basebo.WhereClause = "CustID=" + ViewState["CustID"];
+        ////DataSet ds = basebo.QueryDataSet(new PotCustLicenseInfo());
+        ////this.GridView1.DataSource = ds.Tables[0];
+        ////this.GridView1.DataBind();
+        //BaseBO basebo = new BaseBO();
+        ////basebo.WhereClause = "CustID=" + ViewState["CustID"];
+        //DataSet ds = basebo.QueryDataSet(new Dept());
+        //this.GridView1.DataSource = ds.Tables[0];
+        //this.GridView1.DataBind();
+        txtLicenseID.Text = "";
+        txtLicenseName.Text = "";
+        txtLicenseBeginDate.Text = "";
+        txtLicenseEndDate.Text = "";
+
+        
+    }
+    protected void DropLicenseType_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+    }
+    protected void cmbCustType_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        //商户类型
+    }
+    protected void btnAdd_Click(object sender, EventArgs e)
+    {
+        //添加
+        if (ViewState["CustID"] != null)
+        {
+
+            PotCustLicenseInfo potCustLicense = new PotCustLicenseInfo();
+            potCustLicense.CustLicenseID = BaseApp.GetCustLicenseID();
+            potCustLicense.CustLicenseCode = txtLicenseID.Text;
+            potCustLicense.CustLicenseName = txtLicenseName.Text;
+            potCustLicense.CustLicenseType = Convert.ToInt32(cmbLicenseType.SelectedValue);
+            potCustLicense.CustLicenseStartDate = Convert.ToDateTime(txtLicenseBeginDate.Text);
+            potCustLicense.CustLicenseEndDate = Convert.ToDateTime(txtLicenseEndDate.Text);
+            potCustLicense.CustID = Convert.ToInt32(ViewState["CustID"].ToString());
+            BaseBO baseBo = new BaseBO();
+            int result = baseBo.Insert(potCustLicense);
+            if (result != -1)
+            {
+                ScriptManager.RegisterClientScriptBlock(UpdatePanel1, this.GetType(), "message", "parent.document.all.txtWroMessage.value =  '" + hidAdd.Value + "'", true);
+            }
+            else
+            {
+                ScriptManager.RegisterClientScriptBlock(UpdatePanel1, this.GetType(), "message", "parent.document.all.txtWroMessage.value =  '" + hidInsert.Value + "'", true);
+                page();
+                ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), "divshow", "chooseCard(1)", true);
+                return;
+            }
+        }
+        else
+        {
+                ScriptManager.RegisterClientScriptBlock(UpdatePanel1, this.GetType(), "message", "parent.document.all.txtWroMessage.value =  '" + hidWrite.Value + "'", true);
+                page();
+                ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), "divshow", "chooseCard(1)", true);
+                return;
+        }
+        CancelCustLicenseText();
+        numCount = 0;
+        page();
+        ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), "divshow", "chooseCard(1)", true);
+    }
+    public void CancelCustLicenseText()
+    {
+        txtLicenseID.Text = "";
+        txtLicenseName.Text = "";
+        txtLicenseBeginDate.Text = "";
+        txtLicenseEndDate.Text = "";
+        btnAdd.Enabled = true;
+        btnEdit.Enabled = false;
+    }
+    protected void ImageButton1_Click(object sender, ImageClickEventArgs e)
+    {
+        PotCustomer potCustomer = new PotCustomer();
+        potCustomer.CustID = BaseApp.GetCustID();
+        potCustomer.CustCode = txtCustCode.Text;
+        potCustomer.CustName = txtCustName.Text;
+        potCustomer.CustShortName = txtCustShortName.Text;
+        potCustomer.CustTypeID = Convert.ToInt32(cmbCustType.SelectedValue);
+        potCustomer.LegalRep = txtLegalRep.Text;
+        potCustomer.LegalRepTitle = txtLegalRepTitle.Text;
+        potCustomer.RegCap = Convert.ToInt64(txtRegCap.Text);
+        potCustomer.RegAddr = txtRegAddr.Text;
+        potCustomer.RegCode = txtRegCode.Text;
+        potCustomer.TaxCode = txtTaxCode.Text;
+        potCustomer.BankName = txtBankName.Text;
+        potCustomer.BankAcct = txtBankAcct.Text;
+        potCustomer.OfficeAddr = txtOfficeAddr.Text;
+        potCustomer.PostAddr = txtPostAddr.Text;
+        potCustomer.PostCode = txtPostCode.Text;
+        potCustomer.WebUrl = txtWeb.Text;
+
+        PotCustContactInfo potCustContact = new PotCustContactInfo();
+        potCustContact.CustContactID = BaseApp.GetCustContactID();
+        potCustContact.ContactorName = txtContactorName.Text;
+        potCustContact.Title = txtTitle.Text;
+        potCustContact.OfficeTel = txtOfficeTel.Text;
+        potCustContact.MobileTel = txtMobileTel.Text;
+        potCustContact.EMail = txtEMail.Text;
+        potCustContact.CustID = potCustomer.CustID;
+        //  potCustContact.OfficeAddr = txtOfficeAddr.Text;
+
+        BaseTrans baseTrans = new BaseTrans();
+
+        ViewState["CustID"] = potCustomer.CustID;
+
+        baseTrans.BeginTrans();
+
+        int result = baseTrans.Insert(potCustomer);
+        if (result != -1)
+        {
+            ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), "", "alert('添加成功')", true);
+        }
+        else
+        {
+            ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), "", "alert('添加失败')", true);
+        }
+        baseTrans.Insert(potCustContact);
+
+        SessionUser objSessionUser = (SessionUser)Session["UserAccessInfo"];
+        int voucherID = Convert.ToInt32(ViewState["CustID"]);
+        String voucherHints = txtCustShortName.Text.Trim();
+        String voucherMemo = "";
+        //int operatorID = objSessionUser.UserID;
+        //int deptID = objSessionUser.DeptID;
+        //int wrkFlwID = Convert.ToInt32(Request.QueryString["WrkFlwID"]);
+        //int nodeID = Convert.ToInt32(Request.QueryString["NodeID"]);
+
+        VoucherInfo vInfo = new VoucherInfo(voucherID, voucherHints, voucherMemo, objSessionUser.DeptID, objSessionUser.UserID);
+
+        WrkFlwApp.CommitVoucher(Convert.ToInt32(Request.QueryString["WrkFlwID"]), Convert.ToInt32(Request.QueryString["NodeID"]), vInfo);
+
+        baseTrans.Commit();
+
+        clearText();
+    }
+    
+    protected void btnSave_Click(object sender, EventArgs e)
+    {
+        PotCustContactInfo potCustContact = new PotCustContactInfo();
+        PotCustomer potCustomer = new PotCustomer();
+        BaseTrans baseTrans = new BaseTrans();
+        int voucherID = 0;
+        SessionUser objSessionUser = (SessionUser)Session["UserAccessInfo"];
+        String voucherHints = txtCustShortName.Text.Trim();
+        String voucherMemo = "";
+        BaseBO baseBO = new BaseBO();
+        baseBO.WhereClause ="CustCode='" + txtCustCode +"'";
+        Resultset rs = baseBO.Query(potCustomer);
+        if (rs.Count > 1)
+        {
+            ScriptManager.RegisterClientScriptBlock(UpdatePanel1, this.GetType(), "message", "parent.document.all.txtWroMessage.value =  '" + hidRepeat.Value + "'", true);
+            ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), "divshow", "chooseCard(0)", true);
+            txtCustCode.Focus();
+            return;
+        }
+        if (Convert.ToInt32(ViewState["Disprove"]) == DISPROVE_ID)
+        {
+            potCustomer.CustCode = txtCustCode.Text;
+            potCustomer.CustName = txtCustName.Text;
+            potCustomer.CustShortName = txtCustShortName.Text;
+            potCustomer.CustTypeID = Convert.ToInt32(cmbCustType.SelectedValue);
+            potCustomer.LegalRep = txtLegalRep.Text;
+            potCustomer.LegalRepTitle = txtLegalRepTitle.Text;
+            potCustomer.RegCap = Convert.ToDecimal(txtRegCap.Text);
+            potCustomer.RegAddr = txtRegAddr.Text;
+            potCustomer.RegCode = txtRegCode.Text;
+            potCustomer.TaxCode = txtTaxCode.Text;
+            potCustomer.BankName = txtBankName.Text;
+            potCustomer.BankAcct = txtBankAcct.Text;
+            potCustomer.OfficeAddr = txtOfficeAddr.Text;
+            potCustomer.PostAddr = txtPostAddr.Text;
+            potCustomer.PostCode = txtPostCode.Text;
+            potCustomer.WebUrl = txtWeb.Text;
+            potCustomer.CommOper = Convert.ToInt32(cmbCommOper.SelectedValue.ToString());
+
+            potCustContact.CustContactID = BaseApp.GetCustContactID();
+            potCustContact.ContactorName = txtContactorName.Text;
+            potCustContact.Title = txtTitle.Text;
+            potCustContact.OfficeTel = txtOfficeTel.Text;
+            potCustContact.MobileTel = txtMobileTel.Text;
+            potCustContact.EMail = txtEMail.Text;
+            potCustContact.CustID = potCustomer.CustID;
+
+            baseTrans.BeginTrans();
+            baseTrans.WhereClause = "CustID=" + Convert.ToInt32(Request.QueryString["VoucherID"]);
+            int result = baseTrans.Update(potCustomer);
+            if (result != -1)
+            {
+                ScriptManager.RegisterClientScriptBlock(UpdatePanel1, this.GetType(), "message", "parent.document.all.txtWroMessage.value =  '" + hidAdd.Value + "'", true);
+            }
+            else
+            {
+                ScriptManager.RegisterClientScriptBlock(UpdatePanel1, this.GetType(), "message", "parent.document.all.txtWroMessage.value =  '" + hidInsert.Value + "'", true);
+                ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), "divshow", "chooseCard(0)", true);
+                return;
+            }
+            baseTrans.WhereClause = "CustID=" + Convert.ToInt32(Request.QueryString["VoucherID"]);
+            baseTrans.Update(potCustContact);
+
+            baseTrans.Commit();
+            voucherID = Convert.ToInt32(Request.QueryString["VoucherID"]);
+            VoucherInfo vInfo = new VoucherInfo(voucherID, voucherHints, voucherMemo, objSessionUser.DeptID, objSessionUser.UserID);
+            WrkFlwApp.CommitVoucher(Convert.ToInt32(Request.QueryString["WrkFlwID"]), Convert.ToInt32(Request.QueryString["NodeID"]), vInfo);
+            WrkFlwApp.ConfirmVoucher(Convert.ToInt32(Request.QueryString["WrkFlwID"]), Convert.ToInt32(Request.QueryString["NodeID"]), Convert.ToInt32(Request.QueryString["Sequence"]), vInfo);
+            btnSave.Enabled = false;
+        }
+        else
+        {
+            potCustomer.CustID = BaseApp.GetCustID();
+            potCustomer.CustCode = txtCustCode.Text;
+            potCustomer.CustName = txtCustName.Text;
+            potCustomer.CustShortName = txtCustShortName.Text;
+            potCustomer.CustTypeID = Convert.ToInt32(cmbCustType.SelectedValue);
+            potCustomer.LegalRep = txtLegalRep.Text;
+            potCustomer.LegalRepTitle = txtLegalRepTitle.Text;
+            potCustomer.RegCap = Convert.ToInt64(txtRegCap.Text);
+            potCustomer.RegAddr = txtRegAddr.Text;
+            potCustomer.RegCode = txtRegCode.Text;
+            potCustomer.TaxCode = txtTaxCode.Text;
+            potCustomer.BankName = txtBankName.Text;
+            potCustomer.BankAcct = txtBankAcct.Text;
+            potCustomer.OfficeAddr = txtOfficeAddr.Text;
+            potCustomer.PostAddr = txtPostAddr.Text;
+            potCustomer.PostCode = txtPostCode.Text;
+            potCustomer.WebUrl = txtWeb.Text;
+            potCustomer.CreateUserID = objSessionUser.UserID;
+            potCustomer.CreateTime = DateTime.Now;
+            potCustomer.CustomerStatus = PotCustomer.POTCUSTOMER_NO_ITEM;
+            potCustomer.CommOper = Convert.ToInt32(cmbCommOper.SelectedValue.ToString());
+
+            potCustContact.CustContactID = BaseApp.GetCustContactID();
+            potCustContact.ContactorName = txtContactorName.Text;
+            potCustContact.Title = txtTitle.Text;
+            potCustContact.OfficeTel = txtOfficeTel.Text;
+            potCustContact.MobileTel = txtMobileTel.Text;
+            potCustContact.EMail = txtEMail.Text;
+            potCustContact.CustID = potCustomer.CustID;
+
+            ViewState["CustID"] = potCustomer.CustID;
+
+            try{
+                baseTrans.BeginTrans();
+                baseTrans.Insert(potCustomer);
+                baseTrans.Insert(potCustContact);
+
+                voucherID = Convert.ToInt32(ViewState["CustID"]);
+                VoucherInfo vInfo = new VoucherInfo(voucherID, voucherHints, voucherMemo, objSessionUser.DeptID, objSessionUser.UserID);
+                int wrkFlwID=Convert.ToInt32(Request.QueryString["WrkFlwID"]);
+                int nodeID=Convert.ToInt32(Request.QueryString["NodeID"]);
+                WrkFlwApp.CommitVoucher(wrkFlwID, nodeID, vInfo, baseTrans);
+
+                baseTrans.Commit();
+
+                btnSave.Enabled = false;
+            }catch(Exception ex){                
+                ScriptManager.RegisterClientScriptBlock(UpdatePanel1, this.GetType(), "message", "parent.document.all.txtWroMessage.value =  '" + hidInsert.Value + "'", true);
+                ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), "divshow", "chooseCard(0)", true);
+                return;
+            }
+            
+            ScriptManager.RegisterClientScriptBlock(UpdatePanel1, this.GetType(), "message", "parent.document.all.txtWroMessage.value =  '" + hidAdd.Value + "'", true);
+
+        }
+        ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), "divshow", "chooseCard(0)", true);
+
+    }
+    protected void pageDisprove(string wherestr)
+    {
+        BaseBO baseBO = new BaseBO();
+        PagedDataSource pds = new PagedDataSource();
+        int spareRow = 0;
+
+        baseBO.WhereClause = wherestr;
+
+        DataTable dt = baseBO.QueryDataSet(new PotCustLicenseInfo()).Tables[0];
+        pds.DataSource = dt.DefaultView;
+
+        if (pds.Count < 1)
+        {
+            for (int i = 0; i < GrdCustLicense.PageSize; i++)
+            {
+                dt.Rows.Add(dt.NewRow());
+            }
+            pds.DataSource = dt.DefaultView;
+            GrdCustLicense.DataSource = pds;
+            GrdCustLicense.DataBind();
+        }
+        else
+        {
+            GrdCustLicense.EmptyDataText = "";
+            pds.AllowPaging = true;
+            pds.PageSize = 11;
+            lblTotalNum.Text = "/" + pds.PageCount.ToString() + " page";
+            pds.CurrentPageIndex = int.Parse(lblCurrent.Text) - 1;
+            if (pds.IsFirstPage)
+            {
+                btnBack.Enabled = false;
+                btnNext.Enabled = true;
+            }
+
+            if (pds.IsLastPage)
+            {
+                btnBack.Enabled = true;
+                btnNext.Enabled = false;
+            }
+
+            if (pds.IsFirstPage && pds.IsLastPage)
+            {
+                btnBack.Enabled = false;
+                btnNext.Enabled = false;
+            }
+
+            if (!pds.IsLastPage && !pds.IsFirstPage)
+            {
+                btnBack.Enabled = true;
+                btnNext.Enabled = true;
+            }
+            this.GrdCustLicense.DataSource = pds;
+            this.GrdCustLicense.DataBind();
+            spareRow = GrdCustLicense.Rows.Count;
+            for (int i = 0; i < pds.PageSize - spareRow; i++)
+            {
+                dt.Rows.Add(dt.NewRow());
+            }
+            pds.DataSource = dt.DefaultView;
+            GrdCustLicense.DataSource = pds;
+            GrdCustLicense.DataBind();
+        }
+    }
+    protected void page()
+    {
+        BaseBO baseBO = new BaseBO();
+        PagedDataSource pds = new PagedDataSource();
+        int spareRow = 0;
+
+            if (Convert.ToString(ViewState["CustID"]) == "")
+            {
+                baseBO.WhereClause = "CustID=" + 0;
+            }
+            else
+            {
+                baseBO.WhereClause = "CustID=" + ViewState["CustID"];
+            }
+            DataTable dt = baseBO.QueryDataSet(new PotCustLicenseInfo()).Tables[0];
+            pds.DataSource = dt.DefaultView;
+
+            if (pds.Count < 1)
+            {
+                for (int i = 0; i < GrdCustLicense.PageSize; i++)
+                {
+                    dt.Rows.Add(dt.NewRow());
+                }
+                pds.DataSource = dt.DefaultView;
+                GrdCustLicense.DataSource = pds;
+                GrdCustLicense.DataBind();
+            }
+            else
+            {
+                GrdCustLicense.EmptyDataText = "";
+                pds.AllowPaging = true;
+                pds.PageSize = 11;
+                lblTotalNum.Text = "/" + pds.PageCount.ToString() + " page";
+                pds.CurrentPageIndex = int.Parse(lblCurrent.Text) - 1;
+                if (pds.IsFirstPage)
+                {
+                    btnBack.Enabled = false;
+                    btnNext.Enabled = true;
+                }
+
+                if (pds.IsLastPage)
+                {
+                    btnBack.Enabled = true;
+                    btnNext.Enabled = false;
+                }
+
+                if (pds.IsFirstPage && pds.IsLastPage)
+                {
+                    btnBack.Enabled = false;
+                    btnNext.Enabled = false;
+                }
+
+                if (!pds.IsLastPage && !pds.IsFirstPage)
+                {
+                    btnBack.Enabled = true;
+                    btnNext.Enabled = true;
+                }
+                this.GrdCustLicense.DataSource = pds;
+                this.GrdCustLicense.DataBind();
+                spareRow = GrdCustLicense.Rows.Count;
+                for (int i = 0; i < pds.PageSize - spareRow; i++)
+                {
+                    dt.Rows.Add(dt.NewRow());
+                }
+                pds.DataSource = dt.DefaultView;
+                GrdCustLicense.DataSource = pds;
+                GrdCustLicense.DataBind();
+            }
+    }
+
+
+
+    public string SubStr(string sString, int nLeng)
+    {
+        if (sString.Length <= nLeng)
+        {
+            return sString;
+        }
+        string sNewStr = sString.Substring(0, nLeng);
+        sNewStr = sNewStr + "...";
+        return sNewStr;
+    }
+
+    protected void btnCancel_Click(object sender, EventArgs e)
+    {
+        clearText();
+        ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), "divshow", "chooseCard(0)", true);
+    }
+
+    protected void btnEdit_Click(object sender, EventArgs e)
+    {
+        //更新
+        PotCustLicenseInfo potCustLicense = new PotCustLicenseInfo();
+        potCustLicense.CustLicenseCode = txtLicenseID.Text;
+        potCustLicense.CustLicenseName = txtLicenseName.Text;
+        potCustLicense.CustLicenseType = Convert.ToInt32(cmbLicenseType.SelectedValue);
+        potCustLicense.CustLicenseStartDate = Convert.ToDateTime(txtLicenseBeginDate.Text);
+        potCustLicense.CustLicenseEndDate = Convert.ToDateTime(txtLicenseEndDate.Text);
+
+        BaseBO baseBo = new BaseBO();
+
+        baseBo.WhereClause = "CustLicenseID=" + ViewState["custLicenseID"].ToString();
+
+        int result = baseBo.Update(potCustLicense);
+        if (result != -1)
+        {
+            ScriptManager.RegisterClientScriptBlock(UpdatePanel1, this.GetType(), "message", "parent.document.all.txtWroMessage.value =  '" + hidUpdate.Value + "'", true);
+            page();
+        }
+        else
+        {
+            ScriptManager.RegisterClientScriptBlock(UpdatePanel1, this.GetType(), "message", "parent.document.all.txtWroMessage.value =  '" + hidInsert.Value + "'", true);
+            CancelCustLicenseText();
+            ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), "divshow", "chooseCard(1)", true);
+            return;
+        }
+        //BindGridView();
+        btnEdit.Enabled = false;
+        btnAdd.Enabled = true;
+        CancelCustLicenseText();
+        ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), "divshow", "chooseCard(1)", true);
+    }
+    protected void btnQuit_Click(object sender, EventArgs e)
+    {
+        CancelCustLicenseText();
+
+        ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), "divshow", "chooseCard(1)", true);
+    }
+    protected void btnBack_Click(object sender, EventArgs e)
+    {
+        lblCurrent.Text = Convert.ToString(int.Parse(lblCurrent.Text) - 1);
+        page();
+        ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), "divshow", "chooseCard(1)", true);
+    }
+    protected void btnNext_Click(object sender, EventArgs e)
+    {
+        lblCurrent.Text = Convert.ToString(int.Parse(lblCurrent.Text) + 1);
+        page();
+        ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), "divshow", "chooseCard(1)", true);
+    }
+    protected void GrdCustLicense_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        string gIntro="";
+        if (e.Row.Cells[1].Text != "&nbsp;")
+        {
+            gIntro = e.Row.Cells[1].Text.ToString();
+            e.Row.Cells[1].Text = SubStr(gIntro, 5);
+            gIntro = e.Row.Cells[2].Text.ToString();
+            e.Row.Cells[2].Text = SubStr(gIntro, 10);
+            gIntro = e.Row.Cells[3].Text.ToString();
+            e.Row.Cells[3].Text = SubStr(gIntro, 10);
+        }
+        else
+        {
+            e.Row.Cells[4].Text = "";
+        }
+    }
+    protected void GrdCustLicense_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        ViewState["custLicenseID"] = GrdCustLicense.SelectedRow.Cells[0].Text;
+        BaseBO bo = new BaseBO();
+        bo.WhereClause = "CustLicenseID=" + ViewState["custLicenseID"].ToString();
+        Resultset rs = bo.Query(new PotCustLicenseInfo());
+        if (rs.Count != 0)
+        {
+            PotCustLicenseInfo potCustLicense = rs.Dequeue() as PotCustLicenseInfo;
+            txtLicenseID.Text = potCustLicense.CustLicenseCode;
+            txtLicenseName.Text = potCustLicense.CustLicenseName;
+            cmbLicenseType.SelectedValue = potCustLicense.CustLicenseType.ToString();
+            txtLicenseBeginDate.Text = potCustLicense.CustLicenseStartDate.ToShortDateString();
+            txtLicenseEndDate.Text = potCustLicense.CustLicenseEndDate.ToShortDateString();
+
+            btnAdd.Enabled = false;
+            btnEdit.Enabled = true;
+        }
+        ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), "divshow", "chooseCard(1)", true);
+    }
+
+    protected void clearText()
+    {
+        txtCustCode.Text = "";
+        txtCustName.Text = "";
+        txtCustShortName.Text = "";
+        //potCustomer.CustType = cmbCustType.SelectedIndex;
+        txtLegalRep.Text = "";
+        txtLegalRepTitle.Text = "";
+        txtRegCap.Text = "0";
+        txtRegAddr.Text = "";
+        txtRegCode.Text = "";
+        txtTaxCode.Text = "";
+        txtBankName.Text = "";
+        txtBankAcct.Text = "";
+        txtOfficeAddr.Text = "";
+        txtPostAddr.Text = "";
+        txtPostCode.Text = "";
+        txtWeb.Text = "";
+        txtContactorName.Text = "";
+        txtTitle.Text = "";
+        txtOfficeTel.Text = "";
+        txtMobileTel.Text = "";
+        txtEMail.Text = "";
+    }
+}

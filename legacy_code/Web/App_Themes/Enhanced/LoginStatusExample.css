@@ -1,0 +1,37 @@
+﻿.foo {} /* W3C CSS validator likes CSS files to start with a class rather than a comment. Soooooo.... */
+
+/* This style sheet is intended to contain OFTEN CHANGED rules used when the LoginStatus control adapter is enabled. */
+/* Empty rules are provided merely as a convenience for your future use or experimentation. */
+
+#SampleLoginStatus 
+{
+    margin-bottom: 1em;
+}
+
+#SampleLoginStatus a.AspNet-LoginStatus,
+#SampleLoginStatus a:visited.AspNet-LoginStatus
+{
+    color: #465239;
+}
+
+#SampleLoginStatus a:hover.AspNet-LoginStatus
+{
+    background: #465239;
+    color: #E9F5DA;
+}
+
+/* ------------------------------------------------------------------- */
+/* Specific to this sample web site. */
+/* These rules are probably not useful in your site. */
+
+.LoginStatus-Skin
+{
+    font-family: Verdana;
+    font-size: 0.8em;
+    background: #E9F5DA;
+    padding: 0.5em;
+    text-decoration: none;
+    text-align: center;    
+    border: solid 1px #465239;
+    color: #465239;
+}

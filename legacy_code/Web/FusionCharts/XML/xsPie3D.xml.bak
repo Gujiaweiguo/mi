@@ -1,0 +1,9 @@
+<chart bgColor='ffffff' showBorder="0" baseFontSize='12'　palette='4' decimals='0' showvalues='1' bleSmartLabels='1' enableRotation='0' bgAlpha='40,100' bgRatio='0,100' bgAngle='360' showBorder='1' startingAngle='70' numberScaleValue='W' formatNumber='1' caption='品类部销售占比分析'>
+            <set label='副食' value='2992'  />
+            <set label='日化' value='4211' />
+            <set label='日用' value='1427' />
+            <set label='生鲜' value='6443' isSliced='1'link=" "/>
+            <set label='食品' value='10508' isSliced='1'link="cognos1.html"/>
+            <set label='针棉' value='788' isSliced='1'/>
+            <set label='自有' value='1202' />
+</chart>

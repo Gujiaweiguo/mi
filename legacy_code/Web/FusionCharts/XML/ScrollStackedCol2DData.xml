@@ -1,0 +1,32 @@
+- <chart showBorder='0' baseFontSize='12' palette="2" caption="毛利率分析" shownames="1" showvalues="0"  showSum="1" decimals="0" useRoundEdges="1"  yAxisMinValue='0' yAxisMaxValue='10000'  formatNumberScale='0' bgColor='FFFfFF'>
+- <categories>
+  <category label="副食" /> 
+  <category label="日化" /> 
+  <category label="日用" /> 
+  <category label="生鲜" /> 
+  <category label="食品" /> 
+   <category label="针棉" /> 
+  <category label="自有" /> 
+  </categories>
+- <dataset seriesName="销售成本" color="AFD8F8" showValues="0">
+  <set value="2701" /> 
+  <set value="3636" /> 
+  <set value="1144" /> 
+  <set value="5618" /> 
+  <set value="9366" /> 
+
+  <set value="632" /> 
+  <set value="1036" /> 
+  </dataset>
+- <dataset seriesName="毛利额" color="F6BD0F" showValues="0">
+  <set value="291" /> 
+  <set value="575" /> 
+  <set value="283" /> 
+  <set value="825" /> 
+  <set value="1142" /> 
+
+    <set value="156" /> 
+  <set value="167" /> 
+  </dataset>
+
+  </chart>

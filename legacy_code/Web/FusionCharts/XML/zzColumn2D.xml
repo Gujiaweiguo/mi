@@ -1,0 +1,24 @@
+<chart bgColor='FFFFFF' showBorder='0' baseFontSize='12' caption='时段销售分析'  showValues='1' decimals='0' formatNumberScale='1' useRoundEdges='14' zeroPlaneColor='000000' zeroPlaneThickness='1' zeroPlaneAlpha='80' yAxisMinValue='0' yAxisMaxValue='80'  setAdaptiveYMin='1' adjustDiv='0' numberScaleValue='分'>
+<set label='10点' value='19056' toolText='10点: 19056' link='javascript:changeXML("../../FusionCharts/xml/xsPie3D10.xml","chartIframe");'/>
+<set label='11点' value='21780' toolText='11点: 21780' link='javascript:changeXML("../../FusionCharts/xml/xsPie3D11.xml","chartIframe");'/>
+<set label='12点' value='39023' toolText='12点: 39023'link='javascript:changeXML("../../FusionCharts/xml/xsPie3D12.xml","chartIframe");'/>
+<set label='13点' value='85000' toolText='13点: 85000' link='javascript:changeXML("../../FusionCharts/xml/xsPie3D13.xml","chartIframe");'/>
+<set label='14点' value='115000' toolText='14点: 115000' link='javascript:changeXML("../../FusionCharts/xml/xsPie3D14.xml","chartIframe");'/>
+<set label='15点' value='25000' toolText='15点: 25000' link='javascript:changeXML("../../FusionCharts/xml/xsPie3D15.xml","chartIframe");'/>
+<set label='16点' value='8000' toolText='16点: 8000' link='javascript:changeXML("../../FusionCharts/xml/xsPie3D16.xml","chartIframe");'/>
+<set label='17点' value='12050' toolText='17点: 12050' link='javascript:changeXML("../../FusionCharts/xml/xsPie3D17.xml","chartIframe");'/>
+<set label='18点' value='16890' toolText='18点: 16890' link='javascript:changeXML("../../FusionCharts/xml/xsPie3D18.xml","chartIframe");'/>
+<set label='19点' value='23980' toolText='19点: 23980' link='javascript:changeXML("../../FusionCharts/xml/xsPie3D19.xml","chartIframe");'/>
+<set label='20点' value='46000' toolText='20点: 46000' link='javascript:changeXML("../../FusionCharts/xml/xsPie3D20.xml","chartIframe");'/>
+<set label='21点' value='75090' toolText='21点: 75090' link='javascript:changeXML("../../FusionCharts/xml/xsPie3D21.xml","chartIframe");'/>
+<set label='22点' value='15000' toolText='22点: 15000' link='javascript:changeXML("../../FusionCharts/xml/xsPie3D22.xml","chartIframe");'/>
+
+  <styles>
+        <definition>
+            <style name='myShadow' type='shadow' angle='45' distance='3' color='000000'/>
+        </definition>
+        <application>
+            <apply toObject='DIVLINES' styles='myShadow' />
+        </application>
+    </styles>
+</chart>

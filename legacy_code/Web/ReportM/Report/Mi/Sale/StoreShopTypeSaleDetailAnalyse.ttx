@@ -1,0 +1,9 @@
+storename	String	32	
+storeid	Number		
+shoptypename	String	32	
+SalesAmt	Number		
+lastmonthamt	Number		
+yearSalesAmt	Number		
+lastyearSalesAmt	Number
+ddname	String	32
+cityname	String	32		

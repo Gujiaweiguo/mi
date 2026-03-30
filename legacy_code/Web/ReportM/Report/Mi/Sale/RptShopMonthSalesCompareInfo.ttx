@@ -1,0 +1,20 @@
+StoreName	String	32
+Month	DateTime
+ShopName	String	64
+CustName	String	64
+ShopCode	String	64
+ShopTypeName	String	32
+FloorName	String	64
+TradeName	String	64
+RentArea	Number
+PaidAmt	Number
+LYPaidAmt	Number
+LYRate	Number
+PPPaidAmt	Number
+PPRate	Number
+YearPaidAmt	Number
+LYYearPaidAmt	Number
+LYYearRate	Number
+price	Number
+px	Number
+totalreceipt	Number

@@ -1,0 +1,12 @@
+<Assemblies Version="620756994">
+  <Assembly Name="CrystalDecisions.Shared, Version=11.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" Cache="d208e5e0-584d-473a-848d-2690866c0c24.ReflectionCache" Timestamp="633082982440000000" />
+  <Assembly Name="CrystalDecisions.ReportAppServer.Controllers, Version=11.5.3300.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" Cache="174facde-b47f-440b-85cf-bfe12c6ccd6e.ReflectionCache" Timestamp="633082975300000000" />
+  <Assembly Name="CrystalDecisions.ReportAppServer.ClientDoc, Version=11.5.3300.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" Cache="5c715bd1-0944-4e63-b2bf-0400141b7bcc.ReflectionCache" Timestamp="633082975440000000" />
+  <Assembly Name="CrystalDecisions.Enterprise.Desktop.Report, Version=11.5.3300.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" Cache="ff8a5031-b95b-4c71-9e5a-d9912602e0ec.ReflectionCache" Timestamp="633083061600000000" />
+  <Assembly Name="CrystalDecisions.CrystalReports.Engine, Version=11.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" Cache="c04afd8a-1d97-4709-9112-3fc3e95a0795.ReflectionCache" Timestamp="633082982500000000" />
+  <Assembly Name="CrystalDecisions.ReportSource, Version=11.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" Cache="e1df1704-592d-4bf0-b0bc-a3bb64ad49b9.ReflectionCache" Timestamp="633082982500000000" />
+  <Assembly Name="CrystalDecisions.Enterprise.InfoStore, Version=11.5.3300.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" Cache="e710fbe3-373f-4e72-9d5e-84341b5ba4cf.ReflectionCache" Timestamp="633083061240000000" />
+  <Assembly Name="CrystalDecisions.Web, Version=11.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" Cache="2c123781-8ef2-4101-bdb9-45c493aebb12.ReflectionCache" Timestamp="633082982560000000" />
+  <Assembly Name="CrystalDecisions.Enterprise.Framework, Version=11.5.3300.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" Cache="9944ffd4-0747-45be-a433-d2fc6ad97ee2.ReflectionCache" Timestamp="633083060940000000" />
+  <Assembly Name="CrystalDecisions.Enterprise.Viewing.ReportSource, Version=11.5.3300.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" Cache="cf3a6e80-7b25-4ba2-8f2a-7fdf7a2e3c30.ReflectionCache" Timestamp="633083061300000000" />
+</Assemblies>

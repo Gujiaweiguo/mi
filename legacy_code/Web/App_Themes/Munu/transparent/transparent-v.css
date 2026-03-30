@@ -1,0 +1,62 @@
+.nlsmenu {
+    
+    background-position:bottom;
+    background-repeat:repeat-x;
+    border-bottom:#a7a7a7 3px solid;
+    background-color:#5A5A5A;/*下拉单颜色设置*/
+    filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=75);-moz-opacity:0.75;opacity:0.75;
+    z-index:1;
+}
+
+.nlsitemcontainer {
+    height:20px;
+}
+.nlsiconcell {width:16px;}
+.nlssubmenucell{width:16px;}
+.nlsitem {
+    font-family:verdana;
+    font-size:10pt;
+    color:#EEF0F1;
+    padding:2px 10px 2px 10px;
+}
+/*鼠标移动到选项卡颜色设置*/
+.nlsitemcontainerover {
+    height:20px;
+    background-color:#a9a7a7;
+}
+.nlsiconcellover {width:16px;}
+.nlssubmenucellover {width:16px;}
+.nlsitemover {
+    font-family:verdana;
+    font-size:10pt;
+    color:#EEF0F1;/*字体颜色设置*/
+    padding:2px 10px 2px 10px;
+}
+
+.nlsitemdisable {
+    font-family:verdana;
+    font-size:8pt;
+    color:#999999;
+    padding:2px 10px 2px 10px;
+}
+
+.nlsseparatorcontainer {text-align:center;}
+.nlsseparator {
+    height:3px;
+    background-image:url(img/menuseparator.gif);
+    background-position:center center;
+    background-repeat:no-repeat;
+}
+
+.mtopleft {height:0px; width:0px;}
+.mtopright {height:0px; width:0px;}
+.mbottomleft {width:0px; height:0px;}
+.mbottomright {width:0px; height:0px;}
+.mtop {height:0px;}
+.mbottom {height:0px;}
+.mleft {width:0px;}
+.mright {width:0px;}
+
+.horzshadow {}
+.vertshadow {}
+.cornshadow {}

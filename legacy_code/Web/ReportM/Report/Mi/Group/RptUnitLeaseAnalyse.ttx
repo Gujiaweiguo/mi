@@ -1,0 +1,14 @@
+unitcode	String	50
+unitstatus	String	50
+floorarea	Number
+tradename	String	50
+budget	Number
+leaseprice	Number
+custname	String	50
+rentarea	Number
+tradename2	String	50
+brandname	String	50
+avgamt	Number
+rentalprice	Number
+rentinc	Number
+rentmonth	Number

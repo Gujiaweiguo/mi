@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BuildingInfor nm="大楼">
+  <mall locaID="101" cityID="104" mallID="110" buildID="101" desc="北京名辰大楼" adress="" Img="../../VAGraphic/Img/33-2.png" remark="" url="" />
+  <mall locaID="101" cityID="104" mallID="111" buildID="102" desc="北京富祥大楼" adress="" Img="../../VAGraphic/Img/33-2.png" remark="" url="" />
+  <mall locaID="101" cityID="105" mallID="112" buildID="103" desc="太原广茂大楼" adress="" Img="../../VAGraphic/Img/33-2.png" remark="" url="" />
+  <mall locaID="101" cityID="105" mallID="113" buildID="104" desc="太原龙盛大楼" adress="" Img="../../VAGraphic/Img/33-2.png" remark="" url="" />
+  <mall locaID="102" cityID="106" mallID="114" buildID="105" desc="沈阳光鑫大楼" adress="" Img="../../VAGraphic/Img/33-2.png" remark="" url="" />
+  <mall locaID="102" cityID="106" mallID="115" buildID="106" desc="沈阳茂升大楼" adress="" Img="../../VAGraphic/Img/33-2.png" remark="" url="" />
+  <mall locaID="102" cityID="107" mallID="116" buildID="107" desc="哈尔滨荣茂大楼" adress="" Img="../../VAGraphic/Img/33-2.png" remark="" url="" />
+  <mall locaID="102" cityID="107" mallID="117" buildID="108" desc="哈尔滨华盛大楼" adress="" Img="../../VAGraphic/Img/33-2.png" remark="" url="" />
+  <mall locaID="103" cityID="108" mallID="119" buildID="109" desc="青岛银沙大楼" adress="" Img="../../VAGraphic/Img/33-2.png" remark="" url="" />
+  <mall locaID="103" cityID="108" mallID="120" buildID="110" desc="青岛栈桥大楼" adress="" Img="../../VAGraphic/Img/33-2.png" remark="" url="" />
+  <mall locaID="103" cityID="109" mallID="121" buildID="111" desc="上海中山大楼" adress="" Img="../../VAGraphic/Img/33-2.png" remark="" url="" />
+  <mall locaID="103" cityID="109" mallID="122" buildID="112" desc="上海家福大楼" adress="" Img="../../VAGraphic/Img/33-2.png" remark="" url="" />
+</BuildingInfor>

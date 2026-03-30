@@ -1,0 +1,8 @@
+storename	String	32
+month	DateTime
+shoptypename	String	32
+rentarea	Number
+paidamt	Number
+mthRate	Number
+yearPaidamt	Number
+yearRate	Number

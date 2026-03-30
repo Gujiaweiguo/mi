@@ -1,0 +1,1176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Rpt_AgoArrear" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_Amount" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="Rpt_AreaName" xml:space="preserve">
+    <value>Tenant group name</value>
+  </data>
+  <data name="Rpt_Brand" xml:space="preserve">
+    <value>Brand</value>
+  </data>
+  <data name="Rpt_BuildingName" xml:space="preserve">
+    <value>Building name</value>
+  </data>
+  <data name="Rpt_CustCode" xml:space="preserve">
+    <value>Customer ID</value>
+  </data>
+  <data name="Rpt_CustName" xml:space="preserve">
+    <value>Customer Name</value>
+  </data>
+  <data name="Rpt_CustShortName" xml:space="preserve">
+    <value>Abbreviation</value>
+  </data>
+  <data name="Rpt_FloorName" xml:space="preserve">
+    <value>Floor name</value>
+  </data>
+  <data name="Rpt_HandlingCharge" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_IinterestDate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_InvComTitile" xml:space="preserve">
+    <value>Company Name</value>
+  </data>
+  <data name="Rpt_InvDate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_InvDetail" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_InvThisCost" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_LastChouChen" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_LastSlotCard" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_lblBankAcct" xml:space="preserve">
+    <value>Bank account</value>
+  </data>
+  <data name="Rpt_lblBankName" xml:space="preserve">
+    <value>Bank</value>
+  </data>
+  <data name="Rpt_LocationName" xml:space="preserve">
+    <value>Direction name</value>
+  </data>
+  <data name="Rpt_MachineName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_Num" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_OpeningBalance" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_OweDetailTitle" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_OweTitle" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_PayAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_PayInDate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_PerRent" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_Price" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="Rpt_ReadCurrentData" xml:space="preserve">
+    <value>Current reading</value>
+  </data>
+  <data name="Rpt_ReadLastData" xml:space="preserve">
+    <value>Last reading</value>
+  </data>
+  <data name="Rpt_RentNo" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_RentOk" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_ShopCode" xml:space="preserve">
+    <value>Tenant ID</value>
+  </data>
+  <data name="Rpt_ShopName" xml:space="preserve">
+    <value>Tenant name</value>
+  </data>
+  <data name="Rpt_SlotCardMoney" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_ThisProductInv" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_UnitCode" xml:space="preserve">
+    <value>Unit ID</value>
+  </data>
+  <data name="Rpt_Usage" xml:space="preserve">
+    <value>Usage</value>
+  </data>
+  <data name="Rpt_VisualAnalysisRent" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_WaterAndElectro" xml:space="preserve">
+    <value>Water and electro detail</value>
+  </data>
+  <data name="Rpt_YearPayAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptAdvisContractInfoItem_AdBoardCode" xml:space="preserve">
+    <value>Billboard ID</value>
+  </data>
+  <data name="RptAdvisContractInfoItem_AdBoardName" xml:space="preserve">
+    <value>Billboard name</value>
+  </data>
+  <data name="RptAdvisContractInfoItem_AdContractCode" xml:space="preserve">
+    <value>Contract ID</value>
+  </data>
+  <data name="RptAdvisContractInfoItem_AdMaker" xml:space="preserve">
+    <value>Agency</value>
+  </data>
+  <data name="RptAdvisContractInfoItem_AdType" xml:space="preserve">
+    <value>Billboard type</value>
+  </data>
+  <data name="RptAdvisContractInfoItem_PayingCycle" xml:space="preserve">
+    <value>Payment cycle</value>
+  </data>
+  <data name="RptAdvisContractInfoItem_PaymentPerCycle" xml:space="preserve">
+    <value>Termly amount</value>
+  </data>
+  <data name="RptAdvisContractInfoItem_Prepayment" xml:space="preserve">
+    <value>Prepayment</value>
+  </data>
+  <data name="RptAdvisContractInfoItem_SignDate" xml:space="preserve">
+    <value>Sign Date</value>
+  </data>
+  <data name="RptAdvisContractInfoItem_Title" xml:space="preserve">
+    <value>Advertising Contract Basic Information List</value>
+  </data>
+  <data name="RptAreaContractInfoItem_AreaTypeCode" xml:space="preserve">
+    <value>TRU type ID</value>
+  </data>
+  <data name="RptAreaContractInfoItem_Title" xml:space="preserve">
+    <value>Area Contract Basic Information List</value>
+  </data>
+  <data name="RptBankCardDiversity_chkbank" xml:space="preserve">
+    <value>Transaction In bank but not in TradePos</value>
+  </data>
+  <data name="RptBankCardDiversity_chkTradePos" xml:space="preserve">
+    <value>Transaction in TradePos but not in bank</value>
+  </data>
+  <data name="RptBankCardDiversity_lblTrans" xml:space="preserve">
+    <value>Credit Card Transactions Audit Report</value>
+  </data>
+  <data name="RptBankCrd_SumRpt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptBonusAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptContractInfo_BizMode" xml:space="preserve">
+    <value>Biz mode</value>
+  </data>
+  <data name="RptContractInfo_ContractID" xml:space="preserve">
+    <value>Contract ID</value>
+  </data>
+  <data name="RptContractInfo_ContractStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="RptContractInfo_FEndDate" xml:space="preserve">
+    <value>Expiring date</value>
+  </data>
+  <data name="RptContractInfo_FixedRental" xml:space="preserve">
+    <value>RentalAmt</value>
+  </data>
+  <data name="RptContractInfo_FormulaType" xml:space="preserve">
+    <value>Formula</value>
+  </data>
+  <data name="RptContractInfo_FStartDate" xml:space="preserve">
+    <value>Effective date</value>
+  </data>
+  <data name="RptContractInfo_MinSum" xml:space="preserve">
+    <value>Minimum</value>
+  </data>
+  <data name="RptContractInfo_MSalesTo" xml:space="preserve">
+    <value>SalesAmt</value>
+  </data>
+  <data name="RptContractInfo_Pcent" xml:space="preserve">
+    <value>Pcent</value>
+  </data>
+  <data name="RptContractInfo_PSalesTo" xml:space="preserve">
+    <value>SalesAmt</value>
+  </data>
+  <data name="RptContractInfo_Title" xml:space="preserve">
+    <value>Lease Contract Information List</value>
+  </data>
+  <data name="RptContractInfo_TotalArea" xml:space="preserve">
+    <value>Total Area</value>
+  </data>
+  <data name="RptContractInfo_UnitPrice" xml:space="preserve">
+    <value>RentalPrice</value>
+  </data>
+  <data name="RptContractSumInfo_BizMode" xml:space="preserve">
+    <value>Biz mode</value>
+  </data>
+  <data name="RptContractSumInfo_ConEndDate" xml:space="preserve">
+    <value>Expiring date</value>
+  </data>
+  <data name="RptContractSumInfo_ConStartDate" xml:space="preserve">
+    <value>Effective date</value>
+  </data>
+  <data name="RptContractSumInfo_ContractID" xml:space="preserve">
+    <value>Contract ID</value>
+  </data>
+  <data name="RptContractSumInfo_ContractStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="RptContractSumInfo_FormulaType" xml:space="preserve">
+    <value>Formula</value>
+  </data>
+  <data name="RptContractSumInfo_MinSumOpt" xml:space="preserve">
+    <value>Minimum</value>
+  </data>
+  <data name="RptContractSumInfo_PcentOpt" xml:space="preserve">
+    <value>Pcent</value>
+  </data>
+  <data name="RptContractSumInfo_RateType" xml:space="preserve">
+    <value>Rate Type</value>
+  </data>
+  <data name="RptContractSumInfo_Title" xml:space="preserve">
+    <value>Lease Contracts General Summary</value>
+  </data>
+  <data name="RptContractSumInfo_TotalArea" xml:space="preserve">
+    <value>Total Areas</value>
+  </data>
+  <data name="RptCustBalanceDetail_Title" xml:space="preserve">
+    <value>Tenancy Arrearage Information List</value>
+  </data>
+  <data name="RptCustInvSum_Title" xml:space="preserve">
+    <value>Tenancy Settlement Summary</value>
+  </data>
+  <data name="RptCustomerInfo_BankAcct" xml:space="preserve">
+    <value>Bank account</value>
+  </data>
+  <data name="RptCustomerInfo_BankName" xml:space="preserve">
+    <value>Bank</value>
+  </data>
+  <data name="RptCustomerInfo_ContractMan" xml:space="preserve">
+    <value>Contract Man</value>
+  </data>
+  <data name="RptCustomerInfo_CustLicenseEndDate" xml:space="preserve">
+    <value>EndDate</value>
+  </data>
+  <data name="RptCustomerInfo_CustLicenseStartDate" xml:space="preserve">
+    <value>StartDate</value>
+  </data>
+  <data name="RptCustomerInfo_CustTypeID" xml:space="preserve">
+    <value>Type ID</value>
+  </data>
+  <data name="RptCustomerInfo_LegalCode" xml:space="preserve">
+    <value>LegalCode</value>
+  </data>
+  <data name="RptCustomerInfo_LegalRep" xml:space="preserve">
+    <value>Legal person</value>
+  </data>
+  <data name="RptCustomerInfo_LegalRepTitle" xml:space="preserve">
+    <value>Legal person title</value>
+  </data>
+  <data name="RptCustomerInfo_MobileTel" xml:space="preserve">
+    <value>Mobile</value>
+  </data>
+  <data name="RptCustomerInfo_OfficeAddr" xml:space="preserve">
+    <value>Office</value>
+  </data>
+  <data name="RptCustomerInfo_PostAddr" xml:space="preserve">
+    <value>Post Addr</value>
+  </data>
+  <data name="RptCustomerInfo_PostCode" xml:space="preserve">
+    <value>Postcode</value>
+  </data>
+  <data name="RptCustomerInfo_RegAddr" xml:space="preserve">
+    <value>Register Addr.</value>
+  </data>
+  <data name="RptCustomerInfo_RegCap" xml:space="preserve">
+    <value>Reg. capital</value>
+  </data>
+  <data name="RptCustomerInfo_RegCode" xml:space="preserve">
+    <value>Register ID</value>
+  </data>
+  <data name="RptCustomerInfo_TaxCode" xml:space="preserve">
+    <value>Tax No.</value>
+  </data>
+  <data name="RptCustomerInfo_Tel" xml:space="preserve">
+    <value>Office phone</value>
+  </data>
+  <data name="RptCustomerInfo_Title" xml:space="preserve">
+    <value>Customer Information</value>
+  </data>
+  <data name="RptCustomerInfo_WebUrl" xml:space="preserve">
+    <value>WebUrl</value>
+  </data>
+  <data name="RptCustPaidDetail_Title" xml:space="preserve">
+    <value>Tenancy Settlement Received List</value>
+  </data>
+  <data name="RptFloatSaleQuery_Sdate" xml:space="preserve">
+    <value>Effective date</value>
+  </data>
+  <data name="RptFloatSaleQuery_Title" xml:space="preserve">
+    <value>Realtime Sale Summary Report</value>
+  </data>
+  <data name="RptFloatSaleQuery_TotalSales" xml:space="preserve">
+    <value>Total Sales</value>
+  </data>
+  <data name="RptInv_AdvAmt" xml:space="preserve">
+    <value>AdvAmt</value>
+  </data>
+  <data name="RptInv_CardAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptInv_ChargeItem" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptInv_ChargeTypeName" xml:space="preserve">
+    <value>Exp name</value>
+  </data>
+  <data name="RptInv_CostAmt" xml:space="preserve">
+    <value>Sales Amt</value>
+  </data>
+  <data name="RptInv_CurTypeName" xml:space="preserve">
+    <value>CurType</value>
+  </data>
+  <data name="RptInv_Date" xml:space="preserve">
+    <value>Hourly</value>
+  </data>
+  <data name="RptInv_DepositAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptInv_FanstAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptInv_InterestRate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptInv_InvAdjAmt" xml:space="preserve">
+    <value>AdjustAmt</value>
+  </data>
+  <data name="RptInv_InvAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptInv_InvCode" xml:space="preserve">
+    <value>Invoice Code</value>
+  </data>
+  <data name="RptInv_InvDate" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="RptInv_InvInterest" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptInv_InvJVCost" xml:space="preserve">
+    <value>JVCost</value>
+  </data>
+  <data name="RptInv_InvJVCostAmt" xml:space="preserve">
+    <value>JVCostAmt</value>
+  </data>
+  <data name="RptInv_InvNoTaxAmt" xml:space="preserve">
+    <value>NoTaxAmt</value>
+  </data>
+  <data name="RptInv_InvPaidAmt" xml:space="preserve">
+    <value>PaidAmt</value>
+  </data>
+  <data name="RptInv_InvPayAmt" xml:space="preserve">
+    <value>Amt</value>
+  </data>
+  <data name="RptInv_InvPayDate" xml:space="preserve">
+    <value>Pay-date</value>
+  </data>
+  <data name="RptInv_InvPeriod" xml:space="preserve">
+    <value>InvPeriod</value>
+  </data>
+  <data name="RptInv_InvSalesAmt" xml:space="preserve">
+    <value>SalesAmt</value>
+  </data>
+  <data name="RptInv_InvSalesRate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptInv_InvTax" xml:space="preserve">
+    <value>Tax</value>
+  </data>
+  <data name="RptInv_InvTaxRate" xml:space="preserve">
+    <value>TaxRate</value>
+  </data>
+  <data name="RptInv_ItemType" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptInv_JVActPayAmt" xml:space="preserve">
+    <value>JVActPayAmt</value>
+  </data>
+  <data name="RptInv_JVKeapTotal" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptInv_JVMustTotal" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptInv_JVSalesAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptInv_KeepAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptInv_MustTotal" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptInv_Note" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="RptInv_OtherAmt" xml:space="preserve">
+    <value>OtherAmt</value>
+  </data>
+  <data name="RptInv_OweAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptInv_PayInAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptInv_PayPaidAmt" xml:space="preserve">
+    <value>PayPaidAmt</value>
+  </data>
+  <data name="RptInv_PreAmt" xml:space="preserve">
+    <value>PreAmt</value>
+  </data>
+  <data name="RptInv_PrtDate" xml:space="preserve">
+    <value>Print Date</value>
+  </data>
+  <data name="RptInv_PrtName" xml:space="preserve">
+    <value>Print Man</value>
+  </data>
+  <data name="RptInv_RateTicketAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptInv_Reprint" xml:space="preserve">
+    <value>Reprint</value>
+  </data>
+  <data name="RptInv_RMBTotalMoney" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptInv_SInvPaidAmt" xml:space="preserve">
+    <value>Total payment</value>
+  </data>
+  <data name="RptInv_StandardPrice" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptInv_TotalAmt" xml:space="preserve">
+    <value>Total Amount</value>
+  </data>
+  <data name="RptInv_TotalChargeAmt" xml:space="preserve">
+    <value>Total Charge Amt</value>
+  </data>
+  <data name="RptInv_UnitRen" xml:space="preserve">
+    <value>Unit Price</value>
+  </data>
+  <data name="RptInv_WaterAndElecDetail" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptInv_WaterElecDetail" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptInv_WaterInv" xml:space="preserve">
+    <value>waterInv</value>
+  </data>
+  <data name="RptInvChargeCountLog_Title" xml:space="preserve">
+    <value>Invoice Log</value>
+  </data>
+  <data name="RptInvInterest_InterestAmt" xml:space="preserve">
+    <value>Penalty Amount</value>
+  </data>
+  <data name="RptInvInterest_InterestDay" xml:space="preserve">
+    <value>Late Payment Days</value>
+  </data>
+  <data name="RptInvInterest_Title" xml:space="preserve">
+    <value>Late Payment Report</value>
+  </data>
+  <data name="RptInvoiceDetail2_Title" xml:space="preserve">
+    <value>Rental Invoice</value>
+  </data>
+  <data name="RptJianSheLianJiNeiKa" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptJianSheLianJiWaiKa" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptJianSheLianMing" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptJianSheTuoJiNeiKa" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptJianSheTuoJiWaiKa" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptJV_InvPayAmt" xml:space="preserve">
+    <value>Remain Amt</value>
+  </data>
+  <data name="RptJV_Title" xml:space="preserve">
+    <value>JoinInv Return Fund</value>
+  </data>
+  <data name="RptLease_ChargeDate" xml:space="preserve">
+    <value>Charge Date</value>
+  </data>
+  <data name="RptLease_Times" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptLeaseInvDetail_Title" xml:space="preserve">
+    <value>Tenancy Settlement Bill Information List</value>
+  </data>
+  <data name="RptMallSalesSum_Title" xml:space="preserve">
+    <value>Mall Daily Sales Summary Report</value>
+  </data>
+  <data name="RptMem_BookGift" xml:space="preserve">
+    <value>Book Gift</value>
+  </data>
+  <data name="RptMem_BookId" xml:space="preserve">
+    <value>Book Id</value>
+  </data>
+  <data name="RptMem_Count" xml:space="preserve">
+    <value>Count</value>
+  </data>
+  <data name="RptMem_ExChangeGift" xml:space="preserve">
+    <value>ExChange Gift</value>
+  </data>
+  <data name="RptMem_ExDate" xml:space="preserve">
+    <value>ExChange Date</value>
+  </data>
+  <data name="RptMem_GiftDesc" xml:space="preserve">
+    <value>Gift Desc</value>
+  </data>
+  <data name="RptMem_GiftID" xml:space="preserve">
+    <value>Gift ID</value>
+  </data>
+  <data name="RptMem_GiveGift" xml:space="preserve">
+    <value>Give Gift</value>
+  </data>
+  <data name="RptMem_InActionAnalysis" xml:space="preserve">
+    <value>InAction Analysis</value>
+  </data>
+  <data name="RptMem_InsufficientBonus" xml:space="preserve">
+    <value>Insufficient Bonus</value>
+  </data>
+  <data name="RptMem_MembCardId" xml:space="preserve">
+    <value>Member Card Id</value>
+  </data>
+  <data name="RptMem_MemberBonusComparison" xml:space="preserve">
+    <value>Member Bonus Comparison</value>
+  </data>
+  <data name="RptMem_MemberInforAnalysis" xml:space="preserve">
+    <value>Member Information Analysis</value>
+  </data>
+  <data name="RptMem_MemberProfileAnalysis" xml:space="preserve">
+    <value>Member Profile Analysis</value>
+  </data>
+  <data name="RptMem_MemberStatistics" xml:space="preserve">
+    <value>Member Statistics</value>
+  </data>
+  <data name="RptMem_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="RptMem_PerchaseRank" xml:space="preserve">
+    <value>PerchaseRank</value>
+  </data>
+  <data name="RptMem_ReceiptNum" xml:space="preserve">
+    <value>Receipt Num</value>
+  </data>
+  <data name="RptMem_RedeemDate" xml:space="preserve">
+    <value>Redeem Date</value>
+  </data>
+  <data name="RptMem_RedeemGift" xml:space="preserve">
+    <value>RedeemGift</value>
+  </data>
+  <data name="RptMem_ReplacementCharges" xml:space="preserve">
+    <value>ReplacementCharges</value>
+  </data>
+  <data name="RptMem_ShopMemberSales" xml:space="preserve">
+    <value>ShopMemberSales</value>
+  </data>
+  <data name="RptMem_ShopSalesVSMemberSales" xml:space="preserve">
+    <value>ShopSales VS MemberSales</value>
+  </data>
+  <data name="RptMem_ShopTotalSalesVSMemberSales" xml:space="preserve">
+    <value>ShopTotalSales VS MemberSales</value>
+  </data>
+  <data name="RptMem_TransAmt" xml:space="preserve">
+    <value>Trans Amt</value>
+  </data>
+  <data name="RptMem_UnregisteredCard" xml:space="preserve">
+    <value>Unregistered Card</value>
+  </data>
+  <data name="RptPayOut_Amt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptPayOut_AmtSum" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptPayOut_BankChgAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptPayOut_Date" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptPayOut_PayInAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptPayOut_PayInID" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptPayOut_PayOutID" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptPayOut_Title" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptPub_Particular" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptPub_Sum" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptREXTotalAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptSale_AllocDisc" xml:space="preserve">
+    <value>Alloc Disc</value>
+  </data>
+  <data name="RptSale_AvgArea" xml:space="preserve">
+    <value>AvgArea</value>
+  </data>
+  <data name="RptSale_AvgPaidAmt" xml:space="preserve">
+    <value>AvgPaidAmt</value>
+  </data>
+  <data name="RptSale_BatchId" xml:space="preserve">
+    <value>Batch Id</value>
+  </data>
+  <data name="RptSale_BizDate" xml:space="preserve">
+    <value>Bizdate</value>
+  </data>
+  <data name="RptSale_CardID" xml:space="preserve">
+    <value>Card ID</value>
+  </data>
+  <data name="RptSale_CntRate" xml:space="preserve">
+    <value>Cnt Rate</value>
+  </data>
+  <data name="RptSale_CommChg" xml:space="preserve">
+    <value>CommChg</value>
+  </data>
+  <data name="RptSale_CommRate" xml:space="preserve">
+    <value>Comm Rate</value>
+  </data>
+  <data name="RptSale_CostAmt" xml:space="preserve">
+    <value>Cost Amt</value>
+  </data>
+  <data name="RptSale_DiffAmt" xml:space="preserve">
+    <value>Diff Amt</value>
+  </data>
+  <data name="RptSale_DiffCnt" xml:space="preserve">
+    <value>Diff Cnt</value>
+  </data>
+  <data name="RptSale_DiscRate" xml:space="preserve">
+    <value>Disc Rate</value>
+  </data>
+  <data name="RptSale_dPaidAmt" xml:space="preserve">
+    <value>Paid Amt</value>
+  </data>
+  <data name="RptSale_DueAmt" xml:space="preserve">
+    <value>Due Amt</value>
+  </data>
+  <data name="RptSale_EFTID" xml:space="preserve">
+    <value>EFT ID</value>
+  </data>
+  <data name="RptSale_ExemptTax" xml:space="preserve">
+    <value>Exempt Tax</value>
+  </data>
+  <data name="RptSale_FBonusInfo" xml:space="preserve">
+    <value>Bonus Info</value>
+  </data>
+  <data name="RptSale_FDetailInfo" xml:space="preserve">
+    <value>Detail Info</value>
+  </data>
+  <data name="RptSale_FFooterInfo" xml:space="preserve">
+    <value>Tax Info</value>
+  </data>
+  <data name="RptSale_FHeaderInfo" xml:space="preserve">
+    <value>Header Info</value>
+  </data>
+  <data name="RptSale_FMediaInfo" xml:space="preserve">
+    <value>Media Info</value>
+  </data>
+  <data name="RptSale_ItemDisc" xml:space="preserve">
+    <value>Item Disc</value>
+  </data>
+  <data name="RptSale_MediaDesc" xml:space="preserve">
+    <value>MediaDesc</value>
+  </data>
+  <data name="RptSale_MediaMDesc" xml:space="preserve">
+    <value>MediaMDesc</value>
+  </data>
+  <data name="RptSale_MediaMNo" xml:space="preserve">
+    <value>MediaMNo</value>
+  </data>
+  <data name="RptSale_MIscCharge" xml:space="preserve">
+    <value>MIsc Charge</value>
+  </data>
+  <data name="RptSale_MiscTax" xml:space="preserve">
+    <value>Misc Tax</value>
+  </data>
+  <data name="RptSale_MReceiptId" xml:space="preserve">
+    <value>Mamul ReceiptId</value>
+  </data>
+  <data name="RptSale_NetAmt" xml:space="preserve">
+    <value>NetAmt</value>
+  </data>
+  <data name="RptSale_NewPrice" xml:space="preserve">
+    <value>New Price</value>
+  </data>
+  <data name="RptSale_OrgPrice" xml:space="preserve">
+    <value>Org Price</value>
+  </data>
+  <data name="RptSale_PaidAmt" xml:space="preserve">
+    <value>PaidAmt</value>
+  </data>
+  <data name="RptSale_PayAmt" xml:space="preserve">
+    <value>Pay Amt</value>
+  </data>
+  <data name="RptSale_PosID" xml:space="preserve">
+    <value>Pos ID</value>
+  </data>
+  <data name="RptSale_pRate" xml:space="preserve">
+    <value>Rate</value>
+  </data>
+  <data name="RptSale_PrefAmt" xml:space="preserve">
+    <value>Pref Amt</value>
+  </data>
+  <data name="RptSale_ProfitAmt" xml:space="preserve">
+    <value>Profit Amt</value>
+  </data>
+  <data name="RptSale_ReceiptDisc" xml:space="preserve">
+    <value>Receipt Disc</value>
+  </data>
+  <data name="RptSale_ReceiptID" xml:space="preserve">
+    <value>Receipt ID</value>
+  </data>
+  <data name="RptSale_RReceiptId" xml:space="preserve">
+    <value>Refund ReceiptId</value>
+  </data>
+  <data name="RptSale_SalesMan" xml:space="preserve">
+    <value>SalesMan</value>
+  </data>
+  <data name="RptSale_SkuDesc" xml:space="preserve">
+    <value>SkuDesc</value>
+  </data>
+  <data name="RptSale_SkuId" xml:space="preserve">
+    <value>SKUID</value>
+  </data>
+  <data name="RptSale_SurCharge" xml:space="preserve">
+    <value>Sur Charge</value>
+  </data>
+  <data name="RptSale_Tax" xml:space="preserve">
+    <value>Tax</value>
+  </data>
+  <data name="RptSale_TaxType" xml:space="preserve">
+    <value>Tax Type</value>
+  </data>
+  <data name="RptSale_Trade1Name" xml:space="preserve">
+    <value>Assortment List</value>
+  </data>
+  <data name="RptSale_Trade2Name" xml:space="preserve">
+    <value>2nd mdse.</value>
+  </data>
+  <data name="RptSale_TradeCode" xml:space="preserve">
+    <value>Trade Code</value>
+  </data>
+  <data name="RptSale_TransCnt" xml:space="preserve">
+    <value>Trans Cnt</value>
+  </data>
+  <data name="RptSale_TransTime" xml:space="preserve">
+    <value>TransTime</value>
+  </data>
+  <data name="RptSale_TransType" xml:space="preserve">
+    <value>Trans Type</value>
+  </data>
+  <data name="RptSale_TrNum" xml:space="preserve">
+    <value>Trade Num</value>
+  </data>
+  <data name="RptSale_UserID" xml:space="preserve">
+    <value>User ID</value>
+  </data>
+  <data name="RptSalesComparison_Title" xml:space="preserve">
+    <value>Sales Comparison Analysis Report</value>
+  </data>
+  <data name="RptSalesDetails_Title" xml:space="preserve">
+    <value>Detailed Sales Information List</value>
+  </data>
+  <data name="RptSalesMediaSum_Subtotal" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptSalesMediaSum_Title" xml:space="preserve">
+    <value>Payment Methods Summary Report</value>
+  </data>
+  <data name="RptSalesMediaSumCust_Title" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptShopAreaAnalysis_Title" xml:space="preserve">
+    <value>Tenancy Sales-per-square-meter Report</value>
+  </data>
+  <data name="RptShopAreaBasedRental_Title" xml:space="preserve">
+    <value>Tenant Rent and Area Analysis Report</value>
+  </data>
+  <data name="RptShopEfficiency_Title" xml:space="preserve">
+    <value>Tenancy Sales-to-Expense Analysis</value>
+  </data>
+  <data name="RptShopPayInAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptShopSalesRank_Title" xml:space="preserve">
+    <value>Tenancy Order List by Sales</value>
+  </data>
+  <data name="RptShopSalesSum_Title" xml:space="preserve">
+    <value>Tanancy Sale Summary Report</value>
+  </data>
+  <data name="RptStoreBrand_Title" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptStoreInvSum_StoreName" xml:space="preserve">
+    <value>Store Name</value>
+  </data>
+  <data name="RptTimeSalesAnalysis_Title" xml:space="preserve">
+    <value>Hourly Sales Summary Report</value>
+  </data>
+  <data name="RptTotalAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptTotalSales_MonthAreaSalesRate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptTotalSales_YearAreaSalesRateSum" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptTotalSales_YearSaleSum" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptTradeSalesAnalysis_Title" xml:space="preserve">
+    <value>Sales Gravity Analysis by Merchandise Assortments</value>
+  </data>
+  <data name="RptUnitInfo_AreaName" xml:space="preserve">
+    <value>Tenant group name</value>
+  </data>
+  <data name="RptUnitInfo_FloorArea" xml:space="preserve">
+    <value>Floor area</value>
+  </data>
+  <data name="RptUnitInfo_RentArea" xml:space="preserve">
+    <value>Contract area</value>
+  </data>
+  <data name="RptUnitInfo_Title" xml:space="preserve">
+    <value>Regular Units Information Summary</value>
+  </data>
+  <data name="RptUnitInfo_UnitStatus" xml:space="preserve">
+    <value>Unit status</value>
+  </data>
+  <data name="RptWAndE_Title" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptXingYeLianMing" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptXinYeLianJiNeiKa" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptXinYeLianJiWaiKa" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptXinYeTuoJiNeiKa" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptXinYeTuoJiWaiKa" xml:space="preserve">
+    <value />
+  </data>
+  <data name="sort" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptUnitInfo_UserArea" xml:space="preserve">
+    <value>User Areas</value>
+  </data>
+  <data name="Rpt_InvDayRent" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_invMonthRent" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_SalesPrice" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptInv_PaidSum" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_InvPaidPrint" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptSale_ShopNum" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptSale_TransTotalAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_GoodsPrice" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptSale_LocalAmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_DetailReport" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_DoneTotalCashes" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_GetTotalCashes" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_NoDoneTotalCashes" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_TotalReport" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptSale_DiffCash" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptSale_GetCashTime" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptSale_MediaStatus" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptSale_UserName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptSalesTrafficQuery_Title" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_CustCount" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_SalesRentRate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_SeachMonth" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_ShopCount" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptBrandDSales_Title" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RptBrandMSales_Title" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_ExchangeBonusCost" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_ExchangeReceiptNumber" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_GiftNumber" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_GiftTypeNum" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_MemberAgeDistrict" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_MemberChangeNum2" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_MemberName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_MemberTotal" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_Price" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_YesOrNoExchangeByBonus" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_YesOrNoExchangeByReceipt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MemberChangePerNum" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MemberChangePerSum" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MemberChangeSum" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PerTotalBonus" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PerTotalChangeNum" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PerTotalCHangeSum" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Associator_lblExchangePrice" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu_ContractExclusive" xml:space="preserve">
+    <value>合同排他列表</value>
+  </data>
+  <data name="Menu_EmphasisContract" xml:space="preserve">
+    <value>重点关注合同列表</value>
+  </data>
+  <data name="Menu_MoreContract" xml:space="preserve">
+    <value>多合同商户列表</value>
+  </data>
+  <data name="Menu_PosSvrinfoQuery" xml:space="preserve">
+    <value>POS服务器信息列表</value>
+  </data>
+  <data name="Rpt_DeptUser" xml:space="preserve">
+    <value>部门用户列表</value>
+  </data>
+  <data name="Menu_MallComposite" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rpt_MoreContractQuery" xml:space="preserve">
+    <value />
+  </data>
+</root>

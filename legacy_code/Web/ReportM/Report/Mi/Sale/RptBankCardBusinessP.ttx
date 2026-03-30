@@ -1,0 +1,13 @@
+CustCode	String	16	
+CustName	String	64	
+BankAmt	Currency		
+BankChgAmt	Currency		
+BankNetAmt	Currency
+ContractCode	String	32	
+ShopCode	String	16
+ShopName	String	64
+BankEFTID	String	16
+BankTransTime	Datetime
+BankCardID	String	32	sdfasdfasdf
+
+

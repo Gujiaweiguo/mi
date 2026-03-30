@@ -1,0 +1,23 @@
+<chart  bgColor='FFFFFF' lowerLimit='0' upperLimit='876'    tickValueDistance='20' showValue='0'  paletteThemeColor='669933'   chartLeftMargin='25' chartRightMargin='25' decimals='3' >
+    <colorRange>
+        <color minValue='0' maxValue='219' code='FF654F'/>
+        <color minValue='219' maxValue='438' code='8efdfe'/>
+        <color minValue='438' maxValue='657' code='F6BD0F'/>
+		    <color minValue='657' maxValue='876' code='8BBA00'/>
+    </colorRange>
+    <dials>
+        <dial value='397' rearExtension='10' tooltext='4.53%'/>
+    </dials>
+	
+	<trendpoints>
+         <point startValue='462'  valueInside='0' displayValue=' ' color='666666' useMarker='1' markerColor='F1f1f1' markerBorderColor='666666' markerRadius='5' markerTooltext='462' /> 
+    </trendpoints>
+	
+	<annotations>
+      <annotationGroup id='Grp1' >
+         <annotation type='text' x='85' y='30' label='2009年综合毛利指标完成'  font='宋体'  fontcolor='333333'fontSize='12'  />
+		 <annotation type='text' x='87' y='46' label='(单位百万元)'  font='宋体'  fontcolor='333333' fontSize='11'/>
+      </annotationGroup>
+   </annotations>
+
+</chart> 

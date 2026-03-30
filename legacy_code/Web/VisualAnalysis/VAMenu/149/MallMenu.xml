@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ShopingMallMenu>
+	<Menu ID="1">
+		<MenuDesc>项目商铺出租情况分析</MenuDesc>
+		<MenuUrl>VisualAnalysis/report/StoreRentRate.aspx?funcid=358</MenuUrl>
+	</Menu>
+	<Menu ID="2">
+		<MenuDesc>项目销售与客流趋势分析</MenuDesc>
+		<MenuUrl>VisualAnalysis/report/StoreSalesTrends.aspx?funcid=358</MenuUrl>
+	</Menu>
+	<Menu ID="3">
+		<MenuDesc>项目销售明细分析</MenuDesc>
+		<MenuUrl>VisualAnalysis/report/StoreSalesDetail.aspx?funcid=358</MenuUrl>
+	</Menu>
+	<Menu ID="4">
+		<MenuDesc>项目POS状态监控</MenuDesc>
+		<MenuUrl>VisualAnalysis/report/StorePosStatus.aspx?funcid=358</MenuUrl>
+	</Menu>
+	<Menu ID="5">
+		<MenuDesc>项目今日销售统计</MenuDesc>
+		<MenuUrl>VisualAnalysis/report/StoreDayHourSalse.aspx?funcid=358</MenuUrl>
+	</Menu>
+
+</ShopingMallMenu>

@@ -1,0 +1,9 @@
+ContractCode	String	32
+CustCode	String	16
+CustName	String	64
+BizMode	Number
+ContractStatus	Number
+ConStartDate	DateTime
+ConEndDate	DateTime
+TotalArea	Number
+deptname	String	32

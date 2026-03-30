@@ -1,0 +1,10 @@
+membCode	String	16
+membCard	String	16
+MemberName	String	30
+MobilPhone	String	18
+ComefromNm	String	20
+ActDesc	String	64
+giftID	Number
+giftDesc	String	128
+GiftQty	Number
+ActDate	DateTime

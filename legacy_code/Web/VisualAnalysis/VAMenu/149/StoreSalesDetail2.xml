@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<chart bgColor="ffffff" enableRotation="1" baseFontSize="12" palette="4" decimals="0" showvalues="0" bleSmartLabels="1" bgAlpha="40,100" bgRatio="0,100" bgAngle="360" showBorder="0" startingAngle="170" numberScaleValue="W" formatNumber="0" caption="项目2010年03月业态销售汇总" defaultAnimation="0" aboutMenuItemLabel="About Wincor Nixdorf" aboutMenuItemLink="n-http://www.wincor-nixdorf.com">
+  <set label="餐饮" value="274.00" />
+  <set label="服装" value="134382.90" />
+  <set label="生活配套" value="19312.80" />
+  <set label="食品" value="43269.60" />
+  <set label="饰品" value="16690.00" />
+  <set label="鞋包皮具" value="3749.00" />
+  <set label="休闲户外服饰" value="9786.00" />
+  <set label="运动服装服饰" value="585028.00" />
+  <set label="珠宝工艺品" value="94230.00" />
+</chart>

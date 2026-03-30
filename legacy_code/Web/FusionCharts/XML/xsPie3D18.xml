@@ -1,0 +1,8 @@
+﻿<chart bgColor='ffffff' showBorder="0" baseFontSize='12'　palette='4' decimals='0' showvalues='1' bleSmartLabels='1' enableRotation='0' bgAlpha='40,100' bgRatio='0,100' bgAngle='270' showBorder='1' startingAngle='170' numberScaleValue='W' formatNumber='1' caption='18点业态销售占比分析'>
+            <set label='服装' value='3192' />
+            <set label='餐饮' value='4621' />
+            <set label='珠宝' value='1200' />
+            <set label='超市' value='3643' isSliced='1' link=""/>
+            <set label='电器' value='12310' />
+             <set label='自营' value='8902' isSliced='1'/>
+</chart>

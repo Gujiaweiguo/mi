@@ -1,0 +1,10 @@
+LCardId		String	30	asdf
+CardClassId	String	30	asdf
+GenDate 	DateTime	2008-1-1
+EntryAt		DateTime	2008-1-1
+
+
+
+
+
+

@@ -1,0 +1,6 @@
+storeid	Number
+Month	Number
+counterid	Number
+name	String	32
+Tyinnum	Number
+Lyinnum	Number

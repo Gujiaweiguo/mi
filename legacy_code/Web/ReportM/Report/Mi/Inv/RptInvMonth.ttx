@@ -1,0 +1,18 @@
+deptid	Number
+deptname	String	32
+subsid	Number
+subsname	String	32
+contractcode	String	32
+custcode	String	32
+custname	String	32
+shopcode	String	32
+shopname	String	32
+fstartdate	DateTime
+fenddate	DateTime
+salemonth	String	32
+rental	Number
+rate	Number
+salesto	Number
+amt	Number
+amtp	Number
+percentamt	Number

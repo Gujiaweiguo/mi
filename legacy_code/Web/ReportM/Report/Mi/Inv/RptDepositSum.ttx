@@ -1,0 +1,13 @@
+contractcode	String	32
+constartdate	DateTime
+conenddate	DateTime
+custshortname	String	32
+baseamt	Number
+subsid	Number
+subsname	String	32
+storeid	Number
+storename	String	32
+cityid	Number
+cityname	String	32
+areaid	Number
+areaname	String	32

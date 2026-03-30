@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<chart bgColor='ffffff' scaption='出租情况分析'>
+  <set label='出租' value='1782' />
+  <set label='空置' value='182' />
+  <set label='即将到期' value='508' />
+</chart>

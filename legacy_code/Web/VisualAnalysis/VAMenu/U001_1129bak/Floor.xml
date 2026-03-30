@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FloorInfor>
+	<Floor ID="1">
+		<BuildingCode>101</BuildingCode>
+       		<FloorCode>101</FloorCode>
+        	<FloorDesc>一层</FloorDesc>
+        	<Remark></Remark>
+    	</Floor>
+</FloorInfor>

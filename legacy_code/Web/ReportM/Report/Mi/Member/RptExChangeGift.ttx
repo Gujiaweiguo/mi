@@ -1,0 +1,6 @@
+ExDate		DateTime	2008-1-1
+MembCardId	String	50	asdf
+ReceiptNum	String	30	asdf
+TransAmt	Number		1001
+GiftId		String	30	asdf
+GiftQty		Number		1001

@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encodingbb="utf-8"?>
+<ToolBar>
+    <toolbar toolbarID="C101" desc="400笔以下" rb="255" gb="0" bb="0" />
+    <toolbar toolbarID="C102" desc="400-700笔" rb="0" gb="0" bb="255" />
+    <toolbar toolbarID="C103" desc="700-1000笔" rb="255" gb="0" bb="255" />
+    <toolbar toolbarID="C104" desc="1000-1700笔" rb="0" gb="255" bb="255" />
+    <toolbar toolbarID="C105" desc="1700-2500笔" rb="0" gb="255" bb="0" />
+    <toolbar toolbarID="C106" desc="2500笔以上" rb="255" gb="255" bb="0" />
+</ToolBar>

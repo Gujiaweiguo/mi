@@ -1,0 +1,8 @@
+ChargeTypeName	String	32	
+Amt	Currency		
+sAmt	Currency		
+ContractCode	String	32	
+ShopCode	String	16	
+ShopName	String	64	
+InvPeriod	Date
+SubTypeName	String	32		

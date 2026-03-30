@@ -1,0 +1,58 @@
+<db-param>
+	<db-types>
+		<db-type id="sqlserver">
+			<provider>192.168.0.237</provider>
+			<description>microsotf sqlserver database</description>
+		</db-type>
+		<db-type id="db2">
+			<provider>DB2OLEDB</provider>
+			<description>ibm udb2</description>
+		</db-type>
+		<db-type id="oracle">
+			<provider></provider>
+			<description>oracle database</description>
+		</db-type>
+		<db-type id="access">
+			<provider>Microsoft.Jet.OLEDB.4.0</provider>
+			<description>microsoft accees database</description>
+		</db-type>
+    <db-type id="odbc">
+      <provider></provider>
+      <description>odbc database</description>
+    </db-type>
+
+  </db-types>
+	<dbs>
+		<db id="jkldb" type-id="db2" default="false">
+			<datasource></datasource>
+			<userid>jeff</userid>
+			<password>jeff</password>
+			<description>jkl database</description>
+		</db>
+		<db id="jydb" type-id="oracle">
+			<datasource></datasource>
+			<userid>zdb</userid>
+			<password>zdb</password>
+			<description>jy database</description>
+		</db>
+		<db id="midb" type-id="sqlserver" default="true">
+			<datasource>MI_net</datasource>
+				<userid>sa</userid>
+			<password>sasa4321</password>
+			<description>jy database</description>
+		</db>
+    <db id="mi_net" type-id="odbc">
+      <datasource>MI</datasource>
+      <userid>sa</userid>
+      <password>sa</password>
+      <description>test database</description>
+    </db>
+
+    <db id="testdb" type-id="access">
+			<datasource>F:\Projects\MI\Test\testdb.mdb</datasource>
+			<userid></userid>
+			<password></password>
+			<description>test database</description>
+		</db>
+	</dbs>
+</db-param>

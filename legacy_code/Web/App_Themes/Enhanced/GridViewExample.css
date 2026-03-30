@@ -1,0 +1,86 @@
+﻿.foo {} /* W3C CSS validator likes CSS files to start with a class rather than a comment. Soooooo.... */
+
+/* This style sheet is intended to contain OFTEN CHANGED rules used when the GridView control adapter is enabled. */
+/* Empty rules are provided merely as a convenience for your future use or experimentation. */
+
+.PrettyGridView .AspNet-GridView 
+{
+    border: solid 2px #465239;
+    width: 100%;
+}
+
+
+.PrettyGridView .AspNet-GridView div.AspNet-GridView-Pagination,
+.PrettyGridView .AspNet-GridView div.AspNet-GridView-Pagination a,
+.PrettyGridView .AspNet-GridView div.AspNet-GridView-Pagination span
+{
+    background: #E9F5DA;
+    font-weight: normal;
+    text-align: center;
+    height: 2em;
+    margin-bottom: 0.3em;
+    padding-top: 0.4em;
+}
+
+.PrettyGridView .AspNet-GridView div.AspNet-GridView-Top
+{
+}
+
+.PrettyGridView .AspNet-GridView div.AspNet-GridView-Bottom
+{
+    margin-top: 0.3em;
+}
+
+.PrettyGridView .AspNet-GridView table
+{
+    border: none;
+    width: 100%;
+}
+
+.PrettyGridView .AspNet-GridView table thead tr th
+{
+    color: #465239;
+    background:url(bg-fade-light.png) repeat-x bottom;
+    font-weight: bold;
+}
+
+.PrettyGridView .AspNet-GridView table thead tr th a
+{
+    color: #465239;
+}
+
+.PrettyGridView .AspNet-GridView table tbody tr td
+{
+    color: #333333;
+    background: White;
+    text-align: center;
+}
+
+.PrettyGridView .AspNet-GridView table tbody tr.AspNet-GridView-Alternate td
+{
+    background:url(bg-fade-light-short.png) repeat-x;
+}
+
+.PrettyGridView .AspNet-GridView table tbody tr.AspNet-GridView-Selected td
+{
+}
+
+.PrettyGridView .AspNet-GridView table tfoot tr td
+{
+}
+
+
+
+/* ------------------------------------------------------------------- */
+/* Specific to this sample web site. */
+/* These rules are probably not useful in your site. */
+
+#SampleGridView .GridView-Skin-Header
+{
+    background:url(bg-fade-light.png) repeat-x bottom;
+}
+
+#SampleGridView .GridView-Skin-AlternatingRow
+{
+    background:url(bg-fade-light-short.png) repeat-x;
+}

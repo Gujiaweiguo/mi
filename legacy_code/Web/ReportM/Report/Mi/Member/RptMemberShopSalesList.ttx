@@ -1,0 +1,11 @@
+Trade2ID	Number
+Trade2Name	String	64
+FloorID	Number
+FloorName	String	64
+shopID	Number
+shopCode	String	16
+shopName	String	64
+receipt1	Number
+paidAmt	Number
+receipt2	Number
+custAmt	Number

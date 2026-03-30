@@ -1,0 +1,1302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Menu_PotCustomer" xml:space="preserve">
+    <value>潜在商户信息列表</value>
+  </data>
+  <data name="Rpt_AgoArrear" xml:space="preserve">
+    <value>往期欠款</value>
+  </data>
+  <data name="Rpt_Amount" xml:space="preserve">
+    <value>合计</value>
+  </data>
+  <data name="Rpt_AreaName" xml:space="preserve">
+    <value>区域名称</value>
+  </data>
+  <data name="Rpt_Brand" xml:space="preserve">
+    <value>品牌</value>
+  </data>
+  <data name="Rpt_BuildingName" xml:space="preserve">
+    <value>大楼名称</value>
+  </data>
+  <data name="Rpt_CustCode" xml:space="preserve">
+    <value>商户编码</value>
+  </data>
+  <data name="Rpt_CustName" xml:space="preserve">
+    <value>商户名称</value>
+  </data>
+  <data name="Rpt_CustShortName" xml:space="preserve">
+    <value>商户简称</value>
+  </data>
+  <data name="Rpt_FloorName" xml:space="preserve">
+    <value>楼层名称</value>
+  </data>
+  <data name="Rpt_HandlingCharge" xml:space="preserve">
+    <value>手续费</value>
+  </data>
+  <data name="Rpt_IinterestDate" xml:space="preserve">
+    <value>滞纳金时间段</value>
+  </data>
+  <data name="Rpt_InvComTitile" xml:space="preserve">
+    <value>公司名称</value>
+  </data>
+  <data name="Rpt_InvDate" xml:space="preserve">
+    <value>费用时间段</value>
+  </data>
+  <data name="Rpt_InvDetail" xml:space="preserve">
+    <value>费用项目明细</value>
+  </data>
+  <data name="Rpt_InvThisCost" xml:space="preserve">
+    <value>本期费用</value>
+  </data>
+  <data name="Rpt_LastChouChen" xml:space="preserve">
+    <value>上期抽成</value>
+  </data>
+  <data name="Rpt_LastSlotCard" xml:space="preserve">
+    <value>上期刷卡</value>
+  </data>
+  <data name="Rpt_lblBankAcct" xml:space="preserve">
+    <value>帐号</value>
+  </data>
+  <data name="Rpt_lblBankName" xml:space="preserve">
+    <value>开户银行</value>
+  </data>
+  <data name="Rpt_LocationName" xml:space="preserve">
+    <value>方位名称</value>
+  </data>
+  <data name="Rpt_MachineName" xml:space="preserve">
+    <value>设备名称</value>
+  </data>
+  <data name="Rpt_Num" xml:space="preserve">
+    <value>序号</value>
+  </data>
+  <data name="Rpt_OpeningBalance" xml:space="preserve">
+    <value>期初欠款数</value>
+  </data>
+  <data name="Rpt_OweDetailTitle" xml:space="preserve">
+    <value>商铺往期欠款明细列表</value>
+  </data>
+  <data name="Rpt_OweTitle" xml:space="preserve">
+    <value>商户欠款汇总表</value>
+  </data>
+  <data name="Rpt_PayAmt" xml:space="preserve">
+    <value>本月收入数据</value>
+  </data>
+  <data name="Rpt_PayInDate" xml:space="preserve">
+    <value>代收日期</value>
+  </data>
+  <data name="Rpt_PerRent" xml:space="preserve">
+    <value>出租率</value>
+  </data>
+  <data name="Rpt_Price" xml:space="preserve">
+    <value>单价
+(元)</value>
+  </data>
+  <data name="Rpt_ReadCurrentData" xml:space="preserve">
+    <value>本期读数</value>
+  </data>
+  <data name="Rpt_ReadLastData" xml:space="preserve">
+    <value>上期读数</value>
+  </data>
+  <data name="Rpt_RentNo" xml:space="preserve">
+    <value>未出租</value>
+  </data>
+  <data name="Rpt_RentOk" xml:space="preserve">
+    <value>已出租</value>
+  </data>
+  <data name="Rpt_ShopCode" xml:space="preserve">
+    <value>商铺编码</value>
+  </data>
+  <data name="Rpt_ShopName" xml:space="preserve">
+    <value>商铺名称</value>
+  </data>
+  <data name="Rpt_SlotCardMoney" xml:space="preserve">
+    <value>刷卡金额</value>
+  </data>
+  <data name="Rpt_ThisProductInv" xml:space="preserve">
+    <value>本期生成费用</value>
+  </data>
+  <data name="Rpt_UnitCode" xml:space="preserve">
+    <value>单元代码</value>
+  </data>
+  <data name="Rpt_Usage" xml:space="preserve">
+    <value>计费用量</value>
+  </data>
+  <data name="Rpt_VisualAnalysisRent" xml:space="preserve">
+    <value>出租率分析报表</value>
+  </data>
+  <data name="Rpt_WaterAndElectro" xml:space="preserve">
+    <value>水电费项目明细</value>
+  </data>
+  <data name="Rpt_YearPayAmt" xml:space="preserve">
+    <value>截止本月年收入数据</value>
+  </data>
+  <data name="RptAdvisContractInfoItem_AdBoardCode" xml:space="preserve">
+    <value>广告位代码</value>
+  </data>
+  <data name="RptAdvisContractInfoItem_AdBoardName" xml:space="preserve">
+    <value>广告位名称</value>
+  </data>
+  <data name="RptAdvisContractInfoItem_AdContractCode" xml:space="preserve">
+    <value>广告合同号</value>
+  </data>
+  <data name="RptAdvisContractInfoItem_AdMaker" xml:space="preserve">
+    <value>广告制作商</value>
+  </data>
+  <data name="RptAdvisContractInfoItem_AdType" xml:space="preserve">
+    <value>广告位类型</value>
+  </data>
+  <data name="RptAdvisContractInfoItem_PayingCycle" xml:space="preserve">
+    <value>付款周期</value>
+  </data>
+  <data name="RptAdvisContractInfoItem_PaymentPerCycle" xml:space="preserve">
+    <value>每期付款金额</value>
+  </data>
+  <data name="RptAdvisContractInfoItem_Prepayment" xml:space="preserve">
+    <value>预付金额</value>
+  </data>
+  <data name="RptAdvisContractInfoItem_SignDate" xml:space="preserve">
+    <value>鉴定日期</value>
+  </data>
+  <data name="RptAdvisContractInfoItem_Title" xml:space="preserve">
+    <value>广告合同信息明细表</value>
+  </data>
+  <data name="RptAreaContractInfoItem_AreaTypeCode" xml:space="preserve">
+    <value>类型编码</value>
+  </data>
+  <data name="RptAreaContractInfoItem_Title" xml:space="preserve">
+    <value>场地合同信息明细表</value>
+  </data>
+  <data name="RptBankCardDiversity_chkbank" xml:space="preserve">
+    <value>银行有，业务无</value>
+  </data>
+  <data name="RptBankCardDiversity_chkTradePos" xml:space="preserve">
+    <value>业务有，银行无</value>
+  </data>
+  <data name="RptBankCardDiversity_lblTrans" xml:space="preserve">
+    <value>银行卡交易差异报表</value>
+  </data>
+  <data name="RptBankCrd_SumRpt" xml:space="preserve">
+    <value>商铺银行卡交易统计列表</value>
+  </data>
+  <data name="RptBonusAmt" xml:space="preserve">
+    <value>退货扣除积分</value>
+  </data>
+  <data name="RptContractInfo_BizMode" xml:space="preserve">
+    <value>经营方式</value>
+  </data>
+  <data name="RptContractInfo_ContractID" xml:space="preserve">
+    <value>合同编码</value>
+  </data>
+  <data name="RptContractInfo_ContractStatus" xml:space="preserve">
+    <value>合同状态</value>
+  </data>
+  <data name="RptContractInfo_FEndDate" xml:space="preserve">
+    <value>结束日期</value>
+  </data>
+  <data name="RptContractInfo_FixedRental" xml:space="preserve">
+    <value>租金额
+(元)</value>
+  </data>
+  <data name="RptContractInfo_FormulaType" xml:space="preserve">
+    <value>公式类别</value>
+  </data>
+  <data name="RptContractInfo_FStartDate" xml:space="preserve">
+    <value>开始日期</value>
+  </data>
+  <data name="RptContractInfo_MinSum" xml:space="preserve">
+    <value>保底额</value>
+  </data>
+  <data name="RptContractInfo_MSalesTo" xml:space="preserve">
+    <value>保底销售额</value>
+  </data>
+  <data name="RptContractInfo_Pcent" xml:space="preserve">
+    <value>抽成率</value>
+  </data>
+  <data name="RptContractInfo_PSalesTo" xml:space="preserve">
+    <value>抽成销售额</value>
+  </data>
+  <data name="RptContractInfo_Title" xml:space="preserve">
+    <value>合同信息明细表</value>
+  </data>
+  <data name="RptContractInfo_TotalArea" xml:space="preserve">
+    <value>签约面积</value>
+  </data>
+  <data name="RptContractInfo_UnitPrice" xml:space="preserve">
+    <value>单位面积租金</value>
+  </data>
+  <data name="RptContractSumInfo_BizMode" xml:space="preserve">
+    <value>经营方式</value>
+  </data>
+  <data name="RptContractSumInfo_ConEndDate" xml:space="preserve">
+    <value>合同到期日</value>
+  </data>
+  <data name="RptContractSumInfo_ConStartDate" xml:space="preserve">
+    <value>合同起始日</value>
+  </data>
+  <data name="RptContractSumInfo_ContractID" xml:space="preserve">
+    <value>合同编码</value>
+  </data>
+  <data name="RptContractSumInfo_ContractStatus" xml:space="preserve">
+    <value>合同状态</value>
+  </data>
+  <data name="RptContractSumInfo_FormulaType" xml:space="preserve">
+    <value>公式类别</value>
+  </data>
+  <data name="RptContractSumInfo_MinSumOpt" xml:space="preserve">
+    <value>保底类型</value>
+  </data>
+  <data name="RptContractSumInfo_PcentOpt" xml:space="preserve">
+    <value>抽成类型</value>
+  </data>
+  <data name="RptContractSumInfo_RateType" xml:space="preserve">
+    <value>租金类型</value>
+  </data>
+  <data name="RptContractSumInfo_Title" xml:space="preserve">
+    <value>合同信息汇总表</value>
+  </data>
+  <data name="RptContractSumInfo_TotalArea" xml:space="preserve">
+    <value>签约面积</value>
+  </data>
+  <data name="RptCustBalanceDetail_Title" xml:space="preserve">
+    <value>商户欠款明细报表</value>
+  </data>
+  <data name="RptCustInvSum_Title" xml:space="preserve">
+    <value>商户付款汇总列表</value>
+  </data>
+  <data name="RptCustomerInfo_BankAcct" xml:space="preserve">
+    <value>银行开户帐号</value>
+  </data>
+  <data name="RptCustomerInfo_BankName" xml:space="preserve">
+    <value>开户行</value>
+  </data>
+  <data name="RptCustomerInfo_ContractMan" xml:space="preserve">
+    <value>联系人</value>
+  </data>
+  <data name="RptCustomerInfo_CustLicenseEndDate" xml:space="preserve">
+    <value>有效期结束时间</value>
+  </data>
+  <data name="RptCustomerInfo_CustLicenseStartDate" xml:space="preserve">
+    <value>有效期开始时间</value>
+  </data>
+  <data name="RptCustomerInfo_CustTypeID" xml:space="preserve">
+    <value>商户类型</value>
+  </data>
+  <data name="RptCustomerInfo_LegalCode" xml:space="preserve">
+    <value>法人代码</value>
+  </data>
+  <data name="RptCustomerInfo_LegalRep" xml:space="preserve">
+    <value>法定代表人</value>
+  </data>
+  <data name="RptCustomerInfo_LegalRepTitle" xml:space="preserve">
+    <value>法定代表人职务</value>
+  </data>
+  <data name="RptCustomerInfo_MobileTel" xml:space="preserve">
+    <value>移动电话</value>
+  </data>
+  <data name="RptCustomerInfo_OfficeAddr" xml:space="preserve">
+    <value>办公地址</value>
+  </data>
+  <data name="RptCustomerInfo_PostAddr" xml:space="preserve">
+    <value>邮寄地址</value>
+  </data>
+  <data name="RptCustomerInfo_PostCode" xml:space="preserve">
+    <value>邮政编码</value>
+  </data>
+  <data name="RptCustomerInfo_RegAddr" xml:space="preserve">
+    <value>注册地址</value>
+  </data>
+  <data name="RptCustomerInfo_RegCap" xml:space="preserve">
+    <value>注册资金</value>
+  </data>
+  <data name="RptCustomerInfo_RegCode" xml:space="preserve">
+    <value>工商注册号</value>
+  </data>
+  <data name="RptCustomerInfo_TaxCode" xml:space="preserve">
+    <value>税务登记号</value>
+  </data>
+  <data name="RptCustomerInfo_Tel" xml:space="preserve">
+    <value>电话</value>
+  </data>
+  <data name="RptCustomerInfo_Title" xml:space="preserve">
+    <value>商户信息列表</value>
+  </data>
+  <data name="RptCustomerInfo_WebUrl" xml:space="preserve">
+    <value>公司网址</value>
+  </data>
+  <data name="RptCustPaidDetail_Title" xml:space="preserve">
+    <value>商户付款明细列表</value>
+  </data>
+  <data name="RptFloatSaleQuery_Sdate" xml:space="preserve">
+    <value>查询日期</value>
+  </data>
+  <data name="RptFloatSaleQuery_Title" xml:space="preserve">
+    <value>项目日销售统计图表</value>
+  </data>
+  <data name="RptFloatSaleQuery_TotalSales" xml:space="preserve">
+    <value>实时总销售额</value>
+  </data>
+  <data name="RptInv_AdvAmt" xml:space="preserve">
+    <value>租金类
+(元)</value>
+  </data>
+  <data name="RptInv_CardAmt" xml:space="preserve">
+    <value>本期刷卡</value>
+  </data>
+  <data name="RptInv_ChargeItem" xml:space="preserve">
+    <value>收费项目</value>
+  </data>
+  <data name="RptInv_ChargeTypeName" xml:space="preserve">
+    <value>费用类型</value>
+  </data>
+  <data name="RptInv_CostAmt" xml:space="preserve">
+    <value>销售额
+(元)</value>
+  </data>
+  <data name="RptInv_CurTypeName" xml:space="preserve">
+    <value>币种</value>
+  </data>
+  <data name="RptInv_Date" xml:space="preserve">
+    <value>时间段</value>
+  </data>
+  <data name="RptInv_DepositAmt" xml:space="preserve">
+    <value>押金
+(元)</value>
+  </data>
+  <data name="RptInv_FanstAmt" xml:space="preserve">
+    <value>固定费用
+(元)</value>
+  </data>
+  <data name="RptInv_InterestRate" xml:space="preserve">
+    <value>滞纳金利率</value>
+  </data>
+  <data name="RptInv_InvAdjAmt" xml:space="preserve">
+    <value>调整金额</value>
+  </data>
+  <data name="RptInv_InvAmt" xml:space="preserve">
+    <value>金额
+(元)</value>
+  </data>
+  <data name="RptInv_InvCode" xml:space="preserve">
+    <value>结算单号</value>
+  </data>
+  <data name="RptInv_InvDate" xml:space="preserve">
+    <value>生成日期</value>
+  </data>
+  <data name="RptInv_InvInterest" xml:space="preserve">
+    <value>已交金额</value>
+  </data>
+  <data name="RptInv_InvJVCost" xml:space="preserve">
+    <value>供应商应开发票</value>
+  </data>
+  <data name="RptInv_InvJVCostAmt" xml:space="preserve">
+    <value>供应商应得额</value>
+  </data>
+  <data name="RptInv_InvNoTaxAmt" xml:space="preserve">
+    <value>货款</value>
+  </data>
+  <data name="RptInv_InvoiceDetail" xml:space="preserve">
+    <value>费用项目明细</value>
+  </data>
+  <data name="RptInv_InvPaidAmt" xml:space="preserve">
+    <value>已付金额
+(元)</value>
+  </data>
+  <data name="RptInv_InvPayAmt" xml:space="preserve">
+    <value>费用金额
+(元)</value>
+  </data>
+  <data name="RptInv_InvPayDate" xml:space="preserve">
+    <value>付款日期</value>
+  </data>
+  <data name="RptInv_InvPeriod" xml:space="preserve">
+    <value>记账月</value>
+  </data>
+  <data name="RptInv_InvSalesAmt" xml:space="preserve">
+    <value>销售额</value>
+  </data>
+  <data name="RptInv_InvSalesRate" xml:space="preserve">
+    <value>租售比
+(%)</value>
+  </data>
+  <data name="RptInv_InvTax" xml:space="preserve">
+    <value>税金</value>
+  </data>
+  <data name="RptInv_InvTaxRate" xml:space="preserve">
+    <value>税率</value>
+  </data>
+  <data name="RptInv_ItemType" xml:space="preserve">
+    <value>项目类别</value>
+  </data>
+  <data name="RptInv_JVActPayAmt" xml:space="preserve">
+    <value>供应商实得额</value>
+  </data>
+  <data name="RptInv_JVKeapTotal" xml:space="preserve">
+    <value>应扣合计</value>
+  </data>
+  <data name="RptInv_JVMustTotal" xml:space="preserve">
+    <value>应付合计</value>
+  </data>
+  <data name="RptInv_JVSalesAmt" xml:space="preserve">
+    <value>本期销售</value>
+  </data>
+  <data name="RptInv_KeepAmt" xml:space="preserve">
+    <value>抵扣金额</value>
+  </data>
+  <data name="RptInv_MustTotal" xml:space="preserve">
+    <value>应交合计</value>
+  </data>
+  <data name="RptInv_Note" xml:space="preserve">
+    <value>备注</value>
+  </data>
+  <data name="RptInv_OtherAmt" xml:space="preserve">
+    <value>其他金额</value>
+  </data>
+  <data name="RptInv_OweAmt" xml:space="preserve">
+    <value>欠款金额
+(元)</value>
+  </data>
+  <data name="RptInv_PayInAmt" xml:space="preserve">
+    <value>消费金额</value>
+  </data>
+  <data name="RptInv_PayPaidAmt" xml:space="preserve">
+    <value>费效比</value>
+  </data>
+  <data name="RptInv_PreAmt" xml:space="preserve">
+    <value>物业费</value>
+  </data>
+  <data name="RptInv_PrtDate" xml:space="preserve">
+    <value>打印日期</value>
+  </data>
+  <data name="RptInv_PrtName" xml:space="preserve">
+    <value>打印人</value>
+  </data>
+  <data name="RptInv_RateTicketAmt" xml:space="preserve">
+    <value>含税开票金额</value>
+  </data>
+  <data name="RptInv_Reprint" xml:space="preserve">
+    <value>重打</value>
+  </data>
+  <data name="RptInv_RMBTotalMoney" xml:space="preserve">
+    <value>人民币合计金额</value>
+  </data>
+  <data name="RptInv_SInvPaidAmt" xml:space="preserve">
+    <value>已付金额
+(元)</value>
+  </data>
+  <data name="RptInv_StandardPrice" xml:space="preserve">
+    <value>标准单价</value>
+  </data>
+  <data name="RptInv_TotalAmt" xml:space="preserve">
+    <value>总计</value>
+  </data>
+  <data name="RptInv_TotalChargeAmt" xml:space="preserve">
+    <value>代扣金额小计</value>
+  </data>
+  <data name="RptInv_UnitRen" xml:space="preserve">
+    <value>单位面积租金</value>
+  </data>
+  <data name="RptInv_WaterElecDetail" xml:space="preserve">
+    <value>水电费明细</value>
+  </data>
+  <data name="RptInv_WaterInv" xml:space="preserve">
+    <value>水电费
+(元)</value>
+  </data>
+  <data name="RptInvChargeCountLog_Title" xml:space="preserve">
+    <value>结算单日志报表</value>
+  </data>
+  <data name="RptInvInterest_InterestAmt" xml:space="preserve">
+    <value>滞纳金金额</value>
+  </data>
+  <data name="RptInvInterest_InterestDay" xml:space="preserve">
+    <value>滞纳天数</value>
+  </data>
+  <data name="RptInvInterest_Title" xml:space="preserve">
+    <value>滞纳金报表</value>
+  </data>
+  <data name="RptInvoiceDetail2_Title" xml:space="preserve">
+    <value>租赁结算单</value>
+  </data>
+  <data name="RptJianSheLianJiNeiKa" xml:space="preserve">
+    <value>联机内卡</value>
+  </data>
+  <data name="RptJianSheLianJiWaiKa" xml:space="preserve">
+    <value>联机外卡</value>
+  </data>
+  <data name="RptJianSheLianMing" xml:space="preserve">
+    <value>联名卡</value>
+  </data>
+  <data name="RptJianSheTuoJiNeiKa" xml:space="preserve">
+    <value>脱机内卡</value>
+  </data>
+  <data name="RptJianSheTuoJiWaiKa" xml:space="preserve">
+    <value>脱机外卡</value>
+  </data>
+  <data name="RptJV_InvPayAmt" xml:space="preserve">
+    <value>扣款金额</value>
+  </data>
+  <data name="RptJV_Title" xml:space="preserve">
+    <value>联营结算单返款</value>
+  </data>
+  <data name="RptLCust" xml:space="preserve">
+    <value>会员信息报表</value>
+  </data>
+  <data name="RptLease_ChargeDate" xml:space="preserve">
+    <value>费用期间</value>
+  </data>
+  <data name="RptLease_Times" xml:space="preserve">
+    <value>倍率</value>
+  </data>
+  <data name="RptLeaseInvDetail_Title" xml:space="preserve">
+    <value>结算单明细列表</value>
+  </data>
+  <data name="RptMallSalesSum_Title" xml:space="preserve">
+    <value>项目销售额统计表</value>
+  </data>
+  <data name="RptMem_BookGift" xml:space="preserve">
+    <value>礼品申请</value>
+  </data>
+  <data name="RptMem_BookId" xml:space="preserve">
+    <value>申请号</value>
+  </data>
+  <data name="RptMem_Count" xml:space="preserve">
+    <value>数量</value>
+  </data>
+  <data name="RptMem_ExChangeGift" xml:space="preserve">
+    <value>小票换礼品</value>
+  </data>
+  <data name="RptMem_ExDate" xml:space="preserve">
+    <value>兑换日期</value>
+  </data>
+  <data name="RptMem_GiftDesc" xml:space="preserve">
+    <value>赠品名称</value>
+  </data>
+  <data name="RptMem_GiftID" xml:space="preserve">
+    <value>赠品号</value>
+  </data>
+  <data name="RptMem_GiveGift" xml:space="preserve">
+    <value>发放礼品</value>
+  </data>
+  <data name="RptMem_InActionAnalysis" xml:space="preserve">
+    <value>无积分会员分析</value>
+  </data>
+  <data name="RptMem_InsufficientBonus" xml:space="preserve">
+    <value>积分不足预警</value>
+  </data>
+  <data name="RptMem_MembCardId" xml:space="preserve">
+    <value>会员卡号</value>
+  </data>
+  <data name="RptMem_MemberBonusComparison" xml:space="preserve">
+    <value>会员积分比较</value>
+  </data>
+  <data name="RptMem_MemberInforAnalysis" xml:space="preserve">
+    <value>会员分析-会员资料/积分</value>
+  </data>
+  <data name="RptMem_MemberProfileAnalysis" xml:space="preserve">
+    <value>会员信息</value>
+  </data>
+  <data name="RptMem_MemberStatistics" xml:space="preserve">
+    <value>会员统计表</value>
+  </data>
+  <data name="RptMem_Name" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="RptMem_PerchaseRank" xml:space="preserve">
+    <value>积分点购买金额及频次排序</value>
+  </data>
+  <data name="RptMem_ReceiptNum" xml:space="preserve">
+    <value>小票数</value>
+  </data>
+  <data name="RptMem_RedeemDate" xml:space="preserve">
+    <value>赠送日期</value>
+  </data>
+  <data name="RptMem_RedeemGift" xml:space="preserve">
+    <value>赠品兑换</value>
+  </data>
+  <data name="RptMem_ReplacementCharges" xml:space="preserve">
+    <value>换卡收费</value>
+  </data>
+  <data name="RptMem_ShopMemberSales" xml:space="preserve">
+    <value>商店会员销售额</value>
+  </data>
+  <data name="RptMem_ShopSalesVSMemberSales" xml:space="preserve">
+    <value>商店日销售与会员销售比较</value>
+  </data>
+  <data name="RptMem_ShopTotalSalesVSMemberSales" xml:space="preserve">
+    <value>商店销售与会员销售比较</value>
+  </data>
+  <data name="RptMem_TransAmt" xml:space="preserve">
+    <value>交易额</value>
+  </data>
+  <data name="RptMem_UnregisteredCard" xml:space="preserve">
+    <value>新注册会员</value>
+  </data>
+  <data name="RptPayOut_Amt" xml:space="preserve">
+    <value>本次还款额</value>
+  </data>
+  <data name="RptPayOut_AmtSum" xml:space="preserve">
+    <value>累计还款</value>
+  </data>
+  <data name="RptPayOut_BankChgAmt" xml:space="preserve">
+    <value>银行手续费</value>
+  </data>
+  <data name="RptPayOut_Date" xml:space="preserve">
+    <value>代收款时间段</value>
+  </data>
+  <data name="RptPayOut_PayInAmt" xml:space="preserve">
+    <value>代收款金额</value>
+  </data>
+  <data name="RptPayOut_PayInID" xml:space="preserve">
+    <value>代收款单号</value>
+  </data>
+  <data name="RptPayOut_PayOutID" xml:space="preserve">
+    <value>返款单号</value>
+  </data>
+  <data name="RptPayOut_Title" xml:space="preserve">
+    <value>返款单</value>
+  </data>
+  <data name="RptPub_Particular" xml:space="preserve">
+    <value>明细报表</value>
+  </data>
+  <data name="RptPub_Sum" xml:space="preserve">
+    <value>汇总报表</value>
+  </data>
+  <data name="RptREXTotalAmt" xml:space="preserve">
+    <value>退货金额</value>
+  </data>
+  <data name="RptSale_AllocDisc" xml:space="preserve">
+    <value>整单分配折扣(%)</value>
+  </data>
+  <data name="RptSale_AvgArea" xml:space="preserve">
+    <value>单位面积销售
+(元)</value>
+  </data>
+  <data name="RptSale_AvgPaidAmt" xml:space="preserve">
+    <value>单销
+(元)</value>
+  </data>
+  <data name="RptSale_BatchId" xml:space="preserve">
+    <value>批次号</value>
+  </data>
+  <data name="RptSale_BizDate" xml:space="preserve">
+    <value>交易日期</value>
+  </data>
+  <data name="RptSale_CardID" xml:space="preserve">
+    <value>卡号</value>
+  </data>
+  <data name="RptSale_CntRate" xml:space="preserve">
+    <value>交易数差率
+(%)</value>
+  </data>
+  <data name="RptSale_CommChg" xml:space="preserve">
+    <value>手续费
+(元)</value>
+  </data>
+  <data name="RptSale_CommRate" xml:space="preserve">
+    <value>手续费率
+(%)</value>
+  </data>
+  <data name="RptSale_CostAmt" xml:space="preserve">
+    <value>联营成本
+(元)</value>
+  </data>
+  <data name="RptSale_DiffAmt" xml:space="preserve">
+    <value>交易额差额
+(元)</value>
+  </data>
+  <data name="RptSale_DiffCnt" xml:space="preserve">
+    <value>交易数差额
+(元)</value>
+  </data>
+  <data name="RptSale_DiscRate" xml:space="preserve">
+    <value>商品扣点</value>
+  </data>
+  <data name="RptSale_dPaidAmt" xml:space="preserve">
+    <value>对比交易额
+(元)</value>
+  </data>
+  <data name="RptSale_DueAmt" xml:space="preserve">
+    <value>折扣后合计</value>
+  </data>
+  <data name="RptSale_EFTID" xml:space="preserve">
+    <value>终端号</value>
+  </data>
+  <data name="RptSale_ExemptTax" xml:space="preserve">
+    <value>免除</value>
+  </data>
+  <data name="RptSale_FBonusInfo" xml:space="preserve">
+    <value>会员信息</value>
+  </data>
+  <data name="RptSale_FDetailInfo" xml:space="preserve">
+    <value>交易明细</value>
+  </data>
+  <data name="RptSale_FFooterInfo" xml:space="preserve">
+    <value>税费信息</value>
+  </data>
+  <data name="RptSale_FHeaderInfo" xml:space="preserve">
+    <value>表头信息</value>
+  </data>
+  <data name="RptSale_FMediaInfo" xml:space="preserve">
+    <value>付款方式信息</value>
+  </data>
+  <data name="RptSale_ItemDisc" xml:space="preserve">
+    <value>单品折扣
+(%)</value>
+  </data>
+  <data name="RptSale_MediaDesc" xml:space="preserve">
+    <value>币值种类</value>
+  </data>
+  <data name="RptSale_MediaMDesc" xml:space="preserve">
+    <value>付款方式</value>
+  </data>
+  <data name="RptSale_MediaMNo" xml:space="preserve">
+    <value>币制编码</value>
+  </data>
+  <data name="RptSale_MIscCharge" xml:space="preserve">
+    <value>杂费</value>
+  </data>
+  <data name="RptSale_MiscTax" xml:space="preserve">
+    <value>杂税</value>
+  </data>
+  <data name="RptSale_MReceiptId" xml:space="preserve">
+    <value>手写单</value>
+  </data>
+  <data name="RptSale_NetAmt" xml:space="preserve">
+    <value>销售净额
+(元)</value>
+  </data>
+  <data name="RptSale_NewPrice" xml:space="preserve">
+    <value>销售价格
+(元)</value>
+  </data>
+  <data name="RptSale_OrgPrice" xml:space="preserve">
+    <value>原价格
+(元)</value>
+  </data>
+  <data name="RptSale_PaidAmt" xml:space="preserve">
+    <value>交易金额
+(元)</value>
+  </data>
+  <data name="RptSale_PayAmt" xml:space="preserve">
+    <value>应付金额
+(元)</value>
+  </data>
+  <data name="RptSale_PosID" xml:space="preserve">
+    <value>POS机号</value>
+  </data>
+  <data name="RptSale_pRate" xml:space="preserve">
+    <value>交易额差率
+(%)</value>
+  </data>
+  <data name="RptSale_PrefAmt" xml:space="preserve">
+    <value>优惠金额
+(元)</value>
+  </data>
+  <data name="RptSale_ProfitAmt" xml:space="preserve">
+    <value>毛利额
+(元)</value>
+  </data>
+  <data name="RptSale_ReceiptDisc" xml:space="preserve">
+    <value>折扣</value>
+  </data>
+  <data name="RptSale_ReceiptID" xml:space="preserve">
+    <value>POS交易号</value>
+  </data>
+  <data name="RptSale_RReceiptId" xml:space="preserve">
+    <value>退票单</value>
+  </data>
+  <data name="RptSale_SalesMan" xml:space="preserve">
+    <value>销售员</value>
+  </data>
+  <data name="RptSale_SkuDesc" xml:space="preserve">
+    <value>商品名称</value>
+  </data>
+  <data name="RptSale_SkuId" xml:space="preserve">
+    <value>商品编码</value>
+  </data>
+  <data name="RptSale_SurCharge" xml:space="preserve">
+    <value>服务费</value>
+  </data>
+  <data name="RptSale_Tax" xml:space="preserve">
+    <value>税额
+(元)</value>
+  </data>
+  <data name="RptSale_TaxType" xml:space="preserve">
+    <value>类型</value>
+  </data>
+  <data name="RptSale_Trade1Name" xml:space="preserve">
+    <value>行业类别</value>
+  </data>
+  <data name="RptSale_Trade2Name" xml:space="preserve">
+    <value>业态</value>
+  </data>
+  <data name="RptSale_TradeCode" xml:space="preserve">
+    <value>经营种类编码</value>
+  </data>
+  <data name="RptSale_TransCnt" xml:space="preserve">
+    <value>交易数</value>
+  </data>
+  <data name="RptSale_TransTime" xml:space="preserve">
+    <value>交易时间</value>
+  </data>
+  <data name="RptSale_TransType" xml:space="preserve">
+    <value>交易类型</value>
+  </data>
+  <data name="RptSale_TrNum" xml:space="preserve">
+    <value>交易笔数</value>
+  </data>
+  <data name="RptSale_UserID" xml:space="preserve">
+    <value>收银员ID</value>
+  </data>
+  <data name="RptSalesComparison_Title" xml:space="preserve">
+    <value>商铺日销售对比分析列表</value>
+  </data>
+  <data name="RptSalesDetails_Title" xml:space="preserve">
+    <value>销售明细报表</value>
+  </data>
+  <data name="RptSalesMediaSum_Subtotal" xml:space="preserve">
+    <value>小计</value>
+  </data>
+  <data name="RptSalesMediaSum_Title" xml:space="preserve">
+    <value>商铺每日销售付款方式汇总列表</value>
+  </data>
+  <data name="RptSalesMediaSumCust_Title" xml:space="preserve">
+    <value>商铺销售付款方式汇总列表</value>
+  </data>
+  <data name="RptShopAreaAnalysis_Title" xml:space="preserve">
+    <value>商铺单位面积销售分析列表</value>
+  </data>
+  <data name="RptShopAreaBasedRental_Title" xml:space="preserve">
+    <value>商铺单位面积租金分析列表</value>
+  </data>
+  <data name="RptShopEfficiency_Title" xml:space="preserve">
+    <value>商户租售比报表</value>
+  </data>
+  <data name="RptShopPayInAmt" xml:space="preserve">
+    <value>商铺缴款</value>
+  </data>
+  <data name="RptShopSalesRank_Title" xml:space="preserve">
+    <value>商铺销售排名分析列表</value>
+  </data>
+  <data name="RptShopSalesSum_Title" xml:space="preserve">
+    <value>商铺销售汇总报表</value>
+  </data>
+  <data name="RptStoreBrand_Title" xml:space="preserve">
+    <value>项目主要品牌销售额统计表</value>
+  </data>
+  <data name="RptStoreInvSum_StoreName" xml:space="preserve">
+    <value>商业项目</value>
+  </data>
+  <data name="RptTimeSalesAnalysis_Title" xml:space="preserve">
+    <value>项目销售时段分析列表</value>
+  </data>
+  <data name="RptTotalAmt" xml:space="preserve">
+    <value>退货金额</value>
+  </data>
+  <data name="RptTotalSales_MonthAreaSalesRate" xml:space="preserve">
+    <value>当月坪效</value>
+  </data>
+  <data name="RptTotalSales_YearAreaSalesRateSum" xml:space="preserve">
+    <value>年度累计坪效</value>
+  </data>
+  <data name="RptTotalSales_YearSaleSum" xml:space="preserve">
+    <value>年度累计销售</value>
+  </data>
+  <data name="RptTradeSalesAnalysis_Title" xml:space="preserve">
+    <value>业态租售比报表</value>
+  </data>
+  <data name="RptUnitInfo_AreaName" xml:space="preserve">
+    <value>经营区域</value>
+  </data>
+  <data name="RptUnitInfo_FloorArea" xml:space="preserve">
+    <value>建筑面积
+(平米)</value>
+  </data>
+  <data name="RptUnitInfo_RentArea" xml:space="preserve">
+    <value>签约面积
+(平米)</value>
+  </data>
+  <data name="RptUnitInfo_Title" xml:space="preserve">
+    <value>单元情况列表</value>
+  </data>
+  <data name="RptUnitInfo_UnitStatus" xml:space="preserve">
+    <value>单元状态</value>
+  </data>
+  <data name="RptWAndE_Title" xml:space="preserve">
+    <value>商铺水电费列表</value>
+  </data>
+  <data name="RptXingYeLianMing" xml:space="preserve">
+    <value>联名卡</value>
+  </data>
+  <data name="RptXinYeLianJiNeiKa" xml:space="preserve">
+    <value>联机内卡</value>
+  </data>
+  <data name="RptXinYeLianJiWaiKa" xml:space="preserve">
+    <value>联机外卡</value>
+  </data>
+  <data name="RptXinYeTuoJiNeiKa" xml:space="preserve">
+    <value>脱机内卡</value>
+  </data>
+  <data name="RptXinYeTuoJiWaiKa" xml:space="preserve">
+    <value>脱机外卡</value>
+  </data>
+  <data name="RptUnitInfo_UserArea" xml:space="preserve">
+    <value>可出租面积
+(平米)</value>
+  </data>
+  <data name="Rpt_InvDayRent" xml:space="preserve">
+    <value>现行日租金
+(元每日每平米)</value>
+  </data>
+  <data name="Rpt_invMonthRent" xml:space="preserve">
+    <value>现行月租金
+(元每月每平米)</value>
+  </data>
+  <data name="Rpt_SalesPrice" xml:space="preserve">
+    <value>客均价
+(元)</value>
+  </data>
+  <data name="Rpt_YearAmt" xml:space="preserve">
+    <value>年度抽成
+(元)</value>
+  </data>
+  <data name="RptInv_PaidSum" xml:space="preserve">
+    <value>费用金额</value>
+  </data>
+  <data name="Rpt_InvPaidPrint" xml:space="preserve">
+    <value>付款凭证</value>
+  </data>
+  <data name="RptSale_ShopNum" xml:space="preserve">
+    <value>商品总数</value>
+  </data>
+  <data name="RptSale_TransTotalAmt" xml:space="preserve">
+    <value>交易总额</value>
+  </data>
+  <data name="Rpt_GoodsPrice" xml:space="preserve">
+    <value>商品均价</value>
+  </data>
+  <data name="RptSale_LocalAmt" xml:space="preserve">
+    <value>应收金额</value>
+  </data>
+  <data name="Rpt_DetailReport" xml:space="preserve">
+    <value>明细报表</value>
+  </data>
+  <data name="Rpt_DoneTotalCashes" xml:space="preserve">
+    <value>已做总收银</value>
+  </data>
+  <data name="Rpt_GetTotalCashes" xml:space="preserve">
+    <value>总收银收款列表</value>
+  </data>
+  <data name="Rpt_NoDoneTotalCashes" xml:space="preserve">
+    <value>未做总收银</value>
+  </data>
+  <data name="Rpt_TotalReport" xml:space="preserve">
+    <value>汇总报表</value>
+  </data>
+  <data name="RptSale_DiffCash" xml:space="preserve">
+    <value>差额</value>
+  </data>
+  <data name="RptSale_GetCashTime" xml:space="preserve">
+    <value>收款时间</value>
+  </data>
+  <data name="RptSale_MediaStatus" xml:space="preserve">
+    <value>状态</value>
+  </data>
+  <data name="RptSale_UserName" xml:space="preserve">
+    <value>收银员名称</value>
+  </data>
+  <data name="RptMallSalesSumday_Title" xml:space="preserve">
+    <value>项目日销售均价分析列表</value>
+  </data>
+  <data name="RptMallSalesSummth_Title" xml:space="preserve">
+    <value>项目月销售均价分析列表</value>
+  </data>
+  <data name="RptReceiptAve" xml:space="preserve">
+    <value>客均价</value>
+  </data>
+  <data name="RptShopSellSumday_Title" xml:space="preserve">
+    <value>商铺日销售均价分析列表</value>
+  </data>
+  <data name="RptShopSellSummth_Title" xml:space="preserve">
+    <value>商铺月销售均价分析列表</value>
+  </data>
+  <data name="RptShopTypeSaleSumday" xml:space="preserve">
+    <value>项目商铺类型日销售均价分析列表</value>
+  </data>
+  <data name="RptShopTypeSaleSummth" xml:space="preserve">
+    <value>项目商铺类型月销售均价分析列表</value>
+  </data>
+  <data name="RptTradeSaleSumday" xml:space="preserve">
+    <value>项目业态日销售均价分析列表</value>
+  </data>
+  <data name="RptTradeSaleSummth" xml:space="preserve">
+    <value>项目业态月销售均价分析列表</value>
+  </data>
+  <data name="RptSalesTrafficQuery_Title" xml:space="preserve">
+    <value>项目日客流销售统计图表</value>
+  </data>
+  <data name="Rpt_CustCount" xml:space="preserve">
+    <value>商户数量</value>
+  </data>
+  <data name="Rpt_SalesRentRate" xml:space="preserve">
+    <value>租售比</value>
+  </data>
+  <data name="Rpt_SeachMonth" xml:space="preserve">
+    <value>查询月份</value>
+  </data>
+  <data name="Rpt_ShopCount" xml:space="preserve">
+    <value>商铺数量</value>
+  </data>
+  <data name="RptBrandDSales_Title" xml:space="preserve">
+    <value>项目品牌日销售均价分析列表</value>
+  </data>
+  <data name="RptBrandMSales_Title" xml:space="preserve">
+    <value>项目品牌月销售均价分析列表</value>
+  </data>
+  <data name="Associator_ExchangeBonusCost" xml:space="preserve">
+    <value>兑换所需积分数</value>
+  </data>
+  <data name="Associator_ExchangeReceiptNumber" xml:space="preserve">
+    <value>兑换所需小票数</value>
+  </data>
+  <data name="Associator_GiftNumber" xml:space="preserve">
+    <value>赠品数量</value>
+  </data>
+  <data name="Associator_GiftTypeNum" xml:space="preserve">
+    <value>赠品种类个数</value>
+  </data>
+  <data name="Associator_MemberAgeDistrict" xml:space="preserve">
+    <value>年龄段</value>
+  </data>
+  <data name="Associator_MemberChangeNum2" xml:space="preserve">
+    <value>会员交易笔数</value>
+  </data>
+  <data name="Associator_MemberName" xml:space="preserve">
+    <value>会员名称</value>
+  </data>
+  <data name="Associator_MemberTotal" xml:space="preserve">
+    <value>会员总数</value>
+  </data>
+  <data name="Associator_Price" xml:space="preserve">
+    <value>价格</value>
+  </data>
+  <data name="Associator_YesOrNoExchangeByBonus" xml:space="preserve">
+    <value>是否使用积分兑换</value>
+  </data>
+  <data name="Associator_YesOrNoExchangeByReceipt" xml:space="preserve">
+    <value>是否使用小票兑换</value>
+  </data>
+  <data name="MemberChangePerNum" xml:space="preserve">
+    <value>会员交易占比</value>
+  </data>
+  <data name="MemberChangePerSum" xml:space="preserve">
+    <value>会员交易金额占比</value>
+  </data>
+  <data name="MemberChangeSum" xml:space="preserve">
+    <value>会员交易金额</value>
+  </data>
+  <data name="PerTotalBonus" xml:space="preserve">
+    <value>总积分占比</value>
+  </data>
+  <data name="PerTotalChangeNum" xml:space="preserve">
+    <value>总交易笔数占比</value>
+  </data>
+  <data name="PerTotalCHangeSum" xml:space="preserve">
+    <value>总交易金额占比</value>
+  </data>
+  <data name="Associator_lblExchangePrice" xml:space="preserve">
+    <value>兑换金额</value>
+  </data>
+  <data name="Rpt_AdjReason" xml:space="preserve">
+    <value>调整原因</value>
+  </data>
+  <data name="Rpt_AdjUserName" xml:space="preserve">
+    <value>调整申请人</value>
+  </data>
+  <data name="Rpt_ChargeName" xml:space="preserve">
+    <value>费用名称</value>
+  </data>
+  <data name="Rpt_CheckDate" xml:space="preserve">
+    <value>审核日期</value>
+  </data>
+  <data name="Rpt_CheckUserName" xml:space="preserve">
+    <value>最终审核人</value>
+  </data>
+  <data name="Rpt_CreateDate" xml:space="preserve">
+    <value>申请日期</value>
+  </data>
+  <data name="Rpt_InvActPayAmt" xml:space="preserve">
+    <value>调整后金额</value>
+  </data>
+  <data name="Rpt_InvAdjAmt" xml:space="preserve">
+    <value>调整金额</value>
+  </data>
+  <data name="Rpt_InvPayAmt" xml:space="preserve">
+    <value>费用原金额</value>
+  </data>
+  <data name="Rpt_OrderingTerm" xml:space="preserve">
+    <value>排序条件</value>
+  </data>
+  <data name="Rpt_SalesEfficiency" xml:space="preserve">
+    <value>销售坪效</value>
+  </data>
+  <data name="RptADContractInfo" xml:space="preserve">
+    <value>广告合同汇总报表</value>
+  </data>
+  <data name="RptInv_InvAmt2" xml:space="preserve">
+    <value>应收</value>
+  </data>
+  <data name="RptInv_InvPaidAmt2" xml:space="preserve">
+    <value>实收</value>
+  </data>
+  <data name="RptInv_InvPaidOutAmt2" xml:space="preserve">
+    <value>代收款抵扣</value>
+  </data>
+  <data name="RptInv_PayInAmt2" xml:space="preserve">
+    <value>代收款</value>
+  </data>
+  <data name="RptInv_PayOutAmt2" xml:space="preserve">
+    <value>代收款返还</value>
+  </data>
+  <data name="RptLeaseInvDetailTickt_Title" xml:space="preserve">
+    <value>租赁结算单开票明细报表</value>
+  </data>
+  <data name="Menu_ContractExclusive" xml:space="preserve">
+    <value>合同排他列表</value>
+  </data>
+  <data name="Menu_EmphasisContract" xml:space="preserve">
+    <value>重点关注合同列表</value>
+  </data>
+  <data name="Menu_MoreContract" xml:space="preserve">
+    <value>多合同商户列表</value>
+  </data>
+  <data name="Menu_PosSvrinfoQuery" xml:space="preserve">
+    <value>POS服务器信息列表</value>
+  </data>
+  <data name="Rpt_DeptUser" xml:space="preserve">
+    <value>部门用户列表</value>
+  </data>
+  <data name="Menu_MallComposite" xml:space="preserve">
+    <value>项目综合情况统计表</value>
+  </data>
+  <data name="Rpt_MoreContractQuery" xml:space="preserve">
+    <value>商户多合同查询报表</value>
+  </data>
+</root>

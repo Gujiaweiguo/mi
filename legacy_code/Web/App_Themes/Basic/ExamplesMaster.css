@@ -1,0 +1,172 @@
+﻿#Dashboard
+{
+    width: 12em;
+    float:left;
+    margin: 0 40px 20px 0;
+}
+
+/**** HEADINGS ****/
+
+#SampleContent h1
+{
+    font-size: x-large;
+}
+
+#SampleContent h2
+{
+    background-color: #E8F3F9;
+    font-size: larger;
+    padding:5px 12px;
+}
+
+.snippetGroup h3 
+{
+    font-size: small;
+    margin:0 0 2px 0;
+}
+
+/**** FROMS AND FIELDSET ****/
+
+fieldset.dashboardGroup
+{
+    font-size:.8em;
+    margin-bottom:10px;
+}
+
+.dashboardGroup legend
+{
+    text-transform:uppercase;
+    padding:0 8px 0 4px;
+    margin:0 0 0 -5px;
+    color:#808080;
+}
+
+.dashboardGroup p
+{
+    margin: 5px 6px;
+    line-height:120%;
+    color:#666;
+}
+
+#DisabledAdaptersWarning
+{
+    width: 75%;
+}
+
+.hotWarning
+{
+    color:Red !important;
+    font-weight:bold;
+    font-size:1em;
+}
+
+.coolWarning
+{
+
+}
+
+.dashboardLink
+{
+    margin:0 0 5px 0;
+}
+
+.dashboardLink input, .dashboardLink input.button
+{
+    background:url(btn-blank-background.png) no-repeat;
+    background-position:left top;
+    height:53px;
+    width:160px;
+    color:#ECED15;
+    border-width:0;
+    font-weight:bold;
+    font-size:14px;
+    padding:0 0 12px 0;
+    cursor:pointer;
+}
+
+.dashboardLink input.button-hover
+{
+    background-position: left bottom;
+    color:#FEFF00;
+}
+
+.membershipHint
+{
+    background-color: #EEEEEE; 
+    margin: 4px; 
+    border: 1px solid #BBBBBB; 
+    color:#666666;
+}
+
+#SampleContent
+{
+    margin-left: 15.5em;
+    position: relative;
+    z-index: 100;
+}
+
+#SampleContent .SampleProlog
+{
+}
+
+#SampleContent .SampleWorkingExample
+{
+}
+
+#Snippets 
+{
+    clear:both;
+    width: 100%;
+    position: relative;
+    margin-top: 25px;
+}
+
+#SnippetGroupParent
+{
+    float: left;
+    position: relative;
+    width: 100%;
+}
+
+.snippetGroup
+{
+    position: relative;
+    width: 47%;
+}
+
+/*** SNIPPET THAT IS IN USE ***/
+
+#Snippets .snippet
+{
+    position: relative;
+    width: 100%;
+    background: #E8F3F9 url(bg-snippet.png) repeat-x;
+    border:1px solid #1E77D3;
+    height: 400px;    
+    overflow: scroll;
+    padding:0 0 0 4px;
+    font-size:1.1em;
+    font-family: "Courier New", Courier, monospace;
+    white-space: nowrap;
+    color:#000099;
+}
+
+/*** SNIPPET THAT IS **NOT** IN USE ***/
+
+#Snippets .snippet-dim
+{
+    background: #E6E6E6 url(bg-snippet-dim.png) repeat-x;
+    border-color:#787878;
+}
+
+#Snippets .leftCol
+{
+    float: left;
+}
+
+#Snippets .rightCol
+{
+    float: right;
+}
+
+

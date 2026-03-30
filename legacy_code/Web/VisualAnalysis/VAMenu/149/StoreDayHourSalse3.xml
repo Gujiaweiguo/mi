@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<graph baseFontSize="12" caption="项目楼层销售统计" showNames="1" decimalPrecision="0" formatNumberScale="0" aboutMenuItemLabel="About Wincor Nixdorf" aboutMenuItemLink="n-http://www.wincor-nixdorf.com">
+  <set name="二层" value="3880.00" isSliced="1" />
+  <set name="一层" value="4766.00" isSliced="0" />
+</graph>

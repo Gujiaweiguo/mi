@@ -1,0 +1,62 @@
+<html>
+          <head>
+            <title>Implementing NlsMenu</title>
+
+            <link rel="StyleSheet" href="styles/basic-h.css" type="text/css">
+            <link rel="StyleSheet" href="styles/basic-v.css" type="text/css">
+
+            <script src="nlsmenu.js"></script>
+            <script src="nlsmenueffect.js"></script>
+
+            <script>
+
+              //first create the NlsMenuManger object
+              var menuMgr = new NlsMenuManager("MyMenu");
+              menuMgr.defaultEffect="fade";
+
+              //use the menuMgr object to create menubar
+              var mbar = menuMgr.createMenubar("main");
+              mbar.stlprf="horz_";
+              mbar.orient="H";
+              mbar.addItem("1", "Home", "http://www.myserver.com", "", true, null, "", "Home");
+              mbar.addItem("2", "Products", "http://www.myserver.com", "", true, null, "subProducts", "Products");
+              mbar.addItem("3", "Services", "http://www.myserver.com", "", true, null, "subServices", "Services");
+              mbar.addItem("4", "About Us", "http://www.myserver.com", "", true, null, "", "About Us");
+
+              //create the submenu for Products item
+              var prodMenu = menuMgr.createMenu("subProducts");
+              prodMenu.addItem("1", "Computers", "http://www.myserver.com", "", true, null, "subComputers", "Computers");
+              prodMenu.addItem("2", "Accessories", "http://www.myserver.com", "", true, null, "", "Accessories");
+              prodMenu.addItem("3", "Others", "http://www.myserver.com", "", true, null, "", "Others");
+
+              //create the submenu for Services item
+              var servMenu = menuMgr.createMenu("subServices");
+              servMenu.addItem("1", "Networking Solution", "http://www.myserver.com");
+              servMenu.addItem("2", "Custom Software Development", "http://www.myserver.com");
+
+              //create the submenu for Computers item
+              var compMenu = menuMgr.createMenu("subComputers");
+              compMenu.addItem("1", "Servers", "www.myserver.com");
+              compMenu.addItem("2", "Workstation and Desktop", "www.myserver.com");
+              compMenu.addItem("3", "Notebook", "www.myserver.com");
+
+            </script>
+
+          </head>
+
+          <body>
+            <script>
+              menuMgr.renderMenus();
+            </script>
+            ...
+            Your HTML goes here
+            ...
+            <!--You can put the menubar whereever you want in the page-->
+            <script>
+              menuMgr.renderMenubar();
+            </script>
+            ...
+            Your HTML goes here
+            ...
+          </body>
+        </html>

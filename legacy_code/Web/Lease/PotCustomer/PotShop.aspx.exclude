@@ -1,0 +1,733 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="PotShop.aspx.cs" Inherits="Lease_PotShop_PotShop" %>
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head runat="server">
+    <title>无标题页</title>
+    <link href="../../App_Themes/Main/style.css" rel="stylesheet" type="text/css" />
+    <link href="../../App_Themes/Tabbar/css/dhtmlXTabbar.css" rel="stylesheet" type="text/css" />
+    <link href="../../App_Themes/CSS/ToolStyle.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript"  src="../../App_Themes/Tabbar/js/dhtmlXCommon.js"></script>
+  <%--  <script type="text/javascript"  src="../../JavaScript/setday.js"></script>--%>
+	<script type="text/javascript" src="../../App_Themes/Tabbar/js/dhtmlXTabbar.js"></script>
+    <script type="text/javascript" src="../../JavaScript/Calendar.js" charset="gb2312"></script>
+     <script type="text/javascript" src="../../JavaScript/Common.js"></script>
+    <link href="../../App_Themes/Tabbar/css/webtab.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../JavaScript/Common.js"></script>
+    <script type="text/javascript">
+    
+    function refurbishTree()
+    {
+         parent.frames(0).location.reload();
+         window.opener=null;
+         window.close();
+    }
+   
+    //验证数字类型
+    function textleave(form1)
+    {   
+        var key=window.event.keyCode;
+        if(key==8 || key==46 || key==48 || key==49 || key==50 || key==51 || key==52 || key==53 || key==54 || key==55 || key==56 ||
+               key==57 || key==190 || key == 96 || key == 97 || key == 98 || key == 99 || key == 100 || key == 101 || key == 102 ||
+               key == 103 || key == 104 || key == 105 || key == 110)
+        {
+		    window.event.returnValue =true;
+	    }else
+	    {
+		    window.event.returnValue =false;
+	    }
+	}
+    
+    
+	    function chooseCard(id)
+	    {
+	        if(id==0){
+		        document.getElementById("PotCustomerList").style.visibility ="visible";
+		        document.getElementById("PotCustomer").style.visibility ="hidden";
+		        document.getElementById("PotCustomerList").style.position="absolute";
+		        document.getElementById("PotCustomerList").style.top ="10px";
+		        document.getElementById("showmain").style.height ="450px";
+		        document.getElementById("chooseDiv").style.position="absolute";
+		        document.getElementById("chooseDiv").style.top ="417px";
+		        document.getElementById("chooseDiv").style.left ="95px"
+		        document.getElementById("tab2").className="tab";
+		        document.getElementById("tab1").className="selectedtab";
+	        }
+	        if(id==1){
+		        document.getElementById("PotCustomerList").style.visibility ="hidden";
+		        document.getElementById("PotCustomer").style.visibility ="visible";
+		        document.getElementById("PotCustomer").style.position="absolute";
+		        document.getElementById("PotCustomer").style.top ="10px";
+                document.getElementById("tab1").className="tab";
+		        document.getElementById("tab2").className="selectedtab";
+		        document.getElementById("lblTotalNum").style.display="none";
+                document.getElementById("lblCurrent").style.display="none";
+	        }
+	    }
+//	    function PalaverShowTime()
+//	    {
+//	        calendar(document.form1.txtPalaverTime);
+//	    }
+//	    function StartShowTime()
+//	    {
+//	        calendar(document.form1.txtShopStartDate);
+//	    }
+//	    function EndShowTime()
+//	    {
+//	        calendar(document.form1.txtShopEndDate);
+//	    }
+	    
+	//text控件文本验证
+    function CustomrtBoxValidator(sForm)
+    {
+        if(isEmpty(document.all.txtPotShopName.value))  
+        {
+            parent.document.all.txtWroMessage.value=document.getElementById("hidMessage").value;
+            document.all.txtPotShopName.focus();
+            return false;					
+        }
+        
+        if(isEmpty(document.all.txtMainBrand.value))  
+        {
+            parent.document.all.txtWroMessage.value=document.getElementById("hidMessage").value;
+            document.all.txtMainBrand.focus();
+            return false;					
+        }
+        
+        if(isEmpty(document.all.txtShopStartDate.value))  
+        {
+            parent.document.all.txtWroMessage.value=document.getElementById("hidMessage").value;
+            document.all.txtShopStartDate.focus();
+            return false;					
+        }
+        
+        if(isEmpty(document.all.txtShopEndDate.value))  
+        {
+            parent.document.all.txtWroMessage.value=document.getElementById("hidMessage").value;
+            document.all.txtShopEndDate.focus();
+            return false;					
+        } 
+        
+        if(isEmpty(document.all.txtRentalPrice.value))  
+        {
+            parent.document.all.txtWroMessage.value=document.getElementById("hidMessage").value;
+            document.all.txtRentalPrice.focus();
+            return false;					
+        }
+        
+         if(isEmpty(document.all.txtRentArea.value))  
+        {
+            parent.document.all.txtWroMessage.value=document.getElementById("hidMessage").value;
+            document.all.txtRentArea.focus();
+            return false;					
+        } 
+        
+        var beginvalue=document.getElementById("txtShopStartDate").value;
+        var endvalue=document.getElementById("txtShopEndDate").value;
+
+        if(beginvalue!="")
+        {
+              var begin=new Array();
+              var end=new Array();
+              begin=beginvalue.split("-");
+              end=endvalue.split("-");
+              var beginnum=begin[0]+begin[1]+begin[2];
+              var endnum=end[0]+end[1]+end[2];
+
+            if(endnum<beginnum)
+            {
+                parent.document.all.txtWroMessage.value=document.getElementById("hidDateTime").value;
+                document.all.txtShopEndDate.focus();
+                return false;	
+            }
+        }
+    }
+    
+    	//text控件文本验证
+    function PalaverBoxValidator(sForm)
+    {
+        if(isEmpty(document.all.txtPalaverTime.value))  
+        {
+            parent.document.all.txtWroMessage.value=document.getElementById("hidMessage").value;
+            document.all.txtPalaverTime.focus();
+            return false;					
+        }
+        
+        if(isEmpty(document.all.txtPalaverUser.value))  
+        {
+            parent.document.all.txtWroMessage.value=document.getElementById("hidMessage").value;
+            document.all.txtPalaverUser.focus();
+            return false;					
+        }
+        
+        if(isEmpty(document.all.txtPalaverAim.value))  
+        {
+            parent.document.all.txtWroMessage.value=document.getElementById("hidMessage").value;
+            document.all.txtPalaverAim.focus();
+            return false;					
+        }
+    }
+    </script>
+</head>
+<body onload='chooseCard(0); ' topmargin=0 leftmargin=0>
+    <form id="form1" runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server">
+        </asp:ScriptManager>
+        <div id="chooseDiv"  style="position:absolute;top:521px;left:508px;height:55px;width:272px;overflow:auto;">
+	   	    <table>
+	   	    <tr>
+	   	    <td class="selectedtab" id="tab1"  onclick="chooseCard(0);"
+                    style="height: 21px; width: 70px;">
+                    <span id="tabpage1">
+                        <asp:Label ID="hidShop" runat="server" Text="<%$ Resources:BaseInfo,Hidden_Shop %>"
+                            Width="63px"></asp:Label></span></td>
+                <td class="tab" id="tab2"  onclick="chooseCard(1);"
+                    style="height: 21px; width: 67px;">
+                    <span id="tabpage2">
+                        <asp:Label ID="hidPalaverNode" runat="server" Text="<%$ Resources:BaseInfo,PotShop_lblPalaverNode %>" Width="61px"></asp:Label></span></td>
+	   	    </tr>
+	   	    </table>
+   	    </div>
+        <table border="0" cellpadding="0" cellspacing="0" class="tableBoderStyle" style="height: 445px" id="showmain">
+            <tr height="15">
+                <td colspan="8">
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 95px; height: 401px; text-align: center" valign="top">
+                    <img height="401" src="../../images/shuxian.jpg" />
+                </td>
+                <td colspan="5" style="vertical-align: top; width: 572px; height: 401px">
+            <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                <ContentTemplate>
+            <div style="width: 239px; height: 103px" id="PotCustomerList">
+                <table border="0" cellpadding="0" cellspacing="0" style="height: 410px; width: 545px;">
+            <tr>
+                <td class="tdTopBackColor" style="width: 200px; height: 22px" valign="top">
+                    <img alt="" class="imageLeftBack" style=" text-align:left; width: 5px; height: 22px;"  /><asp:Label
+                        ID="lblCreateUserTitle" runat="server" CssClass="lblTitle" Text="<%$ Resources:BaseInfo,PotCustomer_lblCreateUserTitle %>"></asp:Label></td>
+                <td class="tdTopRightBackColor" colspan="2" style="width: 528px; height: 22px" valign="top">
+                    <img class="imageRightBack" style="height: 22px" /></td>
+            </tr>
+            <tr>
+                <td class="tdBackColor" colspan="2" style="width: 255px; height: 281px; text-align: left"
+                    valign="top">
+                    
+    <table border="0" cellpadding="0" cellspacing="0" style="width:255px; height:231px;">
+    <tr>
+        <td style=" width:85px; height:1px; background-color:White;" colspan="4"></td>
+    </tr>
+    <tr>
+        <td style=" width:255px; height:9px;" colspan="4" class="tdBackColor"></td>
+    </tr>
+    <tr>
+        <td style="width:81px; height:2px;" class="tdBackColor"></td>
+        <td style="width:5px; height:2px;" class="tdBackColor"></td>
+        <td style="width:160px; height:10px; "class="tdBackColor"><table border="0" cellpadding="0" cellspacing="0" style="width: 164px;text-align: center;">
+                                        <tr>
+                                            <td style="width: 240px; height: 1px; background-color: #738495">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 240px; height: 1px; background-color: #ffffff">
+                                            </td>
+                                        </tr>
+                                    </table></td>
+        <td style="width:5px; height:2px;" class="tdBackColor"></td>
+    </tr>
+    <tr>
+        <td style="width:81px; height:22px; text-align:right;" class="tdBackColor">
+            <asp:Label ID="lblCreateUserID" runat="server" Text='<%$ Resources:BaseInfo,PotCustomer_lblCustCode %>' CssClass="labelStyle" Width="50px"></asp:Label></td>
+        <td style="width:5px; height:22px;" class="tdBackColor"></td>
+        <td style="width:160px; height:22px;" class="tdBackColor">
+            <asp:TextBox ID="txtCreateUserID" runat="server" CssClass="Enabledipt160px" ReadOnly="True"></asp:TextBox></td>
+        <td style="width:5px; height:22px;" class="tdBackColor"></td>
+    </tr>
+        <tr>
+        <td style="width:280px; height:3px;" colspan="3" class="tdBackColor"></td>
+    </tr>
+    <tr>
+        <td style="width:81px; height:22px;text-align:right;" class="tdBackColor">
+            <asp:Label ID="lblCustName" runat="server" Text='<%$ Resources:BaseInfo,PotCustomer_lblCustName %>' CssClass="labelStyle" Width="63px"></asp:Label></td>
+        <td style="width:5px; height:22px;" class="tdBackColor"></td>
+        <td style="width:160px; height:22px;" class="tdBackColor">
+            <asp:TextBox ID="txtCustName" runat="server" CssClass="Enabledipt160px" ReadOnly="True"></asp:TextBox></td>
+        <td style="width:5px; height:22px;" class="tdBackColor"></td>
+    </tr>
+            <tr>
+        <td style="width:280px; height:3px;" colspan="3" class="tdBackColor"></td>
+    </tr>
+    <tr>
+        <td style="width:81px; height:22px;text-align:right;" class="tdBackColor">
+            <asp:Label ID="lblCustShortName" runat="server" Text='<%$ Resources:BaseInfo,PotCustomer_lblCustShortName %>' CssClass="labelStyle" Width="58px"></asp:Label></td>
+        <td style="width:5px; height:22px;" class="tdBackColor"></td>
+        <td style="width:160px; height:22px;" class="tdBackColor">
+            <asp:TextBox ID="txtCustShortName" runat="server" CssClass="Enabledipt160px" ReadOnly="True"></asp:TextBox></td>
+        <td style="width:5px; height:22px;" class="tdBackColor" ></td>
+    </tr>
+            <tr>
+        <td style="width:280px; height:3px;" colspan="3" class="tdBackColor"></td>
+    </tr>
+    <tr>
+        <td style="width:81px; height:22px;text-align:right;" class="tdBackColor">
+            <asp:Label ID="lblContactorName" runat="server" Text='<%$ Resources:BaseInfo,PotCustomer_lblContactorName %>' Width="86px" CssClass="labelStyle"></asp:Label></td>
+        <td style="width:5px; height:22px;" class="tdBackColor"></td>
+        <td style="width:160px; height:22px;" class="tdBackColor">
+            <asp:TextBox ID="txtContactorName" runat="server" CssClass="Enabledipt160px" ReadOnly="True"></asp:TextBox></td>
+        <td style="width:5px; height:22px;" class="tdBackColor"></td>
+    </tr>
+            <tr>
+        <td style="width:280px; height:3px;" colspan="3" class="tdBackColor"></td>
+    </tr>
+    <tr>
+        <td style="width:81px; height:22px;text-align:right;" class="tdBackColor">
+            <asp:Label ID="lblOfficeTel" runat="server" Text='<%$ Resources:BaseInfo,PotCustomer_lblOfficeTel %>' CssClass="labelStyle"></asp:Label></td>
+        <td style="width:5px; height:22px;" class="tdBackColor"></td>
+        <td style="width:160px; height:22px;" class="tdBackColor">
+            <asp:TextBox ID="txtOfficeTel" runat="server" CssClass="Enabledipt160px" ReadOnly="True"></asp:TextBox></td>
+        <td style="width:5px; height:22px;" class="tdBackColor"></td>
+    </tr>
+            <tr>
+        <td style="width:280px; height:3px;" colspan="3" class="tdBackColor"></td>
+    </tr>
+    <tr>
+        <td style="width:81px; height:22px;text-align:right;" class="tdBackColor">
+            <asp:Label ID="lblMobileTel" runat="server" Text='<%$ Resources:BaseInfo,PotCustomer_lblMobileTel %>' CssClass="labelStyle"></asp:Label></td>
+        <td style="width:5px; height:22px;" class="tdBackColor"></td>
+        <td style="width:160px; height:22px;" class="tdBackColor">
+            <asp:TextBox ID="txtMobileTel" runat="server" CssClass="Enabledipt160px" ReadOnly="True"></asp:TextBox></td>
+        <td style="width:5px; height:22px;" class="tdBackColor"></td>
+    </tr>
+            <tr>
+        <td style="width:280px; height:3px;" colspan="3" class="tdBackColor"></td>
+    </tr>
+    <tr>
+        <td style="width:81px; height:2px;" class="tdBackColor"></td>
+        <td style="width:5px; height:2px;" class="tdBackColor"></td>
+       <td style="width:160px; height:10px; text-align:center;" class="tdBackColor"><table border="0" cellpadding="0" cellspacing="0" style="width: 168px;text-align: center;">
+                                        <tr>
+                                            <td style="width: 240px; height: 1px; background-color: #738495">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 240px; height: 1px; background-color: #ffffff">
+                                            </td>
+                                        </tr>
+                                    </table></td>
+        <td style="width:5px; height:2px;" class="tdBackColor"></td>
+    </tr>
+        <tr>
+            <td class="tdBackColor" style="width: 81px; height: 22px; text-align: right;">
+                <asp:Label ID="lblBizMode" runat="server" CssClass="labelStyle" Text='<%$ Resources:BaseInfo,PotShop_BizMode %>'></asp:Label></td>
+            <td class="tdBackColor" style="width: 5px; height: 22px;">
+            </td>
+            <td class="tdBackColor" style="width: 160px; height: 22px;">
+                <asp:DropDownList ID="cmbBizMode" runat="server" CssClass="cmb160px">
+                </asp:DropDownList></td>
+            <td class="tdBackColor" style="width: 5px; height: 22px;">
+            </td>
+        </tr>
+        <tr>
+        <td style=" width:255px; height:3px;" colspan="4" class="tdBackColor"></td>
+    </tr>
+    <tr>
+        <td style="width:81px; height:22px;text-align:right;" class="tdBackColor">
+            <asp:Label ID="lblShopType" runat="server" Text='<%$ Resources:BaseInfo,PotShop_lblShopType %>' CssClass="labelStyle"></asp:Label></td>
+        <td style="width:5px; height:22px;" class="tdBackColor"></td>
+        <td style="width:160px; height:22px;" class="tdBackColor">
+            <asp:DropDownList ID="cmbShopType" runat="server" CssClass="cmb160px">
+                    </asp:DropDownList></td>
+        <td style="width:5px; height:22px;" class="tdBackColor"></td>
+    </tr>
+    <tr>
+        <td style=" width:255px; height:3px;" colspan="4" class="tdBackColor"></td>
+    </tr>
+    <tr>
+        <td style="width:81px; height:22px;text-align:right;" class="tdBackColor">
+                    <asp:Label ID="lblPotShopName" runat="server" Text='<%$ Resources:BaseInfo,PotShop_lblPotShopName %>' CssClass="labelStyle"></asp:Label></td>
+        <td style="width:5px; height:22px;" class="tdBackColor"></td>
+        <td style="width:160px; height:22px;" class="tdBackColor">
+            <asp:TextBox ID="txtPotShopName" runat="server" CssClass="ipt160px" MaxLength="64"></asp:TextBox></td>
+        <td style="width:5px; height:22px;" class="tdBackColor"></td>
+    </tr>
+    <tr>
+        <td style=" width:255px; height:3px;" colspan="4" class="tdBackColor"></td>
+    </tr>
+    <tr>
+        <td style="width:81px; height:22px;text-align:right;" class="tdBackColor">
+            <asp:Label ID="lblMainBrand" runat="server" Text='<%$ Resources:BaseInfo,PotShop_lblMainBrand %>' CssClass="labelStyle"
+                        ></asp:Label></td>
+        <td style="width:5px; height:22px;" class="tdBackColor"></td>
+        <td style="width:160px; height:22px;" class="tdBackColor">
+            <asp:TextBox ID="txtMainBrand" runat="server" CssClass="ipt160px" MaxLength="32"></asp:TextBox></td>
+        <td style="width:5px; height:22px;" class="tdBackColor"></td>
+    </tr>
+    </table>
+                   
+                </td>
+                <td style="width:280px; height:281px;" class="tdBackColor" valign="top">
+        
+  <table border="0" cellpadding="0" cellspacing="0" style="width:280px; height:231px;">
+    <tr>
+        <td style="width:280px; height:1px; background-color:White;" colspan="4"></td>
+    </tr>
+    <tr>
+        <td style="width:280px; height:9px;" colspan="4" class="tdBackColor"></td>
+    </tr>
+    <tr>
+        <td style="width:96px; height:10px;text-align:right;" class="tdBackColor">
+            </td>
+        <td style="width:5px; height:10px;" class="tdBackColor"></td>
+        <td style="width:160px; height:10px;" class="tdBackColor"><table border="0" cellpadding="0" cellspacing="0" style="width: 164px;text-align: center;">
+            <tr>
+                <td style="width: 240px; height: 1px; background-color: #738495">
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 240px; height: 1px; background-color: #ffffff">
+                </td>
+            </tr>
+        </table>
+        </td>
+        <td style="width:19px; height:10px;" class="tdBackColor"></td>
+    </tr>
+    <tr>
+        <td style="width:96px; height:22px;text-align:right;" class="tdBackColor">
+            <asp:Label ID="lblShopStartDate" runat="server" Text='<%$ Resources:BaseInfo,PotShop_lblShopStartDate %>' Width="72px" CssClass="labelStyle"></asp:Label></td>
+        <td style="width:5px; height:22px;" class="tdBackColor"></td>
+        <td style="width:160px; height:22px;" class="tdBackColor"><asp:TextBox ID="txtShopStartDate" runat="server" CssClass="ipt160px" onclick="calendar()"></asp:TextBox></td>
+        <td style="width:19px; height:22px;" class="tdBackColor"></td>
+    </tr>
+    <tr>
+        <td style="width:280px; height:3px;" colspan="4" class="tdBackColor"></td>
+    </tr>
+    <tr>
+        <td style="width:96px; height:22px; text-align:right;" class="tdBackColor">
+            <asp:Label ID="lblShopEndDate" runat="server" Text='<%$ Resources:BaseInfo,PotShop_lblShopEndDate %>' CssClass="labelStyle"></asp:Label></td>
+        <td style="width:5px; height:22px;" class="tdBackColor"></td>
+        <td style="width:160px; height:22px;" class="tdBackColor"><asp:TextBox ID="txtShopEndDate" runat="server" CssClass="ipt160px" onclick="calendar()"></asp:TextBox></td>
+        <td style="width:19px; height:22px;" class="tdBackColor"></td>
+    </tr>
+    <tr>
+        <td style="width:280px; height:14px;" colspan="4" class="tdBackColor"></td>
+    </tr>
+    <tr>
+        <td style="width:96px; height:22px; text-align:right;" class="tdBackColor">
+            <asp:Label ID="lblArea" runat="server" Text='<%$ Resources:BaseInfo,RentableArea_lblArea %>' CssClass="labelStyle"></asp:Label></td>
+        <td style="width:5px; height:22px;" class="tdBackColor"></td>
+        <td style="width:160px; height:22px;" class="tdBackColor"><asp:DropDownList ID="cmbArea" runat="server" CssClass="cmb160px">
+                    </asp:DropDownList></td>
+        <td style="width:19px; height:22px;" class="tdBackColor"></td>
+    </tr>
+    <tr>
+        <td style="width:280px; height:5px;" colspan="4" class="tdBackColor"></td>
+    </tr>
+    <tr>
+        <td style="width:96px; height:22px; text-align:right;" class="tdBackColor" ><asp:Label ID="lblRentalPrice" runat="server" Text='<%$ Resources:BaseInfo,PotShop_lblRentalPrice %>' CssClass="labelStyle" Width="96px"
+                  ></asp:Label></td>
+        <td style="width:5px; height:22px;" class="tdBackColor"></td>
+        <td style="width:160px; height:22px;" class="tdBackColor"><asp:TextBox ID="txtRentalPrice" runat="server" CssClass="ipt160px" MaxLength="9"></asp:TextBox></td>
+        <td style="width:19px; height:22px;" class="tdBackColor"></td>
+    </tr>
+    <tr>
+        <td style="width:280px; height:5px;" colspan="4" class="tdBackColor"></td>
+    </tr>
+    <tr>
+        <td style="width:96px; height:22px;text-align:right;" class="tdBackColor">
+            <asp:Label ID="lblRentArea" runat="server" Text='<%$ Resources:BaseInfo,PotShop_lblRentArea %>' CssClass="labelStyle"></asp:Label></td>
+        <td style="width:5px; height:22px;" class="tdBackColor"></td>
+        <td style="width:160px; height:22px;" class="tdBackColor"><asp:TextBox ID="txtRentArea" runat="server" CssClass="ipt160px" MaxLength="13"></asp:TextBox></td>
+        <td style="width:19px; height:22px;" class="tdBackColor"></td>
+    </tr>
+    <tr>
+        <td style="width:280px; height:5px;" colspan="4" class="tdBackColor"></td>
+    </tr>
+    <tr>
+       <td style="width:280px; height:10px; text-align:center;" colspan="4"><table border="0" cellpadding="0" cellspacing="0" style="width: 168px;text-align: center;">
+                                        <tr>
+                                            <td style="width: 324px; height: 1px; background-color: #738495; left: 42px; position: relative;">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 324px; height: 1px; background-color: #ffffff; left: 42px; position: relative;">
+                                            </td>
+                                        </tr>
+                                    </table></td>
+    </tr>
+    <tr>
+        <td style="width:96px; height:60px;text-align:right;" class="tdBackColor" valign="top" ;>
+            <asp:Label ID="lblNote" runat="server" Text='<%$ Resources:BaseInfo,User_lblNote %>' CssClass="labelStyle"></asp:Label></td>
+        <td style="width:5px; height:60px;" class="tdBackColor"></td>
+        <td style="width:160px; height:60px;" class="tdBackColor" valign="top"><asp:TextBox ID="txtNode" runat="server" Height="84px" TextMode="MultiLine"
+                        Width="160px" CssClass="OpenColor" MaxLength="128"></asp:TextBox></td>
+        <td style="width:19px; height:60px;" class="tdBackColor"></td>
+    </tr>
+    
+        <tr>
+        <td style="width:280px; height:10px; vertical-align: middle; text-align: center;" colspan="4" class="tdBackColor"><table border="0" cellpadding="0" cellspacing="0" style="width: 168px;text-align: center;">
+            <tr>
+                <td style="width: 324px; height: 1px; background-color: #738495; left: 42px; position: relative;">
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 324px; height: 1px; background-color: #ffffff; left: 42px; position: relative;">
+                </td>
+            </tr>
+        </table>
+        </td>
+    </tr>
+    <tr>
+        <td style="width:96px; height:22px;text-align:right;" class="tdBackColor">
+            <asp:Label ID="lblCommOper" runat="server" Text='<%$ Resources:BaseInfo,LeaseholdContractAuditing_labAttract %>' CssClass="labelStyle"></asp:Label></td>
+        <td style="width:5px; height:22px;" class="tdBackColor"></td>
+        <td style="width:160px; height:22px;" class="tdBackColor"><asp:TextBox ID="txtCommOper" runat="server" CssClass="Enabledipt160px" ReadOnly="True" Width="150px"></asp:TextBox></td>
+        <td style="width:19px; height:22px;" class="tdBackColor"></td>
+    </tr>
+    </table>
+      </td>
+            </tr>
+            <tr>
+                <td class="tdBackColor" colspan="3" style="width: 535px; text-align:center; height: 49px;">
+                <hr style="width:500px; height:1px;" />
+                <table style="width: 508px">
+                <tr>
+                <td style="text-align:right;">
+                    &nbsp;
+                    &nbsp;<asp:Button ID="btnAdd" runat="server" Text="<%$ Resources:BaseInfo,PotCustomer_butSave %>" CssClass="buttonSave" Height="32px" Width="70px" OnClick="btnAdd_Click" />
+                </td>
+                </tr>
+                </table>
+
+                    </td>
+            </tr>
+             <tr>
+                 <td class="tdBackColor" colspan="3" style="height: 3px; text-align: right">
+                     </td>
+            </tr>
+        </table>
+            </div>
+            <div style="width: 546px; height: 83px" id="PotCustomer">
+                <table border="0" cellpadding="0" cellspacing="0" style="height: 410px; width: 545px;">
+            <tr>
+                <td class="tdTopBackColor" style="width: 220px; height: 22px" valign="top">
+                    <img alt="" class="imageLeftBack" style="height: 22px" /><asp:Label ID="Label1" runat="server" CssClass="lblTitle"
+                        Text="<%$ Resources:BaseInfo,PotCustomer_lblCreateUserTitle %>"></asp:Label></td>
+                <td class="tdTopRightBackColor" colspan="2" style="width: 510px; height: 22px" valign="top">
+                    <img class="imageRightBack" style="height: 22px" /></td>
+            </tr>
+            <tr>
+                <td class="tdBackColor" colspan="2" style="width: 510px; height: 320px; text-align: left"
+                    valign="top">
+
+<table width="255" border="0" cellspacing="0" cellpadding="0" style="height:311px;">
+  <tr>
+    <td style="width:255; height:1px; background-color:White;" colspan="4"></td>
+  </tr>
+  <tr>
+    <td style="width:143px; height:1px;" class="tdBackColor"></td>
+    <td style="width:5px; height:1px;" class="tdBackColor"></td>
+    <td style="width:160px; height:10px;"><table border="0" cellpadding="0" cellspacing="0" style="width: 163px;text-align: center;">
+        <tr>
+            <td style="width: 324px; height: 1px; background-color: #738495; position: relative; top: 6px;">
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 324px; height: 1px; background-color: #ffffff; position: relative; top: 6px;">
+            </td>
+        </tr>
+    </table>
+        </td>
+    <td style="width:5px; height:1px;" class="tdBackColor"></td>
+  </tr>
+  <tr>
+    <td style="width:255; height:5px; text-align:center;" colspan="4" class="tdBackColor" valign="bottom">
+        </td>
+  </tr>
+  <tr>
+    <td style="width:143px; height:1px;" class="tdBackColor"></td>
+    <td style="width:5px; height:1px;" class="tdBackColor"></td>
+    <td style="width:160px; height:10px;"></td>
+    <td style="width:5px; height:1px;" class="tdBackColor"></td>
+  </tr>
+    <tr>
+    <td style="width:143px; height:22px; text-align:right;" class="tdBackColor"><asp:Label ID="lblPalaverTime" runat="server"  Text='<%$ Resources:BaseInfo,PotShop_lblPalaverTime %>' CssClass="labelStyle" /></td>
+    <td style="width:5px; height:22px;" class="tdBackColor"></td>
+    <td style="width:160px; height:22px;" class="tdBackColor">
+        <asp:TextBox ID="txtPalaverTime" runat="server" CssClass="ipt160px" onclick="calendar()"></asp:TextBox></td>
+    <td style="width:5px; height:22px;" class="tdBackColor">
+       </td>
+  </tr>
+    <tr>
+    <td style="width:255px; height:10px;" class="tdBackColor" colspan="4"></td>
+  </tr>
+    <tr>
+    <td style="width:143px; height:22px;text-align:right;" class="tdBackColor"><asp:Label ID="lblPalaverUser" runat="server" Text='<%$ Resources:BaseInfo,PotShop_lblPalaverUser %>' CssClass="labelStyle"></asp:Label></td>
+    <td style="width:5px; height:22px;" class="tdBackColor"></td>
+    <td style="width:160px; height:22px;" class="tdBackColor">
+                    <asp:TextBox ID="txtPalaverUser" runat="server" CssClass="ipt160px" MaxLength="16"></asp:TextBox></td>
+    <td style="width:5px; height:22px;" class="tdBackColor"></td>
+  </tr>
+   <tr>
+    <td style="width:255px; height:10px;" class="tdBackColor" colspan="4"></td>
+  </tr>
+    <tr>
+    <td style="width:143px; height:22px;text-align:right;" class="tdBackColor">
+        <asp:Label ID="lblPalaverAim" runat="server" Text='<%$ Resources:BaseInfo,PotShop_lblPalaverAim %>' CssClass="labelStyle"></asp:Label></td>
+    <td style="width:5px; height:22px;" class="tdBackColor"></td>
+    <td style="width:160px; height:22px;" class="tdBackColor"><asp:TextBox ID="txtPalaverAim" runat="server" CssClass="ipt160px" MaxLength="128"></asp:TextBox></td>
+    <td style="width:5px; height:22px;" class="tdBackColor"></td>
+  </tr>
+   <tr>
+    <td style="width:255px; height:10px;" class="tdBackColor" colspan="4"></td>
+  </tr>
+    <tr>
+    <td style="width:143px; height:22px;text-align:right;" class="tdBackColor">
+    <asp:Label ID="lblPalaverNode" runat="server" Text='<%$ Resources:BaseInfo,PotShop_lblPalaverNode %>' CssClass="labelStyle"></asp:Label>
+        </td>
+    <td style="width:5px; height:22px;" class="tdBackColor"></td>
+    <td style="width:160px; height:22px;" class="tdBackColor"><table border="0" cellpadding="0" cellspacing="0" style="width: 160px;text-align: center;">
+        <tr>
+            <td style="width: 324px; height: 1px; background-color: #738495">
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 324px; height: 1px; background-color: #ffffff">
+            </td>
+        </tr>
+    </table>
+        </td>
+    <td style="width:5px; height:22px;" class="tdBackColor"></td>
+  </tr>
+
+    <tr>
+    <td style="width:255px; height:100px; text-align:center;" class="tdBackColor" colspan="4">
+        <asp:TextBox ID="txtPalaverNode" runat="server" CssClass="OpenColor" Height="141px"
+            TextMode="MultiLine" Width="233px" MaxLength="512"></asp:TextBox></td>
+  </tr>
+    <tr>
+    <td style="width:255px; height:22px; text-align:inherit;" class="tdBackColor" colspan="4"><table border="0" cellpadding="0" cellspacing="0" style="width: 173px;text-align: center;">
+        <tr>
+            <td style="width: 324px; height: 1px; background-color: #738495; left: 15px; position: relative;">
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 324px; height: 1px; background-color: #ffffff; left: 15px; position: relative;">
+            </td>
+        </tr>
+    </table>
+    </td>
+  </tr>
+    <tr>
+    <td style="width:255px; height:22px; text-align:left;" class="tdBackColor" colspan="4">
+        &nbsp;<asp:Button ID="btnSave" runat="server" CssClass="buttonSave" Height="31px" OnClick="btnSave_Click"
+            Text="<%$ Resources:BaseInfo,PotCustomer_butSave %>" Width="70px" />
+        <asp:Button
+                ID="btnCancel" runat="server" CssClass="buttonCancel" Height="31px" OnClick="btnCancel_Click"
+                Text="<%$ Resources:BaseInfo,User_btnCancel %>" Width="70px" />
+
+  
+    <asp:Button ID="btnAuditing" runat="server"  Text='<%$ Resources:BaseInfo,PotCustomer_btnExamine %>' OnClick="butAuditing_Click" CssClass="buttonSave" Width="96px" /></td>
+    </tr>
+</table>
+
+</td>
+ <td style="width:280px; height:330px;" class="tdBackColor" valign="top">
+
+<table width="280" border="0" cellspacing="0" cellpadding="0" style="height:311px;">
+
+ <tr>
+    <td style="width:280; height:1px; background-color:White;"></td>
+  </tr>
+  <tr>
+    <td style="width:280; height:22px;" class="tdBackColor"><table border="0" cellpadding="0" cellspacing="0" style="width: 271px;text-align: center;">
+        <tr>
+            <td style="width: 324px; height: 1px; background-color: #738495">
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 324px; height: 1px; background-color: #ffffff">
+            </td>
+        </tr>
+    </table>
+    </td>
+  </tr>
+  <tr>
+    <td class="tdBackColor" style="width:280; height:254px; vertical-align: top; text-align: center;" valign="top">
+        <asp:GridView ID="GrdCustPalaverInfo" runat="server" AutoGenerateColumns="False" Height="285px"
+                         Width="277px" Font-Size="12pt" Font-Strikeout="False" OnRowDataBound="GrdCustPalaverInfo_RowDataBound" OnSelectedIndexChanged="GrdCustPalaverInfo_SelectedIndexChanged" BackColor="White"  CellPadding="3" BorderStyle="Inset" BorderWidth="1px" PageSize="12" >
+                        <Columns>
+                            <asp:BoundField DataField="PalaverID">
+                                <ItemStyle CssClass="hidden" />
+                                <HeaderStyle CssClass="hidden" />
+                                <FooterStyle CssClass="hidden" />
+
+                            </asp:BoundField>
+                            <asp:BoundField DataField="PalaverTime" HeaderText="<%$ Resources:BaseInfo,PotShop_lblPalaverTime %>">
+                                <ItemStyle Font-Size="10.5pt" HorizontalAlign="Center" BorderColor="#E1E0B2" />
+                                <HeaderStyle CssClass="gridviewtitle" BackColor="#E1E0B2" BorderColor="#E1E0B2" />
+                            </asp:BoundField>
+                            <asp:BoundField DataField="PalaverAim" HeaderText="<%$ Resources:BaseInfo,PotShop_lblPalaverAim %>">
+                                <ItemStyle Font-Size="10.5pt" HorizontalAlign="Center" BorderColor="#E1E0B2" />
+                                <HeaderStyle CssClass="gridviewtitle" BackColor="#E1E0B2" BorderColor="#E1E0B2" />
+                            </asp:BoundField>
+                            <asp:CommandField SelectText="<%$ Resources:BaseInfo,User_lblUserQuery %>" ShowSelectButton="True" HeaderText="<%$ Resources:BaseInfo,User_lblUserQuery %>">
+                                <ItemStyle HorizontalAlign="Center" Font-Size="10.5pt" BorderColor="#E1E0B2" />
+                                <HeaderStyle CssClass="gridviewtitle" BackColor="#E1E0B2" BorderColor="#E1E0B2" />
+                            </asp:CommandField>
+                        </Columns>
+                                                <FooterStyle BackColor="Red" ForeColor="#000066"/>
+                                                <RowStyle ForeColor="Black" Height="10px" Font-Overline="False" Font-Size="10pt" />
+                                                <SelectedRowStyle BackColor="#FFFFCD" Font-Bold="False" ForeColor="Black" />
+                                                <PagerStyle BackColor="White" ForeColor="#000066"   HorizontalAlign="Left" />
+                                                <HeaderStyle BackColor="#E1E0B2" Height="10px" Font-Bold="False"  />
+                    </asp:GridView>
+        </td>
+  </tr>
+  <tr>
+    <td style="width:280; height:22px; text-align: center;" class="tdBackColor"><table border="0" cellpadding="0" cellspacing="0" style="width: 270px;text-align: center;">
+        <tr>
+            <td style="width: 324px; height: 1px; background-color: #738495">
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 324px; height: 1px; background-color: #ffffff">
+            </td>
+        </tr>
+    </table>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:280; height:22px; text-align:right;" class="tdBackColor">
+        <asp:Button ID="btnBack" runat="server" CssClass="buttonBack" Enabled="False" OnClick="btnBack_Click"
+            Text="<%$ Resources:BaseInfo,Button_back %>" /><asp:Button ID="btnNext" runat="server"
+                CssClass="buttonNext" Enabled="False" OnClick="btnNext_Click" Text="<%$ Resources:BaseInfo,Button_next %>" /><asp:Label
+                    ID="lblCurrent" runat="server" ForeColor="Red">1</asp:Label><asp:Label ID="lblTotalNum"
+                        runat="server"></asp:Label>&nbsp;</td>
+  </tr>
+
+</table>
+                </td>
+            </tr>
+        </table>
+                    </div>
+                </ContentTemplate>
+            </asp:UpdatePanel>
+                </td>
+                <td style="width: 60px; height: 401px; text-align: center" valign="top">
+                    <img height="401" src="../../images/shuxian.jpg" />
+                </td>
+            </tr>
+        </table>
+        <asp:HiddenField ID="hidSelecyted" runat="server" Value="<%$ Resources:BaseInfo,PotShop_Selected %>" />
+        <asp:HiddenField ID="hidInsert" runat="server" Value="<%$ Resources:BaseInfo,Hidden_hidInsert %>" />
+        <asp:HiddenField ID="hidUpdate" runat="server" Value="<%$ Resources:BaseInfo,Hidden_hidUpdate %>" />
+        <asp:HiddenField ID="hidAdd" runat="server" Value="<%$ Resources:BaseInfo,Hidden_hidAdd %>" />
+        <asp:HiddenField ID="hidMessage" runat="server" Value="<%$ Resources:BaseInfo,Hidden_hidMessage %>" />
+        <asp:HiddenField ID="hidIntError" runat="server" Value="<%$ Resources:BaseInfo,Hidden_IntError %>" />
+        <asp:HiddenField ID="hidDateTime" runat="server" Value="<%$ Resources:BaseInfo,Hidden_hidDateTime %>" />
+    </form>
+</body>
+</html>

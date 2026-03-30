@@ -1,0 +1,7 @@
+custname	String	32
+subsname	String	64
+storename	String	32
+shopcode	String	32
+shopname	String	32
+ContractCode	String	32
+brandname	String	32

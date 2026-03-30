@@ -1,0 +1,8 @@
+Month	DateTime	2008-1-1
+ShopTypeName	String	50	efqwerqwe
+SalesAmt	Number		1234
+PPSalesAmt	Number		1234
+LYSalesAmt	Number		1234
+LYRate	Number		1234
+PPRate	Number		1234
+StoreName	String	50	efqwerqwe

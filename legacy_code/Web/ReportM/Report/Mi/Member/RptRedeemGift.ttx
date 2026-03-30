@@ -1,0 +1,4 @@
+RedeemDate		DateTime	2008-1-1
+GiftId		String	30	asdf
+GiftDesc	String	30	asdf
+Count		Number		1001

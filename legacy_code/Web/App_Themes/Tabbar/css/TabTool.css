@@ -1,0 +1,35 @@
+﻿
+
+UNKNOWN {
+        FONT-SIZE: small
+}
+#header {
+        FONT-SIZE: 93%;  FLOAT: left; WIDTH: 100%; LINE-HEIGHT: normal
+}
+#header UL {
+        PADDING-RIGHT: 10px; PADDING-LEFT: 10px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 2px; LIST-STYLE-TYPE: none
+}
+#header LI {
+        PADDING-RIGHT: 0px; PADDING-LEFT: 9px; BACKGROUND: url(left_on.gif) no-repeat left top; FLOAT: left; 
+        PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px
+}
+#header A {
+        PADDING-RIGHT: 15px; DISPLAY: block; PADDING-LEFT: 6px; FONT-WEIGHT: bold; 
+        BACKGROUND: url(right_on.gif) no-repeat right top; FLOAT: left; PADDING-BOTTOM: 1px; 
+        COLOR: #3b4854; PADDING-TOP: 2px; TEXT-DECORATION: none
+}
+#header A {
+        FLOAT: none
+}
+#header #current {
+        BACKGROUND-IMAGE: url(left.gif)
+}
+#header #current A {
+        BACKGROUND-IMAGE: url(right.gif); PADDING-BOTTOM: 1px; COLOR: #ffffff;
+}
+#BodyDiv 
+{
+	margin:20px;
+	width:62%;
+	height:150px;
+}

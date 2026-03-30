@@ -1,0 +1,60 @@
+<chart baseFontSize='12' caption='月费用对比分析 2007 - 2009　(单位:百万元)' showBorder='0' showValues='0' PYAxisName='金额' canvasbgColor='ffffff' canvasbgAlpha='40'> 
+   <categories>
+      <category label='一月' />
+      <category label='二月' />
+      <category label='三月' />
+      <category label='四月' />
+      <category label='五月' />
+      <category label='六月' />
+      <category label='七月' />
+      <category label='八月' />
+      <category label='九月' />
+      <category label='十月' />
+      <category label='十一月' />
+      <category label='十二月' />
+   </categories>
+
+   <dataset seriesName='2009'  color='75edff'>
+      <set value='319' link='javascript:changeXML("xml/xsPie3DInv0901.xml","Iframe2");' />
+      <set value='312' link='javascript:changeXML("xml/xsPie3DInv0902.xml","Iframe2");'/>
+      <set value='325' link='javascript:changeXML("xml/xsPie3DInv0903.xml","Iframe2");'/>
+      <set value='297' link='javascript:changeXML("xml/xsPie3DInv0904.xml","Iframe2");'/>
+      <set value='298' link='javascript:changeXML("xml/xsPie3DInv0905.xml","Iframe2");'/>
+      <set value='312' link='javascript:changeXML("xml/xsPie3DInv0906.xml","Iframe2");'/>
+	<set value='332' link='javascript:changeXML("xml/xsPie3DInv0907.xml","Iframe2");'/>
+	<set value='340' link='javascript:changeXML("xml/xsPie3DInv0908.xml","Iframe2");'/>
+   </dataset>
+   <dataset seriesName='2008' parentYAxis='S' color='ff5959'>
+     <set value='372'  />
+      <set value='328' />
+      <set value='385' />
+      <set value='386'/>
+      <set value='385' />
+      <set value='369' />
+      <set value='351' />
+      <set value='399' />
+      <set value='373' />
+      <set value='388' />
+      <set value='382' />
+      <set value='318' />
+   </dataset>
+   <dataset seriesName='2007' color='ceff00'>
+       <set value='315'/>
+      <set value='314'/>
+      <set value='388'/>
+      <set value='377'/>
+      <set value='363' />
+      <set value='355' />
+      <set value='379' />
+      <set value='393' />
+      <set value='359' />
+      <set value='322' />
+      <set value='329' />
+      <set value='353' />
+   </dataset>
+
+   <trendlines>
+      <line startValue='300' color='91C728' displayValue='' showOnTop='1'/>
+   </trendlines>
+
+</chart>

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BuildingMenu>
+	<Menu ID="1">
+		<MenuDesc>大楼各层出租率分析</MenuDesc>
+		<MenuUrl>VisualAnalysis/report/StoreRentRate.aspx?funcid=358</MenuUrl>
+	</Menu>
+	<Menu ID="2">
+		<MenuDesc>大楼预算收入汇总分析</MenuDesc>
+		<MenuUrl>VisualAnalysis/report/BuildYSRentTotal.aspx?funcid=358</MenuUrl>
+	</Menu>
+</BuildingMenu>

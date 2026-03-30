@@ -1,0 +1,7 @@
+E:\WORK\MI_NET\Code\BaseInfo\bin\Debug\BaseInfo.dll
+E:\WORK\MI_NET\Code\BaseInfo\bin\Debug\BaseInfo.pdb
+E:\WORK\MI_NET\Code\BaseInfo\bin\Debug\Base.dll
+E:\WORK\MI_NET\Code\BaseInfo\bin\Debug\Base.pdb
+E:\WORK\MI_NET\Code\BaseInfo\obj\Debug\ResolveAssemblyReference.cache
+E:\WORK\MI_NET\Code\BaseInfo\obj\Debug\BaseInfo.dll
+E:\WORK\MI_NET\Code\BaseInfo\obj\Debug\BaseInfo.pdb

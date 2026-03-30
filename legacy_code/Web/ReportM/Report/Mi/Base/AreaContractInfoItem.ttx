@@ -1,0 +1,11 @@
+contractcode	String	50
+custname	String	50
+custcode	String	50
+ContractStatus	String	50
+constartdate	DateTime
+conenddate	DateTime
+areacode	String	50
+areaname	String	50
+areatypecode	String	50
+areatypedesc	String	50
+deptname	String	50

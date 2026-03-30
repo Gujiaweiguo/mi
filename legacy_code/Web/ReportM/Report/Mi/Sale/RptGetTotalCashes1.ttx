@@ -1,0 +1,6 @@
+UserID	String	8
+TPUsrNm	String	40
+MediaMDesc	String	16
+LocalAmt	Number
+PayAmt	Number
+BizDate	DateTime

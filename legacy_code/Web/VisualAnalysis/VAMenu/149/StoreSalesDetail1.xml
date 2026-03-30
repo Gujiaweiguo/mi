@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Chart baseFontSize="12" caption="项目近12个月销售趋势图(单位:元）" showBorder="0" showValues="1" PYAxisName="" canvasbgColor="ffffff" canvasbgAlpha="40" aboutMenuItemLabel="About Wincor Nixdorf" aboutMenuItemLink="n-http://www.wincor-nixdorf.com">
+  <categories>
+    <category label="2009-08" />
+    <category label="2009-09" />
+    <category label="2009-10" />
+    <category label="2009-11" />
+    <category label="2009-12" />
+    <category label="2010-01" />
+    <category label="2010-02" />
+    <category label="2010-03" />
+    <category label="2010-04" />
+  </categories>
+  <dataset seriesName="本月销售">
+    <set value="4316190.03" />
+    <set value="4769696.74" />
+    <set value="2921905.44" />
+    <set value="5671275.83" />
+    <set value="2530903.87" />
+    <set value="1520221.18" />
+    <set value="1362211.45" />
+    <set value="906722.30" />
+    <set value="954548.14" />
+  </dataset>
+  <dataset seriesName="环比销售">
+    <set value="0.00" />
+    <set value="0.00" />
+    <set value="0.00" />
+    <set value="0.00" />
+    <set value="0.00" />
+    <set value="0.00" />
+    <set value="0.00" />
+    <set value="0.00" />
+    <set value="0.00" />
+  </dataset>
+</Chart>

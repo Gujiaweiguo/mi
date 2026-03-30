@@ -1,0 +1,7 @@
+E:\WORK\MI_NET\Code\RentableArea\bin\Debug\RentableArea.dll
+E:\WORK\MI_NET\Code\RentableArea\bin\Debug\RentableArea.pdb
+E:\WORK\MI_NET\Code\RentableArea\bin\Debug\Base.dll
+E:\WORK\MI_NET\Code\RentableArea\bin\Debug\Base.pdb
+E:\WORK\MI_NET\Code\RentableArea\obj\Debug\ResolveAssemblyReference.cache
+E:\WORK\MI_NET\Code\RentableArea\obj\Debug\RentableArea.dll
+E:\WORK\MI_NET\Code\RentableArea\obj\Debug\RentableArea.pdb

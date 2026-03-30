@@ -1,0 +1,9 @@
+deptname	String	32	
+storeid	Number		
+shoptypename	String	32	
+SalesAmt	Number		
+ddname	String	32
+cityname	String	32
+month	Date
+floorarea	Number
+monthdays	Number		

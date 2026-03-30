@@ -1,0 +1,258 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ColorLumpInformation>
+  <ClrInfor desc="服装">
+    <Rb>255</Rb>
+    <Gb>178</Gb>
+    <Bb>212</Bb>
+  </ClrInfor>
+  <ClrInfor desc="餐饮">
+    <Rb>255</Rb>
+    <Gb>131</Gb>
+    <Bb>131</Bb>
+  </ClrInfor>
+  <ClrInfor desc="皮具">
+    <Rb>255</Rb>
+    <Gb>74</Gb>
+    <Bb>74</Bb>
+  </ClrInfor>
+  <ClrInfor desc="精品">
+    <Rb>214</Rb>
+    <Gb>32</Gb>
+    <Bb>32</Bb>
+  </ClrInfor>
+  <ClrInfor desc="主力店">
+    <Rb>88</Rb>
+    <Gb>0</Gb>
+    <Bb>0</Bb>
+  </ClrInfor>
+  <ClrInfor desc="其他">
+    <Rb>189</Rb>
+    <Gb>73</Gb>
+    <Bb>73</Bb>
+  </ClrInfor>
+  <ClrInfor desc="男士服装">
+    <Rb>141</Rb>
+    <Gb>81</Gb>
+    <Bb>81</Bb>
+  </ClrInfor>
+  <ClrInfor desc="女士时装">
+    <Rb>255</Rb>
+    <Gb>178</Gb>
+    <Bb>178</Bb>
+  </ClrInfor>
+  <ClrInfor desc="休闲服饰">
+    <Rb>255</Rb>
+    <Gb>255</Gb>
+    <Bb>131</Bb>
+  </ClrInfor>
+  <ClrInfor desc="运动用品">
+    <Rb>255</Rb>
+    <Gb>163</Gb>
+    <Bb>74</Bb>
+  </ClrInfor>
+  <ClrInfor desc="童装">
+    <Rb>214</Rb>
+    <Gb>118</Gb>
+    <Bb>32</Bb>
+  </ClrInfor>
+  <ClrInfor desc="中式酒楼">
+    <Rb>184</Rb>
+    <Gb>126</Gb>
+    <Bb>0</Bb>
+  </ClrInfor>
+  <ClrInfor desc="西式餐厅">
+    <Rb>88</Rb>
+    <Gb>56</Gb>
+    <Bb>0</Bb>
+  </ClrInfor>
+  <ClrInfor desc="咖啡饮品">
+    <Rb>189</Rb>
+    <Gb>141</Gb>
+    <Bb>73</Bb>
+  </ClrInfor>
+  <ClrInfor desc="西饼零食">
+    <Rb>141</Rb>
+    <Gb>125</Gb>
+    <Bb>81</Bb>
+  </ClrInfor>
+  <ClrInfor desc="酒吧">
+    <Rb>255</Rb>
+    <Gb>223</Gb>
+    <Bb>178</Bb>
+  </ClrInfor>
+  <ClrInfor desc="皮具">
+    <Rb>151</Rb>
+    <Gb>255</Gb>
+    <Bb>131</Bb>
+  </ClrInfor>
+  <ClrInfor desc="鞋类">
+    <Rb>255</Rb>
+    <Gb>253</Gb>
+    <Bb>74</Bb>
+  </ClrInfor>
+  <ClrInfor desc="箱包">
+    <Rb>214</Rb>
+    <Gb>195</Gb>
+    <Bb>32</Bb>
+  </ClrInfor>
+  <ClrInfor desc="珠宝">
+    <Rb>130</Rb>
+    <Gb>184</Gb>
+    <Bb>0</Bb>
+  </ClrInfor>
+  <ClrInfor desc="钟表">
+    <Rb>31</Rb>
+    <Gb>88</Gb>
+    <Bb>0</Bb>
+  </ClrInfor>
+  <ClrInfor desc="化妆品">
+    <Rb>189</Rb>
+    <Gb>182</Gb>
+    <Bb>73</Bb>
+  </ClrInfor>
+  <ClrInfor desc="饰品">
+    <Rb>98</Rb>
+    <Gb>141</Gb>
+    <Bb>136</Bb>
+  </ClrInfor>
+  <ClrInfor desc="工艺礼品">
+    <Rb>200</Rb>
+    <Gb>255</Gb>
+    <Bb>178</Bb>
+  </ClrInfor>
+  <ClrInfor desc="家居用品">
+    <Rb>131</Rb>
+    <Gb>198</Gb>
+    <Bb>255</Bb>
+  </ClrInfor>
+  <ClrInfor desc="玩具">
+    <Rb>91</Rb>
+    <Gb>255</Gb>
+    <Bb>74</Bb>
+  </ClrInfor>
+  <ClrInfor desc="数码电器">
+    <Rb>32</Rb>
+    <Gb>214</Gb>
+    <Bb>130</Bb>
+  </ClrInfor>
+  <ClrInfor desc="影音">
+    <Rb>0</Rb>
+    <Gb>184</Gb>
+    <Bb>169</Bb>
+  </ClrInfor>
+  <ClrInfor desc="书店/文化用品">
+    <Rb>88</Rb>
+    <Gb>43</Gb>
+    <Bb>0</Bb>
+  </ClrInfor>
+  <ClrInfor desc="个人护理">
+    <Rb>73</Rb>
+    <Gb>189</Gb>
+    <Bb>103</Bb>
+  </ClrInfor>
+  <ClrInfor desc="保健">
+    <Rb>81</Rb>
+    <Gb>99</Gb>
+    <Bb>141</Bb>
+  </ClrInfor>
+  <ClrInfor desc="花店">
+    <Rb>178</Rb>
+    <Gb>255</Gb>
+    <Bb>223</Bb>
+  </ClrInfor>
+  <ClrInfor desc="超市">
+    <Rb>134</Rb>
+    <Gb>131</Gb>
+    <Bb>255</Bb>
+  </ClrInfor>
+  <ClrInfor desc="影院">
+    <Rb>74</Rb>
+    <Gb>255</Gb>
+    <Bb>236</Bb>
+  </ClrInfor>
+  <ClrInfor desc="冰场">
+    <Rb>32</Rb>
+    <Gb>148</Gb>
+    <Bb>214</Bb>
+  </ClrInfor>
+  <ClrInfor desc="美容">
+    <Rb>17</Rb>
+    <Gb>0</Gb>
+    <Bb>88</Bb>
+  </ClrInfor>
+  <ClrInfor desc="美发">
+    <Rb>73</Rb>
+    <Gb>189</Gb>
+    <Bb>188</Bb>
+  </ClrInfor>
+  <ClrInfor desc="美体">
+    <Rb>81</Rb>
+    <Gb>88</Gb>
+    <Bb>141</Bb>
+  </ClrInfor>
+  <ClrInfor desc="银行/服务">
+    <Rb>178</Rb>
+    <Gb>203</Gb>
+    <Bb>255</Bb>
+  </ClrInfor>
+  <ClrInfor desc="冲印店">
+    <Rb>198</Rb>
+    <Gb>131</Gb>
+    <Bb>255</Bb>
+  </ClrInfor>
+  <ClrInfor desc="洗衣店">
+    <Rb>74</Rb>
+    <Gb>172</Gb>
+    <Bb>255</Bb>
+  </ClrInfor>
+  <ClrInfor desc="旅行社">
+    <Rb>32</Rb>
+    <Gb>88</Gb>
+    <Bb>214</Bb>
+  </ClrInfor>
+  <ClrInfor desc="福彩">
+    <Rb>26</Rb>
+    <Gb>0</Gb>
+    <Bb>184</Bb>
+  </ClrInfor>
+  <ClrInfor desc="修表">
+    <Rb>79</Rb>
+    <Gb>0</Gb>
+    <Bb>88</Bb>
+  </ClrInfor>
+  <ClrInfor desc="修鞋">
+    <Rb>73</Rb>
+    <Gb>106</Gb>
+    <Bb>189</Bb>
+  </ClrInfor>
+  <ClrInfor desc="内衣">
+    <Rb>111</Rb>
+    <Gb>81</Gb>
+    <Bb>141</Bb>
+  </ClrInfor>
+  <ClrInfor desc="中西快餐">
+    <Rb>202</Rb>
+    <Gb>178</Gb>
+    <Bb>255</Bb>
+  </ClrInfor>
+  <ClrInfor desc="其他">
+    <Rb>251</Rb>
+    <Gb>131</Gb>
+    <Bb>255</Bb>
+  </ClrInfor>
+  <ClrInfor desc="综合服饰">
+    <Rb>95</Rb>
+    <Gb>74</Gb>
+    <Bb>255</Bb>
+  </ClrInfor>
+  <ClrInfor desc="雪糕甜品">
+    <Rb>122</Rb>
+    <Gb>32</Gb>
+    <Bb>214</Bb>
+  </ClrInfor>
+  <ClrInfor desc="眼镜">
+    <Rb>155</Rb>
+    <Gb>73</Gb>
+    <Bb>189</Bb>
+  </ClrInfor>
+</ColorLumpInformation>

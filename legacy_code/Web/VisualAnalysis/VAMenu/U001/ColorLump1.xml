@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encodingbb="utf-8"?>
+<ToolBar>
+    <toolbar toolbarID="C101" desc="正常合同" rb="0" gb="255" bb="0" />
+    <toolbar toolbarID="C102" desc="即将到期" rb="0" gb="0" bb="255" />
+    <toolbar toolbarID="C103" desc="空置" rb="255" gb="0" bb="0" />
+    <toolbar toolbarID="C104" desc="正在装修" rb="0" gb="255" bb="255" />
+</ToolBar>

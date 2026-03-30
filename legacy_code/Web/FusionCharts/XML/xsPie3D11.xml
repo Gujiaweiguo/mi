@@ -1,0 +1,8 @@
+﻿<chart bgColor='ffffff' showBorder="0" baseFontSize='12'　decimals='0' showvalues='1' bgAlpha='40,100' bgRatio='0,100' bgAngle='270' showBorder='1' caption='11点业态销售占比分析'>
+            <set label='服装' value='92' link='javascript:changeXML("xml/Combi3D2fz.xml","Iframe2");' />
+            <set label='餐饮' value='11' link='javascript:changeXML("xml/Combi3D2cy.xml","Iframe2");' />
+            <set label='珠宝' value='2427' link='javascript:changeXML("xml/Combi3D2zb.xml","Iframe2");' />
+            <set label='超市' value='6443' link='javascript:changeXML("xml/Combi3D2cs.xml","Iframe2");' isSliced='1' />
+            <set label='电器' value='508' link='javascript:changeXML("xml/Combi3D2dq.xml","Iframe2");' />
+             <set label='自营' value='10202' link='javascript:changeXML("xml/Combi3D2zy.xml","Iframe2");' isSliced='1' />
+</chart>

@@ -1,0 +1,127 @@
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;	
+}
+html { 
+	overflow-x:hidden;
+	overflow-y:scroll;
+	SCROLLBAR-FACE-COLOR:#ffffff;   
+	SCROLLBAR-HIGHLIGHT-COLOR:#ffffff;   
+	SCROLLBAR-SHADOW-COLOR:#a87f50;   
+	SCROLLBAR-3DLIGHT-COLOR:#a87f50;   
+	SCROLLBAR-ARROW-COLOR:#a87f50;  
+	SCROLLBAR-TRACK-COLOR:#ffffff;   
+	SCROLLBAR-DARKSHADOW-COLOR:#ffffff; 
+}
+ol
+{
+	background:#FFFFCC;
+	cursor:hand;
+	font-family:Arial;
+	font-size:14px;
+	color:#555555;
+	text-decoration: none;
+}
+
+li
+{
+	background:#d6bf95;
+	cursor:hand;
+	font-family:Arial;
+	font-size:14px;
+	color:#333333;
+	text-decoration: none;
+	margin-bottom:3px;
+}
+li a:link
+{
+	text-decoration: none;
+	color:#333333;
+}
+li a:hover
+{
+	padding-top:2px;
+	color:#FFFF99;
+	background:#AC7A4D;
+	text-decoration: none;
+}
+.liover
+{
+	color:#FFFFff;
+	background:#7b562a;
+	text-decoration: none;
+}
+.alltext 
+{
+	font-family: "宋体";
+	font-size: 14px;
+	color: #ffffff;
+	text-decoration: none;
+	padding-right:5px;
+	line-height:16px;
+}
+.IptSty {
+	font-family: "宋体";
+	font-size: 14px;
+	background-color: #b4c4e8;
+	margin: 0px;
+	height: 18px;
+	width: 150px;
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 4px;
+	border: 1px solid #FFFFFF;
+	color: #003366;
+}
+.BtnSty {
+	font-family: "宋体";
+	font-size: 12px;
+	color: #484747;
+	background-attachment: fixed;
+	background-image: url(../images/btn_bg0.gif);
+	background-repeat: no-repeat;
+	background-position: left top;
+	height: 26px;
+	width: 50px;
+	padding:0px;
+	border:0px;
+}
+#BgCss {
+	font:"宋体";
+	font-size:12px;
+	color:#5d5d5d;
+}
+#NoBg {
+	font:"宋体";
+	font-size:12px;
+	color:#5d5d5d;
+}
+.buttonUp{background-repeat: no-repeat;margin: 0px;padding: 0px;height: 34px;width: 62px;border-top-style: none;border-right-style: none;border-bottom-style: none;border-left-style: none;padding-top:2px;padding-left:32px;}
+#topTd{	background:url(../images/help-top.jpg) center top no-repeat;}
+.menuNo{ background:none; }
+.menuClick{ background:url(../images/menu-over.jpg);border:#0a0a0a 1px solid;border-bottom:0px;font-weight:bold; }
+.menuOver{ background:#6a6a6a;border:#404040 1px solid;border-bottom:0px;font-weight:bold; }
+.A_text
+{
+	font-size:18px;
+	color:#000000;
+	font-family:"黑体";
+	line-height:30px;
+}
+.B_text
+{
+	font-size:14px;
+	color:#333333;
+	font-family:"宋体";
+	line-height:25px;
+}
+.C_text
+{
+	font-size:16px;
+	color:#666666;
+	font-family:"黑体";
+	line-height:25px;
+}

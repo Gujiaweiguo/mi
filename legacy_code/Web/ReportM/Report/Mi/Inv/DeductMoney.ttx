@@ -1,0 +1,11 @@
+ContractCode	String	32	
+CustName	String	64	
+ShopCode	String	16	
+ShopName	String	64	
+StartActpayAmt	Currency		
+amt	Currency		
+sPayAmt	Currency		
+iActAmt	Currency		
+BankAmt	Currency		
+Rate	Currency		
+PaidAmt	Currency

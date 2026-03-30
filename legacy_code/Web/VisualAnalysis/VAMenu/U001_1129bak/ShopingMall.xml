@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<MallInfor>
+    <ShopingMallID ID="1">
+	<ShopingMallArea>19</ShopingMallArea>
+        <ShopingMallCode>1</ShopingMallCode>
+        <ShopingMallDesc>购物中心A</ShopingMallDesc>
+        <Address>南京</Address>
+	<Img>Img/33-1.png</Img>
+        <Remark></Remark>
+    </ShopingMallID>
+</MallInfor>

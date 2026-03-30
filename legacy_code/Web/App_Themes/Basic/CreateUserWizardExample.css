@@ -1,0 +1,155 @@
+﻿.foo {} /* W3C CSS validator likes CSS files to start with a class rather than a comment. Soooooo.... */
+
+/* This style sheet is intended to contain OFTEN CHANGED rules used when the CreateUserWizard control adapter is enabled. */
+/* Empty rules are provided merely as a convenience for your future use or experimentation. */
+
+.PrettyCreateUserWizard
+{
+    width: 50em;
+}
+
+.PrettyCreateUserWizard .AspNet-CreateUserWizard
+{
+    font-family: Verdana;
+    font-size: 0.8em;
+    border: solid 1px #284775;
+}
+
+.PrettyCreateUserWizard .AspNet-CreateUserWizard label,
+.PrettyCreateUserWizard .AspNet-CreateUserWizard input
+{
+    color: #5D7B9D;
+}
+
+.PrettyCreateUserWizard .AspNet-CreateUserWizard input
+{
+    font-size: 1em;  /* lets the form element scale */
+}
+
+/* This rule is used when AutoAccessKey is true */
+.PrettyCreateUserWizard .AspNet-CreateUserWizard label em
+{
+    text-decoration: underline;
+    font-style: normal;
+}
+
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-HeaderTextPanel
+{
+    font-weight: bold;
+    text-align: center;
+    color: #FFFFFF;
+    background: #284775;
+    height: 2em;
+    padding-top: 0.5em;
+    margin-bottom: 0.3em;
+}
+
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-StepTitlePanel
+{
+    font-weight: bold;
+    text-align: center;
+    color: #F7F6F3;
+    background: #5D7B9D;
+    height: 1.5em;
+    padding-top: 0.2em;
+    margin: 4px;
+}
+
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-InstructionPanel
+{
+    text-align: left;
+    color: #284775;
+    background: #EEEEEE;
+    padding-top: 0.5em;
+    margin: 4px;
+    border: solid 10px #EEEEEE;
+}
+
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-FailurePanel
+{
+    color: #FF0000;
+}
+
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-UserPanel,
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-PasswordPanel,
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-PasswordHintPanel,
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-ConfirmPasswordPanel,
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-EmailPanel,
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-QuestionPanel,
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-AnswerPanel,
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-FailurePanel
+{
+    padding: 0.25em 0.1em 0 0;
+}
+
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-UserPanel,
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-PasswordPanel,
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-ConfirmPasswordPanel,
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-EmailPanel,
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-QuestionPanel,
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-AnswerPanel
+{
+    text-align: right;
+    margin-right: 18em;
+}
+
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-PasswordHintPanel
+{
+    color: #666666;
+    padding-left: 30.5em;
+    padding-right: 1em;
+}
+
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-FinalValidatorsPanel,
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-FailurePanel
+{
+    text-align: center;
+    margin-left: 10em;
+    margin-top: 0.5em;
+}
+
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-UserPanel label,
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-PasswordPanel label,
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-ConfirmPasswordPanel label,
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-EmailPanel label,
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-QuestionPanel label,
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-AnswerPanel label
+{
+    white-space: nowrap;
+}
+
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-UserPanel input,
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-PasswordPanel input,
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-ConfirmPasswordPanel input,
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-EmailPanel input,
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-QuestionPanel input,
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-AnswerPanel input
+{
+    width: 9em;
+}
+
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-CreateUserButtonPanel,
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-ContinuePanel
+{
+    text-align: right;
+    padding-right: 1em;
+    padding-bottom: 0.5em;
+}
+
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-CreateUserButtonPanel input,
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-ContinuePanel input
+{
+    background: #284775;
+    color: #00FFFF;
+    border: solid 1px #5D7B9D;
+}
+
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-SuccessTextPanel
+{
+    padding: 1em;
+    padding-top: 0.5em;
+}
+
+.PrettyCreateUserWizard .AspNet-CreateUserWizard .AspNet-CreateUserWizard-EditProfilePanel
+{
+}

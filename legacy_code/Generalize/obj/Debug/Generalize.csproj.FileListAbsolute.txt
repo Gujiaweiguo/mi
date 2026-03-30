@@ -1,0 +1,14 @@
+E:\Work\MI_NET\Code\Generalize\bin\Debug\Generalize.dll
+E:\Work\MI_NET\Code\Generalize\bin\Debug\Generalize.pdb
+E:\Work\MI_NET\Code\Generalize\bin\Debug\Base.dll
+E:\Work\MI_NET\Code\Generalize\bin\Debug\Base.pdb
+E:\Work\MI_NET\Code\Generalize\obj\Debug\ResolveAssemblyReference.cache
+E:\Work\MI_NET\Code\Generalize\obj\Debug\Generalize.dll
+E:\Work\MI_NET\Code\Generalize\obj\Debug\Generalize.pdb
+E:\Work\MI_NET\Code_sun\Code\Generalize\bin\Debug\Generalize.dll
+E:\Work\MI_NET\Code_sun\Code\Generalize\bin\Debug\Generalize.pdb
+E:\Work\MI_NET\Code_sun\Code\Generalize\bin\Debug\Base.dll
+E:\Work\MI_NET\Code_sun\Code\Generalize\bin\Debug\Base.pdb
+E:\Work\MI_NET\Code_sun\Code\Generalize\obj\Debug\ResolveAssemblyReference.cache
+E:\Work\MI_NET\Code_sun\Code\Generalize\obj\Debug\Generalize.dll
+E:\Work\MI_NET\Code_sun\Code\Generalize\obj\Debug\Generalize.pdb

@@ -1,0 +1,25 @@
+PayOutID	Number		
+PayInID	Number		
+PayOutAmt	Number		
+PayOutDate	DateTime		
+InvPayID	Number		
+PayOutType	Number		
+PayInStartDate	DateTime		
+PayInEndDate	DateTime		
+PayInAmt	Currency		
+ShopID	Number		
+PayOutAmtSum	Currency		
+BankChgAmt	Currency
+ShopCode	String	16
+PayInPeriod	DateTime
+PayInDate	DateTime
+PostCode	String	16	
+PostAddr	String	64	
+CustName	String	64
+ContactMan	String	32
+ContractID	Number			
+ContractCode	String	32
+BankCard	String	32
+ActPayAmt	Currency
+iAmt	Currency
+ShopPayInAmt	Currency

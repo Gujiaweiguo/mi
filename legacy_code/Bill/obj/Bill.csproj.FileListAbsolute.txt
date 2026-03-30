@@ -1,0 +1,11 @@
+E:\WORK\MI_NET\Code\Bill\bin\Debug\Bill.dll
+E:\WORK\MI_NET\Code\Bill\bin\Debug\Bill.pdb
+E:\WORK\MI_NET\Code\Bill\bin\Debug\Base.dll
+E:\WORK\MI_NET\Code\Bill\bin\Debug\WorkFlow.dll
+E:\WORK\MI_NET\Code\Bill\bin\Debug\BaseInfo.dll
+E:\WORK\MI_NET\Code\Bill\bin\Debug\Base.pdb
+E:\WORK\MI_NET\Code\Bill\bin\Debug\WorkFlow.pdb
+E:\WORK\MI_NET\Code\Bill\bin\Debug\BaseInfo.pdb
+E:\WORK\MI_NET\Code\Bill\obj\Debug\ResolveAssemblyReference.cache
+E:\WORK\MI_NET\Code\Bill\obj\Debug\Bill.dll
+E:\WORK\MI_NET\Code\Bill\obj\Debug\Bill.pdb

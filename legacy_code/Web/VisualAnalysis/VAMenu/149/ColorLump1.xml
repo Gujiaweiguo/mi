@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ToolBar>
+  <toolbar toolbarID="C101" desc="到期" rb="255" gb="0" bb="0" />
+  <toolbar toolbarID="C102" desc="正常" rb="0" gb="255" bb="0" />
+</ToolBar>

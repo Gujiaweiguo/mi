@@ -1,0 +1,10 @@
+LCustNm		String	30	asdf
+LCustId		String	30	asdf
+LCardID		String	50	asdf
+Updated 	DateTime	2008-1-1
+NetAmt		Number		1001
+BonusAmt	Number		1001
+Addr1		String	50	asdf
+Addr2		String	50	asdf
+OffPhone	String	50	asdf
+MobilPhone	String	50	asdf

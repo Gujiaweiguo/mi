@@ -1,0 +1,8 @@
+﻿<chart bgColor='ffffff' showBorder="0" baseFontSize='12'　palette='4' decimals='0' showvalues='1' bleSmartLabels='1' enableRotation='0' bgAlpha='40,100' bgRatio='0,100' bgAngle='270' showBorder='1' startingAngle='170' numberScaleValue='W' formatNumber='1' caption='09年06月一层业态销售占比分析'>
+            <set label='服装' value='3592' />
+            <set label='餐饮' value='7111' />
+            <set label='珠宝' value='12227' />
+            <set label='超市' value='7043' isSliced='1' />
+            <set label='电器' value='9208' isSliced='1' />
+             <set label='自营' value='1702' />
+</chart>

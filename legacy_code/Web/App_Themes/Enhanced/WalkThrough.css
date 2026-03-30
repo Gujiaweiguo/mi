@@ -1,0 +1,11 @@
+﻿#WalkThrough img
+{
+    margin-bottom: 2em;
+}
+
+#WalkThrough img.RunIt
+{
+    border: none;
+    margin-bottom: auto;
+    vertical-align: text-top;
+}

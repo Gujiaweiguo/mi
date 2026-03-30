@@ -1,0 +1,180 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{81BEAB3E-6A77-48FB-892C-A8DD3F66AA96}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Lease</RootNamespace>
+    <AssemblyName>Lease</AssemblyName>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WorkFlow, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\WorkFlow\bin\Debug\WorkFlow.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AdContract\AdBoard.cs" />
+    <Compile Include="AdContract\AdBoardManage.cs" />
+    <Compile Include="AdContract\AdBoardType.cs" />
+    <Compile Include="AdContract\AdContract.cs" />
+    <Compile Include="AdContract\AreaContract.cs" />
+    <Compile Include="AdContract\AreaManage.cs" />
+    <Compile Include="AdContract\AreaType.cs" />
+    <Compile Include="AdContract\ConAdBoard.cs" />
+    <Compile Include="AdContract\ConArea.cs" />
+    <Compile Include="AdContract\ConfirmAdBoard.cs" />
+    <Compile Include="AdContract\ConfirmAdBoardStop.cs" />
+    <Compile Include="AdContract\ConfirmArea.cs" />
+    <Compile Include="AdContract\ConfirmAreaBoardStop.cs" />
+    <Compile Include="Brand\BrandLevel.cs" />
+    <Compile Include="Brand\BrandOperateType.cs" />
+    <Compile Include="Brand\CustBrand.cs" />
+    <Compile Include="Brand\PotCustBrand.cs" />
+    <Compile Include="ChangeLease\ConfirmChangeLease.cs" />
+    <Compile Include="ChangeLease\ConFormulaHMod.cs" />
+    <Compile Include="ChangeLease\ConFormulaMMod.cs" />
+    <Compile Include="ChangeLease\ConFormulaMod.cs" />
+    <Compile Include="ChangeLease\ConFormulaPMod.cs" />
+    <Compile Include="ChangeLease\TotalArea.cs" />
+    <Compile Include="CheckApproveMessage.cs" />
+    <Compile Include="ConLease.cs" />
+    <Compile Include="ConOvertimeBillStop\ConTerminateBill.cs" />
+    <Compile Include="ConOvertimeBillStop\ContractTerminateBill.cs" />
+    <Compile Include="ConOvertimeBill\ConfirmConOvertimeBill.cs" />
+    <Compile Include="ConOvertimeBill\ConFormulaHOvtm.cs" />
+    <Compile Include="ConOvertimeBill\ConFormulaMOvtm.cs" />
+    <Compile Include="ConOvertimeBill\ConFormulaPOvtm.cs" />
+    <Compile Include="ConOvertimeBill\ConOvertimeBill.cs" />
+    <Compile Include="ConOvertimeBill\UpContract.cs" />
+    <Compile Include="ConShop\ConShopPO.cs" />
+    <Compile Include="ConShop\HdwType.cs" />
+    <Compile Include="ConShop\HdwTypePO.cs" />
+    <Compile Include="ConShop\ShopHdw.cs" />
+    <Compile Include="ConShop\ShopHdwPO.cs" />
+    <Compile Include="ConShop\TpUsr.cs" />
+    <Compile Include="ConShop\TransmitConShop.cs" />
+    <Compile Include="ConTerminateBill\ComfirmConTerminateBill.cs" />
+    <Compile Include="ConTerminateBill\ConTerminateBill.cs" />
+    <Compile Include="ConTerminateBill\UpdateContractStopDate.cs" />
+    <Compile Include="ContractMod\ConfirmContractMod.cs" />
+    <Compile Include="ContractMod\ConfirmUnionMod.cs" />
+    <Compile Include="ContractMod\ConLeaseMod.cs" />
+    <Compile Include="ContractMod\ConShopMod.cs" />
+    <Compile Include="ContractMod\ConShopUnitMod.cs" />
+    <Compile Include="ContractMod\ContractMod.cs" />
+    <Compile Include="ContractMod\ContractUpdate.cs" />
+    <Compile Include="ContractMod\ConUnionMod.cs" />
+    <Compile Include="Contract\ConfirmContract.cs" />
+    <Compile Include="Contract\ConLeaseCharge.cs" />
+    <Compile Include="Contract\ContractType.cs" />
+    <Compile Include="Contract\CustContract.cs" />
+    <Compile Include="Contract\SelectContract.cs" />
+    <Compile Include="Contract\SignUpContract.cs" />
+    <Compile Include="CustLicense\CustContact.cs" />
+    <Compile Include="CustLicense\CustLicenseInfo.cs" />
+    <Compile Include="CustLicense\CustomerInfo.cs" />
+    <Compile Include="CustLicense\CustomerQuery.cs" />
+    <Compile Include="CustLicense\CustOprInfo.cs" />
+    <Compile Include="Customer\Customer.cs" />
+    <Compile Include="Formula\ConFormulaH.cs" />
+    <Compile Include="ConShop\ConShop.cs" />
+    <Compile Include="ConShop\ConShopBrand.cs" />
+    <Compile Include="ConShop\ConShopUnit.cs" />
+    <Compile Include="Contract\Contract.cs" />
+    <Compile Include="Formula\ConFormulaM.cs" />
+    <Compile Include="Formula\ConFormulaP.cs" />
+    <Compile Include="Formula\CurExRate.cs" />
+    <Compile Include="Formula\CurrencyType.cs" />
+    <Compile Include="Formula\UnioFormulaH.cs" />
+    <Compile Include="InvoicePara\InvoiceAdPara.cs" />
+    <Compile Include="InvoicePara\InvoiceAreaPara.cs" />
+    <Compile Include="InvoicePara\InvoiceJVPara.cs" />
+    <Compile Include="InvoicePara\InvoiceJVParaPO.cs" />
+    <Compile Include="InvoicePara\InvoicePara.cs" />
+    <Compile Include="InvoicePara\InvoiceParaPO.cs" />
+    <Compile Include="PayIn\PayIn.cs" />
+    <Compile Include="PayIn\PayOut.cs" />
+    <Compile Include="PayIn\UpdatePayOutAmtSum.cs" />
+    <Compile Include="PayType.cs" />
+    <Compile Include="PotBargain\ChargeType.cs" />
+    <Compile Include="PotBargain\ChargeTypePO.cs" />
+    <Compile Include="PotCustLicense\CustPalaverQuery.cs" />
+    <Compile Include="PotCustLicense\PotCustContactInfo.cs" />
+    <Compile Include="PotCustLicense\PotCustLicenseInfo.cs" />
+    <Compile Include="PotCustLicense\PotCustomer.cs" />
+    <Compile Include="PotCustLicense\PotCustomerInfo.cs" />
+    <Compile Include="PotCustLicense\PotCustomerQuery.cs" />
+    <Compile Include="PotCustLicense\PotCustomerStatus.cs" />
+    <Compile Include="PotCustLicense\PotCustOprInfo.cs" />
+    <Compile Include="PotCust\ClientLevel.cs" />
+    <Compile Include="PotCust\CreditLevel.cs" />
+    <Compile Include="PotCust\CustType.cs" />
+    <Compile Include="PotCustLicense\CustPalaverInfo.cs" />
+    <Compile Include="PotCustLicense\PotShop.cs" />
+    <Compile Include="PotCust\ProcessType.cs" />
+    <Compile Include="PotCust\SourceType.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Subs\FinancialType.cs" />
+    <Compile Include="Subs\Subs.cs" />
+    <Compile Include="Union\ConUnion.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BaseInfo\BaseInfo.csproj">
+      <Project>{918E2379-CF34-4236-9CE0-490A205328C3}</Project>
+      <Name>BaseInfo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Base\Base.csproj">
+      <Project>{27AFE8D8-8D8A-40AB-9E47-296451D3243F}</Project>
+      <Name>Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RentableArea\RentableArea.csproj">
+      <Project>{F569C6E0-5BB0-4831-84CF-2AE2769B2CC9}</Project>
+      <Name>RentableArea</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

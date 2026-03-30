@@ -1,0 +1,58 @@
+.horz_nlsmenu {
+    z-index:1;
+}
+
+.horz_nlsitemcontainer {
+    height:15px;
+    background-image:url(img/mbarbg.gif);
+}
+.horz_nlsiconcell {width:16px;}
+.horz_nlssubmenucell{width:20px;}
+.horz_nlsitem {
+    font-family:verdana;
+    font-size:10pt;
+    color:#EEF0F1;
+    padding:2px 5px 2px 5px;
+}
+
+.horz_nlsitemcontainerover {
+    height:15px;
+    background-image:url(img/mbarbg.gif);
+}
+.horz_nlsiconcellover {width:16px;}
+.horz_nlssubmenucellover {width:20px;}
+.horz_nlsitemover {
+    font-family:verdana;
+    font-size:10pt;
+    color:#EEF0F1;
+    padding:2px 5px 2px 5px;
+}
+
+.horz_nlsitemdisable {
+    font-family:verdana;
+    font-size:10pt;
+    color:#999999;
+    padding:2px 5px 2px 5px;
+}
+
+.horz_nlsseparatorcontainer {padding-left:0px; width:1px;}
+.horz_nlsseparator {
+    height:15px;
+    width:1px;
+    background-image:url(img/mbarseparator.gif);
+    background-position:center center;
+    background-repeat:repeat-x;
+}
+
+.horz_mtopleft {height:0px; width:0px;}
+.horz_mtopright {height:0px; width:0px;}
+.horz_mbottomleft {width:0px; height:0px;}
+.horz_mbottomright {width:0px; height:0px;}
+.horz_mtop {height:0px;}
+.horz_mbottom {height:0px;}
+.horz_mleft {width:0px;}
+.horz_mright {width:0px;}
+
+.horz_horzshadow {}
+.horz_vertshadow {}
+.horz_cornshadow {}

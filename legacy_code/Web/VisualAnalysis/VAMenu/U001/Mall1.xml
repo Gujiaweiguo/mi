@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<MallInfor>
+  <mall locaID="101" cityID="104" mallID="110" desc="名辰商厦" adress="" Img="../../VAGraphic/Img/33-2.png" remark="" url="" />
+  <mall locaID="101" cityID="104" mallID="111" desc="富祥购物中心" adress="" Img="../../VAGraphic/Img/33-2.png" remark="" url="" />
+  <mall locaID="101" cityID="105" mallID="112" desc="广茂大厦" adress="" Img="../../VAGraphic/Img/33-2.png" remark="" url="" />
+  <mall locaID="101" cityID="105" mallID="113" desc="龙盛广场" adress="" Img="../../VAGraphic/Img/33-2.png" remark="" url="" />
+  <mall locaID="102" cityID="106" mallID="114" desc="光鑫购物中心" adress="" Img="../../VAGraphic/Img/33-2.png" remark="" url="" />
+  <mall locaID="102" cityID="106" mallID="115" desc="茂升购物广场" adress="" Img="../../VAGraphic/Img/33-2.png" remark="" url="" />
+  <mall locaID="102" cityID="107" mallID="116" desc="荣茂购物广场" adress="" Img="../../VAGraphic/Img/33-2.png" remark="" url="" />
+  <mall locaID="102" cityID="107" mallID="117" desc="华盛大厦" adress="" Img="../../VAGraphic/Img/33-2.png" remark="" url="" />
+  <mall locaID="103" cityID="108" mallID="119" desc="银沙购物中心" adress="" Img="../../VAGraphic/Img/33-2.png" remark="" url="" />
+  <mall locaID="103" cityID="108" mallID="120" desc="栈桥购物广场" adress="" Img="../../VAGraphic/Img/33-2.png" remark="" url="" />
+  <mall locaID="103" cityID="109" mallID="121" desc="中山友谊商厦" adress="" Img="../../VAGraphic/Img/33-2.png" remark="" url="" />
+  <mall locaID="103" cityID="109" mallID="122" desc="家福购物中心" adress="" Img="../../VAGraphic/Img/33-2.png" remark="" url="" />
+</MallInfor>

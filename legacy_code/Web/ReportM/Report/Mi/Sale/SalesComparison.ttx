@@ -1,0 +1,16 @@
+BuildingName	String	50	efqwerqwe
+FloorName	String	50	efqwerqwe
+TradeCode	String	50	efqwerqwe
+TradeName	String	50	efqwerqwe
+ShopCode	String	50	efqwerqwe
+ShopName	String	50	efqwerqwe
+BizDate	DateTime	2008-1-1
+aPaidAmt	Number		1234
+trNum	Number		1234
+maxBizDate	DateTime	2008-1-1
+dPaidAmt	Number		1234
+TransCnt	Number		1234
+DiffAmt	Number		1234
+DiffCnt	Number		1234
+pRate	Number		1234
+CntRate	Number		1234

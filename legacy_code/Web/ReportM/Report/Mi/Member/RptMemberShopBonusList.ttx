@@ -1,0 +1,11 @@
+ShopID	Number
+ShopCode	String	16
+ShopName	String	64
+receipt	Number
+TransID	String	20
+PaidAmt	Number
+receiptNm	Number
+NetAmt	Number
+custAmt	Number	
+BonusAmt	Number
+BizDate	DateTime

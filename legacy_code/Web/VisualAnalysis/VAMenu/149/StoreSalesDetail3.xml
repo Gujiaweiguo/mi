@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<graph xAxisName="" yAxisName="" subCaption="" baseFontSize="12" caption="项目2010年03月销售前5名" decimalPrecision="0" rotateNames="1" numDivLines="3" showValues="0" formatNumberScale="0" aboutMenuItemLabel="About Wincor Nixdorf" aboutMenuItemLink="n-http://www.wincor-nixdorf.com">
+  <categories>
+    <category name="耐克" />
+    <category name="亦谷" />
+    <category name="天津首饰厂" />
+    <category name="优之良品" />
+    <category name="赛诺健康睡觉馆" />
+  </categories>
+  <dataset seriesName="销售金额" color="AFD8F8" showValues="0">
+    <set value="585028.00" />
+    <set value="113403.00" />
+    <set value="94230.00" />
+    <set value="42330.80" />
+    <set value="16808.80" />
+  </dataset>
+  <dataset seriesName="应付租金" color="F6BD0F" showValues="0">
+    <set value="0.00" />
+    <set value="0.00" />
+    <set value="0.00" />
+    <set value="0.00" />
+    <set value="0.00" />
+  </dataset>
+</graph>

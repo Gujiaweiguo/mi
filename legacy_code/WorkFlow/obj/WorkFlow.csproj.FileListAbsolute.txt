@@ -1,0 +1,10 @@
+E:\WORK\MI_NET\Code\WorkFlow\bin\Debug\WorkFlow.dll
+E:\WORK\MI_NET\Code\WorkFlow\bin\Debug\WorkFlow.pdb
+E:\WORK\MI_NET\Code\WorkFlow\bin\Debug\Base.dll
+E:\WORK\MI_NET\Code\WorkFlow\bin\Debug\BaseInfo.dll
+E:\WORK\MI_NET\Code\WorkFlow\bin\Debug\BaseInfo.pdb
+E:\WORK\MI_NET\Code\WorkFlow\bin\Debug\Base.pdb
+E:\WORK\MI_NET\Code\WorkFlow\obj\Debug\ResolveAssemblyReference.cache
+E:\WORK\MI_NET\Code\WorkFlow\obj\Debug\WorkFlow.dll
+E:\WORK\MI_NET\Code\WorkFlow\obj\Debug\WorkFlow.pdb
+E:\WORK\MI_NET\Code\WorkFlow\bin\Debug\Interop.jmail.dll

@@ -1,0 +1,5 @@
+storeid	Number		
+storeshortname	String	50
+transTime	String	50	efqwerqwe
+PaidAmt	Number		1234
+TrNum	Number		1234

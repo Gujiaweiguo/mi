@@ -1,0 +1,6 @@
+period	DateTime
+invPayAmt	Currency
+YearInvPayAmt	Currency		
+monthamt	Currency	
+storename	String	50
+yearbudget	Currency	

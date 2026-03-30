@@ -1,0 +1,14 @@
+bin\Debug\RentableArea.dll
+bin\Debug\RentableArea.pdb
+bin\Debug\Base.dll
+bin\Debug\Base.pdb
+obj\Debug\ResolveAssemblyReference.cache
+obj\Debug\RentableArea.dll
+obj\Debug\RentableArea.pdb
+bin\Release\RentableArea.dll
+bin\Release\RentableArea.pdb
+bin\Release\Base.dll
+bin\Release\Base.pdb
+obj\Release\ResolveAssemblyReference.cache
+obj\Release\RentableArea.dll
+obj\Release\RentableArea.pdb

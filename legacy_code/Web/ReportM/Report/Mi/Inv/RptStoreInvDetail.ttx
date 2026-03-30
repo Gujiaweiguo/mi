@@ -1,0 +1,7 @@
+Period	DateTime
+ChargeTypeName	String	32
+PayAmt	Number
+PaidAmt	Number
+yearPayAmt	Number
+yearPaidAmt	Number
+storename	String	50

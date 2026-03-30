@@ -1,0 +1,11 @@
+﻿/*滚动条样式*/
+html
+{
+    SCROLLBAR-FACE-COLOR:#ffffff;   
+    SCROLLBAR-HIGHLIGHT-COLOR:#ffffff;   
+    SCROLLBAR-SHADOW-COLOR:#b4c1d1;   
+    SCROLLBAR-3DLIGHT-COLOR:#b4c1d1;   
+    SCROLLBAR-ARROW-COLOR:#b4c1d1;  
+    SCROLLBAR-TRACK-COLOR:#ffffff;   
+    SCROLLBAR-DARKSHADOW-COLOR:#ffffff; 
+}

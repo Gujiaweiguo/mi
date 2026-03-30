@@ -1,0 +1,18 @@
+ContractCode	String	32	
+CustName	String	64	
+ContractID	Number		
+ShopCode	String	16	
+ShopName	String	64
+PostCode	String	16
+PostAddr	String	256
+ContactMan	String	32
+CurTypeName	String	16
+InvID	Number
+InvPeriod	DateTime
+ChargeTypeName	String	32
+amt	Currency		
+actpayAmt	Currency		
+iAmt	Currency
+sAmt	Currency
+sactpayAmt	Currency
+siAmt	Currency

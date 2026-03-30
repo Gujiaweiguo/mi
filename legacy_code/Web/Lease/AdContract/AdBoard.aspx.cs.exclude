@@ -1,0 +1,326 @@
+﻿using System;
+using System.Data;
+using System.Configuration;
+using System.Collections;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+
+using Base.DB;
+using Base.Biz;
+using RentableArea;
+using BaseInfo.Dept;
+using Base;
+using Lease.AdContract;
+using Lease.Customer;
+using Base.Page;
+
+public partial class Lease_AdContract_AdBoard : BasePage
+{
+    public string baseInfo;
+    private static int OPR_ADD = 1;
+    private static int OPR_EDIT = 2;
+    public string emptyStr;
+    public string info;
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        //showtreenode("AdBoardStatus=" + AdBoard.BLANKOUT_STATUS_INVALID);
+        if (!IsPostBack)
+        {
+            //是否作废 IsBlankOut
+            int[] IsBlankOutStatus = AdBoard.GetBlankOutStatus();
+            for (int i = 0; i < IsBlankOutStatus.Length; i++)
+            {
+                cmbAdBoardStatus.Items.Add(new ListItem((String)GetGlobalResourceObject("Parameter",AdBoard.GetBlankOutStatusDesc(IsBlankOutStatus[i])), IsBlankOutStatus[i].ToString()));
+            }
+            textLock();
+            setControlStutas();
+            showtreenode("AdBoardStatus=" + AdBoard.BLANKOUT_STATUS_INVALID);
+            emptyStr = (String)GetGlobalResourceObject("BaseInfo", "Hidden_hidMessage");
+            btnSave.Attributes.Add("onclick", "return allTextBoxValidator(form1)");
+            baseInfo = (String)GetGlobalResourceObject("BaseInfo", "Ad_lblFastAdBoardDefine");
+        }
+    }
+
+    private void setControlStutas()
+    {
+        btnAdd.Enabled = true;
+        btnEdit.Enabled = false;
+        btnCancel.Enabled = false;
+        btnSave.Enabled = false;
+    }
+
+    protected void btnEdit_Click(object sender, EventArgs e)
+    {
+        txtAdBoardCode.BackColor = System.Drawing.Color.White;
+        txtAdBoardName.BackColor = System.Drawing.Color.White;
+        cmbAdBoardStatus.BackColor = System.Drawing.Color.White;
+        txtAdContractCode.BackColor = System.Drawing.Color.FromName("#F5F5F4");
+        txtCustName.BackColor = System.Drawing.Color.FromName("#F5F5F4");
+        txtEndDate.BackColor = System.Drawing.Color.FromName("#F5F5F4");
+        txtNote.BackColor = System.Drawing.Color.FromName("#F5F5F4");
+
+        txtAdBoardCode.ReadOnly = false;
+
+        txtAdBoardName.ReadOnly = false;
+
+        cmbAdBoardStatus.Enabled = true;
+        btnEdit.Enabled = false;
+        btnCancel.Enabled = true;
+        btnSave.Enabled = true;
+        Session["Flag"] = OPR_EDIT;
+        showtreenode("AdBoardStatus=" + AdBoard.BLANKOUT_STATUS_INVALID);
+        ScriptManager.RegisterClientScriptBlock(UpdatePanel1, this.GetType(), "treeview", "treearray()", true);
+    }
+    protected void btnSave_Click(object sender, EventArgs e)
+    {
+        BaseBO baseBO = new BaseBO();
+        AdBoard adBoard = new AdBoard();
+        int oprFlag = Convert.ToInt32(Session["Flag"]);
+        if (Convert.ToString(oprFlag) == "")
+        {
+            return;
+        }
+        baseBO.WhereClause = "";
+        baseBO.WhereClause = "AdBoardCode = '" + txtAdBoardCode.Text.Trim()+"'";
+        Resultset rs = baseBO.Query(new AdBoard());
+        if (rs.Count == 0)
+        {
+            if (OPR_ADD == oprFlag)
+            {
+                adBoard.AdBoardID = BaseApp.GetAdBoardID();
+                adBoard.AdBoardCode = txtAdBoardCode.Text.Trim();
+                adBoard.AdBoardName = txtAdBoardName.Text.Trim();
+                adBoard.AdBoardStatus = Convert.ToInt32(cmbAdBoardStatus.SelectedValue.ToString());
+                if (baseBO.Insert(adBoard) != -1)
+                {
+                    /*提示添加成功信息*/
+                }
+            }
+            else if (OPR_EDIT == oprFlag)
+            {
+                adBoard.AdBoardCode = txtAdBoardCode.Text.Trim();
+                adBoard.AdBoardName = txtAdBoardName.Text.Trim();
+                adBoard.AdBoardStatus = Convert.ToInt32(cmbAdBoardStatus.SelectedValue.ToString());
+                baseBO.WhereClause = "AdBoardID=" + Session["AdBoardID"];
+                if (baseBO.Update(adBoard) != -1)
+                {
+                    /*提示添加成功信息*/
+                }
+            }
+        }
+        else
+        {
+            info = (String)GetGlobalResourceObject("BaseInfo", "Prompt_Exist");
+            ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), "", "alert('<%=info%>')", true);
+        }
+        textLock();
+        setControlStutas();
+        showtreenode("AdBoardStatus=" + AdBoard.BLANKOUT_STATUS_INVALID);
+        ScriptManager.RegisterClientScriptBlock(UpdatePanel1, this.GetType(), "treeview", "treearray()", true);
+    }
+    protected void btnAdd_Click(object sender, EventArgs e)
+    {
+
+        txtAdBoardCode.Text = "";
+        txtAdBoardCode.ReadOnly = false;
+
+        txtAdBoardName.Text = "";
+        txtAdBoardName.ReadOnly = false;
+
+        cmbAdBoardStatus.Enabled = true;
+        cmbAdBoardStatus.BackColor = System.Drawing.Color.White;
+        btnAdd.Enabled = false;
+        btnCancel.Enabled = true;
+        btnSave.Enabled = true;
+        txtAdContractCode.BackColor = System.Drawing.Color.FromName("#F5F5F4");
+        txtCustName.BackColor = System.Drawing.Color.FromName("#F5F5F4");
+        txtEndDate.BackColor = System.Drawing.Color.FromName("#F5F5F4");
+        Session["Flag"] = OPR_ADD;
+        showtreenode("AdBoardStatus=" + AdBoard.BLANKOUT_STATUS_INVALID);
+        ScriptManager.RegisterClientScriptBlock(UpdatePanel1, this.GetType(), "treeview", "treearray()", true);
+    }
+    protected void treeClick_Click(object sender, EventArgs e)
+    {
+        BaseBO baseBO = new BaseBO();
+        AdBoard adBoard = new AdBoard();
+        
+        if (rbtnNoLeaseOut.Checked)
+        {
+            Session["AdBoardID"] = deptid.Value;
+
+            baseBO.WhereClause = "AdBoardID=" + Session["AdBoardID"];
+            Resultset rs = baseBO.Query(adBoard);
+            if (rs.Count == 1)
+            {
+                adBoard = rs.Dequeue() as AdBoard;
+                txtAdBoardCode.Text = adBoard.AdBoardCode;
+                txtAdBoardName.Text = adBoard.AdBoardName;
+                cmbAdBoardStatus.SelectedValue = adBoard.AdBoardStatus.ToString();
+
+                //查询已出租的合同信息
+                if (adBoard.AdBoardStatus.ToString() == AdBoard.BLANKOUT_STATUS_LEASEOUT.ToString())
+                {
+                    baseBO.WhereClause = "";
+                    baseBO.WhereClause = "AdBoardID=" + Session["AdBoardID"];
+                    Resultset LeaseRs = baseBO.Query(new AdContract());
+                    if (rs.Count == 1)
+                    {
+                        AdContract adContract = rs.Dequeue() as AdContract;
+
+                        //查询客户信息
+                        baseBO.WhereClause = "";
+                        baseBO.WhereClause = "CustID = " + adContract.CustID;
+                        Resultset CustRs = baseBO.Query(new Customer());
+                        if(CustRs.Count == 1)
+                        {
+                            Customer customer = CustRs.Dequeue() as Customer;
+                            txtCustName.Text = customer.CustName;
+                        }
+                        txtAdContractCode.Text = adContract.AdContractCode;
+                        txtEndDate.Text = Convert.ToDateTime(adContract.EndDate).ToString("yyyy-MM-dd");
+                        txtNote.Text = adContract.Note;
+                    }
+                }
+            }
+        }
+
+        txtAdBoardCode.BackColor = System.Drawing.Color.FromName("#F5F5F4");
+        txtAdBoardName.BackColor = System.Drawing.Color.FromName("#F5F5F4");
+        txtAdContractCode.BackColor = System.Drawing.Color.FromName("#F5F5F4");
+        txtCustName.BackColor = System.Drawing.Color.FromName("#F5F5F4");
+        txtEndDate.BackColor = System.Drawing.Color.FromName("#F5F5F4");
+        txtNote.BackColor = System.Drawing.Color.FromName("#F5F5F4");
+        cmbAdBoardStatus.BackColor = System.Drawing.Color.FromName("#F5F5F4");
+        btnAdd.Enabled = false;
+        btnEdit.Enabled = true;
+        btnCancel.Enabled = true;
+        btnSave.Enabled = false;
+
+        ScriptManager.RegisterClientScriptBlock(UpdatePanel1, this.GetType(), "treeview", "treearray()", true);
+    }
+    protected void rbtnNoLeaseOut_CheckedChanged(object sender, EventArgs e)
+    {
+        //textlock();
+        btnAdd.Enabled = true;
+        btnEdit.Enabled = true;
+        btnSave.Enabled = true;
+        selectdeptid.Value = "";
+        showtreenode("AdBoardStatus=" + AdBoard.BLANKOUT_STATUS_INVALID);
+        ScriptManager.RegisterClientScriptBlock(UpdatePanel1, this.GetType(), "treeview", "treearray()", true);
+    }
+    protected void rbtnLeaseOut_CheckedChanged(object sender, EventArgs e)
+    {
+        textLock();
+        btnAdd.Enabled = true;
+        btnEdit.Enabled = true;
+        btnSave.Enabled = true;
+        selectdeptid.Value = "";
+        showtreenode("AdBoardStatus=" + AdBoard.BLANKOUT_STATUS_LEASEOUT);
+        ScriptManager.RegisterClientScriptBlock(UpdatePanel1, this.GetType(), "treeview", "treearray()", true);
+    }
+    protected void rbtnBlankOut_CheckedChanged(object sender, EventArgs e)
+    {
+        textLock();
+        btnAdd.Enabled = true;
+        btnEdit.Enabled = true;
+        btnSave.Enabled = true;
+        selectdeptid.Value = "";
+        showtreenode("AdBoardStatus=" + AdBoard.BLANKOUT_STATUS_VALID);
+        ScriptManager.RegisterClientScriptBlock(UpdatePanel1, this.GetType(), "treeview", "treearray()", true);
+    }
+    private void showtreenode(string adBoardStatus)
+    {
+        string jsdept = "";
+        BaseBO baseBO = new BaseBO();
+        Resultset rs = new Resultset();
+        Dept dept = new Dept();
+
+        baseBO.WhereClause = "DeptType=" + Dept.DEPT_TYPE_MALL;
+
+        rs = baseBO.Query(dept);
+
+        if (rs.Count == 1)
+        {
+            dept = rs.Dequeue() as Dept;
+            jsdept = dept.DeptID + "|" + "0" + "|" + dept.DeptName + "^";
+        }
+        else
+        {
+            return;
+        }
+        baseBO.WhereClause = adBoardStatus;
+        rs = baseBO.Query(new AdBoard());
+        if (rs.Count > 0)
+        {
+            foreach (AdBoard adBoard in rs)
+            {
+                jsdept += adBoard.AdBoardID + "|" + dept.DeptID + "|" + adBoard.AdBoardName +  "^";
+            }
+        }
+        depttxt.Value = jsdept;
+    }
+    private void textLock()
+    {
+        txtAdBoardCode.Text = "";
+        txtAdBoardCode.ReadOnly = true;
+        txtAdBoardCode.BackColor = System.Drawing.Color.FromName("#F5F5F4");
+
+        txtAdBoardName.Text="";
+        txtAdBoardName.ReadOnly=true;
+        txtAdBoardName.BackColor = System.Drawing.Color.FromName("#F5F5F4");
+
+        txtAdContractCode.Text = "";
+        txtAdContractCode.ReadOnly=true;
+        txtAdContractCode.BackColor = System.Drawing.Color.FromName("#F5F5F4");
+
+        txtCustName.Text="";
+        txtCustName.ReadOnly=true;
+        txtCustName.BackColor = System.Drawing.Color.FromName("#F5F5F4");
+
+        txtEndDate.Text="";
+        txtEndDate.ReadOnly=true;
+        txtEndDate.BackColor = System.Drawing.Color.FromName("#F5F5F4");
+
+        txtNote.Text="";
+        txtNote.ReadOnly=true;
+        txtNote.BackColor = System.Drawing.Color.FromName("#F5F5F4");
+
+        cmbAdBoardStatus.Enabled = false;
+        cmbAdBoardStatus.BackColor = System.Drawing.Color.FromName("#F5F5F4");
+    }
+
+    private void textOpen()
+    {
+        txtAdBoardCode.Text = "";
+        txtAdBoardCode.ReadOnly =false;
+
+        txtAdBoardName.Text="";
+        txtAdBoardName.ReadOnly=false;
+
+        txtAdContractCode.Text = "";
+        txtAdContractCode.ReadOnly=false;
+
+        txtCustName.Text="";
+        txtCustName.ReadOnly = false;
+
+        txtEndDate.Text="";
+        txtEndDate.ReadOnly = false;
+
+        txtNote.Text="";
+        txtNote.ReadOnly = false;
+
+        cmbAdBoardStatus.Enabled = true;
+    }
+    protected void btnCancel_Click(object sender, EventArgs e)
+    {
+        textLock();
+        setControlStutas();
+        cmbAdBoardStatus.BackColor = System.Drawing.Color.FromName("#F5F5F4");
+        showtreenode("AdBoardStatus=" + AdBoard.BLANKOUT_STATUS_INVALID);
+        ScriptManager.RegisterClientScriptBlock(UpdatePanel1, this.GetType(), "treeview", "treearray()", true);
+    }
+}

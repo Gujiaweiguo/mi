@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FloorMenu>
+	<Menu ID="1">
+		<MenuDesc>楼层销售分析</MenuDesc>
+		<MenuUrl>FusionCharts/test.html?funcid=358</MenuUrl>
+	</Menu>
+	<Menu ID="2">
+		<MenuDesc>楼层业态评效分析</MenuDesc>
+		<MenuUrl>FusionCharts/test.html?funcid=358</MenuUrl>
+	</Menu>
+	<Menu ID="3">
+		<MenuDesc>楼层费用分析</MenuDesc>
+		<MenuUrl>FusionCharts/test.html?funcid=358</MenuUrl>
+	</Menu>
+	<Menu ID="4">
+		<MenuDesc>楼层出租情况分析</MenuDesc>
+		<MenuUrl>FusionCharts/test.html?funcid=358</MenuUrl>
+	</Menu>
+</FloorMenu>

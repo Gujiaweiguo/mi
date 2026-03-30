@@ -1,0 +1,6 @@
+orderid	Number
+deptname	String	50
+period	DateTime
+tradename	String	50
+invpay	Number
+paidamt	Number

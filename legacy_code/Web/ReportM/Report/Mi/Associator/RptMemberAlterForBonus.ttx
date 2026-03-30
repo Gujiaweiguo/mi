@@ -1,0 +1,12 @@
+MembID	Number		
+MembCardID	String	16	
+Salutation	String	6	
+MemberName	String	30	
+MobilPhone	String	18	
+Email	String	40	
+ShopCode	String	16	
+ShopName	String	64	
+ReceiptID	Number		
+TransDT	Date		
+NetAmt	Currency		
+BonusAmt	Currency		

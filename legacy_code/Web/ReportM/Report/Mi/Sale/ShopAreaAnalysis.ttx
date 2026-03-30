@@ -1,0 +1,10 @@
+storeid	Number		
+storeshortname	String	50
+ShopCode	String	50	efqwerqwe
+ShopName	String	50	efqwerqwe
+AreaName	String	50	efqwerqwe
+TradeCode	String	50	efqwerqwe
+TradeName	String	50	efqwerqwe
+RentArea	Number		1234
+PaidAmt	Number		1234
+AvgArea	Number		1234

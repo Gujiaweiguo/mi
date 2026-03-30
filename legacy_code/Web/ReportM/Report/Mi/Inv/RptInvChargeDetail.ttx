@@ -1,0 +1,24 @@
+ContractCode	String	32	
+CustName	String	64	
+ContractID	Number		
+SubsID	Number		
+SubsName	String	64	
+StoreID	Number		
+StoreName	String	32	
+BuildingID	Number		
+BuildingName	String	128	
+FloorID	Number		
+FloorName	String	64	
+ShopID	Number		
+ShopCode	String	16	
+ShopName	String	64	
+ConStartDate	Date		
+ConEndDate	Date		
+ContractStatus	Number		
+CurTypeName	String	16	
+InvID	Number		
+InvPeriod	Date		
+ChargeTypeName	String	32	
+sAmt	Currency		
+sactpayAmt	Currency		
+sactnotpayAmt	Currency		

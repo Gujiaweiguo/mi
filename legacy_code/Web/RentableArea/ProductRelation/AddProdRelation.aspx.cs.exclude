@@ -1,0 +1,329 @@
+﻿using System;
+using System.Data;
+using System.Configuration;
+using System.Collections;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+
+using RentableArea;
+using Base.Biz;
+using Base.DB;
+using Base;
+using Base.Page;
+using BaseInfo.Dept;
+
+public partial class RentableArea_ProductRelation_AddProdRelation : BasePage
+{
+    public string selectProdLevel;
+    public string baseInfo;
+    private static int OPR_ADD = 1;
+    private static int OPR_EDIT = 2;
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!IsPostBack)
+        {
+            baseInfo = (String)GetGlobalResourceObject("BaseInfo", "AddProdRelation_lblTitle");
+            ShowTree();
+            selectProdLevel = (String)GetGlobalResourceObject("BaseInfo", "Prompt_LeaseTradeID");
+
+            int[] status = ProdRelation.GetProdRelationStatus();
+            for (int i = 0; i < status.Length; i++)
+            {
+                cmbProdPStatus.Items.Add(new ListItem((String)GetGlobalResourceObject("Parameter", ProdRelation.GetProdRelationStatusDesc(status[i])), status[i].ToString()));
+            }
+        }
+    }
+    protected void btnAdd_Click(object sender, EventArgs e)
+    {
+        btnEdit.Enabled = false;
+        btnSave.Enabled = true;
+        btnAdd.Enabled = false;
+
+        txtProdPCode.ReadOnly = false;
+        txtProdPName.ReadOnly = false;
+        cmbProdPStatus.Enabled = true;
+
+        ClearText();
+
+        ViewState["Flag"] = OPR_ADD;
+
+        ScriptManager.RegisterClientScriptBlock(UpdatePanel1, this.GetType(), "treeview", "treearray()", true);
+    }
+
+    protected void treeClick_Click(object sender, EventArgs e)
+    {
+
+        BaseBO baseBO = new BaseBO();
+        Resultset rs = new Resultset();
+        ProdRelation prodRelation = new ProdRelation();
+
+        string prodID = deptid.Value;
+     
+        if (prodID.Length == 3 || prodID.Length == 6)
+        {
+            ViewState["Level"] = 0;
+            if (prodID.Length == 3)
+            {
+                baseBO.WhereClause = "ProdID=" + prodID;
+                ViewState["ProdID"] = prodID;
+            }
+            if (prodID.Length == 6)
+            {
+                baseBO.WhereClause = "ProdID=" + prodID.Substring(prodID.Length - 3);
+                ViewState["ProdID"] = prodID.Substring(prodID.Length - 3);
+            }
+            rs = baseBO.Query(prodRelation);
+            if (rs.Count == 1)
+            {
+                prodRelation = rs.Dequeue() as ProdRelation;
+                txtProdPCode.Text = prodRelation.ProdCode;
+                txtProdPName.Text = prodRelation.ProdName;
+                cmbProdPStatus.SelectedValue = prodRelation.ProdStatus.ToString();
+                ViewState["Level"] = prodRelation.ProdLevel.ToString();
+            }
+        }
+
+        if (Convert.ToInt32(prodID) != 100)
+        {
+            IBtnDel.Enabled = true;
+        }
+        else
+        {
+            IBtnDel.Enabled = false;
+        }
+
+        btnEdit.Enabled = true;
+        btnAdd.Enabled = true;
+        btnSave.Enabled = false;
+        IBtnDel.Enabled = true;
+
+        txtProdPCode.ReadOnly = true;
+        txtProdPName.ReadOnly = true;
+        cmbProdPStatus.Enabled = false;
+
+        ScriptManager.RegisterClientScriptBlock(UpdatePanel1, this.GetType(), "treeview", "treearray()", true);
+    }
+
+    protected void btnEdit_Click(object sender, EventArgs e)
+    {
+        btnEdit.Enabled = false;
+        btnSave.Enabled = true;
+        btnAdd.Enabled = false;
+
+        txtProdPCode.ReadOnly = false;
+        txtProdPName.ReadOnly = false;
+        cmbProdPStatus.Enabled = true;
+
+        ViewState["Flag"] = OPR_EDIT;
+
+        ScriptManager.RegisterClientScriptBlock(UpdatePanel1, this.GetType(), "treeview", "treearray()", true);
+    }
+    
+    protected void btnSave_Click(object sender, EventArgs e)
+    {
+        ProdRelation prodRelation = new ProdRelation();
+        BaseBO baseBO = new BaseBO();
+
+        if (Convert.ToInt32(ViewState["Flag"]) == OPR_ADD)
+        {
+            if (int.Parse(ViewState["Level"].ToString()) == ProdRelation.PRODLEVEL_STATUS_FOUR)
+            {
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "message", "parent.document.all.txtWroMessage.value =  '" + (String)GetGlobalResourceObject("BaseInfo", "PublicMes_NotNode") + "'", true);
+            }
+            else if (ViewState["ProdID"].ToString().Length == 1)
+            {
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "message", "parent.document.all.txtWroMessage.value =  '" + (String)GetGlobalResourceObject("BaseInfo", "PublicMes_NotNode") + "'", true);
+            }
+            else if (ViewState["ProdID"].ToString().Length == 3)
+            {
+                if (Convert.ToInt32(ViewState["ProdID"]) == 100)
+                {
+                    prodRelation.ProdID = BaseApp.GetProdID();
+                    prodRelation.ProdCode = txtProdPCode.Text.Trim();
+                    prodRelation.ProdName = txtProdPName.Text.Trim();
+                    prodRelation.PProdID = 100;
+                    prodRelation.ProdLevel = ProdRelation.PRODLEVEL_STATUS_ONE;
+                    prodRelation.ProdStatus = Convert.ToInt32(cmbProdPStatus.SelectedValue);
+                }
+                else
+                {
+                    prodRelation.ProdID = BaseApp.GetProdID();
+                    prodRelation.ProdCode = txtProdPCode.Text.Trim();
+                    prodRelation.ProdName = txtProdPName.Text.Trim();
+                    prodRelation.PProdID = Convert.ToInt32(ViewState["ProdID"]);
+                    prodRelation.ProdLevel = int.Parse(ViewState["Level"].ToString()) + ProdRelation.PRODLEVEL_STATUS_ONE;
+                    prodRelation.ProdStatus = Convert.ToInt32(cmbProdPStatus.SelectedValue);
+                }
+
+                if (baseBO.Insert(prodRelation) == -1)
+                {
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "message", "parent.document.all.txtWroMessage.value =  '" + (String)GetGlobalResourceObject("BaseInfo", "Prompt_WorkLose") + "'", true);
+                }
+            }
+        }
+        else if(Convert.ToInt32(ViewState["Flag"]) == OPR_EDIT)
+        {
+            if (ViewState["ProdID"].ToString().Length == 1)
+            {
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "message", "parent.document.all.txtWroMessage.value =  '" + (String)GetGlobalResourceObject("BaseInfo", "PublicMes_NotNode") + "'", true);
+            }
+
+            if (ViewState["ProdID"].ToString().Length == 6)
+            {
+                ViewState["ProdID"] = ViewState["ProdID"].ToString().Substring(3, 3);
+            }
+
+            if (ViewState["ProdID"].ToString().Length == 3)
+            {
+                prodRelation.ProdCode = txtProdPCode.Text.Trim();
+                prodRelation.ProdName = txtProdPName.Text.Trim();
+                prodRelation.ProdStatus = Convert.ToInt32(cmbProdPStatus.SelectedValue);
+
+                baseBO.WhereClause = "ProdID = " + Convert.ToInt32(ViewState["ProdID"]);
+                if (baseBO.Update(prodRelation) == -1)
+                {
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "message", "parent.document.all.txtWroMessage.value =  '" + (String)GetGlobalResourceObject("BaseInfo", "Prompt_WorkLose") + "'", true);
+                }
+            }
+        }
+        ShowTree();
+        ClearText();
+
+        ScriptManager.RegisterClientScriptBlock(UpdatePanel1, this.GetType(), "treeview", "treearray()", true);
+    }
+
+    private void ShowTree()
+    {
+        BaseBO baseBO = new BaseBO();
+        string jsdept = "";
+
+        baseBO.WhereClause = "DeptType=" + Dept.DEPT_TYPE_MALL;
+
+        Resultset rs = baseBO.Query(new Dept());
+
+        if (rs.Count == 1)
+        {
+            Dept dept = rs.Dequeue() as Dept;
+            jsdept = dept.DeptID + "|" + "0" + "|" + dept.DeptName + "^";
+        }
+        else
+        {
+            return;
+        }
+
+        baseBO.WhereClause = "ProdStatus = " + ProdRelation.PRODRELATION_STATUS_VALID;
+        baseBO.OrderBy = "ProdLevel,ProdName";
+
+        rs = baseBO.Query(new ProdRelation());
+
+        if (rs.Count > 0)
+        {
+            //jsdept = "100" + "|" + "0" + "|" + "Product" + "^";
+            foreach (ProdRelation prodRelation in rs)
+            {
+                if (prodRelation.ProdLevel == 1)
+                {
+                    jsdept += prodRelation.ProdID + "|" + "100" + "|" + prodRelation.ProdName + "^";
+                }
+                else if (prodRelation.ProdLevel == 2)
+                {
+                    jsdept += prodRelation.PProdID.ToString() + prodRelation.ProdID.ToString() + "|" + prodRelation.PProdID.ToString() + "|" + prodRelation.ProdName + "^";
+                }
+                else if (prodRelation.ProdLevel == 3)
+                {
+                    BaseBO basebo = new BaseBO();
+                    basebo.WhereClause = "ProdID = " + prodRelation.PProdID.ToString() + " AND ProdLevel = 2";
+                    Resultset curTypeLevel = basebo.Query(new ProdRelation());
+                    ProdRelation curType = curTypeLevel.Dequeue() as ProdRelation;
+
+                    jsdept += prodRelation.PProdID.ToString() + prodRelation.ProdID.ToString() + "|" + curType.PProdID.ToString() + prodRelation.PProdID.ToString() + "|" + prodRelation.ProdName + "^";
+                }
+                else if (prodRelation.ProdLevel == 4)
+                {
+                    BaseBO basebo = new BaseBO();
+                    basebo.WhereClause = "ProdID = " + prodRelation.PProdID.ToString() + " AND ProdLevel = 3";
+                    Resultset curTypeLevel3 = basebo.Query(new ProdRelation());
+                    ProdRelation curType3 = curTypeLevel3.Dequeue() as ProdRelation;
+
+                    jsdept += prodRelation.PProdID.ToString() + prodRelation.ProdID.ToString() + "|" + curType3.PProdID.ToString() + prodRelation.PProdID.ToString() + "|" + prodRelation.ProdName + "^";
+                }
+            }    
+        }
+        depttxt.Value = jsdept;
+    }
+
+    private void ClearText()
+    {
+        txtProdPCode.Text = "";
+        txtProdPName.Text = "";
+        cmbProdPStatus.SelectedIndex = 0;
+    }
+
+    private void DisableButton()
+    {
+        btnEdit.Enabled = false;
+        btnSave.Enabled = false;
+        btnAdd.Enabled = false;
+        IBtnDel.Enabled = false;
+
+        txtProdPCode.ReadOnly = true;
+        txtProdPName.ReadOnly = true;
+        cmbProdPStatus.Enabled = false;
+    }
+
+    protected void IBtnDel_Click(object sender, EventArgs e)
+    {
+        ProdRelation prodRelation = new ProdRelation();
+        BaseBO baseBO = new BaseBO();
+
+        if (ViewState["ProdID"].ToString().Length == 1)
+        {
+            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "message", "parent.document.all.txtWroMessage.value =  '" + (String)GetGlobalResourceObject("BaseInfo", "PublicMes_NotNode") + "'", true);
+        }
+
+        if (ViewState["ProdID"].ToString().Length == 6)
+        {
+            ViewState["ProdID"] = ViewState["ProdID"].ToString().Substring(3, 3);
+        }
+
+        if (ViewState["ProdID"].ToString().Length == 3)
+        {
+                BaseBO basebo = new BaseBO();
+
+                string strWhere = ViewState["ProdID"].ToString();
+                basebo.WhereClause = "PProdID = " + Convert.ToInt32(ViewState["ProdID"]);
+                Resultset rs = basebo.Query(new ProdRelation());
+
+                foreach (ProdRelation curType in rs)
+                {
+                    strWhere += "," + curType.ProdID.ToString();
+                    basebo.WhereClause = "PProdID = " + Convert.ToInt32(curType.ProdID.ToString());
+                    Resultset rs2 = basebo.Query(new ProdRelation());
+                    foreach (ProdRelation curType2 in rs2)
+                    {
+                        strWhere += "," + curType2.ProdID.ToString();
+                        basebo.WhereClause = "PProdID = " + Convert.ToInt32(curType2.ProdID.ToString());
+                        Resultset rs3 = basebo.Query(new ProdRelation());
+                        foreach (ProdRelation curType3 in rs3)
+                        {
+                            strWhere += "," + curType3.ProdID.ToString();
+                        }
+                    }
+                }
+                baseBO.WhereClause = "ProdID in (" + strWhere.ToString() + ")";
+                if (baseBO.Delete(prodRelation) == -1)
+                {
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "message", "parent.document.all.txtWroMessage.value =  '" + (String)GetGlobalResourceObject("BaseInfo", "Prompt_WorkLose") + "'", true);
+                }
+                ShowTree();
+        }
+        selectdeptid.Value = "";
+        ClearText();
+        DisableButton();
+        ScriptManager.RegisterClientScriptBlock(UpdatePanel1, this.GetType(), "treeview", "treearray()", true);
+    }
+}

@@ -1,0 +1,5 @@
+AccountNumber	String	32
+AccountName	String	128
+debitAmount	Number
+creditAmount	Number
+AccountDesc	String	128

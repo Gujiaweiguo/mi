@@ -1,0 +1,76 @@
+﻿.OverRow
+{
+    background-color: #A1ADF1;
+    text-align: center;
+}
+.SelectedRow
+{
+    background-color: #D1DDF1;
+    color: #333333;
+    font-weight: bold;
+    text-align: center;
+}
+.Row
+{
+    background-color: #EFF3FB;
+    text-align: center;
+}
+.AlternatingRow
+{
+    background-color: White;
+    text-align: center;
+}
+.HeaderRow
+{
+    background-color: #507CD1;
+    color: White;
+    font-weight: bold;
+    text-align: center;
+}
+.HeaderRow a
+{
+    color: #fff;
+}
+.PagerRow
+{
+    background-color: White; height: 26px;
+}
+.PagerRow a
+{
+	color:#000; text-decoration:none; background:#fff; border:solid 1px #fff; 
+}
+.PagerRow a:hover
+{
+	color:#fff; text-decoration:none; background:#88e; border:solid 1px #66f; 
+}
+.PagerRow span
+{
+    color:#fff; background:#88e; border:solid 1px #66f; 
+}
+
+.RightMenu
+{
+    border-right: 2px outset;
+    border-top: 2px outset;
+    border-left: 2px outset;
+    border-bottom: 2px outset;
+    background-color: buttonface;
+}
+.RightMenu hr
+{
+    width: 100px;
+}
+.RightMenu ul
+{
+    list-style: none; margin:0; padding:0;
+}
+.RightMenu ul li
+{
+    vertical-align: bottom;
+}
+.RightMenu A { color: MenuText; text-decoration: none; display: block; width: 100px; text-align:center; line-height:20px } 
+.RightMenu A:link { color: MenuText; text-decoration: none; } 
+.RightMenu A:active { color: MenuText; text-decoration: none; } 
+.RightMenu A:visited { color: MenuText; text-decoration: none; } 
+.RightMenu A:hover { color: HighlightText; background-color: Highlight; } 
+

@@ -1,0 +1,407 @@
+﻿using System;
+using System.Data;
+using System.Configuration;
+using System.Collections;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+using Lease.PotCustLicense;
+using Lease.Contract;
+using Base.Biz;
+using Base.DB;
+using RentableArea;
+using Base;
+using WorkFlow.Uiltil;
+using WorkFlow.WrkFlw;
+using WorkFlow;
+using BaseInfo.User;
+
+public partial class Lease_PotShop_PotShop : System.Web.UI.Page
+{
+    private int numCount = 0;
+    private static int SELECTED = 999;
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        Resultset rs = new Resultset();
+        BaseBO baseBO = new BaseBO();
+        PotShop potShop = new PotShop();
+
+        btnAuditing.Attributes.Add("onclick", "refurbishTree()");
+        
+        btnAdd.Attributes.Add("onclick", "return CustomrtBoxValidator(form1)");
+        btnSave.Attributes.Add("onclick", "return PalaverBoxValidator(form1)");
+        btnSave.Attributes.Add("OnMouseOver", "this.style.background='url(../../App_Themes/CSS/BtnImage/BtnSaveing.gif) no-repeat left top';this.style.fontWeight='bold';");
+        btnSave.Attributes.Add("OnMouseOut", "this.style.background='url(../../App_Themes/CSS/BtnImage/BtnSave.gif) no-repeat left top';this.style.fontWeight='normal';");
+        btnAdd.Attributes.Add("OnMouseOver", "this.style.background='url(../../App_Themes/CSS/BtnImage/BtnSaveing.gif) no-repeat left top';this.style.fontWeight='bold';");
+        btnAdd.Attributes.Add("OnMouseOut", "this.style.background='url(../../App_Themes/CSS/BtnImage/BtnSave.gif) no-repeat left top';this.style.fontWeight='normal';");
+        btnCancel.Attributes.Add("OnMouseOver", "this.style.background='url(../../App_Themes/CSS/BtnImage/BtnCanceling.gif) no-repeat left top';this.style.fontWeight='bold';");
+        btnCancel.Attributes.Add("OnMouseOut", "this.style.background='url(../../App_Themes/CSS/BtnImage/BtnCancel.gif) no-repeat left top';this.style.fontWeight='normal';");
+        btnAuditing.Attributes.Add("OnMouseOver", "this.style.background='url(../../App_Themes/CSS/BtnImage/BtnSaveing.gif) no-repeat left top';this.style.fontWeight='bold';");
+        btnAuditing.Attributes.Add("OnMouseOut", "this.style.background='url(../../App_Themes/CSS/BtnImage/BtnSave.gif) no-repeat left top';this.style.fontWeight='normal';");
+        btnBack.Attributes.Add("OnMouseOver", "this.style.background='url(../../App_Themes/CSS/BtnImage/Btnbacking.gif) no-repeat left top';this.style.fontWeight='bold';");
+        btnBack.Attributes.Add("OnMouseOut", "this.style.background='url(../../App_Themes/CSS/BtnImage/Btnback.gif) no-repeat left top';this.style.fontWeight='normal';");
+        btnNext.Attributes.Add("OnMouseOver", "this.style.background='url(../../App_Themes/CSS/BtnImage/Btnnexting.gif) no-repeat left top';this.style.fontWeight='bold';");
+        btnNext.Attributes.Add("OnMouseOut", "this.style.background='url(../../App_Themes/CSS/BtnImage/Btnnext.gif) no-repeat left top';this.style.fontWeight='normal';");
+        if (!IsPostBack)
+        {
+            txtRentalPrice.Attributes.Add("onkeydown", "textleave()");
+            txtRentArea.Attributes.Add("onkeydown", "textleave()");
+            //int[] status = PotShop.GetShopTypeStatus();
+            //for (int i = 0; i < status.Length; i++)
+            //{
+            //    cmbShopType.Items.Add(new ListItem(PotShop.GetShopTypeStatusDesc(status[i]), status[i].ToString()));
+            //}
+
+            int[] bizModes = Contract.GetBizModes();
+            for (int i = 0; i < bizModes.Length; i++)
+            {
+                cmbBizMode.Items.Add(new ListItem(Contract.GetBizModeDesc(bizModes[i]), bizModes[i].ToString()));
+            }
+
+
+
+            rs = baseBO.Query(new Area());
+            cmbArea.Text = "";
+            //cmbNodeRoleID.ClearSelection = false;
+            cmbArea.Items.Add(new ListItem((String)GetGlobalResourceObject("BaseInfo", "PotShop_Selected"), SELECTED.ToString()));
+          
+            foreach (Area area in rs)
+            {
+                cmbArea.Items.Add(new ListItem(area.AreaName, area.AreaID.ToString()));
+            }
+
+            //WrkFlwEntity objWrkFlwEntity = WrkFlwApp.GetWrkFlwEntity(Convert.ToInt32(Request.QueryString["WrkFlwID"]), Convert.ToInt32(Request.QueryString["NodeID"]), Convert.ToInt32(Request.QueryString["Sequence"]));
+
+            ViewState["CustID"] = Request.QueryString["VoucherID"].ToString();
+            baseBO.WhereClause = "a.CustID=" + ViewState["CustID"];
+            rs = baseBO.Query(new PotCustomerInfo());
+            if (rs.Count == 1)
+            {
+                PotCustomerInfo potCustomerInfo = rs.Dequeue() as PotCustomerInfo;
+                txtCreateUserID.Text = potCustomerInfo.CustCode;
+                txtCustName.Text = potCustomerInfo.CustName;
+                txtCustShortName.Text = potCustomerInfo.CustShortName;
+                txtContactorName.Text = potCustomerInfo.ContactorName;
+                txtOfficeTel.Text = potCustomerInfo.OfficeTel;
+                txtMobileTel.Text = potCustomerInfo.MobileTel;
+                txtCommOper.Text = potCustomerInfo.UserName;
+                ViewState["CustomerStatus"] = potCustomerInfo.CustomerStatus;
+            }
+
+            baseBO.WhereClause = "CustID=" + Convert.ToInt32(ViewState["CustID"]);
+            rs = baseBO.Query(potShop);
+            if (rs.Count == 1)
+            {
+                potShop = rs.Dequeue() as PotShop;
+                txtPotShopName.Text = potShop.PotShopName;
+                txtMainBrand.Text = potShop.MainBrand;
+                txtShopStartDate.Text = potShop.ShopStartDate.ToString();
+                txtShopEndDate.Text = potShop.ShopEndDate.ToString();
+                cmbArea.SelectedValue = potShop.AreaID.ToString();
+                txtRentalPrice.Text = potShop.RentalPrice.ToString();
+                txtRentArea.Text = potShop.RentArea.ToString();
+                txtNode.Text = potShop.Note;
+                cmbShopType.SelectedValue = potShop.ShopTypeID.ToString();
+            }
+            page();
+        }
+    }
+    protected void butAuditing_Click(object sender, EventArgs e)
+    {
+        BaseBO baseBO = new BaseBO();
+        PotCustomerStatus potCustomerStatus = new PotCustomerStatus();
+        baseBO.WhereClause = "custid=" + ViewState["CustID"];
+        potCustomerStatus.CustomerStatus = PotCustomer.POTCUSTOMER_YES_PUT_IN_NO_UPDATE_LEASE_STATUS;
+        if (baseBO.Update(potCustomerStatus)<1)
+        {
+            ScriptManager.RegisterClientScriptBlock(UpdatePanel1, this.GetType(), "message", "parent.document.all.txtWroMessage.value =  '" + hidUpdate.Value + "'", true);
+            
+            return;
+        }
+        SessionUser objSessionUser = (SessionUser)Session["UserAccessInfo"];
+        int wrkFlwID = Convert.ToInt32(Request.QueryString["WrkFlwID"]);
+        int nodeID = Convert.ToInt32(Request.QueryString["NodeID"]);
+        int sequence = Convert.ToInt32(Request.QueryString["Sequence"]);
+        int voucherID = Convert.ToInt32(ViewState["CustID"]);
+
+        String voucherHints = txtCustShortName.Text;
+        String voucherMemo = "";
+        int operatorID = objSessionUser.UserID;
+        int deptID = objSessionUser.DeptID;
+        VoucherInfo vInfo = new VoucherInfo(voucherID, voucherHints, voucherMemo, deptID, operatorID);
+        WrkFlwApp.ConfirmVoucher(wrkFlwID, nodeID, sequence, vInfo);
+    }
+    protected void btnAdd_Click(object sender, EventArgs e)
+    {
+        BaseTrans baseTrans = new BaseTrans();
+        PotShop potShop = new PotShop();
+        PotCustomerStatus potCustomerStatus = new PotCustomerStatus();
+        potShop.PotShopID = BaseApp.GetPotShopID();
+        potShop.CustID = Convert.ToInt32(ViewState["CustID"]);
+        potShop.PotShopName = txtPotShopName.Text.Trim();
+        potShop.MainBrand = txtMainBrand.Text.Trim();
+        potShop.ShopStartDate = Convert.ToDateTime(txtShopStartDate.Text);
+        potShop.ShopEndDate = Convert.ToDateTime(txtShopEndDate.Text);
+        potShop.AreaID = Convert.ToInt32(cmbArea.SelectedValue);
+        potShop.RentalPrice = Convert.ToDecimal(txtRentalPrice.Text);
+        potShop.RentArea = Convert.ToDecimal(txtRentArea.Text);
+        potShop.BizMode = Convert.ToInt32(cmbBizMode.SelectedValue);
+        potShop.Note = txtNode.Text.Trim();
+        potShop.ShopTypeID = Convert.ToInt32(cmbShopType.SelectedValue);
+        if (Convert.ToInt32(ViewState["CustomerStatus"]) == PotCustomer.POTCUSTOMER_NO_ITEM)
+        {
+            baseTrans.BeginTrans();
+            if (baseTrans.Insert(potShop) != -1)
+            {
+                ScriptManager.RegisterClientScriptBlock(UpdatePanel1, this.GetType(), "message", "parent.document.all.txtWroMessage.value =  '" + hidAdd.Value + "'", true);
+            }
+            else
+            {
+                ScriptManager.RegisterClientScriptBlock(UpdatePanel1, this.GetType(), "message", "parent.document.all.txtWroMessage.value =  '" + hidInsert.Value + "'", true);
+                baseTrans.Rollback();
+                ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), "divshow", "chooseCard(0);", true);
+                return;
+            }
+            potCustomerStatus.CustomerStatus = PotCustomer.POTCUSTOMER_YES_ITEM_PUT_IN;
+            baseTrans.WhereClause ="custid=" + ViewState["CustID"];
+            if (baseTrans.Update(potCustomerStatus) != -1)
+            {
+                ScriptManager.RegisterClientScriptBlock(UpdatePanel1, this.GetType(), "message", "parent.document.all.txtWroMessage.value =  '" + hidAdd.Value + "'", true);
+            }
+            else
+            {
+                ScriptManager.RegisterClientScriptBlock(UpdatePanel1, this.GetType(), "message", "parent.document.all.txtWroMessage.value =  '" + hidInsert.Value + "'", true);
+                baseTrans.Rollback();
+                ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), "divshow", "chooseCard(0);", true);
+                return;
+            }
+            baseTrans.Commit();
+            page();
+            textClear();
+        }
+        else if (Convert.ToInt32(ViewState["CustomerStatus"]) == PotCustomer.POTCUSTOMER_YES_ITEM_PUT_IN)
+        {
+            baseTrans.BeginTrans();
+            baseTrans.WhereClause = "custid=" + ViewState["CustID"];
+            if (baseTrans.Update(potShop) != -1)
+            {
+                ScriptManager.RegisterClientScriptBlock(UpdatePanel1, this.GetType(), "message", "parent.document.all.txtWroMessage.value =  '" + hidAdd.Value + "'", true);
+            }
+            else
+            {
+                ScriptManager.RegisterClientScriptBlock(UpdatePanel1, this.GetType(), "message", "parent.document.all.txtWroMessage.value =  '" + hidInsert.Value + "'", true);
+                baseTrans.Rollback();
+                ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), "divshow", "chooseCard(0);", true);
+                return;
+            }
+            baseTrans.Commit();
+            textClear();
+        }
+        ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), "divshow", "chooseCard(0);", true);
+
+    }
+    protected void btnCancel_Click(object sender, EventArgs e)
+    {
+        txtPalaverTime.Text = "";
+        txtPalaverTime.CssClass = "ipt160px";
+        txtPalaverTime.ReadOnly = false;
+        txtPalaverUser.Text = "";
+        txtPalaverUser.CssClass = "ipt160px";
+        txtPalaverUser.ReadOnly = false;
+        txtPalaverAim.Text = "";
+        txtPalaverAim.CssClass = "ipt160px";
+        txtPalaverAim.ReadOnly = false;
+        txtPalaverNode.Text = "";
+        txtPalaverNode.CssClass = "OpenColor";
+        txtPalaverNode.ReadOnly = false;
+        page();
+        ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), "divshow", "chooseCard(1);", true);
+    }
+    protected void btnSave_Click(object sender, EventArgs e)
+    {
+        CustPalaverInfo custPalaver = new CustPalaverInfo();
+        BaseBO baseBO = new BaseBO();
+        custPalaver.CustID = Convert.ToInt32(ViewState["CustID"]);
+        custPalaver.PalaverID = BaseApp.GetPalaverID();
+        custPalaver.PalaverTime = Convert.ToDateTime(txtPalaverTime.Text);
+        custPalaver.PalaverName = txtPalaverUser.Text.Trim();
+        custPalaver.PalaverAim = txtPalaverAim.Text.Trim();
+        custPalaver.PalaverContent = txtPalaverNode.Text.Trim();
+
+        if (baseBO.Insert(custPalaver) != -1)
+        {
+            txtPalaverTime.Text = "";
+            txtPalaverUser.Text = "";
+            txtPalaverAim.Text = "";
+            txtPalaverNode.Text = "";
+            ScriptManager.RegisterClientScriptBlock(UpdatePanel1, this.GetType(), "message", "parent.document.all.txtWroMessage.value =  '" + hidAdd.Value + "'", true);
+            page();
+        }
+        else
+        {
+            ScriptManager.RegisterClientScriptBlock(UpdatePanel1, this.GetType(), "message", "parent.document.all.txtWroMessage.value =  '" + hidInsert.Value + "'", true);
+            page();
+            ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), "divshow", "chooseCard(1);", true);
+            return;
+        }
+        ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), "divshow", "chooseCard(1);", true);
+    }
+    protected void page()
+    {
+        BaseBO baseBO = new BaseBO();
+        PagedDataSource pds = new PagedDataSource();
+        int spareRow = 0;
+
+        if (Convert.ToString(ViewState["CustID"]) == "")
+        {
+            baseBO.WhereClause = "CustID=" + 0;
+        }
+        else
+        {
+            baseBO.WhereClause = "CustID=" + Convert.ToInt32(ViewState["CustID"]);
+        }
+
+        DataTable dt = baseBO.QueryDataSet(new CustPalaverInfo()).Tables[0];
+        pds.DataSource = dt.DefaultView;
+
+        if (pds.Count < 1)
+        {
+            for (int i = 0; i < GrdCustPalaverInfo.PageSize; i++)
+            {
+                dt.Rows.Add(dt.NewRow());
+            }
+            pds.DataSource = dt.DefaultView;
+            GrdCustPalaverInfo.DataSource = pds;
+            GrdCustPalaverInfo.DataBind();
+        }
+        else
+        {
+            GrdCustPalaverInfo.EmptyDataText = "";
+            pds.AllowPaging = true;
+            pds.PageSize = 10;
+            lblTotalNum.Text = "/" + pds.PageCount.ToString() + " page";
+            pds.CurrentPageIndex = int.Parse(lblCurrent.Text) - 1;
+            if (pds.IsFirstPage)
+            {
+                btnBack.Enabled = false;
+                btnNext.Enabled = true;
+            }
+
+            if (pds.IsLastPage)
+            {
+                btnBack.Enabled = true;
+                btnNext.Enabled = false;
+            }
+
+            if (pds.IsFirstPage && pds.IsLastPage)
+            {
+                btnBack.Enabled = false;
+                btnNext.Enabled = false;
+            }
+
+            if (!pds.IsLastPage && !pds.IsFirstPage)
+            {
+                btnBack.Enabled = true;
+                btnNext.Enabled = true;
+            }
+
+            this.GrdCustPalaverInfo.DataSource = pds;
+            this.GrdCustPalaverInfo.DataBind();
+            spareRow = GrdCustPalaverInfo.Rows.Count;
+            for (int i = 0; i < pds.PageSize - spareRow; i++)
+            {
+                dt.Rows.Add(dt.NewRow());
+            }
+            pds.DataSource = dt.DefaultView;
+            GrdCustPalaverInfo.DataSource = pds;
+            GrdCustPalaverInfo.DataBind();
+        }
+
+
+    }
+    public string SubStr(string sString, int nLeng)
+    {
+        if (sString.Length <= nLeng)
+        {
+            return sString;
+        }
+        string sNewStr = sString.Substring(0, nLeng);
+        sNewStr = sNewStr + "...";
+        return sNewStr;
+    }
+
+    private void textClear()
+    {
+        txtPotShopName.Text = "";
+        txtMainBrand.Text = "";
+        txtShopStartDate.Text = "";
+        txtShopEndDate.Text = "";
+        cmbArea.SelectedIndex = 0;
+        txtRentalPrice.Text = "";
+        txtRentArea.Text = "";
+        txtNode.Text = "";
+    }
+
+    protected void btnBack_Click(object sender, EventArgs e)
+    {
+        lblCurrent.Text = Convert.ToString(int.Parse(lblCurrent.Text) - 1);
+        page();
+        ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), "divshow", "chooseCard(1);", true);
+    }
+    protected void btnNext_Click(object sender, EventArgs e)
+    {
+        lblCurrent.Text = Convert.ToString(int.Parse(lblCurrent.Text) + 1);
+        page();
+        ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), "divshow", "chooseCard(1);", true);
+    }
+
+
+    private void PalaverTextLock()
+    {
+        txtPalaverTime.ReadOnly = true;
+        txtPalaverTime.CssClass = "Enabledipt160px";
+        txtPalaverUser.ReadOnly = true;
+        txtPalaverUser.CssClass = "Enabledipt160px";
+        txtPalaverAim.ReadOnly = true;
+        txtPalaverAim.CssClass = "Enabledipt160px";
+        txtPalaverNode.ReadOnly = true;
+        txtPalaverNode.CssClass = "EnabledColor";
+    }
+    protected void GrdCustPalaverInfo_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        string gIntro="";
+        if (e.Row.Cells[1].Text != "&nbsp;")
+        {
+            gIntro = e.Row.Cells[1].Text.ToString();
+            e.Row.Cells[1].Text = SubStr(gIntro, 10);
+            gIntro = e.Row.Cells[2].Text.ToString();
+            e.Row.Cells[2].Text = SubStr(gIntro, 7);
+        }
+        else
+        {
+            e.Row.Cells[3].Text = "";
+        }
+    }
+    protected void GrdCustPalaverInfo_SelectedIndexChanged(object sender, EventArgs e)
+    {
+         Resultset rs = new Resultset();
+        BaseBO baseBO = new BaseBO();
+        CustPalaverInfo custPalaver = new CustPalaverInfo();
+        baseBO.WhereClause = "PalaverID=" + GrdCustPalaverInfo.SelectedRow.Cells[0].Text;
+        rs = baseBO.Query(custPalaver);
+        if (rs.Count == 1)
+        {
+            CustPalaverInfo cust = rs.Dequeue() as CustPalaverInfo;
+            txtPalaverTime.Text = cust.PalaverTime.ToString("yyyy-MM-dd");
+            txtPalaverUser.Text = cust.PalaverName;
+            txtPalaverAim.Text = cust.PalaverAim;
+            txtPalaverNode.Text = cust.PalaverContent;
+        }
+        page();
+        PalaverTextLock();
+        ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), "divshow", "chooseCard(1);", true);
+    }
+}

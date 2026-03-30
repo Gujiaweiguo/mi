@@ -1,0 +1,9 @@
+UsrID		String	30	asdf
+UsrNm		String	30	asdf
+ChargeDate	DateTime	2008-1-1
+LCustId		String	30	asdf
+LCustNm		String	30	asdf
+ChargeCode	String	30	asdf
+OldLCardId	String	50	asdf
+NewLCardId	String	30	asdf
+ChargeAmt	Number		1001

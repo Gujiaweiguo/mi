@@ -1,0 +1,11 @@
+ContractCode	String	50	efqwerqwe
+CustCode	Number		1004
+CustName	String	50	efqwerqwe
+BizMode	String	10	×âÁÞ
+ContractStatus	String	10	asdf
+FStartDate	DateTime	2008-1-1
+FEndDate	DateTime	2008-1-1
+FormulaType	String	15	³é³É»ò±£µ×
+TotalArea	Number		1234
+UnitPrice	Number		12.9
+FixedRental	Number		1234

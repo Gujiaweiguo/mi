@@ -1,0 +1,19 @@
+shopcode	String	50
+custid	Number
+custname	String	50
+tradeid	Number
+tradename	String	50
+subsid	Number
+subsname	String	50
+contractid	Number
+deposit	Number
+onemonth	Number
+twomonth	Number
+threemonth	Number
+sixmonth	Number
+ninemonth	Number
+oneyear	Number
+twoyear	Number
+otheryear	Number
+threeyear	Number
+allAmt	Number

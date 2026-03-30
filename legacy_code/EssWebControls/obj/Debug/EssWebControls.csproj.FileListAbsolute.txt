@@ -1,0 +1,12 @@
+E:\Work\MI_NET\Code\EssWebControls\obj\Debug\ResolveAssemblyReference.cache
+E:\Work\MI_NET\Code\EssWebControls\bin\Debug\EssWebControls.dll
+E:\Work\MI_NET\Code\EssWebControls\bin\Debug\EssWebControls.pdb
+E:\Work\MI_NET\Code\EssWebControls\obj\Debug\EssWebControls.dll
+E:\Work\MI_NET\Code\EssWebControls\obj\Debug\EssWebControls.pdb
+E:\Work\MI_NET\Code\EssWebControls\bin\Debug\Base.dll
+E:\Work\MI_NET\Code\EssWebControls\bin\Debug\BaseInfo.dll
+E:\Work\MI_NET\Code\EssWebControls\bin\Debug\Microsoft.SqlServer.Replication.dll
+E:\Work\MI_NET\Code\EssWebControls\bin\Debug\Microsoft.SqlServer.BatchParser.dll
+E:\Work\MI_NET\Code\EssWebControls\bin\Debug\Base.pdb
+E:\Work\MI_NET\Code\EssWebControls\bin\Debug\BaseInfo.pdb
+E:\Work\MI_NET\Code\EssWebControls\bin\Debug\zh-CHS\Microsoft.SqlServer.Replication.resources.dll

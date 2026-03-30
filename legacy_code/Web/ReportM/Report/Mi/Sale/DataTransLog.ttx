@@ -1,0 +1,9 @@
+storeid	Number
+deptname	String	50
+bizdate	Datetime
+datatype	String	50
+datacount	Number
+transtype	String	50
+transflag	String	50
+transstartdate	Datetime
+transenddate	Datetime

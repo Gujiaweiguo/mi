@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ToolBar>
+    <toolbar toolbarID="T002" desc="业态分布" Edesc="Format" Img="Img/toolIcon/t002.gif" remark="" urlS="Shop.xml" clrS="ColorLump.xml" />
+    <toolbar toolbarID="T003" desc="商铺状态" Edesc="Contract status" Img="Img/toolIcon/t003.gif" remark="" urlS="Shop1.xml" clrS="ColorLump1.xml" />
+    <toolbar toolbarID="T004" desc="坪效分析" Edesc="Evaluation" Img="Img/toolIcon/t004.gif" remark="" urlS="Shop2.xml" clrS="ColorLump2.xml" />
+    <toolbar toolbarID="T005" desc="租售比分析" Edesc="Rental" Img="Img/toolIcon/t005.gif" remark="" urlS="Shop3.xml" clrS="ColorLump3.xml" />
+    <toolbar toolbarID="T006" desc="销售分析" Edesc="Sales" Img="Img/toolIcon/t006.gif" remark="" urlS="Shop4.xml" clrS="ColorLump4.xml" />
+    <toolbar toolbarID="T007" desc="销售笔数" Edesc="Guests" Img="Img/toolIcon/t007.gif" remark="" urlS="Shop5.xml" clrS="ColorLump5.xml" />
+    <toolbar toolbarID="T008" desc="累计欠款" Edesc="Owe" Img="Img/toolIcon/t008.gif" remark="" urlS="Shop6.xml" clrS="ColorLump6.xml" />
+</ToolBar>

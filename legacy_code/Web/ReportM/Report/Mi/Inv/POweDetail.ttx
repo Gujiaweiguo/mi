@@ -1,0 +1,8 @@
+ID	Number		
+Contractcode	Number		
+CustName	String	64	
+ShopCode	String	16	
+ShopName	String	64	
+Period	Date		
+ChargeTypeName	String	32	
+InvAmtL	Currency		

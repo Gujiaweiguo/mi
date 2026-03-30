@@ -1,0 +1,15 @@
+ChargeTypeName	String	32	
+CustName	String	64	
+ContractCode	String	32	
+ShopCode	String	64	
+InvPeriod	DateTime
+InvActPayAmt	Currency		
+InvActPayAmtL	Currency		
+InvPaidAmt	Currency		
+InvPaidAmtL	Currency
+Balance		Currency
+BalanceL	Currency		
+Status	Number		
+ShopName	String	64
+CustCode	String	16
+InvID	Number

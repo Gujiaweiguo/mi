@@ -1,0 +1,9 @@
+ShopId	String	50	efqwerqwe
+ShopName	String	50	efqwerqwe
+AreaName	String	50	efqwerqwe
+Trade2ID	Number		1234
+Trade2Name	Number		1234
+RentArea	Number		1234
+PaidAmt	Number		1234
+AvgPaidAmt	Number		1234
+TotalReceipt	Number		1234

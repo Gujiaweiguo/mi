@@ -1,0 +1,10 @@
+storeid	Number
+StoreShortName	String	32
+year	String	10
+month	Number
+innum	Number
+innum1	Number
+innum2	Number
+innum3	Number
+innum4	Number
+innum5	Number

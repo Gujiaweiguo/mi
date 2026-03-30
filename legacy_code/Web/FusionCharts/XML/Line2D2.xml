@@ -1,0 +1,28 @@
+<chart bgColor='e9e9e9' showBorder="0" baseFontSize='12' caption='京客隆消费报表' subcaption='2009年' xAxisName='月' yAxisName='金额' yAxisMinValue='15000'  numberPrefix='$' showValues='0' alternateHGridColor='FCB541' alternateHGridAlpha='20' divLineColor='e5e5e5' divLineAlpha='50' canvasBorderColor='e9e9e9' baseFontColor='666666' lineColor='ff5555'>
+	<set label='一月' value='17400' />
+	<set label='二月' value='19800' />
+	<set label='三月' value='21800' />
+	<set label='四月' value='23800' />
+	<set label='五月' value='29600' />
+	<set label='六月' value='27600' />
+	<set label='七月' value='31800' />
+	<set label='八月' value='39700' />
+	<set label='九月' value='37800' />
+	<set label='十月' value='21900' />
+	<set label='十一月' value='32900' />
+	<set label='十二月' value='39800' />
+
+	<styles>
+		<definition>
+			<style name='Anim1' type='animation' param='_xscale' start='0' duration='1' />
+			<style name='Anim2' type='animation' param='_alpha' start='0' duration='0.6' />
+			<style name='DataShadow' type='Shadow' alpha='40'/>
+		</definition>
+		<application>
+			<apply toObject='DIVLINES' styles='Anim1' />
+			<apply toObject='HGRID' styles='Anim2' />
+			<apply toObject='DATALABELS' styles='DataShadow,Anim2' />
+	</application>	
+	</styles>
+
+</chart> 

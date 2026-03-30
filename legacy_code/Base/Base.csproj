@@ -1,0 +1,132 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{27AFE8D8-8D8A-40AB-9E47-296451D3243F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Base</RootNamespace>
+    <AssemblyName>Base</AssemblyName>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=11.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.OracleClient" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BaseApp.cs" />
+    <Compile Include="Biz\BaseBO.cs" />
+    <Compile Include="Biz\BaseTree.cs" />
+    <Compile Include="Biz\ITreeNode.cs" />
+    <Compile Include="Page\OpenPageLog.cs" />
+    <Compile Include="Page\SessionUserLog.cs" />
+    <Compile Include="Sys\BaseObject.cs" />
+    <Compile Include="DB\BasePO.cs" />
+    <Compile Include="Biz\BaseTrans.cs" />
+    <Compile Include="DB\DataSourceFactory.cs" />
+    <Compile Include="DB\DataSourceManager.cs" />
+    <Compile Include="DB\DBException.cs" />
+    <Compile Include="DB\DBExecutor.cs" />
+    <Compile Include="DB\CommonInfoPO.cs" />
+    <Compile Include="Sys\BuildingMenuXML.cs" />
+    <Compile Include="Sys\BuildingXML.cs" />
+    <Compile Include="Sys\CityXML.cs" />
+    <Compile Include="Sys\ClearCookies.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Sys\ColorLumpXML.cs" />
+    <Compile Include="Sys\FloorMenuXML.cs" />
+    <Compile Include="Sys\FloorXML.cs" />
+    <Compile Include="Sys\LocalXML.cs" />
+    <Compile Include="Sys\MoveXMLFiles.cs" />
+    <Compile Include="Sys\PassWord.cs" />
+    <Compile Include="Sys\ShopMenuXML.cs" />
+    <Compile Include="Sys\ShoppingMallXML.cs" />
+    <Compile Include="Sys\ShopXML.cs" />
+    <Compile Include="Sys\XmlControl.cs" />
+    <Compile Include="Sys\XmlExecutor.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Sys\XmlPO.cs" />
+    <Compile Include="ToExcel.cs" />
+    <Compile Include="Util\DBParam.cs" />
+    <Compile Include="DB\IDataSource.cs" />
+    <Compile Include="Page\BasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Util\LogFile.cs" />
+    <Compile Include="Util\Logger.cs" />
+    <Compile Include="Sys\ObjectPool.cs" />
+    <Compile Include="Util\ParamManager.cs" />
+    <Compile Include="DB\PooledDataSource.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resultset.cs" />
+    <Compile Include="DB\DBTimeoutException.cs" />
+    <Compile Include="Util\Utils.cs" />
+    <Compile Include="XML\AngularXml.cs" />
+    <Compile Include="XML\AreaColorXMLInfo.cs" />
+    <Compile Include="XML\BuildingMenuXMLInfo.cs" />
+    <Compile Include="XML\BuildingXMLInfo.cs" />
+    <Compile Include="XML\ChartLine2D.cs" />
+    <Compile Include="XML\ColorLumpXMLInfo.cs" />
+    <Compile Include="XML\Column3D.cs" />
+    <Compile Include="XML\FloorMenuXMLInfo.cs" />
+    <Compile Include="XML\FloorXMLInfo.cs" />
+    <Compile Include="XML\MSCol3DLineXML.cs" />
+    <Compile Include="XML\Pie2D.cs" />
+    <Compile Include="XML\Pie3DXML.cs" />
+    <Compile Include="XML\ShopInforXML.cs" />
+    <Compile Include="XML\ShopMenuXMLInfo.cs" />
+    <Compile Include="XML\ShoppingMallXMLInfo.cs" />
+    <Compile Include="XML\ShopXMLInfo.cs" />
+    <Compile Include="XML\ShopXMLInfo2.cs" />
+    <Compile Include="XML\ShopXMLInfo3.cs" />
+    <Compile Include="XML\ShopXMLInfo4.cs" />
+    <Compile Include="XML\StCol3D.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

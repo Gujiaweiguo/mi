@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encodingbb="utf-8"?>
+<ToolBar>
+    <toolbar toolbarID="C101" desc="24万元以下" rb="255" gb="0" bb="0" />
+    <toolbar toolbarID="C102" desc="24-35万元" rb="0" gb="0" bb="255" />
+    <toolbar toolbarID="C103" desc="35-43万元" rb="255" gb="0" bb="255" />
+    <toolbar toolbarID="C104" desc="43-50万元" rb="0" gb="255" bb="255" />
+    <toolbar toolbarID="C105" desc="50-70万元" rb="0" gb="255" bb="0" />
+    <toolbar toolbarID="C106" desc="70万元以上" rb="255" gb="255" bb="0" />
+</ToolBar>

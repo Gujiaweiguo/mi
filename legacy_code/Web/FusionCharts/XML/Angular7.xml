@@ -1,0 +1,27 @@
+<chart   bgColor='FFFFFF' lowerLimit='0' upperLimit='4768'    tickValueDistance='20' showValue='0'  paletteThemeColor='669933' chartTopMargin='25'   chartLeftMargin='25' chartRightMargin='25' decimals='0' >
+  <colorRange>
+    <color minValue='0' maxValue='1192' code='FF654F'/>
+    <color minValue='1192' maxValue='2384' code='8efdfe'/>
+    <color minValue='2384' maxValue='3576' code='F6BD0F'/>
+    <color minValue='3576' maxValue='4768' code='8BBA00' />
+  </colorRange>
+  <dials>
+    <dial value='1968'   rearExtension='10' tooltext='41.29%'
+		 
+link='BenefitAnalysis.html'  />
+
+  </dials>
+
+  <trendpoints>
+    <point startValue='2516'  valueInside='0' displayValue=' ' color='666666' useMarker='1' markerColor='F1f1f1' markerBorderColor='666666' markerRadius='5' markerTooltext='2516' />
+  </trendpoints>
+
+
+  <annotations>
+    <annotationGroup id='Grp1' >
+      <annotation type='text' x='85' y='30' label='年租赁指标完成'  font='宋体'  fontcolor='333333'fontSize='12'  />
+      <annotation type='text' x='87' y='46' label='(单位百万元)'  font='宋体'  fontcolor='333333' fontSize='11'/>
+    </annotationGroup>
+  </annotations>
+
+</chart>

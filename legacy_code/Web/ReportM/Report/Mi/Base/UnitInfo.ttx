@@ -1,0 +1,14 @@
+storeshortname	String	50	efqwerqwe
+UnitCode	String	50	efqwerqwe
+BuildingName	String	50	efqwerqwe
+FloorName	String	50	efqwerqwe
+LocationName	String	50	efqwerqwe
+FloorArea	Number		1234
+RentArea	Number		1234
+UnitStatus	String	50	efqwerqwe
+AreaName	String	50	efqwerqwe
+ShopTypeName	String	50	efqwerqwe
+TradeName	String	50	efqwerqwe
+shopName	String	50	efqwerqwe
+
+

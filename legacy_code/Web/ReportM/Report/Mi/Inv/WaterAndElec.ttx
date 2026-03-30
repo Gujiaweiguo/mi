@@ -1,0 +1,11 @@
+HdwName	String	64	
+ChgName	String	32	
+StartDate	DateTime		
+EndDate	DateTime		
+LastQty	Number		
+CurQty	Number		
+CostQty	Number		
+Price	Currency		
+ChgAmt	Currency
+InvCode	String	32
+Times	Number

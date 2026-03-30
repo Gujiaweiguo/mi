@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encodingbb="utf-8"?>
+<ToolBar>
+    <toolbar toolbarID="C101" desc="20-70" rb="255" gb="0" bb="0" />
+    <toolbar toolbarID="C102" desc="70-90" rb="255" gb="0" bb="255" />
+    <toolbar toolbarID="C103" desc="90-120" rb="0" gb="0" bb="255" />
+    <toolbar toolbarID="C104" desc="120以上" rb="0" gb="255" bb="255" />
+</ToolBar>

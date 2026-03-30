@@ -1,0 +1,33 @@
+﻿<chart baseFontSize='12' caption='一层出租面积分析(单位：千平米)' showBorder='0' showValues='0' PYAxisName='面积' canvasbgColor='ffffff' canvasbgAlpha='40'> 
+   <categories>
+      <category label='可出租面积' />
+      <category label='已出租面积' />
+      <category label='未出租面积' />
+      <category label='即将到期面积' />
+
+   </categories>
+
+   <dataset seriesName='2009'  color='75edff'>
+      <set value='551' />
+      <set value='501'/>
+      <set value='50' />
+      <set value='84' />
+   </dataset>
+   <dataset seriesName='2008' color='ff5959'>
+     <set value='551'  />
+      <set value='428' />
+      <set value='123' />
+      <set value='34'/>
+   </dataset>
+   <dataset seriesName='2007' color='ceff00'>
+       <set value='551'/>
+      <set value='440'/>
+      <set value='111'/>
+      <set value='90'/>
+   </dataset>
+
+   <trendlines>
+      <line startValue='300' color='91C728' displayValue='' showOnTop='1'/>
+   </trendlines>
+
+</chart>

@@ -1,0 +1,7 @@
+E:\WORK\MI_NET\Code\Shop\bin\Debug\Shop.dll
+E:\WORK\MI_NET\Code\Shop\bin\Debug\Shop.pdb
+E:\WORK\MI_NET\Code\Shop\bin\Debug\Base.dll
+E:\WORK\MI_NET\Code\Shop\bin\Debug\Base.pdb
+E:\WORK\MI_NET\Code\Shop\obj\Debug\ResolveAssemblyReference.cache
+E:\WORK\MI_NET\Code\Shop\obj\Debug\Shop.dll
+E:\WORK\MI_NET\Code\Shop\obj\Debug\Shop.pdb

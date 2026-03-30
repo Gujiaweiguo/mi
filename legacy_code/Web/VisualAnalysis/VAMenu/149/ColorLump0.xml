@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ToolBar>
+  <toolbar toolbarID="C101" desc="服装" rb="51" gb="255" bb="51" />
+  <toolbar toolbarID="C102" desc="餐饮" rb="153" gb="0" bb="0" />
+  <toolbar toolbarID="C103" desc="食品" rb="255" gb="0" bb="0" />
+  <toolbar toolbarID="C104" desc="化妆品" rb="221" gb="221" bb="34" />
+  <toolbar toolbarID="C105" desc="黄金" rb="238" gb="17" bb="238" />
+  <toolbar toolbarID="C106" desc="钟表眼镜" rb="0" gb="255" bb="255" />
+  <toolbar toolbarID="C107" desc="珠宝工艺品" rb="255" gb="0" bb="204" />
+  <toolbar toolbarID="C108" desc="饰品" rb="136" gb="119" bb="130" />
+  <toolbar toolbarID="C109" desc="鞋包皮具" rb="51" gb="51" bb="204" />
+  <toolbar toolbarID="C1010" desc="体育用品" rb="0" gb="204" bb="255" />
+  <toolbar toolbarID="C1011" desc="运动服装服饰" rb="0" gb="204" bb="255" />
+  <toolbar toolbarID="C1012" desc="休闲户外服饰" rb="43" gb="213" bb="77" />
+  <toolbar toolbarID="C1013" desc="儿童用品" rb="189" gb="230" bb="26" />
+  <toolbar toolbarID="C1014" desc="文化用品" rb="196" gb="169" bb="60" />
+  <toolbar toolbarID="C1015" desc="药店" rb="0" gb="153" bb="255" />
+  <toolbar toolbarID="C1016" desc="生活配套" rb="0" gb="255" bb="51" />
+  <toolbar toolbarID="C1017" desc="银行" rb="0" gb="102" bb="255" />
+  <toolbar toolbarID="C1018" desc="汽车" rb="17" gb="238" bb="238" />
+  <toolbar toolbarID="C1019" desc="房产" rb="255" gb="0" bb="153" />
+  <toolbar toolbarID="C1020" desc="宠物用品" rb="247" gb="9" bb="247" />
+  <toolbar toolbarID="C1021" desc="其他" rb="255" gb="0" bb="204" />
+  <toolbar toolbarID="C1022" desc="库房" rb="0" gb="0" bb="0" />
+</ToolBar>

@@ -1,0 +1,242 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>MI.net系统帮助</title>
+<script language="javascript" type="text/jscript">
+var subMenu_array = new Array();
+function setMenuClickCSS( p )
+{
+	var t = String(p);
+	var n = t.substring(1,2);
+	//ShowSubPage(p);
+	for( var i=0;i<=9;i++ )
+	{
+		var j = 'm'+i;
+		var d = 's'+i;
+		document.getElementById( d ).style.display = 'none';
+		document.getElementById( j ).className = 'menuNo';
+	}
+	document.getElementById( p ).className = 'menuClick';
+	document.getElementById( 's'+n ).style.display = 'block';
+	document.frames["RtFrm"].document.location.href = p+'.html';
+	//document.frames["RtFrm"].document.refresh();
+}
+function setMenuOverCSS( p )
+{
+	var t = String(p);
+	for( var i=0;i<=9;i++ )
+	{
+		var j = 'm'+i;
+		var v = document.getElementById( j ).className;
+		if( v == 'menuClick' )
+		{
+			document.getElementById( j ).className = 'menuClick';
+		}else
+		{
+			document.getElementById( j ).className = 'menuNo';
+		}
+	}
+	var l = document.getElementById( p ).className;
+	if( l == 'menuClick' )
+	{
+		document.getElementById( p ).className = 'menuClick';
+	}
+	else
+	{
+		document.getElementById( p ).className = 'menuOver';
+	}
+}
+function setMenuOutCSS()
+{
+	for( var i=0;i<=9;i++ )
+	{
+		var j = 'm'+i;
+		var v = document.getElementById( j ).className;
+		if( v == 'menuClick' )
+		{
+			document.getElementById( j ).className = 'menuClick';
+		}else
+		{
+			document.getElementById( j ).className = 'menuNo';
+		}
+	}
+}
+function GetSubText( s )
+{
+	document.frames["RtFrm"].document.location.hash = s;
+	
+}
+function LiOverCss( s )
+{
+	document.getElementById( j ).className = 'liover';
+}
+function LiOutCss( s )
+{
+	document.getElementById( j ).className = 'liout';
+}
+function getTblWidth( s,t )
+{
+	var Tw = document.getElementById( s ).width;
+	var w1 = document.body.clientWidth;
+	var h1 = document.body.clientHeight;
+	var scrW = 10;
+	var scrH = h1;
+	document.getElementById( 'BodyTbl' ).height = h1;
+	document.getElementById( 'MiddleTbl' ).height = h1-67-27;
+	var h2 = document.getElementById( 'MiddleTbl' ).height;
+	document.getElementById( t ).width = w1-Tw-scrW-20;
+	document.getElementById( s ).height = document.getElementById( t ).height = h2-20;
+	document.getElementById('RtFrm').width = document.getElementById( t ).width-10;
+	document.getElementById('RtFrm').height = document.getElementById( t ).height-30;
+	document.getElementById('RtFrm').style.border = 0;
+	setMenuClickCSS('m0');
+}
+</script>
+<link href="CSS/Help.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body onload="getTblWidth('leftMenu','ShowInforTbl');">
+<table width="100%" height="100%" border="0" align="center" cellpadding="0" cellspacing="0" id="BodyTbl">
+  <tr>
+    <td height="47" id="" style="filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=images/help-top.jpg', sizingMethod='scale'); padding-left:40px;"><img src="images/HelpTitle.jpg" width="332" height="34" /></td>
+  </tr>
+  <tr>
+    <td height="540" align="center" valign="top"><table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0" id="MiddleTbl">
+      <tr>
+        <td height="33" align="center" valign="bottom" background="images/bannerbg.jpg"><table width="96%" height="28" border="0" cellpadding="0" cellspacing="0" class="alltext">
+          <tr>
+            <td id="m0" width="10%" align="center" valign="middle" style="cursor:hand;padding-left:6px;" onmouseover="setMenuOverCSS(this.id);" onmouseout="setMenuOutCSS();" onclick="setMenuClickCSS(this.id);">系统介绍</td>
+            <td id="m1" width="10%" align="center" valign="middle" style="cursor:hand;padding-left:6px;" onmouseover="setMenuOverCSS(this.id);" onmouseout="setMenuOutCSS();" onclick="setMenuClickCSS(this.id);">功能模块</td>
+            <td id="m2" width="10%" align="center" valign="middle" style="cursor:hand;padding-left:6px;" onmouseover="setMenuOverCSS(this.id);" onmouseout="setMenuOutCSS();" onclick="setMenuClickCSS(this.id);">租约管理</td>
+            <td id="m3" width="10%" align="center" valign="middle" style="cursor:hand;padding-left:6px;" onmouseover="setMenuOverCSS(this.id);" onmouseout="setMenuOutCSS();" onclick="setMenuClickCSS(this.id);">费　　用</td>
+            <td id="m4" width="10%" align="center" valign="middle" style="padding-left:6px;" onmouseover="">&nbsp;</td>
+            <td id="m5" width="10%" align="center" valign="middle" style="padding-left:6px;" onmouseover="">&nbsp;</td>
+            <td id="m6" width="10%" align="center" valign="middle" style="padding-left:6px;" onmouseover="">&nbsp;</td>
+            <td id="m7" width="10%" align="center" valign="middle" style="padding-left:6px;" onmouseover="">&nbsp;</td>
+            <td id="m8" width="10%" align="center" valign="middle" style="padding-left:6px;" onmouseover="">&nbsp;</td>
+            <td id="m9" width="10%" align="center" valign="middle" style="padding-left:6px;" onmouseover="">&nbsp;</td>
+          </tr>
+        </table></td>
+      </tr>
+      <tr>
+        <td align="left" valign="top"><table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+          <tr>
+            <td width="230" align="right" valign="top" style="padding:10px;padding-right:0px;">
+			<table id="leftMenu" width="220" height="100%" border="0" cellpadding="0" cellspacing="0" style="border:#a87f50 1px solid;">
+              <tr>
+                <td align="center" valign="top" style="padding-top:14px;">
+				  <table width="180" height="100%" border="0" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td id="s0" height="22" align="left" valign="top" style="display:block">
+							<li id="l001" onclick="GetSubText('T1');" onmouseover="this.className='liover'" onmouseout="this.className=''">　系统界面介绍　</li>
+							<li onclick="GetSubText('T2');" onmouseover="this.className='liover'" onmouseout="this.className=''">　浏览工具介绍　</li>
+					</td>
+                    <td id="s1" height="22" align="left" valign="top" style="display:none">
+							<li onclick="GetSubText('T2');" onmouseover="this.className='liover'" onmouseout="this.className=''">　基础信息定义　</li>
+								<li onclick="GetSubText('T3');" onmouseover="this.className='liover'" onmouseout="this.className=''">　>> 部门管理　</li>
+								<li onclick="GetSubText('T4');" onmouseover="this.className='liover'" onmouseout="this.className=''">　>> 用户定义　</li>
+									<li onclick="GetSubText('T4.1');" onmouseover="this.className='liover'" onmouseout="this.className=''">　　[ 增加用户 ]　</li>
+									<li onclick="GetSubText('T4.2');" onmouseover="this.className='liover'" onmouseout="this.className=''">　　[ 修改用户 ]　</li>
+								<li onclick="GetSubText('T5');" onmouseover="this.className='liover'" onmouseout="this.className=''">　>> 角色定义　</li>
+									<li onclick="GetSubText('T5.1');" onmouseover="this.className='liover'" onmouseout="this.className=''">　　[ 增加角色 ]　</li>
+								<li onclick="GetSubText('T6');" onmouseover="this.className='liover'" onmouseout="this.className=''">　>> 可出租面积　</li>
+									<li onclick="GetSubText('T6.1');" onmouseover="this.className='liover'" onmouseout="this.className=''">　　[ 地理位置管理 ]　</li>
+									<li onclick="GetSubText('T6.2');" onmouseover="this.className='liover'" onmouseout="this.className=''">　　[ 经营区域管理 ]　</li>
+									<li onclick="GetSubText('T6.3');" onmouseover="this.className='liover'" onmouseout="this.className=''">　　[ 单元管理 ]　</li>
+					</td>
+                    <td id="s2" height="22" align="left" valign="top" style="display:none">
+					<div style="width:180;height:auto;overflow-y:auto;">
+							<li onclick="GetSubText('T1');" onmouseover="this.className='liover'" onmouseout="this.className=''">　合同签订　</li>
+								<li onclick="GetSubText('T1.1');" onmouseover="this.className='liover'" onmouseout="this.className=''">　>> 招商立项　</li>
+									<li onclick="GetSubText('T1.1.1');" onmouseover="this.className='liover'" onmouseout="this.className=''">　　[ 资料准备 ]　</li>
+									<li onclick="GetSubText('T1.1.2');" onmouseover="this.className='liover'" onmouseout="this.className=''">　　[ 立项审批 ]　</li>
+								<li onclick="GetSubText('T1.2');" onmouseover="this.className='liover'" onmouseout="this.className=''">　>> 租赁合同　</li>
+									<li onclick="GetSubText('T1.2.1');" onmouseover="this.className='liover'" onmouseout="this.className=''">　　[ 合同录入 ]　</li>
+									<li onclick="GetSubText('T1.2.2');" onmouseover="this.className='liover'" onmouseout="this.className=''">　　[ 合同审批 ]　</li>
+							<li onclick="GetSubText('T2');" onmouseover="this.className='liover'" onmouseout="this.className=''">　租赁合同变更　</a></li>
+							<li onclick="GetSubText('T3');" onmouseover="this.className='liover'" onmouseout="this.className=''">　合同终止　</a></li>
+								<li onclick="GetSubText('T3.1');" onmouseover="this.className='liover'" onmouseout="this.className=''">　>> 合同终止录入　</li>
+								<li onclick="GetSubText('T3.2');" onmouseover="this.className='liover'" onmouseout="this.className=''">　>> 合同终止复核审批</li>
+							<li onclick="GetSubText('T4');" onmouseover="this.className='liover'" onmouseout="this.className=''">　租赁合同续约　</a></li>
+								<li onclick="GetSubText('T4.1');" onmouseover="this.className='liover'" onmouseout="this.className=''">　>> 续约录入　</li>
+								<li onclick="GetSubText('T4.2');" onmouseover="this.className='liover'" onmouseout="this.className=''">　>> 续约复核审批</li>
+							<li onclick="GetSubText('T5');" onmouseover="this.className='liover'" onmouseout="this.className=''">　参数维护　</a></li>
+								<li onclick="GetSubText('T5.1');" onmouseover="this.className='liover'" onmouseout="this.className=''">　>> 费用类别维护　</li>
+								<li onclick="GetSubText('T5.2');" onmouseover="this.className='liover'" onmouseout="this.className=''">　>> 品牌维护　</li>
+								<li onclick="GetSubText('T5.3');" onmouseover="this.className='liover'" onmouseout="this.className=''">　>> 商户类型维护　</li>
+								<li onclick="GetSubText('T5.4');" onmouseover="this.className='liover'" onmouseout="this.className=''">　>> 潜在商户资料查询　</li>
+								<li onclick="GetSubText('T5.5');" onmouseover="this.className='liover'" onmouseout="this.className=''">　>> 潜在商户资料维护　</li>
+								<li onclick="GetSubText('T5.6');" onmouseover="this.className='liover'" onmouseout="this.className=''">　>> 商户资料查询　</li>
+								<li onclick="GetSubText('T5.7');" onmouseover="this.className='liover'" onmouseout="this.className=''">　>> 商户资料维护　</li>
+					</div>
+					</td>
+                    <td id="s3" height="22" align="left" valign="top" style="display:none">
+							<li onclick="GetSubText('T1');" onmouseover="this.className='liover'" onmouseout="this.className=''">　合同首期费用生成　</li>
+							<li onclick="GetSubText('T2');" onmouseover="this.className='liover'" onmouseout="this.className=''">　租赁费用管理　</a></li>
+								<li onclick="GetSubText('T2.1');" onmouseover="this.className='liover'" onmouseout="this.className=''">　>> 租赁费用计算　</li>
+								<li onclick="GetSubText('T2.2');" onmouseover="this.className='liover'" onmouseout="this.className=''">　>> 租赁费用结算　</li>
+							<li onclick="GetSubText('T3');" onmouseover="this.className='liover'" onmouseout="this.className=''">　结算单管理　</a></li>
+								<li onclick="GetSubText('T3.1');" onmouseover="this.className='liover'" onmouseout="this.className=''">　>> 重打结算单　</li>
+								<li onclick="GetSubText('T3.2');" onmouseover="this.className='liover'" onmouseout="this.className=''">　>> 租赁结算单调整</li>
+									<li onclick="GetSubText('T3.2.1');" onmouseover="this.className='liover'" onmouseout="this.className=''">　　[ 结算单调整录入 ]　</li>
+									<li onclick="GetSubText('T3.2.2');" onmouseover="this.className='liover'" onmouseout="this.className=''">　　[ 结算单调整审批 ]　</li>
+								<li onclick="GetSubText('T3.3');" onmouseover="this.className='liover'" onmouseout="this.className=''">　>> 租赁结算单取消</li>
+									<li onclick="GetSubText('T3.3.1');" onmouseover="this.className='liover'" onmouseout="this.className=''">　　[ 结算单取消录入 ]　</li>
+									<li onclick="GetSubText('T3.3.2');" onmouseover="this.className='liover'" onmouseout="this.className=''">　　[ 结算单取消审批 ]　</li>
+							<li onclick="GetSubText('T4');" onmouseover="this.className='liover'" onmouseout="this.className=''">　押金处理　</a></li>
+							<li onclick="GetSubText('T5');" onmouseover="this.className='liover'" onmouseout="this.className=''">　水电费　</a></li>
+								<li onclick="GetSubText('T5.1');" onmouseover="this.className='liover'" onmouseout="this.className=''">　>> 水电费录入　</li>
+								<li onclick="GetSubText('T5.2');" onmouseover="this.className='liover'" onmouseout="this.className=''">　>> 水电费审批　</li>
+							<li onclick="GetSubText('T6');" onmouseover="this.className='liover'" onmouseout="this.className=''">　其他费用　</a></li>
+								<li onclick="GetSubText('T6.1');" onmouseover="this.className='liover'" onmouseout="this.className=''">　>> 其他费用录入　</li>
+								<li onclick="GetSubText('T6.2');" onmouseover="this.className='liover'" onmouseout="this.className=''">　>> 其他费用审批　</li>
+					</td>
+                    <td id="s4" height="22" align="left" valign="top" style="display:none">
+					</td>
+                    <td id="s5" height="22" align="left" valign="top" style="display:none">
+					</td>
+                    <td id="s6" height="22" align="left" valign="top" style="display:none">
+					</td>
+                    <td id="s7" height="22" align="left" valign="top" style="display:none">
+					</td>
+                    <td id="s8" height="22" align="left" valign="top" style="display:none">
+					</td>
+                    <td id="s9" height="22" align="left" valign="top" style="display:none">
+					</td>
+                  </tr>
+                </table>
+				</td>
+              </tr>
+            </table>
+			</td>
+            <td align="left" valign="top" style="padding:10px;"><table id="ShowInforTbl" width="100%" height="100%" border="0" cellpadding="0" cellspacing="0" style="border:#a87f50 1px solid;">
+              <tr>
+                <td align="center" valign="middle"><table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td align="left" valign="top" style="padding:0px;">
+					<div id="FrmDiv" style="width:100%;height:100%;">
+						<iframe id="RtFrm" src="xtjmjs.html" width="100%" height="100%" scrolling="auto" frameborder="0">
+						</iframe>
+					</div>
+					</td>
+                  </tr>
+                </table></td>
+              </tr>
+            </table></td>
+          </tr>
+        </table></td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td height="20" align="center" valign="bottom"><table width="100%" height="20" border="0" cellpadding="0" cellspacing="0">
+      
+      <tr>
+        <td height="20" align="center" valign="middle" bgcolor="#fff2db" class="alltext">Copyright&copy;ESS 2009</td>
+      </tr>
+    </table></td>
+  </tr>
+</table>
+</body>
+</html>

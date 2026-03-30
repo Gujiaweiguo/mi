@@ -1,0 +1,9 @@
+StoreName	String	32
+shopcode	String	32
+shopname	String	32
+tradename	String	32
+rentarea	Number
+BrandName	String	32
+ContractCode	String	32
+ConStartDate	DateTime
+ConEndDate	DateTime

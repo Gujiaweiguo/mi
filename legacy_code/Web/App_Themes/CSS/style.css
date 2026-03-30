@@ -1,0 +1,185 @@
+ 
+
+  .textstyle {
+	width:120px;
+	height:24px;
+	border-right:#FFFFFF 1px solid;
+	border-top:#A0A0A0 1px solid;
+	border-left:#A0A0A0 1px solid;
+	border-bottom:#FFFFFF 1px solid;
+	
+	padding-left:2px;
+	padding-top:2px;
+	font-size:15px;
+ }
+ 
+body, table, tr, th, td, form {
+	margin: 0;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:12px;
+	color:#333333;
+	line-height:18px;
+}
+
+.hidden {
+    display:none;
+}
+ 
+	
+.lblTitle
+{
+	font-size: 18px;
+	vertical-align:middle;
+	}
+.buttonEdit1
+{
+    background:url(../../images/Add/BtnEdit.png) no-repeat left top;  /*   图片路径*/
+    border:none;  /*去掉边框*/
+    text-align:right;
+ 
+}
+.accordionHeader
+{
+    border: 1px solid #C7D7E4;
+    color: white;
+    background-color: #C7D7E4;
+	font-family: Arial, Sans-Serif;
+    margin-top: 2px;
+    cursor: pointer;
+}
+.accordionContent
+{
+    background-color: #FFFFFF;
+    border: 1px solid #98B1C5;
+    border-top: none;
+    padding-top: 1px;
+}
+.accordionLink
+{
+	color:Black;
+	font-family: Arial, Sans-Serif;
+	font-size: 15px;
+	}
+	
+.hidden {
+    display:none;
+}
+
+.menu{
+text-decoration: none; color: white
+}
+
+
+.tdBackColor
+{
+	background-color: #e1e0b2;
+}
+
+.tdTopBackColor
+{
+	font-size: 12pt;
+	color: #ffffff;
+	background-color: #738494;
+	text-align:left;
+}
+.tdTopRightBackColor
+{
+	font-size: 12pt;
+	color: #ffffff;
+	background-color: #738494;
+	text-align:right;
+}
+
+.textBoxStyle
+{
+	width: 149px;
+	background-color: white;
+}
+
+.treeNodeSelelcted
+{
+	font-size: 10pt;
+	color: #000000;
+	background-color: #cccccc;
+}
+
+.tdTopBackColorTwo
+{
+	background-color: #b4bec8;
+	vertical-align:top;
+}
+
+.labelStyle
+{
+	azimuth: right;
+	font-size: 9pt;
+	text-align:right;
+	color:Black;
+}
+.tableBoderStyle
+{
+	border-right: #b4bec8 thin solid;
+	border-top: #b4bec8 thin solid;
+	border-left: #b4bec8 thin solid;
+	border-bottom: #b4bec8 thick solid;
+	height:401px;
+	width:755px;
+}
+.lblTitleThreeTD
+{
+	font-size: 11pt;
+	text-align:left;
+	}
+
+.imageLeftBack
+{
+	background:url(../../images/function/left.jpg);
+	height:24px;
+	width:7px;
+}
+.imageRightBack
+{
+	background:url(../../images/function/right.jpg);
+	height:24px;
+	width:7px;
+}
+.compartLink
+{
+	background:url(../../images/shuxian.jpg);
+	width:1px;
+	height:390px;
+	}
+	.textBoxStyle
+	{
+		width:70px;
+		height:18px;
+		
+	 	}
+
+
+.rbtn
+{ color:#363D4F;
+  font-size:13px;	
+	}
+
+
+
+.down_text {
+	font-family: Arial;	font-size:8pt;background-color:#000000;color:#FFFFFF
+	}
+
+/*
+ * 文本内容显示样式
+ */
+.inforT {font-family: "宋体";font-size: 12px;color: #000000;text-decoration: none;}
+.inforIpt {font-family: "宋体";font-size: 12px;color: #8C6900;text-decoration: none;display: block;margin: 0px;padding: 0px;height: 18px;border: 1px solid #CC9900;padding-top:2px;padding-left:4px;}
+
+
+
+
+
+
+
+
+
+

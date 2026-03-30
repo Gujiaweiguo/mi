@@ -1,0 +1,9 @@
+storename	String	50	efqwerqwe
+period	DateTime			
+areas	Number		
+useareas	Number		
+rentareas	Number		
+arearate	Number		
+userate	Number		
+RentalAmt	Currency		
+avgRentalAmt	Currency		

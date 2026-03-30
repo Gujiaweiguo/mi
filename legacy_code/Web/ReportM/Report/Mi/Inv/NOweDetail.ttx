@@ -1,0 +1,14 @@
+ID	Number		
+CustType	String	64	
+Floor	String	64	
+ShopType	String	32	
+ShopCode	String	16	
+TradeName	String	64	
+CustName	String	64	
+BrandName	String	32	
+ConStartDate	Date		
+ConEndDate	Date		
+ChargeStartDate	Date		
+RentArea	Number		
+ChargeTypeName	String	32	
+FixedRental	Number		

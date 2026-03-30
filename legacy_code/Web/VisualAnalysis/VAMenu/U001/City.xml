@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cityInfor>
+  <city locaID="101">
+    <city id="104" nm="北京市" infor="北京市" />
+    <city id="105" nm="太原" infor="太原" />
+  </city>
+  <city locaID="102">
+    <city id="106" nm="沈阳" infor="沈阳" />
+    <city id="107" nm="哈尔滨" infor="哈尔滨" />
+  </city>
+  <city locaID="103">
+    <city id="108" nm="青岛" infor="青岛" />
+    <city id="109" nm="上海" infor="上海" />
+  </city>
+</cityInfor>

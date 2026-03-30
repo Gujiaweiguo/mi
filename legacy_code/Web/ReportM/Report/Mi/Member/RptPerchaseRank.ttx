@@ -1,0 +1,16 @@
+LCustId		String	30	asdf
+LCardId		String	30	asdf
+LCustNm		String	30	asdf
+Addr1		String	30	asdf
+Addr2		String	30	asdf
+OffPhone	String	30	asdf
+MobilPhone	String	30	asdf
+BonusAmt	Number		1001
+NetAmt		Number		1001
+NumOfPur	Number		1001
+
+
+
+
+
+

@@ -1,0 +1,16 @@
+<chart bgColor='FFFFFF' showBorder='0' baseFontSize='12' caption='增长指标'  showValues='0' decimals='0' formatNumberScale='0' useRoundEdges='14' zeroPlaneColor='000000' zeroPlaneThickness='1' zeroPlaneAlpha='80' yAxisMinValue='-15' yAxisMaxValue='15'  setAdaptiveYMin='1' adjustDiv='0'>
+<set label='租金同比' value='2.32' toolText='租金同比: 2.32%'/>
+<set label='租金环比' value='-8.05' toolText='租金环比: -8.05'/>
+<set label='销售同比' value='2.81' toolText='销售同比: 2.81'/>
+<set label='销售环比' value='-9.18' toolText='销售环比: -9.18'/>
+<set label='客流同比' value='23.57' toolText='客流同比: 23.57'/>
+<set label='客流环比' value='3.12' toolText='客流环比: 3.12'/>
+  <styles>
+        <definition>
+            <style name='myShadow' type='shadow' angle='45' distance='3' color='000000'/>
+        </definition>
+        <application>
+            <apply toObject='DIVLINES' styles='myShadow' />
+        </application>
+    </styles>
+</chart>

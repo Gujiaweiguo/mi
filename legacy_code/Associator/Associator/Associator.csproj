@@ -1,0 +1,115 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DAFB25CB-0E6F-4DDC-AD09-185BF63F04D9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Associator</RootNamespace>
+    <AssemblyName>Associator</AssemblyName>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Base, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Base\bin\Debug\Base.dll</HintPath>
+    </Reference>
+    <Reference Include="Lease, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lease\bin\Debug\Lease.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Associator\Activity.cs" />
+    <Compile Include="Associator\ActivityPO.cs" />
+    <Compile Include="Associator\AgePO.cs" />
+    <Compile Include="Associator\ConsumeInterest.cs" />
+    <Compile Include="Associator\ConsumeInterestPO.cs" />
+    <Compile Include="Associator\FacorPO.cs" />
+    <Compile Include="Associator\Favor.cs" />
+    <Compile Include="Associator\QueryAssociatorPO.cs" />
+    <Compile Include="Perform\Biz.cs" />
+    <Compile Include="Perform\BonusF.cs" />
+    <Compile Include="Perform\BonusPO.cs" />
+    <Compile Include="Perform\CardClass.cs" />
+    <Compile Include="Perform\Counter.cs" />
+    <Compile Include="Perform\CounterPO.cs" />
+    <Compile Include="Perform\Distance.cs" />
+    <Compile Include="Perform\EduLevel.cs" />
+    <Compile Include="Perform\ExTrans.cs" />
+    <Compile Include="Perform\ExTransPO.cs" />
+    <Compile Include="Perform\FreeGiftTrans.cs" />
+    <Compile Include="Perform\FreeGiftTransPO.cs" />
+    <Compile Include="Perform\Gift.cs" />
+    <Compile Include="Perform\GiftActivity.cs" />
+    <Compile Include="Perform\GiftActivityPO.cs" />
+    <Compile Include="Perform\GiftPO.cs" />
+    <Compile Include="Perform\GiftStock.cs" />
+    <Compile Include="Perform\GiftStockPO.cs" />
+    <Compile Include="Perform\GiftStockQuery.cs" />
+    <Compile Include="Perform\HandBonusPO.cs" />
+    <Compile Include="Perform\Income.cs" />
+    <Compile Include="Perform\JobTitle.cs" />
+    <Compile Include="Perform\LCard.cs" />
+    <Compile Include="Perform\LCust.cs" />
+    <Compile Include="Perform\MembCard.cs" />
+    <Compile Include="Perform\MembCardPO.cs" />
+    <Compile Include="Perform\Member.cs" />
+    <Compile Include="Perform\MemberPO.cs" />
+    <Compile Include="Perform\MembScorePO.cs" />
+    <Compile Include="Perform\MembScoreRec.cs" />
+    <Compile Include="Perform\Mstatus.cs" />
+    <Compile Include="Perform\Nationality.cs" />
+    <Compile Include="Perform\NewCardPO.cs" />
+    <Compile Include="Perform\PreferGift.cs" />
+    <Compile Include="Perform\PreferMer.cs" />
+    <Compile Include="Perform\PurhistPO.cs" />
+    <Compile Include="Perform\Race.cs" />
+    <Compile Include="Perform\Recreation.cs" />
+    <Compile Include="Perform\RedeemD.cs" />
+    <Compile Include="Perform\RedeemDPO.cs" />
+    <Compile Include="Perform\RedeemH.cs" />
+    <Compile Include="Perform\RedeemHPO.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

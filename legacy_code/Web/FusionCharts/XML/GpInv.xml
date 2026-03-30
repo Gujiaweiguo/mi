@@ -1,0 +1,5 @@
+﻿<chart bgColor='ffffff' enableRotation ='1' baseFontSize='12' showBorder='0'　palette='4' decimals='0' showvalues='0' bleSmartLabels='1' enableRotation='0' bgAlpha='40,100' bgRatio='0,100' bgAngle='360' startingAngle='170' numberScaleValue='W' formatNumber='0' caption='当月应交费用汇总' defaultAnimation='0' >
+	    <set label='已付' value='1099200' color='006400' />
+            <set label='未付' value='306800' color ='FF0000'/>
+
+</chart>

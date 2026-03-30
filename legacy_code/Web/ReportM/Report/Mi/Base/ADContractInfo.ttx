@@ -1,0 +1,8 @@
+contractcode	String	50	efqwerqwe
+custcode	Number		1004
+custname	String	50	efqwerqwe
+ContractStatus	String	10	asdf
+constartdate	DateTime	2008-1-1
+conenddate	DateTime	2008-1-1
+retarea	Number	1234
+subsshortname	String	50

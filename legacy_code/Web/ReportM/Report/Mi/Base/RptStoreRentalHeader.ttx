@@ -1,0 +1,9 @@
+storename	String	50	efqwerqwe
+rentarea	Number
+period	DateTime		
+invpayamt	Currency	
+lyinvpayamt	Currency
+ppinvpayamt	Currency
+lyinvrate	Number
+ppinvrate	Number
+avgrentamt	Currency		

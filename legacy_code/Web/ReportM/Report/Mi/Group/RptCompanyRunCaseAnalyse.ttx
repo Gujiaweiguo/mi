@@ -1,0 +1,16 @@
+custname	String	50
+storename	String	50
+shopname	String	50
+brandname	String	50
+month	DateTime
+rentarea	Number
+saleamt	Number
+ppsaleamt	Number
+lysaleamt	Number
+InvAmt	Number
+oweAmt	Number
+allinvamt	Number
+alloweamt	Number
+px	Number
+pppx	Number
+lypx	Number

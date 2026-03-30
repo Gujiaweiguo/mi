@@ -1,0 +1,12 @@
+TPUsrId	String	8	
+TPUsrNm	String	40	
+IDNo	String	18	
+Phone	String	18	
+Sex	String	10	
+Dob	DateTime		
+DateStart	DateTime		
+JobTitleNm	String	24	
+GpId	String	1	
+TPUsrStatus	String	1	
+ShopName	String	64
+deptname	String	40

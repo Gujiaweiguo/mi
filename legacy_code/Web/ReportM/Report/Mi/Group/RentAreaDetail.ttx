@@ -1,0 +1,14 @@
+period	DateTime
+w	Number
+ch	String	50
+floorarea	Number
+lmfloorarea	Number
+lyfloorarea	Number
+storeid	Number
+deptname	String	50
+floorid	Number
+shoptypeid	Number
+buildingid	Number
+floorname	String	50
+shoptypename	String	50
+buildingname	String	50

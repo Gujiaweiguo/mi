@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<graph xAxisName="" yAxisName="" baseFontSize="12" caption="项目时段销售统计" decimalPrecision="0" formatNumberScale="0" aboutMenuItemLabel="About Wincor Nixdorf" aboutMenuItemLink="n-http://www.wincor-nixdorf.com">
+  <set name="09时" value="815.00" color="AFD8F8" />
+  <set name="10时" value="298.00" color="F6BD0F" />
+  <set name="11时" value="356.00" color="8BBA00" />
+  <set name="12时" value="838.00" color="FF8E46" />
+  <set name="13时" value="1599.00" color="008E8E" />
+  <set name="14时" value="2714.00" color="D64646" />
+  <set name="15时" value="2026.00" color="8E468E" />
+</graph>

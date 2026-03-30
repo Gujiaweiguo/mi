@@ -1,0 +1,9 @@
+InvDate	DateTime
+ContractCode	String	32
+CustCode	String	16
+CustName	String	64
+InvAmt	Number
+InvPaidAmt	Number
+PayInAmt	Number
+PayOutAmt	Number
+InvPaidOutAmt	Number

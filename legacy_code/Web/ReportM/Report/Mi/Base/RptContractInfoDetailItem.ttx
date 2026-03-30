@@ -1,0 +1,12 @@
+contractcode	String	32
+billcycle	Number
+curtypename	String	32
+settlemode	String	32
+monthsettledays	Number
+ifprepay	String	32
+balancemonth	DateTime
+paytypeid	String	32
+latepayint	Number
+intday	Number
+taxrate	Number
+taxtype	String	32

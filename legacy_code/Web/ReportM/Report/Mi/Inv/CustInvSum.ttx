@@ -1,0 +1,18 @@
+storeid	Number		
+storeshortname	String	50
+CustCode	String	50	efqwerqwe
+CustName	String	50	efqwerqwe
+ContractCode	String	50	efqwerqwe
+InvPeriod	DateTime	2008-1-1
+InvAdjAmt	Currency		1234
+AdvAmt	Currency		1234
+PreAmt	Currency		1234
+FanstAmt	Currency		
+ApportionAmt	Currency		
+PredictAnv	Currency		
+MaintainAmt	Currency		
+YearEndAmt	Currency		
+OtherAmt	Currency		
+InterestAmt	Currency		
+waterInv	Number		1234
+YearInv	Number		1234
