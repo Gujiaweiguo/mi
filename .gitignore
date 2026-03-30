@@ -1,0 +1,9 @@
+.sisyphus/
+.opencode/node_modules/
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+
+# Local logs
+*.log
