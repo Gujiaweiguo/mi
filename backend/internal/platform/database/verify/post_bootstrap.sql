@@ -1,0 +1,11 @@
+SELECT IF(COUNT(*) >= 3, 1, 0) FROM departments;
+SELECT IF(COUNT(*) >= 1, 1, 0) FROM users;
+SELECT IF(COUNT(*) >= 1, 1, 0) FROM roles;
+SELECT IF(COUNT(*) >= 1, 1, 0) FROM stores;
+SELECT IF(COUNT(*) >= 1, 1, 0) FROM units;
+SELECT IF(COUNT(*) >= 3, 1, 0) FROM workflow_definitions;
+SELECT IF(COUNT(*) >= 3, 1, 0) FROM workflow_transitions;
+SELECT IF(COUNT(*) >= 4, 1, 0) FROM numbering_sequences;
+SELECT IF(COUNT(*) >= 3, 1, 0) FROM print_templates;
+SELECT IF(COUNT(*) >= 1, 1, 0) FROM tax_voucher_rule_sets;
+SELECT IF(COUNT(*) >= 2, 1, 0) FROM tax_voucher_rules;

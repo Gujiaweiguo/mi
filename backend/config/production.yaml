@@ -1,0 +1,29 @@
+app:
+  name: mi-backend
+  environment: production
+
+server:
+  host: 0.0.0.0
+  port: 8080
+  read_timeout_seconds: 15
+  write_timeout_seconds: 15
+
+database:
+  host: mysql
+  port: 3306
+  name: mi_prod
+  user: mi_prod
+  password: change-me
+  ssl_mode: disable
+
+auth:
+  jwt_secret: change-me-production-secret
+  token_expiry_seconds: 3600
+
+log:
+  level: info
+
+storage:
+  generated_documents_path: /app/generated-documents
+  uploads_path: /app/uploads
+  logs_path: /app/logs

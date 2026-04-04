@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+VALIDATOR="$SCRIPT_DIR/validate-gate.sh"
+TESTDATA_DIR="$SCRIPT_DIR/testdata"
+
+expect_success() {
+  local name="$1"
+  shift
+  echo "[PASS-EXPECTED] $name"
+  "$@"
+}
+
+expect_failure() {
+  local name="$1"
+  shift
+  echo "[FAIL-EXPECTED] $name"
+  if "$@"; then
+    echo "Expected failure but command passed: $name" >&2
+    exit 1
+  fi
+}
+
+expect_success \
+  "ci gate passes with unit+integration evidence" \
+  "$VALIDATOR" ci --root "$TESTDATA_DIR/pass-ci" --commit-sha 1111111111111111111111111111111111111111
+
+expect_success \
+  "archive gate passes with unit+integration+e2e evidence" \
+  "$VALIDATOR" archive --root "$TESTDATA_DIR/pass-archive" --commit-sha 2222222222222222222222222222222222222222
+
+expect_failure \
+  "ci gate fails when integration evidence is missing" \
+  "$VALIDATOR" ci --root "$TESTDATA_DIR/missing-integration" --commit-sha 3333333333333333333333333333333333333333
+
+expect_failure \
+  "ci gate fails when evidence commit sha is stale" \
+  "$VALIDATOR" ci --root "$TESTDATA_DIR/stale-sha" --commit-sha 4444444444444444444444444444444444444444
+
+expect_failure \
+  "archive gate fails on malformed evidence" \
+  "$VALIDATOR" archive --root "$TESTDATA_DIR/malformed-json" --commit-sha 5555555555555555555555555555555555555555
+
+expect_failure \
+  "archive gate fails on failed e2e status" \
+  "$VALIDATOR" archive --root "$TESTDATA_DIR/failed-status" --commit-sha 6666666666666666666666666666666666666666
+
+echo
+echo "All verification self-tests passed."

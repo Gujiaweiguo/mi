@@ -43,7 +43,34 @@ Archive a completed change in the experimental workflow.
 
    **If no tasks file exists:** Proceed without task-related warning.
 
-4. **Assess delta spec sync state**
+4. **Verify archive test gates (HARD BLOCK)**
+
+   Before any sync or archive step, determine the current HEAD commit SHA and check for machine-readable evidence files for that exact commit.
+
+   Read the test evidence contract from:
+   - `openspec/changes/<name>/test-evidence-contract.md` when present
+   - otherwise use:
+     - `artifacts/verification/<commit-sha>/unit.json`
+     - `artifacts/verification/<commit-sha>/integration.json`
+     - `artifacts/verification/<commit-sha>/e2e.json`
+
+   For each evidence file:
+   - require file existence
+   - parse JSON successfully
+   - require fields: `schema_version`, `project`, `change`, `commit_sha`, `test_type`, `status`, `started_at`, `finished_at`, `source`, `stats`
+   - require matching `commit_sha`
+   - require matching `test_type`
+   - require `status == "passed"`
+
+   **Archive rule:**
+   - archive requires passing `unit`, `integration`, and `e2e` evidence for the current commit
+
+   **If any required evidence is missing, stale, malformed, or failed:**
+   - stop immediately
+   - do not allow override
+   - report archive as blocked
+
+5. **Assess delta spec sync state**
 
    Check for delta specs at `openspec/changes/<name>/specs/`. If none exist, proceed without sync prompt.
 
@@ -58,7 +85,7 @@ Archive a completed change in the experimental workflow.
 
    If user chooses sync, execute `/opsx-sync` logic. Proceed to archive regardless of choice.
 
-5. **Perform the archive**
+6. **Perform the archive**
 
    Create the archive directory if it doesn't exist:
    ```bash
@@ -75,7 +102,7 @@ Archive a completed change in the experimental workflow.
    mv openspec/changes/<name> openspec/changes/archive/YYYY-MM-DD-<name>
    ```
 
-6. **Display summary**
+7. **Display summary**
 
    Show archive completion summary including:
    - Change name
@@ -95,6 +122,7 @@ Archive a completed change in the experimental workflow.
 **Specs:** ✓ Synced to main specs
 
 All artifacts complete. All tasks complete.
+Archive gate passed: unit + integration + e2e evidence matched current commit.
 ```
 
 **Output On Success (No Delta Specs)**
@@ -128,6 +156,22 @@ All artifacts complete. All tasks complete.
 Review the archive if this was not intentional.
 ```
 
+**Output On Error (Test Gate Failed)**
+
+```
+## Archive Blocked
+
+**Change:** <change-name>
+**Reason:** Archive requires passing unit, integration, and e2e evidence for the current HEAD commit.
+
+**Failed Checks:**
+- unit: missing / stale / malformed / failed
+- integration: missing / stale / malformed / failed
+- e2e: missing / stale / malformed / failed
+
+Resolve the missing evidence and run verification again before archiving.
+```
+
 **Output On Error (Archive Exists)**
 
 ```
@@ -147,7 +191,7 @@ Target archive directory already exists.
 **Guardrails**
 - Always prompt for change selection if not provided
 - Use artifact graph (openspec status --json) for completion checking
-- Don't block archive on warnings - just inform and confirm
+- Never allow archive to proceed without passing current-commit unit + integration + e2e evidence
 - Preserve .openspec.yaml when moving to archive (it moves with the directory)
 - Show clear summary of what happened
 - If sync is requested, use /opsx-sync approach (agent-driven)

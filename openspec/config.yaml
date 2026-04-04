@@ -1,20 +1,28 @@
 schema: spec-driven
 
-# Project context (optional)
-# This is shown to AI when creating artifacts.
-# Add your tech stack, conventions, style guides, domain knowledge, etc.
-# Example:
-#   context: |
-#     Tech stack: TypeScript, React, Node.js
-#     We use conventional commits
-#     Domain: e-commerce platform
+context: |
+  This repository is a replacement migration project, not a maintenance project for the legacy ASP.NET application.
+  Target stack: Vue 3 frontend + Go modular monolith backend + MySQL 8.
+  Legacy assets under legacy_code/ and legacy_docs/ are behavior references only.
 
-# Per-artifact rules (optional)
-# Add custom rules for specific artifacts.
-# Example:
-#   rules:
-#     proposal:
-#       - Keep proposals under 500 words
-#       - Always include a "Non-goals" section
-#     tasks:
-#       - Break tasks into chunks of max 2 hours
+  Test gate policy:
+  - CI gate for push/PR requires passing unit-test evidence and integration-test evidence for the current commit.
+  - Archive gate requires passing unit-test evidence, integration-test evidence, and e2e-test evidence for the current commit.
+  - Evidence is commit-scoped and must match the current HEAD commit SHA.
+  - Missing, stale, malformed, or failed evidence blocks the gate that requires that evidence.
+  - Do not claim test gates are satisfied without machine-readable evidence files.
+
+  Evidence convention:
+  - artifacts/verification/<commit-sha>/unit.json
+  - artifacts/verification/<commit-sha>/integration.json
+  - artifacts/verification/<commit-sha>/e2e.json
+
+rules:
+  design:
+    - Document staged verification gates explicitly: CI-ready vs archive-ready.
+    - Keep test gate rules tied to commit-scoped evidence, not verbal confirmation.
+  tasks:
+    - Include the evidence-file convention when tasks define test or release gates.
+    - Distinguish CI requirements (unit + integration) from archive requirements (unit + integration + e2e).
+  specs:
+    - Add scenarios for missing evidence and stale evidence when defining release/test gates.

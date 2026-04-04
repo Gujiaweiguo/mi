@@ -1,5 +1,31 @@
 .sisyphus/
 .opencode/node_modules/
+artifacts/
+
+# frontend
+frontend/node_modules/
+frontend/dist/
+frontend/playwright-report/
+frontend/test-results/
+
+# backend
+backend/bin/
+backend/.cache/
+backend/coverage/
+
+# runtime/deploy outputs
+deploy/runtime/**/logs/*
+deploy/runtime/**/documents/*
+deploy/runtime/**/uploads/*
+deploy/runtime/**/mysql/*
+!deploy/runtime/**/.gitkeep
+
+# env overrides
+deploy/env/*.local
+backend/config/*.local.yaml
+
+# test outputs
+*.out
 
 # OS/editor noise
 .DS_Store

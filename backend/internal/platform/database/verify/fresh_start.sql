@@ -1,0 +1,17 @@
+SELECT IF(COUNT(*) = 0, 1, 0) FROM lease_contracts;
+SELECT IF(COUNT(*) = 0, 1, 0) FROM lease_contract_units;
+SELECT IF(COUNT(*) = 0, 1, 0) FROM lease_contract_terms;
+SELECT IF(COUNT(*) = 0, 1, 0) FROM workflow_instances;
+SELECT IF(COUNT(*) = 0, 1, 0) FROM workflow_instance_steps;
+SELECT IF(COUNT(*) = 0, 1, 0) FROM workflow_audit_history;
+SELECT IF(COUNT(*) = 0, 1, 0) FROM outbox_messages;
+SELECT IF(COUNT(*) = 0, 1, 0) FROM billing_runs;
+SELECT IF(COUNT(*) = 0, 1, 0) FROM billing_charge_lines;
+SELECT IF(COUNT(*) = 0, 1, 0) FROM billing_documents;
+SELECT IF(COUNT(*) = 0, 1, 0) FROM billing_document_lines;
+SELECT IF(COUNT(*) = 0, 1, 0) FROM daily_shop_sales;
+SELECT IF(COUNT(*) = 0, 1, 0) FROM customer_traffic;
+SELECT IF(COUNT(*) = 0, 1, 0) FROM unit_rent_budgets;
+SELECT IF(COUNT(*) = 0, 1, 0) FROM store_rent_budgets;
+SELECT IF(COUNT(*) = 0, 1, 0) FROM unit_prospects;
+SELECT IF(COUNT(*) = 0, 1, 0) FROM ar_open_items;

@@ -36,12 +36,19 @@ Verify that an implementation matches the change artifacts (specs, tasks, design
 
 4. **Initialize verification report structure**
 
-   Create a report structure with three dimensions:
-   - **Completeness**: Track tasks and spec coverage
-   - **Correctness**: Track requirement implementation and scenario coverage
-   - **Coherence**: Track design adherence and pattern consistency
+    Create a report structure with three dimensions:
+    - **Completeness**: Track tasks and spec coverage
+    - **Correctness**: Track requirement implementation and scenario coverage
+    - **Coherence**: Track design adherence and pattern consistency
 
-   Each dimension can have CRITICAL, WARNING, or SUGGESTION issues.
+    Also create a **Test Gates** section with:
+    - `unit`
+    - `integration`
+    - `e2e`
+    - `ci_ready`
+    - `archive_ready`
+
+    Each dimension can have CRITICAL, WARNING, or SUGGESTION issues.
 
 5. **Verify Completeness**
 
@@ -93,48 +100,90 @@ Verify that an implementation matches the change artifacts (specs, tasks, design
        - Recommendation: "Update implementation or revise design.md to match reality"
    - If no design.md: Skip design adherence check, note "No design.md to verify against"
 
-   **Code Pattern Consistency**:
-   - Review new code for consistency with project patterns
-   - Check file naming, directory structure, coding style
-   - If significant deviations found:
-     - Add SUGGESTION: "Code pattern deviation: <details>"
-     - Recommendation: "Consider following project pattern: <example>"
+    **Code Pattern Consistency**:
+    - Review new code for consistency with project patterns
+    - Check file naming, directory structure, coding style
+    - If significant deviations found:
+        - Add SUGGESTION: "Code pattern deviation: <details>"
+        - Recommendation: "Consider following project pattern: <example>"
 
-8. **Generate Verification Report**
+8. **Verify Test Gate Evidence**
 
-   **Summary Scorecard**:
-   ```
-   ## Verification Report: <change-name>
+    Determine the current HEAD commit SHA for the implementation under review.
 
-   ### Summary
-   | Dimension    | Status           |
-   |--------------|------------------|
-   | Completeness | X/Y tasks, N reqs|
-   | Correctness  | M/N reqs covered |
-   | Coherence    | Followed/Issues  |
-   ```
+    Read the test evidence contract from:
+    - `openspec/changes/<name>/test-evidence-contract.md` when present
+    - otherwise fall back to:
+      - `artifacts/verification/<commit-sha>/unit.json`
+      - `artifacts/verification/<commit-sha>/integration.json`
+      - `artifacts/verification/<commit-sha>/e2e.json`
+
+    For each evidence file:
+    - check existence
+    - parse JSON
+    - require fields: `schema_version`, `project`, `change`, `commit_sha`, `test_type`, `status`, `started_at`, `finished_at`, `source`, `stats`
+    - require matching `commit_sha`
+    - require matching `test_type`
+    - require `status == "passed"`
+
+    Gate rules:
+    - `CI Ready` requires passing `unit` and `integration` evidence for the current commit
+    - `Archive Ready` requires passing `unit`, `integration`, and `e2e` evidence for the current commit
+
+    Classification rules:
+    - missing, malformed, stale, or failed `unit` evidence -> CRITICAL
+    - missing, malformed, stale, or failed `integration` evidence -> CRITICAL
+    - missing, malformed, stale, or failed `e2e` evidence -> WARNING for general verify, but archive remains blocked and `Archive Ready = NO`
+
+    Never accept claimed test success without evidence files.
+
+9. **Generate Verification Report**
+
+    **Summary Scorecard**:
+    ```
+    ## Verification Report: <change-name>
+
+    ### Summary
+    | Dimension    | Status           |
+    |--------------|------------------|
+    | Completeness | X/Y tasks, N reqs|
+    | Correctness  | M/N reqs covered |
+    | Coherence    | Followed/Issues  |
+
+    ### Test Gates
+    | Gate         | Status |
+    |--------------|--------|
+    | Unit         | PASS/FAIL/MISSING |
+    | Integration  | PASS/FAIL/MISSING |
+    | E2E          | PASS/FAIL/MISSING |
+
+    CI Ready: YES/NO
+    Archive Ready: YES/NO
+    ```
 
    **Issues by Priority**:
 
-   1. **CRITICAL** (Must fix before archive):
-      - Incomplete tasks
-      - Missing requirement implementations
-      - Each with specific, actionable recommendation
+    1. **CRITICAL** (Must fix before archive):
+    - Incomplete tasks
+    - Missing requirement implementations
+    - Missing, stale, malformed, or failed unit/integration evidence
+    - Each with specific, actionable recommendation
 
-   2. **WARNING** (Should fix):
-      - Spec/design divergences
-      - Missing scenario coverage
-      - Each with specific recommendation
+    2. **WARNING** (Should fix):
+    - Spec/design divergences
+    - Missing scenario coverage
+    - Missing, stale, malformed, or failed e2e evidence when archive readiness is blocked
+    - Each with specific recommendation
 
    3. **SUGGESTION** (Nice to fix):
       - Pattern inconsistencies
       - Minor improvements
       - Each with specific recommendation
 
-   **Final Assessment**:
-   - If CRITICAL issues: "X critical issue(s) found. Fix before archiving."
-   - If only warnings: "No critical issues. Y warning(s) to consider. Ready for archive (with noted improvements)."
-   - If all clear: "All checks passed. Ready for archive."
+    **Final Assessment**:
+    - If CRITICAL issues: "X critical issue(s) found. Not CI-ready. Not archive-ready until fixed."
+    - If only warnings and archive is blocked: "No critical issues. CI-ready, but not archive-ready. Resolve warnings before archive."
+    - If all clear: "All checks passed. CI-ready and archive-ready."
 
 **Verification Heuristics**
 
@@ -143,6 +192,7 @@ Verify that an implementation matches the change artifacts (specs, tasks, design
 - **Coherence**: Look for glaring inconsistencies, don't nitpick style
 - **False Positives**: When uncertain, prefer SUGGESTION over WARNING, WARNING over CRITICAL
 - **Actionability**: Every issue must have a specific recommendation with file/line references where applicable
+- **Test Gates**: Evidence must be commit-scoped, machine-readable, and passing.
 
 **Graceful Degradation**
 
@@ -150,6 +200,7 @@ Verify that an implementation matches the change artifacts (specs, tasks, design
 - If tasks + specs exist: verify completeness and correctness, skip design
 - If full artifacts: verify all three dimensions
 - Always note which checks were skipped and why
+- If evidence files are missing, do not skip gate evaluation; report missing evidence explicitly
 
 **Output Format**
 

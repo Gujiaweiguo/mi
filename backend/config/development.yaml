@@ -1,0 +1,29 @@
+app:
+  name: mi-backend
+  environment: development
+
+server:
+  host: 0.0.0.0
+  port: 8080
+  read_timeout_seconds: 10
+  write_timeout_seconds: 10
+
+database:
+  host: 127.0.0.1
+  port: 3306
+  name: mi_dev
+  user: mi_dev
+  password: mi_dev
+  ssl_mode: disable
+
+auth:
+  jwt_secret: change-me-development-secret
+  token_expiry_seconds: 3600
+
+log:
+  level: debug
+
+storage:
+  generated_documents_path: ./artifacts/generated-documents
+  uploads_path: ./artifacts/uploads
+  logs_path: ./artifacts/logs

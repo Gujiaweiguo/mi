@@ -1,0 +1,23 @@
+CREATE TABLE ar_open_items (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  lease_contract_id BIGINT NOT NULL,
+  billing_document_id BIGINT NULL,
+  customer_id BIGINT NOT NULL,
+  department_id BIGINT NOT NULL,
+  trade_id BIGINT NULL,
+  charge_type VARCHAR(32) NOT NULL,
+  due_date DATE NOT NULL,
+  outstanding_amount DECIMAL(12,2) NOT NULL DEFAULT 0,
+  is_deposit BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  KEY idx_ar_open_items_due_date (due_date),
+  KEY idx_ar_open_items_customer (customer_id, due_date),
+  KEY idx_ar_open_items_department (department_id, due_date),
+  KEY idx_ar_open_items_charge_type (charge_type),
+  CONSTRAINT fk_ar_open_items_lease FOREIGN KEY (lease_contract_id) REFERENCES lease_contracts(id),
+  CONSTRAINT fk_ar_open_items_document FOREIGN KEY (billing_document_id) REFERENCES billing_documents(id),
+  CONSTRAINT fk_ar_open_items_customer FOREIGN KEY (customer_id) REFERENCES customers(id),
+  CONSTRAINT fk_ar_open_items_department FOREIGN KEY (department_id) REFERENCES departments(id),
+  CONSTRAINT fk_ar_open_items_trade FOREIGN KEY (trade_id) REFERENCES trade_definitions(id)
+);

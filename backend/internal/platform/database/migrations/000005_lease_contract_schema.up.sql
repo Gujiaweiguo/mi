@@ -1,0 +1,62 @@
+CREATE TABLE lease_contracts (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  amended_from_id BIGINT NULL,
+  lease_no VARCHAR(64) NOT NULL,
+  department_id BIGINT NOT NULL,
+  store_id BIGINT NOT NULL,
+  building_id BIGINT NULL,
+  tenant_name VARCHAR(128) NOT NULL,
+  start_date DATE NOT NULL,
+  end_date DATE NOT NULL,
+  status VARCHAR(32) NOT NULL,
+  workflow_instance_id BIGINT NULL,
+  effective_version INT NOT NULL DEFAULT 1,
+  submitted_at TIMESTAMP NULL,
+  approved_at TIMESTAMP NULL,
+  billing_effective_at TIMESTAMP NULL,
+  terminated_at TIMESTAMP NULL,
+  created_by BIGINT NOT NULL,
+  updated_by BIGINT NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY uq_lease_contracts_lease_no (lease_no),
+  UNIQUE KEY uq_lease_contracts_workflow_instance (workflow_instance_id),
+  KEY idx_lease_contracts_status (status),
+  KEY idx_lease_contracts_store_status (store_id, status),
+  KEY idx_lease_contracts_department_status (department_id, status),
+  CONSTRAINT fk_lease_contracts_amended_from FOREIGN KEY (amended_from_id) REFERENCES lease_contracts(id),
+  CONSTRAINT fk_lease_contracts_department FOREIGN KEY (department_id) REFERENCES departments(id),
+  CONSTRAINT fk_lease_contracts_store FOREIGN KEY (store_id) REFERENCES stores(id),
+  CONSTRAINT fk_lease_contracts_building FOREIGN KEY (building_id) REFERENCES buildings(id),
+  CONSTRAINT fk_lease_contracts_workflow_instance FOREIGN KEY (workflow_instance_id) REFERENCES workflow_instances(id),
+  CONSTRAINT fk_lease_contracts_created_by FOREIGN KEY (created_by) REFERENCES users(id),
+  CONSTRAINT fk_lease_contracts_updated_by FOREIGN KEY (updated_by) REFERENCES users(id)
+);
+
+CREATE TABLE lease_contract_units (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  lease_contract_id BIGINT NOT NULL,
+  unit_id BIGINT NOT NULL,
+  rent_area DECIMAL(12,2) NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY uq_lease_contract_units_contract_unit (lease_contract_id, unit_id),
+  CONSTRAINT fk_lease_contract_units_contract FOREIGN KEY (lease_contract_id) REFERENCES lease_contracts(id) ON DELETE CASCADE,
+  CONSTRAINT fk_lease_contract_units_unit FOREIGN KEY (unit_id) REFERENCES units(id)
+);
+
+CREATE TABLE lease_contract_terms (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  lease_contract_id BIGINT NOT NULL,
+  term_type VARCHAR(32) NOT NULL,
+  billing_cycle VARCHAR(32) NOT NULL,
+  currency_type_id BIGINT NOT NULL,
+  amount DECIMAL(12,2) NOT NULL,
+  effective_from DATE NOT NULL,
+  effective_to DATE NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  KEY idx_lease_contract_terms_contract (lease_contract_id),
+  CONSTRAINT fk_lease_contract_terms_contract FOREIGN KEY (lease_contract_id) REFERENCES lease_contracts(id) ON DELETE CASCADE,
+  CONSTRAINT fk_lease_contract_terms_currency_type FOREIGN KEY (currency_type_id) REFERENCES currency_types(id)
+);

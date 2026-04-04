@@ -1,0 +1,13 @@
+DROP TABLE IF EXISTS units;
+DROP TABLE IF EXISTS currency_types;
+DROP TABLE IF EXISTS trade_definitions;
+DROP TABLE IF EXISTS shop_types;
+DROP TABLE IF EXISTS locations;
+DROP TABLE IF EXISTS floors;
+DROP TABLE IF EXISTS buildings;
+DROP TABLE IF EXISTS unit_types;
+DROP TABLE IF EXISTS areas;
+DROP TABLE IF EXISTS area_levels;
+DROP TABLE IF EXISTS stores;
+DROP TABLE IF EXISTS store_management_types;
+DROP TABLE IF EXISTS store_types;
