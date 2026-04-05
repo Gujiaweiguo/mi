@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import { http } from '../api/http'
 import PageSection from '../components/platform/PageSection.vue'
@@ -8,22 +9,23 @@ import { useAppStore } from '../stores/app'
 type HealthState = 'idle' | 'loading' | 'ok' | 'error'
 
 const appStore = useAppStore()
+const { t } = useI18n()
 const state = ref<HealthState>('idle')
-const checkedAt = ref<string>('Not checked yet')
-const responseCode = ref<string>('n/a')
-const responsePayload = ref<string>('No backend response yet.')
+const checkedAt = ref<string>(t('common.notCheckedYet'))
+const responseCode = ref<string>(t('common.notAvailable'))
+const responsePayload = ref<string>(t('health.defaults.noBackendResponse'))
 const errorMessage = ref<string>('')
 
 const statusLabel = computed(() => {
   switch (state.value) {
     case 'loading':
-      return 'Checking'
+      return t('common.statuses.checking')
     case 'ok':
-      return 'Healthy'
+      return t('common.statuses.healthy')
     case 'error':
-      return 'Unavailable'
+      return t('common.statuses.unavailable')
     default:
-      return 'Idle'
+      return t('common.statuses.idle')
   }
 })
 
@@ -39,7 +41,7 @@ const statusTagType = computed(() => {
 })
 
 const formatTimestamp = (value: Date) =>
-  new Intl.DateTimeFormat('en-US', {
+  new Intl.DateTimeFormat(appStore.locale, {
     dateStyle: 'medium',
     timeStyle: 'medium',
   }).format(value)
@@ -55,9 +57,9 @@ const runHealthCheck = async () => {
     responsePayload.value = JSON.stringify(response.data, null, 2)
     state.value = 'ok'
   } catch (error) {
-    responseCode.value = 'request_failed'
-    responsePayload.value = 'Backend health endpoint did not respond successfully.'
-    errorMessage.value = error instanceof Error ? error.message : 'Unknown error'
+    responseCode.value = t('health.defaults.requestFailed')
+    responsePayload.value = t('health.errors.backendUnreachable')
+    errorMessage.value = error instanceof Error ? error.message : t('health.errors.unknown')
     state.value = 'error'
   } finally {
     checkedAt.value = formatTimestamp(new Date())
@@ -70,9 +72,9 @@ onMounted(runHealthCheck)
 <template>
   <div class="health-view" data-testid="health-view">
     <PageSection
-      eyebrow="Task 14 platform shell"
-      title="Frontend platform health"
-      summary="Authenticated shell, shared frontend primitives, and centralized API wiring are now in place for later business slices."
+      :eyebrow="t('health.eyebrow')"
+      :title="t('health.title')"
+      :summary="t('health.summary')"
     >
       <div class="health-view__hero-actions">
         <el-tag :type="statusTagType" effect="dark" data-testid="health-status-tag">
@@ -84,7 +86,7 @@ onMounted(runHealthCheck)
           data-testid="health-refresh-button"
           @click="runHealthCheck"
         >
-          Refresh backend check
+          {{ t('health.actions.refreshBackendCheck') }}
         </el-button>
       </div>
     </PageSection>
@@ -93,26 +95,26 @@ onMounted(runHealthCheck)
       <el-card class="health-view__card" shadow="never">
         <template #header>
           <div class="health-view__card-header">
-            <span>Runtime status</span>
+            <span>{{ t('health.cards.runtimeStatus') }}</span>
           </div>
         </template>
 
         <el-descriptions :column="1" border data-testid="health-runtime-summary">
-          <el-descriptions-item label="App name">{{ appStore.appName }}</el-descriptions-item>
-          <el-descriptions-item label="Version">{{ appStore.appVersion }}</el-descriptions-item>
-          <el-descriptions-item label="Mode">{{ appStore.mode }}</el-descriptions-item>
-          <el-descriptions-item label="API base URL">
+          <el-descriptions-item :label="t('health.fields.appName')">{{ appStore.appName }}</el-descriptions-item>
+          <el-descriptions-item :label="t('health.fields.version')">{{ appStore.appVersion }}</el-descriptions-item>
+          <el-descriptions-item :label="t('health.fields.mode')">{{ appStore.mode }}</el-descriptions-item>
+          <el-descriptions-item :label="t('health.fields.apiBaseUrl')">
             <span data-testid="health-api-base-url">{{ appStore.apiBaseUrl }}</span>
           </el-descriptions-item>
-          <el-descriptions-item label="Last check">{{ checkedAt }}</el-descriptions-item>
-          <el-descriptions-item label="Response code">{{ responseCode }}</el-descriptions-item>
+          <el-descriptions-item :label="t('health.fields.lastCheck')">{{ checkedAt }}</el-descriptions-item>
+          <el-descriptions-item :label="t('health.fields.responseCode')">{{ responseCode }}</el-descriptions-item>
         </el-descriptions>
       </el-card>
 
       <el-card class="health-view__card" shadow="never">
         <template #header>
           <div class="health-view__card-header">
-            <span>Backend probe</span>
+            <span>{{ t('health.cards.backendProbe') }}</span>
           </div>
         </template>
 
@@ -121,7 +123,7 @@ onMounted(runHealthCheck)
           :closable="false"
           class="health-view__alert"
           show-icon
-          title="Backend check failed"
+          :title="t('health.alerts.backendCheckFailed')"
           type="error"
           :description="errorMessage"
           data-testid="health-error-alert"

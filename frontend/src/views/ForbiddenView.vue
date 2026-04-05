@@ -1,18 +1,22 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
 import PageSection from '../components/platform/PageSection.vue'
+
+const { t } = useI18n()
 </script>
 
 <template>
   <div class="forbidden-view" data-testid="forbidden-view">
     <PageSection
-      eyebrow="Permission boundary"
-      title="Access not granted"
-      summary="Your current session does not include the function permission required for this route."
+      :eyebrow="t('forbidden.eyebrow')"
+      :title="t('forbidden.title')"
+      :summary="t('forbidden.summary')"
     />
 
     <el-card class="forbidden-view__card" shadow="never">
       <p class="forbidden-view__copy">
-        Navigation and route guards now use backend function codes and permission levels from the authenticated session user.
+        {{ t('forbidden.description') }}
       </p>
     </el-card>
   </div>

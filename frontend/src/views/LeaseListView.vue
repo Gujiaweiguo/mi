@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 
 import { listLeases, type LeaseSummary } from '../api/lease'
@@ -8,6 +9,7 @@ import PageSection from '../components/platform/PageSection.vue'
 import { useFilterForm } from '../composables/useFilterForm'
 
 const router = useRouter()
+const { t } = useI18n()
 
 const rows = ref<LeaseSummary[]>([])
 const total = ref(0)
@@ -19,13 +21,30 @@ const { filters, isDirty, reset } = useFilterForm({
   status: '',
 })
 
-const statusOptions = [
-  { label: 'Draft', value: 'draft' },
-  { label: 'Pending approval', value: 'pending_approval' },
-  { label: 'Active', value: 'active' },
-  { label: 'Rejected', value: 'rejected' },
-  { label: 'Terminated', value: 'terminated' },
-]
+const statusOptions = computed(() => [
+  { label: t('common.statuses.draft'), value: 'draft' },
+  { label: t('common.statuses.pendingApproval'), value: 'pending_approval' },
+  { label: t('common.statuses.active'), value: 'active' },
+  { label: t('common.statuses.rejected'), value: 'rejected' },
+  { label: t('common.statuses.terminated'), value: 'terminated' },
+])
+
+const resolveStatusLabel = (status: string) => {
+  switch (status) {
+    case 'draft':
+      return t('common.statuses.draft')
+    case 'pending_approval':
+      return t('common.statuses.pendingApproval')
+    case 'active':
+      return t('common.statuses.active')
+    case 'rejected':
+      return t('common.statuses.rejected')
+    case 'terminated':
+      return t('common.statuses.terminated')
+    default:
+      return status
+  }
+}
 
 const loadLeases = async () => {
   isLoading.value = true
@@ -40,7 +59,7 @@ const loadLeases = async () => {
     rows.value = response.data.items
     total.value = response.data.total
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : 'Unable to load lease contracts.'
+    errorMessage.value = error instanceof Error ? error.message : t('lease.errors.unableToLoad')
     rows.value = []
     total.value = 0
   } finally {
@@ -74,13 +93,13 @@ onMounted(() => {
   <div class="lease-list-view" data-testid="lease-list-view">
     <div data-testid="lease-contracts-view">
       <PageSection
-        eyebrow="Lease delivery runway"
-        title="Lease contracts"
-        summary="Track lease contracts, filter operational records, and jump directly into creation or review workflows."
+        :eyebrow="t('lease.eyebrow')"
+        :title="t('lease.title')"
+        :summary="t('lease.summary')"
       >
         <template #actions>
           <el-button type="primary" data-testid="lease-create-button" @click="handleCreate">
-            Create lease
+            {{ t('lease.actions.create') }}
           </el-button>
         </template>
       </PageSection>
@@ -89,30 +108,30 @@ onMounted(() => {
         v-if="errorMessage"
         :closable="false"
         class="lease-list-view__alert"
-        title="Lease records unavailable"
+        :title="t('lease.errors.recordsUnavailable')"
         type="error"
         show-icon
         :description="errorMessage"
       />
 
       <FilterForm
-        title="Lease filters"
+        :title="t('lease.filters.title')"
         :busy="isLoading"
         :reset-disabled="!isDirty"
         @reset="handleReset"
         @submit="loadLeases"
       >
-        <el-form-item label="Lease number">
+        <el-form-item :label="t('lease.fields.leaseNumber')">
           <el-input
             v-model="filters.lease_no"
-            placeholder="Search by lease number"
+            :placeholder="t('lease.placeholders.searchLeaseNumber')"
             clearable
             data-testid="lease-contracts-view-query-input"
           />
         </el-form-item>
 
-        <el-form-item label="Status">
-          <el-select v-model="filters.status" placeholder="All statuses" clearable>
+        <el-form-item :label="t('lease.fields.status')">
+          <el-select v-model="filters.status" :placeholder="t('lease.placeholders.allStatuses')" clearable>
             <el-option
               v-for="option in statusOptions"
               :key="option.value"
@@ -126,8 +145,8 @@ onMounted(() => {
       <el-card class="lease-list-view__table-card" shadow="never">
         <template #header>
           <div class="lease-list-view__table-header">
-            <span>Lease queue</span>
-            <el-tag effect="plain" type="info">{{ total }} total</el-tag>
+            <span>{{ t('lease.table.queueTitle') }}</span>
+            <el-tag effect="plain" type="info">{{ t('common.total', { count: total }) }}</el-tag>
           </div>
         </template>
 
@@ -135,20 +154,24 @@ onMounted(() => {
           :data="rows"
           row-key="id"
           class="lease-list-view__table"
-          empty-text="No lease contracts match the current filters."
+          :empty-text="t('lease.table.empty')"
           data-testid="lease-table"
           @row-click="handleRowClick"
         >
-          <el-table-column prop="lease_no" label="Lease no." min-width="180" />
-          <el-table-column prop="tenant_name" label="Tenant" min-width="220" />
-          <el-table-column prop="department_id" label="Department" min-width="120" />
-          <el-table-column prop="store_id" label="Store" min-width="120" />
-          <el-table-column prop="start_date" label="Start date" min-width="140" />
-          <el-table-column prop="end_date" label="End date" min-width="140" />
-          <el-table-column prop="status" label="Status" min-width="140" />
-          <el-table-column label="Actions" min-width="140" fixed="right">
+          <el-table-column prop="lease_no" :label="t('lease.columns.leaseNo')" min-width="180" />
+          <el-table-column prop="tenant_name" :label="t('lease.columns.tenant')" min-width="220" />
+          <el-table-column prop="department_id" :label="t('lease.columns.department')" min-width="120" />
+          <el-table-column prop="store_id" :label="t('lease.columns.store')" min-width="120" />
+          <el-table-column prop="start_date" :label="t('lease.columns.startDate')" min-width="140" />
+          <el-table-column prop="end_date" :label="t('lease.columns.endDate')" min-width="140" />
+          <el-table-column :label="t('common.columns.status')" min-width="140">
             <template #default="scope">
-              <el-button link type="primary" @click.stop="openLease(scope.row.id)">View</el-button>
+              {{ resolveStatusLabel(scope.row.status) }}
+            </template>
+          </el-table-column>
+          <el-table-column :label="t('common.columns.actions')" min-width="140" fixed="right">
+            <template #default="scope">
+              <el-button link type="primary" @click.stop="openLease(scope.row.id)">{{ t('common.actions.view') }}</el-button>
             </template>
           </el-table-column>
         </el-table>
