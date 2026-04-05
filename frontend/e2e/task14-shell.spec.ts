@@ -143,7 +143,7 @@ test('shows permission-aware navigation after login and supports shared workbenc
   await expect(page).toHaveURL(/\/lease\/contracts/)
   await expect(page.getByTestId('lease-contracts-view')).toBeVisible()
   await page.getByTestId('lease-contracts-view-query-input').fill('harbor')
-  await page.getByRole('button', { name: 'Apply filters' }).click()
+  await page.getByRole('button', { name: '应用筛选' }).click()
   await expect(page.getByText('Harbor Foods')).toBeVisible()
   await expect(page.getByText('North Arcade')).toHaveCount(0)
 })

@@ -226,7 +226,7 @@ test('approves a pending workflow instance from workflow admin', async ({ page }
   const initialListRequestCount = mocks.getListRequestCount()
   await page.getByTestId('workflow-approve-button-9001').click()
 
-  await expect(page.getByText('Workflow instance approved')).toBeVisible()
+  await expect(page.getByText('工作流实例已批准')).toBeVisible()
   await expect(page.getByTestId('workflow-instances-table')).not.toContainText('lease_contract')
   await expect.poll(() => mocks.getApproveRequests().length).toBe(1)
   await expect.poll(() => mocks.getListRequestCount()).toBeGreaterThan(initialListRequestCount)
