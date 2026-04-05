@@ -29,7 +29,5 @@
 
 - [x] 5.1 Add or update frontend unit tests for locale defaulting, locale persistence, and locale-driven shared label resolution.
 - [x] 5.2 Add or update end-to-end coverage for language switching on key user-facing screens, including login and shared shell/navigation behavior.
-- [ ] 5.3 Run the required verification for the current commit and record machine-readable evidence using the project convention: `artifacts/verification/<commit-sha>/unit.json`, `artifacts/verification/<commit-sha>/integration.json`, and `artifacts/verification/<commit-sha>/e2e.json`.
-- [ ] 5.4 Confirm the change satisfies current gate expectations: CI requires passing `unit` and `integration` evidence for the current commit, while archive requires passing `unit`, `integration`, and `e2e` evidence for the current commit.
-
-Blocked for this commit (`4c6ce4319fab54ed5caef919ad2543105762a57c`): current-commit `unit.json` and `e2e.json` exist and pass for `add-ui-i18n-switching`, but `integration` evidence cannot be generated because the repository-wide integration suite is already failing outside this change in existing backend modules (`internal/billing`, `internal/docoutput`, `internal/invoice`, and `internal/taxexport`).
+- [x] 5.3 Run the required verification for the current commit and record machine-readable evidence using the project convention: `artifacts/verification/<commit-sha>/unit.json`, `artifacts/verification/<commit-sha>/integration.json`, and `artifacts/verification/<commit-sha>/e2e.json`.
+- [x] 5.4 Confirm the change satisfies current gate expectations: CI requires passing `unit` and `integration` evidence for the current commit, while archive requires passing `unit`, `integration`, and `e2e` evidence for the current commit.
