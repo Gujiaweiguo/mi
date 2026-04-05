@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import {
   approveWorkflow,
@@ -12,6 +13,7 @@ import {
 import FilterForm from '../components/platform/FilterForm.vue'
 import PageSection from '../components/platform/PageSection.vue'
 import { useFilterForm } from '../composables/useFilterForm'
+import { useAppStore } from '../stores/app'
 
 type Feedback = {
   type: 'success' | 'error' | 'warning'
@@ -20,6 +22,8 @@ type Feedback = {
 }
 
 const definitions = ref<WorkflowDefinition[]>([])
+const { t } = useI18n()
+const appStore = useAppStore()
 const instances = ref<WorkflowInstanceListItem[]>([])
 const isDefinitionsLoading = ref(false)
 const isInstancesLoading = ref(false)
@@ -38,12 +42,25 @@ const { filters: instanceFilters } = useFilterForm({
   document_id: '',
 })
 
-const workflowStatusOptions = [
-  { label: 'Pending', value: 'pending' },
-  { label: 'Approved', value: 'approved' },
-  { label: 'Rejected', value: 'rejected' },
-  { label: 'All statuses', value: '' },
-]
+const workflowStatusOptions = computed(() => [
+  { label: t('common.statuses.pending'), value: 'pending' },
+  { label: t('common.statuses.approved'), value: 'approved' },
+  { label: t('common.statuses.rejected'), value: 'rejected' },
+  { label: t('workflow.placeholders.allStatuses'), value: '' },
+])
+
+const resolveWorkflowStatusLabel = (status: string) => {
+  switch (status) {
+    case 'pending':
+      return t('common.statuses.pending')
+    case 'approved':
+      return t('common.statuses.approved')
+    case 'rejected':
+      return t('common.statuses.rejected')
+    default:
+      return status
+  }
+}
 
 const loadDefinitions = async () => {
   isDefinitionsLoading.value = true
@@ -53,7 +70,7 @@ const loadDefinitions = async () => {
     const response = await listWorkflowDefinitions()
     definitions.value = response.data.definitions ?? []
   } catch (error) {
-    definitionsErrorMessage.value = error instanceof Error ? error.message : 'Unable to load workflow definitions.'
+    definitionsErrorMessage.value = error instanceof Error ? error.message : t('workflow.errors.unableToLoadDefinitions')
     definitions.value = []
   } finally {
     isDefinitionsLoading.value = false
@@ -78,8 +95,8 @@ const loadInstances = async (options?: { preserveFeedback?: boolean }) => {
     instances.value = []
     instanceFeedback.value = {
       type: 'error',
-      title: 'Workflow instances unavailable',
-      description: error instanceof Error ? error.message : 'Unable to load workflow instances.',
+      title: t('workflow.errors.instancesUnavailable'),
+      description: error instanceof Error ? error.message : t('workflow.errors.unableToLoadInstances'),
     }
   } finally {
     isInstancesLoading.value = false
@@ -100,10 +117,10 @@ const filteredDefinitions = computed(() => {
 
 const formatTimestamp = (value: string | null | undefined) => {
   if (!value) {
-    return '—'
+    return t('common.emptyValue')
   }
 
-  return new Intl.DateTimeFormat('en-US', {
+  return new Intl.DateTimeFormat(appStore.locale, {
     dateStyle: 'medium',
     timeStyle: 'short',
   }).format(new Date(value))
@@ -115,10 +132,10 @@ const resolveCurrentNodeCode = (instance: WorkflowInstanceListItem) => {
   }
 
   if (instance.current_step_order !== null) {
-    return `Step ${instance.current_step_order}`
+    return t('workflow.defaults.stepPrefix', { step: instance.current_step_order })
   }
 
-  return '—'
+  return t('common.emptyValue')
 }
 
 const statusTagType = (status: string) => {
@@ -145,7 +162,7 @@ const handleInstanceAction = async (action: 'approve' | 'reject', instance: Work
 
   try {
     const payload = { idempotency_key: crypto.randomUUID() }
-    const completedActionLabel = action === 'approve' ? 'approved' : 'rejected'
+    const completedActionLabel = action === 'approve' ? t('workflow.feedback.approved') : t('workflow.feedback.rejected')
 
     if (action === 'approve') {
       await approveWorkflow(instance.id, payload)
@@ -156,14 +173,14 @@ const handleInstanceAction = async (action: 'approve' | 'reject', instance: Work
     await loadInstances({ preserveFeedback: true })
     instanceFeedback.value = {
       type: 'success',
-      title: `Workflow instance ${completedActionLabel}`,
-      description: `Instance #${instance.id} was ${completedActionLabel} and the queue was refreshed.`,
+      title: t('workflow.feedback.instanceActioned', { action: completedActionLabel }),
+      description: t('workflow.feedback.instanceActionedDescription', { id: instance.id, action: completedActionLabel }),
     }
   } catch (error) {
     instanceFeedback.value = {
       type: 'error',
-      title: `Workflow ${action} failed`,
-      description: error instanceof Error ? error.message : `Unable to ${action} workflow instance #${instance.id}.`,
+      title: t('workflow.errors.actionFailed', { action: t(`workflow.actions.${action}`) }),
+      description: error instanceof Error ? error.message : t('workflow.errors.unableToAction', { id: instance.id, action: t(`workflow.actions.${action}`) }),
     }
   } finally {
     instanceActionId.value = null
@@ -185,32 +202,32 @@ onMounted(() => {
 <template>
   <div class="workflow-admin-view" data-testid="workflow-admin-view">
     <PageSection
-      eyebrow="System administration"
-      title="Workflow administration"
-      summary="Review available workflow definitions and manage approval processes across the system."
+      :eyebrow="t('workflow.eyebrow')"
+      :title="t('workflow.title')"
+      :summary="t('workflow.summary')"
     />
 
     <el-alert
       v-if="definitionsErrorMessage"
       :closable="false"
       class="workflow-admin-view__alert"
-      title="Workflow definitions unavailable"
+      :title="t('workflow.errors.definitionsUnavailable')"
       type="error"
       show-icon
       :description="definitionsErrorMessage"
     />
 
     <FilterForm
-      title="Definition filters"
+      :title="t('workflow.filters.definitions')"
       :busy="isDefinitionsLoading"
       :reset-disabled="!isDirty"
       @reset="handleReset"
       @submit="loadDefinitions"
     >
-      <el-form-item label="Search">
+      <el-form-item :label="t('workflow.fields.search')">
         <el-input
           v-model="filters.search"
-          placeholder="Search code, name, or process class"
+          :placeholder="t('workflow.placeholders.searchDefinitions')"
           clearable
           data-testid="workflow-search-input"
         />
@@ -218,24 +235,24 @@ onMounted(() => {
     </FilterForm>
 
     <el-card class="workflow-admin-view__table-card" shadow="never">
-      <template #header>
-        <div class="workflow-admin-view__table-header">
-          <span>Workflow definitions</span>
-          <el-tag effect="plain" type="info">{{ filteredDefinitions.length }} total</el-tag>
-        </div>
-      </template>
+        <template #header>
+          <div class="workflow-admin-view__table-header">
+            <span>{{ t('workflow.table.definitionsTitle') }}</span>
+            <el-tag effect="plain" type="info">{{ t('common.total', { count: filteredDefinitions.length }) }}</el-tag>
+          </div>
+        </template>
 
       <el-table
-        :data="filteredDefinitions"
-        row-key="ID"
-        class="workflow-admin-view__table"
-        empty-text="No workflow definitions available."
-        data-testid="workflow-definitions-table"
-      >
-        <el-table-column prop="Code" label="Code" min-width="160" />
-        <el-table-column prop="Name" label="Name" min-width="220" />
-        <el-table-column prop="ProcessClass" label="Process class" min-width="200" />
-        <el-table-column label="ID" min-width="80">
+          :data="filteredDefinitions"
+          row-key="ID"
+          class="workflow-admin-view__table"
+          :empty-text="t('workflow.table.definitionsEmpty')"
+          data-testid="workflow-definitions-table"
+        >
+          <el-table-column prop="Code" :label="t('workflow.columns.code')" min-width="160" />
+          <el-table-column prop="Name" :label="t('workflow.columns.name')" min-width="220" />
+          <el-table-column prop="ProcessClass" :label="t('workflow.columns.processClass')" min-width="200" />
+          <el-table-column :label="t('workflow.columns.id')" min-width="80">
           <template #default="scope">
             {{ scope.row.ID }}
           </template>
@@ -255,17 +272,17 @@ onMounted(() => {
 
     <el-card class="workflow-admin-view__table-card" shadow="never">
       <template #header>
-        <div class="workflow-admin-view__table-header workflow-admin-view__table-header--actions">
-          <div class="workflow-admin-view__table-heading">
-            <span>Pending instances</span>
-            <el-tag effect="plain" type="info">{{ instances.length }} total</el-tag>
-          </div>
+          <div class="workflow-admin-view__table-header workflow-admin-view__table-header--actions">
+            <div class="workflow-admin-view__table-heading">
+              <span>{{ t('workflow.table.instancesTitle') }}</span>
+              <el-tag effect="plain" type="info">{{ t('common.total', { count: instances.length }) }}</el-tag>
+            </div>
 
           <div class="workflow-admin-view__table-controls">
             <el-select
               v-model="instanceFilters.status"
               class="workflow-admin-view__status-filter"
-              placeholder="Filter status"
+              :placeholder="t('workflow.placeholders.filterStatus')"
               data-testid="workflow-status-filter"
             >
               <el-option
@@ -281,7 +298,7 @@ onMounted(() => {
               data-testid="workflow-instances-refresh-button"
               @click="loadInstances"
             >
-              Refresh
+              {{ t('common.actions.refresh') }}
             </el-button>
           </div>
         </div>
@@ -292,30 +309,30 @@ onMounted(() => {
         row-key="id"
         v-loading="isInstancesLoading"
         class="workflow-admin-view__table"
-        empty-text="No workflow instances match the current filters."
+        :empty-text="t('workflow.table.instancesEmpty')"
         data-testid="workflow-instances-table"
       >
-        <el-table-column prop="id" label="ID" min-width="90" />
-        <el-table-column prop="document_type" label="Document type" min-width="180" />
-        <el-table-column prop="document_id" label="Document ID" min-width="120" />
-        <el-table-column label="Status" min-width="130">
+        <el-table-column prop="id" :label="t('workflow.columns.id')" min-width="90" />
+        <el-table-column prop="document_type" :label="t('workflow.columns.documentType')" min-width="180" />
+        <el-table-column prop="document_id" :label="t('workflow.columns.documentId')" min-width="120" />
+        <el-table-column :label="t('common.columns.status')" min-width="130">
           <template #default="scope">
             <el-tag :type="statusTagType(scope.row.status)" effect="plain">
-              {{ scope.row.status }}
+              {{ resolveWorkflowStatusLabel(scope.row.status) }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="Current node" min-width="180">
+        <el-table-column :label="t('workflow.columns.currentNode')" min-width="180">
           <template #default="scope">
             {{ resolveCurrentNodeCode(scope.row) }}
           </template>
         </el-table-column>
-        <el-table-column label="Created at" min-width="200">
+        <el-table-column :label="t('common.columns.createdAt')" min-width="200">
           <template #default="scope">
             {{ formatTimestamp(scope.row.created_at ?? scope.row.submitted_at) }}
           </template>
         </el-table-column>
-        <el-table-column label="Actions" min-width="220" fixed="right">
+        <el-table-column :label="t('common.columns.actions')" min-width="220" fixed="right">
           <template #default="scope">
             <div class="workflow-admin-view__row-actions">
               <el-button
@@ -326,7 +343,7 @@ onMounted(() => {
                 :data-testid="`workflow-approve-button-${scope.row.id}`"
                 @click="handleInstanceAction('approve', scope.row)"
               >
-                Approve
+                {{ t('workflow.actions.approve') }}
               </el-button>
 
               <el-button
@@ -337,7 +354,7 @@ onMounted(() => {
                 :data-testid="`workflow-reject-button-${scope.row.id}`"
                 @click="handleInstanceAction('reject', scope.row)"
               >
-                Reject
+                {{ t('workflow.actions.reject') }}
               </el-button>
             </div>
           </template>

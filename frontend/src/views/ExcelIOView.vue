@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import { downloadUnitTemplate, importUnits, exportOperational, type ImportResult } from '../api/excel'
 import PageSection from '../components/platform/PageSection.vue'
@@ -11,6 +12,7 @@ type Feedback = {
 }
 
 const feedback = ref<Feedback | null>(null)
+const { t } = useI18n()
 const isDownloadingTemplate = ref(false)
 const isImporting = ref(false)
 const isExporting = ref(false)
@@ -18,11 +20,11 @@ const selectedDataset = ref('')
 const importFile = ref<File | null>(null)
 const importResult = ref<ImportResult | null>(null)
 
-const datasetOptions = [
-  { label: 'Billing charges', value: 'billing_charges' },
-  { label: 'Lease contracts', value: 'lease_contracts' },
-  { label: 'Unit data', value: 'unit_data' },
-]
+const datasetOptions = computed(() => [
+  { label: t('excel.datasets.billingCharges'), value: 'billing_charges' },
+  { label: t('excel.datasets.leaseContracts'), value: 'lease_contracts' },
+  { label: t('excel.datasets.unitData'), value: 'unit_data' },
+])
 
 const downloadBlob = (data: unknown, filename: string) => {
   const blob = new Blob([data as BlobPart], { type: 'application/octet-stream' })
@@ -43,14 +45,14 @@ const handleDownloadTemplate = async () => {
     downloadBlob(response.data, 'unit-data-template.xlsx')
     feedback.value = {
       type: 'success',
-      title: 'Template downloaded',
-      description: 'Unit data template has been downloaded successfully.',
+      title: t('excel.feedback.templateDownloaded'),
+      description: t('excel.feedback.templateDownloadedDescription'),
     }
   } catch (error) {
     feedback.value = {
       type: 'error',
-      title: 'Template download failed',
-      description: error instanceof Error ? error.message : 'Unable to download the template.',
+      title: t('excel.errors.templateDownloadFailed'),
+      description: error instanceof Error ? error.message : t('excel.errors.unableToDownloadTemplate'),
     }
   } finally {
     isDownloadingTemplate.value = false
@@ -65,8 +67,8 @@ const handleImport = async () => {
   if (!importFile.value) {
     feedback.value = {
       type: 'warning',
-      title: 'No file selected',
-      description: 'Please select an Excel file to import.',
+      title: t('excel.errors.noFileSelected'),
+      description: t('excel.errors.selectFileToImport'),
     }
     return
   }
@@ -80,14 +82,14 @@ const handleImport = async () => {
     importResult.value = response.data
     feedback.value = {
       type: 'success',
-      title: 'Import completed',
-      description: `Imported ${response.data.imported_count} records successfully.`,
+      title: t('excel.feedback.importCompleted'),
+      description: t('excel.feedback.importedCount', { count: response.data.imported_count }),
     }
   } catch (error) {
     feedback.value = {
       type: 'error',
-      title: 'Import failed',
-      description: error instanceof Error ? error.message : 'Unable to import the file.',
+      title: t('excel.errors.importFailed'),
+      description: error instanceof Error ? error.message : t('excel.errors.unableToImport'),
     }
   } finally {
     isImporting.value = false
@@ -98,8 +100,8 @@ const handleExport = async () => {
   if (!selectedDataset.value) {
     feedback.value = {
       type: 'warning',
-      title: 'No dataset selected',
-      description: 'Please select a dataset to export.',
+      title: t('excel.errors.noDatasetSelected'),
+      description: t('excel.errors.selectDatasetToExport'),
     }
     return
   }
@@ -112,14 +114,14 @@ const handleExport = async () => {
     downloadBlob(response.data, `${selectedDataset.value}-export.xlsx`)
     feedback.value = {
       type: 'success',
-      title: 'Export completed',
-      description: `Dataset "${selectedDataset.value}" has been exported successfully.`,
+      title: t('excel.feedback.exportCompleted'),
+      description: t('excel.feedback.exportCompletedDescription', { dataset: selectedDataset.value }),
     }
   } catch (error) {
     feedback.value = {
       type: 'error',
-      title: 'Export failed',
-      description: error instanceof Error ? error.message : 'Unable to export the dataset.',
+      title: t('excel.errors.exportFailed'),
+      description: error instanceof Error ? error.message : t('excel.errors.unableToExport'),
     }
   } finally {
     isExporting.value = false
@@ -130,9 +132,9 @@ const handleExport = async () => {
 <template>
   <div class="excel-io-view" data-testid="excel-io-view">
     <PageSection
-      eyebrow="Data exchange"
-      title="Excel import / export"
-      summary="Download templates, import operational data from Excel files, and export datasets for offline processing."
+      :eyebrow="t('excel.eyebrow')"
+      :title="t('excel.title')"
+      :summary="t('excel.summary')"
     />
 
     <el-alert
@@ -148,12 +150,12 @@ const handleExport = async () => {
       <el-card class="excel-io-view__card" shadow="never">
         <template #header>
           <div class="excel-io-view__card-header">
-            <span>Template download</span>
+            <span>{{ t('excel.cards.templateDownload') }}</span>
           </div>
         </template>
 
         <p class="excel-io-view__card-description">
-          Download the standard unit data template to prepare your import file.
+          {{ t('excel.cards.templateDescription') }}
         </p>
 
         <el-button
@@ -162,14 +164,14 @@ const handleExport = async () => {
           data-testid="excel-download-template"
           @click="handleDownloadTemplate"
         >
-          Download unit data template
+          {{ t('excel.actions.downloadTemplate') }}
         </el-button>
       </el-card>
 
       <el-card class="excel-io-view__card" shadow="never">
         <template #header>
           <div class="excel-io-view__card-header">
-            <span>Import data</span>
+            <span>{{ t('excel.cards.importData') }}</span>
           </div>
         </template>
 
@@ -182,7 +184,7 @@ const handleExport = async () => {
             data-testid="excel-upload-input"
           >
             <template #trigger>
-              <el-button>Select file</el-button>
+              <el-button>{{ t('excel.actions.selectFile') }}</el-button>
             </template>
           </el-upload>
 
@@ -193,13 +195,13 @@ const handleExport = async () => {
             data-testid="excel-import-button"
             @click="handleImport"
           >
-            Import unit data
+            {{ t('excel.actions.importUnitData') }}
           </el-button>
         </div>
 
         <div v-if="importResult" class="excel-io-view__import-result">
           <el-tag effect="plain" type="success">
-            {{ importResult.imported_count }} records imported
+            {{ t('excel.feedback.importedTag', { count: importResult.imported_count }) }}
           </el-tag>
 
           <el-table
@@ -209,9 +211,9 @@ const handleExport = async () => {
             size="small"
             class="excel-io-view__diagnostics-table"
           >
-            <el-table-column prop="row" label="Row" min-width="80" />
-            <el-table-column prop="field" label="Field" min-width="140" />
-            <el-table-column prop="message" label="Message" min-width="280" />
+            <el-table-column prop="row" :label="t('excel.columns.row')" min-width="80" />
+            <el-table-column prop="field" :label="t('excel.columns.field')" min-width="140" />
+            <el-table-column prop="message" :label="t('excel.columns.message')" min-width="280" />
           </el-table>
         </div>
       </el-card>
@@ -219,14 +221,14 @@ const handleExport = async () => {
       <el-card class="excel-io-view__card" shadow="never">
         <template #header>
           <div class="excel-io-view__card-header">
-            <span>Export dataset</span>
+            <span>{{ t('excel.cards.exportDataset') }}</span>
           </div>
         </template>
 
         <div class="excel-io-view__export-section">
           <el-select
             v-model="selectedDataset"
-            placeholder="Select a dataset"
+            :placeholder="t('excel.placeholders.selectDataset')"
             clearable
             data-testid="excel-export-dataset"
           >
@@ -245,7 +247,7 @@ const handleExport = async () => {
             data-testid="excel-export-button"
             @click="handleExport"
           >
-            Export
+            {{ t('excel.actions.export') }}
           </el-button>
         </div>
       </el-card>

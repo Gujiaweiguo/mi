@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import { generateCharges, listCharges, type BillingRun, type ChargeLine } from '../api/billing'
 import FilterForm from '../components/platform/FilterForm.vue'
 import PageSection from '../components/platform/PageSection.vue'
 import { useFilterForm } from '../composables/useFilterForm'
+import { useAppStore } from '../stores/app'
 
 type Feedback = {
   type: 'success' | 'error' | 'warning'
@@ -13,6 +15,8 @@ type Feedback = {
 }
 
 const rows = ref<ChargeLine[]>([])
+const { t } = useI18n()
+const appStore = useAppStore()
 const total = ref(0)
 const isLoading = ref(false)
 const isGenerating = ref(false)
@@ -34,11 +38,11 @@ const generationValidationMessage = computed(() => {
   }
 
   if (isPeriodRangeInvalid.value) {
-    return 'Period start must be on or before period end.'
+    return t('billingCharges.validation.periodStartBeforeEnd')
   }
 
   if (!filters.period_start || !filters.period_end) {
-    return 'Select both period start and period end to generate charges.'
+    return t('billingCharges.validation.bothDatesRequired')
   }
 
   return ''
@@ -46,34 +50,34 @@ const generationValidationMessage = computed(() => {
 
 const selectionStatusMessage = computed(() => {
   if (isPeriodRangeInvalid.value) {
-    return 'Period start must be on or before period end.'
+    return t('billingCharges.validation.periodStartBeforeEnd')
   }
 
   if (filters.period_start && filters.period_end) {
-    return `Selected period ${filters.period_start} → ${filters.period_end}`
+    return t('billingCharges.selection.selectedPeriod', { start: filters.period_start, end: filters.period_end })
   }
 
   if (filters.period_start || filters.period_end) {
-    return 'Filters can use either period bound; generation requires both dates.'
+    return t('billingCharges.selection.partialHint')
   }
 
-  return 'Add a period range to narrow results or prepare a generation run.'
+  return t('billingCharges.selection.defaultHint')
 })
 
 const canGenerate = computed(() => Boolean(filters.period_start && filters.period_end) && !isPeriodRangeInvalid.value)
 
 const formatAmount = (value: number) =>
-  new Intl.NumberFormat('en-US', {
+  new Intl.NumberFormat(appStore.locale, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(value)
 
 const formatTimestamp = (value: string) => {
   if (!value) {
-    return '—'
+    return t('common.emptyValue')
   }
 
-  return new Intl.DateTimeFormat('en-US', {
+  return new Intl.DateTimeFormat(appStore.locale, {
     dateStyle: 'medium',
     timeStyle: 'short',
   }).format(new Date(value))
@@ -83,8 +87,8 @@ const loadCharges = async () => {
   if (isPeriodRangeInvalid.value) {
     feedback.value = {
       type: 'warning',
-      title: 'Invalid charge filter range',
-      description: 'Period start must be on or before period end.',
+      title: t('billingCharges.errors.invalidRange'),
+      description: t('billingCharges.validation.periodStartBeforeEnd'),
     }
 
     return
@@ -107,8 +111,8 @@ const loadCharges = async () => {
     total.value = 0
     feedback.value = {
       type: 'error',
-      title: 'Charge records unavailable',
-      description: error instanceof Error ? error.message : 'Unable to load billing charges.',
+      title: t('billingCharges.errors.recordsUnavailable'),
+      description: error instanceof Error ? error.message : t('billingCharges.errors.unableToLoad'),
     }
   } finally {
     isLoading.value = false
@@ -125,8 +129,8 @@ const handleGenerate = async () => {
   if (!canGenerate.value) {
     feedback.value = {
       type: 'warning',
-      title: 'Generation period required',
-      description: generationValidationMessage.value || 'Select both period start and period end before generating charges.',
+      title: t('billingCharges.errors.generationPeriodRequired'),
+      description: generationValidationMessage.value || t('billingCharges.errors.generationBothDates'),
     }
 
     return
@@ -146,14 +150,17 @@ const handleGenerate = async () => {
     lastGeneratedRun.value = response.data.run
     feedback.value = {
       type: 'success',
-      title: 'Charge generation completed',
-      description: `Generated ${response.data.totals.generated} lines and skipped ${response.data.totals.skipped} lines for the selected period.`,
+      title: t('billingCharges.feedback.generationCompleted'),
+      description: t('billingCharges.feedback.generationResult', {
+        generated: response.data.totals.generated,
+        skipped: response.data.totals.skipped,
+      }),
     }
   } catch (error) {
     feedback.value = {
       type: 'error',
-      title: 'Charge generation failed',
-      description: error instanceof Error ? error.message : 'Unable to generate billing charges.',
+      title: t('billingCharges.errors.generationFailed'),
+      description: error instanceof Error ? error.message : t('billingCharges.errors.unableToGenerate'),
     }
   } finally {
     isGenerating.value = false
@@ -168,9 +175,9 @@ onMounted(() => {
 <template>
   <div class="billing-charges-view" data-testid="billing-charges-view">
     <PageSection
-      eyebrow="Billing operations"
-      title="Billing charges"
-      summary="Review generated charge lines by billing period and trigger a fresh generation run when a lease period is ready for billing."
+      :eyebrow="t('billingCharges.eyebrow')"
+      :title="t('billingCharges.title')"
+      :summary="t('billingCharges.summary')"
     >
       <template #actions>
         <el-tag v-if="lastGeneratedRun" effect="plain" type="success">
@@ -183,7 +190,7 @@ onMounted(() => {
           data-testid="charge-generate-button"
           @click="handleGenerate"
         >
-          Generate charges
+          {{ t('billingCharges.actions.generate') }}
         </el-button>
       </template>
     </PageSection>
@@ -198,37 +205,37 @@ onMounted(() => {
     />
 
     <FilterForm
-      title="Charge filters"
+      :title="t('billingCharges.filters.title')"
       :busy="isLoading"
       :reset-disabled="!isDirty"
       @reset="handleReset"
       @submit="loadCharges"
     >
-      <el-form-item label="Period start">
+      <el-form-item :label="t('billingCharges.fields.periodStart')">
         <el-date-picker
           v-model="filters.period_start"
           type="date"
           value-format="YYYY-MM-DD"
           format="YYYY-MM-DD"
-          placeholder="Select start date"
+          :placeholder="t('billingCharges.placeholders.selectStartDate')"
           class="billing-charges-view__filter-input"
           data-testid="charge-period-start"
         />
       </el-form-item>
 
-      <el-form-item label="Period end">
+      <el-form-item :label="t('billingCharges.fields.periodEnd')">
         <el-date-picker
           v-model="filters.period_end"
           type="date"
           value-format="YYYY-MM-DD"
           format="YYYY-MM-DD"
-          placeholder="Select end date"
+          :placeholder="t('billingCharges.placeholders.selectEndDate')"
           class="billing-charges-view__filter-input"
           data-testid="charge-period-end"
         />
       </el-form-item>
 
-      <el-form-item label="Selection status">
+      <el-form-item :label="t('billingCharges.fields.selectionStatus')">
         <el-tag :type="isPeriodRangeInvalid ? 'warning' : 'info'" effect="plain" class="billing-charges-view__status-tag">
           {{ selectionStatusMessage }}
         </el-tag>
@@ -236,64 +243,64 @@ onMounted(() => {
     </FilterForm>
 
     <el-card v-if="lastGeneratedRun" class="billing-charges-view__summary-card" shadow="never">
-      <template #header>
-        <div class="billing-charges-view__table-header">
-          <span>Latest billing run</span>
-          <el-tag effect="plain" type="success">{{ lastGeneratedRun.generated_count }} generated</el-tag>
-        </div>
-      </template>
+        <template #header>
+          <div class="billing-charges-view__table-header">
+            <span>{{ t('billingCharges.feedback.latestRun') }}</span>
+            <el-tag effect="plain" type="success">{{ t('billingCharges.feedback.generatedCount', { count: lastGeneratedRun.generated_count }) }}</el-tag>
+          </div>
+        </template>
 
       <el-descriptions :column="2" border>
-        <el-descriptions-item label="Run ID">{{ lastGeneratedRun.id }}</el-descriptions-item>
-        <el-descriptions-item label="Status">{{ lastGeneratedRun.status }}</el-descriptions-item>
-        <el-descriptions-item label="Period start">{{ lastGeneratedRun.period_start }}</el-descriptions-item>
-        <el-descriptions-item label="Period end">{{ lastGeneratedRun.period_end }}</el-descriptions-item>
-        <el-descriptions-item label="Generated lines">{{ lastGeneratedRun.generated_count }}</el-descriptions-item>
-        <el-descriptions-item label="Skipped lines">{{ lastGeneratedRun.skipped_count }}</el-descriptions-item>
-        <el-descriptions-item label="Created at">{{ formatTimestamp(lastGeneratedRun.created_at) }}</el-descriptions-item>
-        <el-descriptions-item label="Updated at">{{ formatTimestamp(lastGeneratedRun.updated_at) }}</el-descriptions-item>
+        <el-descriptions-item :label="t('billingCharges.fields.runId')">{{ lastGeneratedRun.id }}</el-descriptions-item>
+        <el-descriptions-item :label="t('common.columns.status')">{{ lastGeneratedRun.status }}</el-descriptions-item>
+        <el-descriptions-item :label="t('billingCharges.fields.periodStart')">{{ lastGeneratedRun.period_start }}</el-descriptions-item>
+        <el-descriptions-item :label="t('billingCharges.fields.periodEnd')">{{ lastGeneratedRun.period_end }}</el-descriptions-item>
+        <el-descriptions-item :label="t('billingCharges.fields.generatedLines')">{{ lastGeneratedRun.generated_count }}</el-descriptions-item>
+        <el-descriptions-item :label="t('billingCharges.fields.skippedLines')">{{ lastGeneratedRun.skipped_count }}</el-descriptions-item>
+        <el-descriptions-item :label="t('common.columns.createdAt')">{{ formatTimestamp(lastGeneratedRun.created_at) }}</el-descriptions-item>
+        <el-descriptions-item :label="t('billingCharges.fields.updatedAt')">{{ formatTimestamp(lastGeneratedRun.updated_at) }}</el-descriptions-item>
       </el-descriptions>
     </el-card>
 
     <el-card class="billing-charges-view__table-card" shadow="never">
-      <template #header>
-        <div class="billing-charges-view__table-header">
-          <span>{{ lastGeneratedRun ? 'Generated charge lines' : 'Charge line results' }}</span>
-          <el-tag effect="plain" type="info">{{ total }} total</el-tag>
-        </div>
-      </template>
+        <template #header>
+          <div class="billing-charges-view__table-header">
+            <span>{{ lastGeneratedRun ? t('billingCharges.table.generatedLines') : t('billingCharges.table.lineResults') }}</span>
+            <el-tag effect="plain" type="info">{{ t('common.total', { count: total }) }}</el-tag>
+          </div>
+        </template>
 
       <el-table
-        :data="rows"
-        row-key="id"
-        class="billing-charges-view__table"
-        empty-text="No billing charge lines match the current selection."
-        data-testid="charges-table"
-      >
-        <el-table-column prop="billing_run_id" label="Run ID" min-width="100" />
-        <el-table-column prop="lease_no" label="Lease no." min-width="150" />
-        <el-table-column prop="tenant_name" label="Tenant" min-width="220" />
-        <el-table-column prop="charge_type" label="Charge type" min-width="150" />
-        <el-table-column label="Period" min-width="220">
+          :data="rows"
+          row-key="id"
+          class="billing-charges-view__table"
+          :empty-text="t('billingCharges.table.empty')"
+          data-testid="charges-table"
+        >
+          <el-table-column prop="billing_run_id" :label="t('billingCharges.fields.runId')" min-width="100" />
+          <el-table-column prop="lease_no" :label="t('billingCharges.columns.leaseNo')" min-width="150" />
+          <el-table-column prop="tenant_name" :label="t('billingCharges.columns.tenant')" min-width="220" />
+          <el-table-column prop="charge_type" :label="t('billingCharges.columns.chargeType')" min-width="150" />
+          <el-table-column :label="t('billingCharges.fields.period')" min-width="220">
           <template #default="scope">
             {{ scope.row.period_start }} → {{ scope.row.period_end }}
           </template>
         </el-table-column>
-        <el-table-column prop="quantity_days" label="Days" min-width="90" />
-        <el-table-column label="Unit amount" min-width="140" align="right" header-align="right">
+          <el-table-column prop="quantity_days" :label="t('billingCharges.fields.days')" min-width="90" />
+          <el-table-column :label="t('billingCharges.fields.unitAmount')" min-width="140" align="right" header-align="right">
           <template #default="scope">
             {{ formatAmount(scope.row.unit_amount) }}
           </template>
         </el-table-column>
-        <el-table-column label="Amount" min-width="140" align="right" header-align="right">
+          <el-table-column :label="t('billingCharges.fields.amount')" min-width="140" align="right" header-align="right">
           <template #default="scope">
             {{ formatAmount(scope.row.amount) }}
           </template>
         </el-table-column>
-        <el-table-column label="Created at" min-width="180">
-          <template #default="scope">
-            {{ formatTimestamp(scope.row.created_at) }}
-          </template>
+          <el-table-column :label="t('common.columns.createdAt')" min-width="180">
+            <template #default="scope">
+              {{ formatTimestamp(scope.row.created_at) }}
+            </template>
         </el-table-column>
       </el-table>
     </el-card>
