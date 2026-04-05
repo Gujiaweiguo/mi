@@ -6,6 +6,7 @@ COMMIT_SHA=${1:-$(git -C "$ROOT_DIR" rev-parse HEAD)}
 STARTED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 SOURCE_KIND=${SOURCE_KIND:-${GITHUB_ACTIONS:+github-actions}}
 SOURCE_KIND=${SOURCE_KIND:-local}
+CHANGE_NAME=${CHANGE_NAME:-legacy-system-migration}
 
 if [[ -z "${PLAYWRIGHT_EXECUTABLE_PATH:-}" ]]; then
   if [[ -x "/usr/bin/google-chrome" ]]; then
@@ -26,6 +27,7 @@ FINISHED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 python3 "$ROOT_DIR/scripts/verification/write-evidence.py" \
   --root "$ROOT_DIR" \
   --commit-sha "$COMMIT_SHA" \
+  --change "$CHANGE_NAME" \
   --test-type e2e \
   --status passed \
   --source-kind "$SOURCE_KIND" \
