@@ -19,12 +19,14 @@ import (
 	"github.com/testcontainers/testcontainers-go/wait"
 )
 
+var billingWorkflowNow = func() time.Time { return time.Date(2026, 4, 1, 9, 0, 0, 0, time.UTC) }
+
 func TestBillingServiceGenerateChargesAndDeduplicate(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
 
 	db := newBillingTestDB(t, ctx)
-	workflowService := workflow.NewService(db, workflow.NewRepository(db))
+	workflowService := workflow.NewService(db, workflow.NewRepositoryWithNowFunc(db, billingWorkflowNow))
 	leaseService := lease.NewService(db, lease.NewRepository(db), workflowService)
 	billingService := billing.NewService(db, billing.NewRepository(db))
 
@@ -64,7 +66,7 @@ func TestBillingServiceUsesAmendedLeaseForFutureCharges(t *testing.T) {
 	defer cancel()
 
 	db := newBillingTestDB(t, ctx)
-	workflowService := workflow.NewService(db, workflow.NewRepository(db))
+	workflowService := workflow.NewService(db, workflow.NewRepositoryWithNowFunc(db, billingWorkflowNow))
 	leaseService := lease.NewService(db, lease.NewRepository(db), workflowService)
 	billingService := billing.NewService(db, billing.NewRepository(db))
 
@@ -102,7 +104,7 @@ func TestBillingServiceProratesTerminationCutoff(t *testing.T) {
 	defer cancel()
 
 	db := newBillingTestDB(t, ctx)
-	workflowService := workflow.NewService(db, workflow.NewRepository(db))
+	workflowService := workflow.NewService(db, workflow.NewRepositoryWithNowFunc(db, billingWorkflowNow))
 	leaseService := lease.NewService(db, lease.NewRepository(db), workflowService)
 	billingService := billing.NewService(db, billing.NewRepository(db))
 

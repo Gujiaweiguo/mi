@@ -24,6 +24,8 @@ import (
 	"github.com/xuri/excelize/v2"
 )
 
+var taxWorkflowNow = func() time.Time { return time.Date(2026, 4, 1, 9, 0, 0, 0, time.UTC) }
+
 func TestTaxExportServiceGeneratesKingdeeWorkbook(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
@@ -136,7 +138,7 @@ func waitForDatabase(ctx context.Context, db *sql.DB) error {
 
 func prepareApprovedInvoice(t *testing.T, ctx context.Context, db *sql.DB) {
 	t.Helper()
-	workflowService := workflow.NewService(db, workflow.NewRepository(db))
+	workflowService := workflow.NewService(db, workflow.NewRepositoryWithNowFunc(db, taxWorkflowNow))
 	leaseService := lease.NewService(db, lease.NewRepository(db), workflowService)
 	billingRepo := billing.NewRepository(db)
 	billingService := billing.NewService(db, billingRepo)

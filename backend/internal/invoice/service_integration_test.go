@@ -21,11 +21,13 @@ import (
 	"github.com/testcontainers/testcontainers-go/wait"
 )
 
+var invoiceWorkflowNow = func() time.Time { return time.Date(2026, 4, 1, 9, 0, 0, 0, time.UTC) }
+
 func TestInvoiceServiceCreateApproveAndAudit(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
 	db := newInvoiceTestDB(t, ctx)
-	workflowService := workflow.NewService(db, workflow.NewRepository(db))
+	workflowService := workflow.NewService(db, workflow.NewRepositoryWithNowFunc(db, invoiceWorkflowNow))
 	leaseService := lease.NewService(db, lease.NewRepository(db), workflowService)
 	billingRepo := billing.NewRepository(db)
 	billingService := billing.NewService(db, billingRepo)
@@ -84,7 +86,7 @@ func TestInvoiceServiceBillNumberingAndCancel(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
 	db := newInvoiceTestDB(t, ctx)
-	workflowService := workflow.NewService(db, workflow.NewRepository(db))
+	workflowService := workflow.NewService(db, workflow.NewRepositoryWithNowFunc(db, invoiceWorkflowNow))
 	leaseService := lease.NewService(db, lease.NewRepository(db), workflowService)
 	billingRepo := billing.NewRepository(db)
 	billingService := billing.NewService(db, billingRepo)
@@ -130,7 +132,7 @@ func TestInvoiceServiceAdjustmentCreatesNewDraft(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
 	db := newInvoiceTestDB(t, ctx)
-	workflowService := workflow.NewService(db, workflow.NewRepository(db))
+	workflowService := workflow.NewService(db, workflow.NewRepositoryWithNowFunc(db, invoiceWorkflowNow))
 	leaseService := lease.NewService(db, lease.NewRepository(db), workflowService)
 	billingRepo := billing.NewRepository(db)
 	billingService := billing.NewService(db, billingRepo)
@@ -195,7 +197,7 @@ func TestInvoiceServiceRejectResubmitAndPreventChargeReuse(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
 	db := newInvoiceTestDB(t, ctx)
-	workflowService := workflow.NewService(db, workflow.NewRepository(db))
+	workflowService := workflow.NewService(db, workflow.NewRepositoryWithNowFunc(db, invoiceWorkflowNow))
 	leaseService := lease.NewService(db, lease.NewRepository(db), workflowService)
 	billingRepo := billing.NewRepository(db)
 	billingService := billing.NewService(db, billingRepo)
