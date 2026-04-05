@@ -24,6 +24,8 @@ import (
 	"github.com/testcontainers/testcontainers-go/wait"
 )
 
+var docOutputWorkflowNow = func() time.Time { return time.Date(2026, 4, 1, 9, 0, 0, 0, time.UTC) }
+
 func TestDocOutputServiceRendersInvoiceBatchGoldenHTMLAndPDF(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
@@ -106,7 +108,7 @@ func TestDocOutputServiceRendersInvoiceDetailGoldenHTML(t *testing.T) {
 
 func newDocOutputHarness(t *testing.T, ctx context.Context, db *sql.DB) (*docoutput.Service, int64, int64, string) {
 	t.Helper()
-	workflowService := workflow.NewService(db, workflow.NewRepository(db))
+	workflowService := workflow.NewService(db, workflow.NewRepositoryWithNowFunc(db, docOutputWorkflowNow))
 	leaseService := lease.NewService(db, lease.NewRepository(db), workflowService)
 	billingRepo := billing.NewRepository(db)
 	billingService := billing.NewService(db, billingRepo)
