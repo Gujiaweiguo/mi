@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
 const props = withDefaults(
   defineProps<{
     title?: string
@@ -18,6 +20,8 @@ const emit = defineEmits<{
   reset: []
 }>()
 
+const { t } = useI18n()
+
 const handleSubmit = () => emit('submit')
 const handleReset = () => emit('reset')
 </script>
@@ -26,7 +30,7 @@ const handleReset = () => emit('reset')
   <el-card class="filter-form" shadow="never">
     <template #header>
       <div class="filter-form__header">
-        <span>{{ props.title ?? 'Filters' }}</span>
+        <span>{{ props.title ?? t('filterForm.title') }}</span>
       </div>
     </template>
 
@@ -36,8 +40,8 @@ const handleReset = () => emit('reset')
       </div>
 
       <div v-if="props.showActions" class="filter-form__actions">
-        <el-button :disabled="props.resetDisabled" @click="handleReset">{{ props.resetLabel ?? 'Reset' }}</el-button>
-        <el-button type="primary" :loading="props.busy" @click="handleSubmit">{{ props.submitLabel ?? 'Apply filters' }}</el-button>
+        <el-button :disabled="props.resetDisabled" @click="handleReset">{{ props.resetLabel ?? t('filterForm.reset') }}</el-button>
+        <el-button type="primary" :loading="props.busy" @click="handleSubmit">{{ props.submitLabel ?? t('filterForm.submit') }}</el-button>
       </div>
     </el-form>
   </el-card>

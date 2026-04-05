@@ -1,30 +1,39 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
 export type DataTableColumn = {
   key: string
   label: string
   minWidth?: number
 }
 
-defineProps<{
+const props = defineProps<{
   title?: string
   rows: Record<string, unknown>[]
   columns: DataTableColumn[]
   emptyText?: string
 }>()
+
+const { t } = useI18n()
 </script>
 
 <template>
   <el-card class="data-table" shadow="never">
     <template #header>
       <div class="data-table__header">
-        <span>{{ title ?? 'Results' }}</span>
-        <el-tag effect="plain" type="info">{{ rows.length }} rows</el-tag>
+        <span>{{ props.title ?? t('dataTable.title') }}</span>
+        <el-tag effect="plain" type="info">{{ t('dataTable.rowCount', { count: props.rows.length }) }}</el-tag>
       </div>
     </template>
 
-    <el-table :data="rows" row-key="id" class="data-table__table" :empty-text="emptyText ?? 'No records found.'">
+    <el-table
+      :data="props.rows"
+      row-key="id"
+      class="data-table__table"
+      :empty-text="props.emptyText ?? t('dataTable.empty')"
+    >
       <el-table-column
-        v-for="column in columns"
+        v-for="column in props.columns"
         :key="column.key"
         :prop="column.key"
         :label="column.label"
