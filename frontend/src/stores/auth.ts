@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 
 import { canAccessFunction, normalizeSessionPermission } from '../auth/permissions'
 import { http } from '../api/http'
+import { translateMessage } from '../i18n'
 import type { PermissionAction, SessionUser } from '../types/auth'
 import { clearStoredAuthToken, readStoredAuthToken, writeStoredAuthToken } from './auth-storage'
 
@@ -112,7 +113,7 @@ export const getAuthErrorMessage = (error: unknown) => {
     axiosError.response?.data?.message ??
     axiosError.response?.data?.error ??
     axiosError.message ??
-    'Unable to complete authentication request.'
+    translateMessage('auth.errors.requestFailed')
   )
 }
 
@@ -129,7 +130,7 @@ export const getUserDisplayName = (user: AuthUser | null) => {
     }
   }
 
-  return 'Authenticated user'
+  return translateMessage('auth.fallbackUserDisplayName')
 }
 
 let initializeRequest: Promise<void> | null = null
@@ -169,7 +170,7 @@ export const useAuthStore = defineStore('auth', {
       const user = normalizeAuthUser(response.data)
 
       if (!user) {
-        throw new Error('Authenticated user profile is missing from the response.')
+        throw new Error(translateMessage('auth.errors.missingUserProfile'))
       }
 
       this.user = user
@@ -214,7 +215,7 @@ export const useAuthStore = defineStore('auth', {
         const token = extractAccessToken(response.data)
 
         if (!token) {
-          throw new Error('Login response did not include an access token.')
+          throw new Error(translateMessage('auth.errors.missingToken'))
         }
 
         this.setSessionToken(token)

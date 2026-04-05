@@ -5,8 +5,10 @@ import {
   canAccessFunction,
   filterNavigationItems,
   normalizeSessionPermission,
+  resolveNavigationItems,
   resolveAuthorizedHomePath,
 } from './permissions'
+import { setI18nLocale, translateMessage } from '../i18n'
 import type { SessionUser } from '../types/auth'
 
 const baseUser: SessionUser = {
@@ -61,5 +63,26 @@ describe('permission helpers', () => {
 
     expect(paths).toEqual(['/health', '/lease/contracts', '/excel/io'])
     expect(resolveAuthorizedHomePath(baseUser)).toBe('/health')
+  })
+
+  it('resolves navigation labels from locale messages', () => {
+    setI18nLocale('zh-CN')
+
+    expect(resolveNavigationItems(baseUser, (key) => translateMessage(key))).toEqual([
+      {
+        path: '/health',
+        label: '平台健康',
+      },
+      {
+        path: '/lease/contracts',
+        functionCode: FUNCTION_CODES.leaseContract,
+        label: '租赁合同',
+      },
+      {
+        path: '/excel/io',
+        functionCode: FUNCTION_CODES.excelIo,
+        label: 'Excel 导入导出',
+      },
+    ])
   })
 })

@@ -17,80 +17,84 @@ export const FUNCTION_CODES = {
 export type FunctionCode = (typeof FUNCTION_CODES)[keyof typeof FUNCTION_CODES]
 
 export type NavigationItem = {
-  label: string
   path: string
+  labelKey: string
   functionCode?: FunctionCode
   action?: PermissionAction
 }
 
+export type ResolvedNavigationItem = Omit<NavigationItem, 'labelKey'> & {
+  label: string
+}
+
 export const NAVIGATION_ITEMS: NavigationItem[] = [
   {
-    label: 'Platform health',
     path: '/health',
+    labelKey: 'app.navigation.health',
   },
   {
-    label: 'Workflow administration',
     path: '/workflow/admin',
+    labelKey: 'app.navigation.workflowAdmin',
     functionCode: FUNCTION_CODES.workflowAdmin,
   },
   {
-    label: 'Master data admin',
     path: '/admin/master-data',
+    labelKey: 'app.navigation.masterdataAdmin',
     functionCode: FUNCTION_CODES.masterdataAdmin,
   },
   {
-    label: 'Sales data admin',
     path: '/admin/sales',
+    labelKey: 'app.navigation.salesAdmin',
     functionCode: FUNCTION_CODES.salesAdmin,
   },
   {
-    label: 'Base info admin',
     path: '/admin/base-info',
+    labelKey: 'app.navigation.baseinfoAdmin',
     functionCode: FUNCTION_CODES.baseinfoAdmin,
   },
   {
-    label: 'Structure admin',
     path: '/admin/structure',
+    labelKey: 'app.navigation.structureAdmin',
     functionCode: FUNCTION_CODES.structureAdmin,
   },
   {
-    label: 'Rentable areas',
     path: '/admin/rentable-areas',
+    labelKey: 'app.navigation.rentableAreas',
     functionCode: FUNCTION_CODES.structureAdmin,
   },
   {
-    label: 'Lease contracts',
     path: '/lease/contracts',
+    labelKey: 'app.navigation.leaseContracts',
     functionCode: FUNCTION_CODES.leaseContract,
   },
   {
-    label: 'Billing charges',
     path: '/billing/charges',
+    labelKey: 'app.navigation.billingCharges',
     functionCode: FUNCTION_CODES.billingCharge,
   },
   {
-    label: 'Billing invoices',
     path: '/billing/invoices',
+    labelKey: 'app.navigation.billingInvoices',
     functionCode: FUNCTION_CODES.billingInvoice,
   },
   {
-    label: 'Tax exports',
     path: '/tax/exports',
+    labelKey: 'app.navigation.taxExports',
     functionCode: FUNCTION_CODES.taxExport,
   },
   {
-    label: 'Generalize reports',
     path: '/reports/generalize',
+    labelKey: 'app.navigation.generalizeReports',
     functionCode: FUNCTION_CODES.generalizeReport,
   },
   {
-    label: 'Visual shop analysis',
     path: '/reports/visual-shop',
+    labelKey: 'app.navigation.visualShopAnalysis',
     functionCode: FUNCTION_CODES.generalizeReport,
   },
   {
-    label: 'Excel import/export',
     path: '/excel/io',
+    labelKey: 'app.navigation.excelIo',
     functionCode: FUNCTION_CODES.excelIo,
   },
 ]
@@ -170,6 +174,12 @@ export const canAccessFunction = (
 
 export const filterNavigationItems = (user: SessionUser | null) =>
   NAVIGATION_ITEMS.filter((item) => canAccessFunction(user?.permissions, item.functionCode, item.action))
+
+export const resolveNavigationItems = (user: SessionUser | null, resolveLabel: (key: string) => string): ResolvedNavigationItem[] =>
+  filterNavigationItems(user).map(({ labelKey, ...item }) => ({
+    ...item,
+    label: resolveLabel(labelKey),
+  }))
 
 export const resolveAuthorizedHomePath = (user: SessionUser | null) =>
   filterNavigationItems(user)[0]?.path ?? '/health'

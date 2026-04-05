@@ -2,13 +2,16 @@
 import { computed, reactive, ref } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
+import LocaleSwitcher from '../components/platform/LocaleSwitcher.vue'
 import { DEFAULT_AUTHENTICATED_PATH } from '../router/auth-guard'
 import { useAuthStore } from '../stores/auth'
 
 const router = useRouter()
 const route = useRoute()
 const authStore = useAuthStore()
+const { t } = useI18n()
 
 const loginFormRef = ref<FormInstance>()
 const errorMessage = ref('')
@@ -17,22 +20,22 @@ const form = reactive({
   password: '',
 })
 
-const rules: FormRules<typeof form> = {
+const rules = computed<FormRules<typeof form>>(() => ({
   username: [
     {
       required: true,
-      message: 'Enter your username.',
+      message: t('login.validation.usernameRequired'),
       trigger: 'blur',
     },
   ],
   password: [
     {
       required: true,
-      message: 'Enter your password.',
+      message: t('login.validation.passwordRequired'),
       trigger: 'blur',
     },
   ],
-}
+}))
 
 const redirectTarget = computed(() => {
   const candidate = route.query.redirect
@@ -42,7 +45,7 @@ const redirectTarget = computed(() => {
     : DEFAULT_AUTHENTICATED_PATH
 })
 
-const submitLabel = computed(() => (authStore.isBusy ? 'Signing in…' : 'Sign in'))
+const submitLabel = computed(() => (authStore.isBusy ? t('login.actions.submitting') : t('login.actions.submit')))
 
 const handleSubmit = async () => {
   errorMessage.value = ''
@@ -56,7 +59,7 @@ const handleSubmit = async () => {
     await authStore.login({ ...form })
     await router.replace(redirectTarget.value)
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : 'Unable to sign in.'
+    errorMessage.value = error instanceof Error ? error.message : t('login.errors.unableToSignIn')
   }
 }
 </script>
@@ -64,18 +67,22 @@ const handleSubmit = async () => {
 <template>
   <div class="login-view" data-testid="login-view">
     <div class="login-view__hero">
-      <span class="login-view__eyebrow">Minimal auth foundation</span>
-      <h1 class="login-view__title">Sign in to continue</h1>
-      <p class="login-view__summary">
-        Use your backend credentials to access the protected MI migration shell.
-      </p>
+      <div class="login-view__hero-copy">
+        <span class="login-view__eyebrow">{{ t('login.eyebrow') }}</span>
+        <h1 class="login-view__title">{{ t('login.title') }}</h1>
+        <p class="login-view__summary">
+          {{ t('login.summary') }}
+        </p>
+      </div>
+
+      <LocaleSwitcher stacked test-id="login-locale-switcher" />
     </div>
 
     <el-card class="login-view__card" shadow="never">
       <template #header>
         <div class="login-view__card-header">
-          <span>Account access</span>
-          <el-tag type="info" effect="plain">Protected routes enabled</el-tag>
+          <span>{{ t('login.cardTitle') }}</span>
+          <el-tag type="info" effect="plain">{{ t('login.cardTag') }}</el-tag>
         </div>
       </template>
 
@@ -86,7 +93,7 @@ const handleSubmit = async () => {
         type="error"
         show-icon
         :description="errorMessage"
-        title="Sign-in failed"
+        :title="t('login.errorTitle')"
         data-testid="login-error-alert"
       />
 
@@ -97,22 +104,22 @@ const handleSubmit = async () => {
         label-position="top"
         class="login-view__form"
       >
-        <el-form-item label="Username" prop="username">
+        <el-form-item :label="t('login.fields.username')" prop="username">
           <el-input
             v-model="form.username"
             autocomplete="username"
-            placeholder="Enter your username"
+            :placeholder="t('login.placeholders.username')"
             data-testid="login-username-input"
           />
         </el-form-item>
 
-        <el-form-item label="Password" prop="password">
+        <el-form-item :label="t('login.fields.password')" prop="password">
           <el-input
             v-model="form.password"
             type="password"
             show-password
             autocomplete="current-password"
-            placeholder="Enter your password"
+            :placeholder="t('login.placeholders.password')"
             data-testid="login-password-input"
             @keyup.enter="handleSubmit"
           />
@@ -143,6 +150,13 @@ const handleSubmit = async () => {
 }
 
 .login-view__hero {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--mi-space-4);
+}
+
+.login-view__hero-copy {
   display: flex;
   flex-direction: column;
   gap: var(--mi-space-3);
@@ -202,6 +216,10 @@ const handleSubmit = async () => {
 }
 
 @media (max-width: 52rem) {
+  .login-view__hero {
+    flex-direction: column;
+  }
+
   .login-view__card-header {
     flex-direction: column;
     align-items: flex-start;
