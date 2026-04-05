@@ -11,11 +11,20 @@ import (
 )
 
 type Repository struct {
-	db *sql.DB
+	db  *sql.DB
+	now func() time.Time
 }
 
 func NewRepository(db *sql.DB) *Repository {
-	return &Repository{db: db}
+	return &Repository{db: db, now: time.Now().UTC}
+}
+
+func NewRepositoryWithNowFunc(db *sql.DB, now func() time.Time) *Repository {
+	repo := NewRepository(db)
+	if now != nil {
+		repo.now = now
+	}
+	return repo
 }
 
 func (r *Repository) FindDefinitionByCode(ctx context.Context, code string) (*Definition, error) {
@@ -89,7 +98,7 @@ func (r *Repository) listTransitionsByDefinition(ctx context.Context, definition
 }
 
 func (r *Repository) CreateInstance(ctx context.Context, tx *sql.Tx, definition *Definition, input StartInput, firstNode *Node) (*Instance, error) {
-	now := time.Now().UTC()
+	now := r.now()
 	result, err := tx.ExecContext(ctx, `
 		INSERT INTO workflow_instances (workflow_definition_id, document_type, document_id, status, current_node_id, current_step_order, current_cycle, version, submitted_by, submitted_at)
 		VALUES (?, ?, ?, ?, ?, ?, 1, 1, ?, ?)
@@ -201,7 +210,7 @@ func (r *Repository) FindCurrentStepForUpdate(ctx context.Context, tx *sql.Tx, i
 }
 
 func (r *Repository) UpdateStep(ctx context.Context, tx *sql.Tx, stepID int64, status StepStatus, actorID int64, comment string) error {
-	now := time.Now().UTC()
+	now := r.now()
 	var commentValue any
 	if strings.TrimSpace(comment) != "" {
 		commentValue = comment
@@ -238,7 +247,7 @@ func (r *Repository) UpdateInstanceState(ctx context.Context, tx *sql.Tx, instan
 	versionQuery := `UPDATE workflow_instances SET status = ?, current_node_id = ?, current_step_order = ?, current_cycle = ?, version = version + 1, updated_at = CURRENT_TIMESTAMP`
 	args := []any{status, currentNodeID, currentStepOrder, cycle}
 	if completed {
-		now := time.Now().UTC()
+		now := r.now()
 		versionQuery += `, completed_at = ?`
 		args = append(args, now)
 	}
