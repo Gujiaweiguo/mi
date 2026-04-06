@@ -85,6 +85,10 @@ const resolveStatusLabel = (status: string) => {
 
 const documentTypeTag = (type: string) => (type === 'bill' ? 'warning' : 'primary')
 
+const submitDisabled = computed(() => !invoice.value || isSubmitting.value || invoice.value.status !== 'draft')
+
+const cancelDisabled = computed(() => !invoice.value || isCancelling.value || invoice.value.status !== 'approved')
+
 const statusTag = (status: string) => {
   switch (status) {
     case 'draft':
@@ -202,6 +206,7 @@ watch(
       type="error"
       show-icon
       :description="errorMessage"
+      data-testid="invoice-detail-error-alert"
     />
 
     <el-alert
@@ -211,6 +216,7 @@ watch(
       type="success"
       show-icon
       :description="successMessage"
+      data-testid="invoice-detail-success-alert"
     />
 
     <el-skeleton v-if="isLoading" :rows="6" animated />
@@ -269,9 +275,9 @@ watch(
 
           <div class="invoice-detail-view__actions">
             <el-button
-              v-if="invoice.status === 'draft'"
               type="primary"
               :loading="isSubmitting"
+              :disabled="submitDisabled"
               data-testid="invoice-submit-button"
               @click="handleSubmit"
             >
@@ -279,10 +285,10 @@ watch(
             </el-button>
 
             <el-button
-              v-if="invoice.status === 'draft' || invoice.status === 'pending_approval'"
               type="danger"
               plain
               :loading="isCancelling"
+              :disabled="cancelDisabled"
               data-testid="invoice-cancel-button"
               @click="handleCancel"
             >
@@ -290,9 +296,10 @@ watch(
             </el-button>
 
             <el-tag
-              v-if="invoice.status === 'approved' || invoice.status === 'cancelled'"
+              v-if="submitDisabled && cancelDisabled"
               effect="plain"
-              :type="invoice.status === 'approved' ? 'success' : 'danger'"
+              :type="invoice.status === 'approved' ? 'success' : 'info'"
+              data-testid="invoice-no-actions-tag"
             >
               {{ t('invoiceDetail.actions.noFurtherActions', { status: resolveStatusLabel(invoice.status) }) }}
             </el-tag>

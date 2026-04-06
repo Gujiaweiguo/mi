@@ -134,6 +134,32 @@ func TestBillingServiceProratesTerminationCutoff(t *testing.T) {
 	}
 }
 
+func TestBillingServiceExcludesPendingApprovalLease(t *testing.T) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+	defer cancel()
+
+	db := newBillingTestDB(t, ctx)
+	workflowService := workflow.NewService(db, workflow.NewRepositoryWithNowFunc(db, billingWorkflowNow))
+	leaseService := lease.NewService(db, lease.NewRepository(db), workflowService)
+	billingService := billing.NewService(db, billing.NewRepository(db))
+
+	draft, err := leaseService.CreateDraft(ctx, newLeaseCreateInput("CON-B401", 12000, time.Date(2026, 4, 1, 0, 0, 0, 0, time.UTC), time.Date(2027, 3, 31, 0, 0, 0, 0, time.UTC)))
+	if err != nil {
+		t.Fatalf("create draft lease: %v", err)
+	}
+	if _, err := leaseService.SubmitForApproval(ctx, lease.SubmitInput{LeaseID: draft.ID, ActorUserID: 101, DepartmentID: 101, IdempotencyKey: "submit-b401", Comment: "submit lease"}); err != nil {
+		t.Fatalf("submit lease: %v", err)
+	}
+
+	result, err := billingService.GenerateCharges(ctx, billing.GenerateInput{PeriodStart: time.Date(2026, 4, 1, 0, 0, 0, 0, time.UTC), PeriodEnd: time.Date(2026, 4, 30, 0, 0, 0, 0, time.UTC), ActorUserID: 101})
+	if err != nil {
+		t.Fatalf("generate charges for pending lease: %v", err)
+	}
+	if result.Totals.Generated != 0 || len(result.Lines) != 0 {
+		t.Fatalf("expected pending-approval lease to be excluded from charge generation, got %#v", result)
+	}
+}
+
 func newBillingTestDB(t *testing.T, ctx context.Context) *sql.DB {
 	t.Helper()
 

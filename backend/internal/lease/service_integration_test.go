@@ -10,6 +10,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Gujiaweiguo/mi/backend/internal/billing"
+	"github.com/Gujiaweiguo/mi/backend/internal/invoice"
 	"github.com/Gujiaweiguo/mi/backend/internal/lease"
 	platformdb "github.com/Gujiaweiguo/mi/backend/internal/platform/database"
 	bootstrap "github.com/Gujiaweiguo/mi/backend/internal/platform/database/bootstrap"
@@ -234,6 +236,46 @@ func TestLeaseServiceTerminateActiveLease(t *testing.T) {
 	}
 	if terminated.Status != lease.StatusTerminated || terminated.BillingEligible() || terminated.TerminatedAt == nil {
 		t.Fatalf("expected terminated non-billing-effective lease, got %#v", terminated)
+	}
+}
+
+func TestLeaseServiceRejectsTerminateWhenBillingDocumentInFlight(t *testing.T) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+	defer cancel()
+
+	db := newLeaseTestDB(t, ctx)
+	workflowService := workflow.NewService(db, workflow.NewRepository(db))
+	leaseService := lease.NewService(db, lease.NewRepository(db), workflowService)
+	billingRepo := billing.NewRepository(db)
+	billingService := billing.NewService(db, billingRepo)
+	invoiceService := invoice.NewService(db, invoice.NewRepository(db), billingRepo, workflowService)
+
+	activeLease := activateLease(t, ctx, leaseService, workflowService, newLeaseCreateInput("CON-106", 101), "submit-con-106")
+	charges, err := billingService.GenerateCharges(ctx, billing.GenerateInput{PeriodStart: time.Date(2026, 4, 1, 0, 0, 0, 0, time.UTC), PeriodEnd: time.Date(2026, 4, 30, 0, 0, 0, 0, time.UTC), ActorUserID: 101})
+	if err != nil {
+		t.Fatalf("generate charges: %v", err)
+	}
+	if len(charges.Lines) != 1 {
+		t.Fatalf("expected one charge line, got %#v", charges)
+	}
+	document, err := invoiceService.CreateFromCharges(ctx, invoice.CreateInput{DocumentType: invoice.DocumentTypeInvoice, BillingChargeLineIDs: []int64{charges.Lines[0].ID}, ActorUserID: 101})
+	if err != nil {
+		t.Fatalf("create invoice document: %v", err)
+	}
+	if _, err := invoiceService.SubmitForApproval(ctx, invoice.SubmitInput{DocumentID: document.ID, ActorUserID: 101, DepartmentID: 101, IdempotencyKey: "submit-invoice-lease-106", Comment: "submit invoice"}); err != nil {
+		t.Fatalf("submit invoice document: %v", err)
+	}
+
+	if _, err := leaseService.Terminate(ctx, lease.TerminateInput{LeaseID: activeLease.ID, ActorUserID: 101, TerminatedAt: time.Date(2026, 10, 1, 0, 0, 0, 0, time.UTC)}); !errors.Is(err, lease.ErrLeaseHasBillingDocuments) {
+		t.Fatalf("expected terminate to fail with ErrLeaseHasBillingDocuments, got %v", err)
+	}
+
+	current, err := leaseService.GetLease(ctx, activeLease.ID)
+	if err != nil {
+		t.Fatalf("get lease after blocked terminate: %v", err)
+	}
+	if current.Status != lease.StatusActive || !current.BillingEligible() {
+		t.Fatalf("expected lease state preserved after blocked terminate, got %#v", current)
 	}
 }
 

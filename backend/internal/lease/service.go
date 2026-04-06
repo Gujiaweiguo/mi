@@ -16,6 +16,7 @@ var (
 	ErrLeaseNotFound                = errors.New("lease contract not found")
 	ErrInvalidLeaseState            = errors.New("invalid lease contract state")
 	ErrLeaseAlreadySubmitted        = errors.New("lease contract already submitted")
+	ErrLeaseHasBillingDocuments     = errors.New("lease contract has in-flight billing documents")
 	ErrDuplicateLeaseNo             = errors.New("duplicate lease contract number")
 	ErrLeaseIncompleteForSubmission = errors.New("lease contract is incomplete for submission")
 )
@@ -186,6 +187,13 @@ func (s *Service) Terminate(ctx context.Context, input TerminateInput) (*Contrac
 	}
 	if contract.Status != StatusActive {
 		return nil, ErrInvalidLeaseState
+	}
+	blockingDocuments, err := s.repository.CountBlockingBillingDocuments(ctx, tx, contract.ID)
+	if err != nil {
+		return nil, err
+	}
+	if blockingDocuments > 0 {
+		return nil, ErrLeaseHasBillingDocuments
 	}
 
 	if err := s.repository.Terminate(ctx, tx, contract.ID, input.ActorUserID, input.TerminatedAt); err != nil {

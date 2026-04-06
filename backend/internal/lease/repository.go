@@ -183,12 +183,25 @@ func (r *Repository) UpdateWorkflowState(ctx context.Context, tx *sql.Tx, leaseI
 func (r *Repository) Terminate(ctx context.Context, tx *sql.Tx, leaseID, updatedBy int64, terminatedAt time.Time) error {
 	if _, err := tx.ExecContext(ctx, `
 		UPDATE lease_contracts
-		SET status = ?, terminated_at = ?, billing_effective_at = NULL, updated_by = ?
+		SET status = ?, terminated_at = ?, updated_by = ?
 		WHERE id = ?
 	`, StatusTerminated, terminatedAt, updatedBy, leaseID); err != nil {
 		return fmt.Errorf("terminate lease contract: %w", err)
 	}
 	return nil
+}
+
+func (r *Repository) CountBlockingBillingDocuments(ctx context.Context, tx *sql.Tx, leaseID int64) (int64, error) {
+	var count int64
+	if err := tx.QueryRowContext(ctx, `
+		SELECT COUNT(*)
+		FROM billing_documents
+		WHERE lease_contract_id = ?
+		  AND status IN ('draft', 'pending_approval', 'approved', 'rejected')
+	`, leaseID).Scan(&count); err != nil {
+		return 0, fmt.Errorf("count blocking billing documents for lease: %w", err)
+	}
+	return count, nil
 }
 
 type rowScanner interface {

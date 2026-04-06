@@ -40,16 +40,10 @@ const submitDisabled = computed(() => {
     return true
   }
 
-  return (
-    isSubmitting.value ||
-    lease.value.status === 'submitted' ||
-    lease.value.status === 'pending_approval' ||
-    lease.value.status === 'approved' ||
-    lease.value.status === 'terminated'
-  )
+  return isSubmitting.value || lease.value.status !== 'draft'
 })
 
-const terminateDisabled = computed(() => !lease.value || isTerminating.value || lease.value.status === 'terminated')
+const terminateDisabled = computed(() => !lease.value || isTerminating.value || lease.value.status !== 'active')
 
 const formatDate = (value: string | null) => {
   if (!value) {
@@ -226,6 +220,7 @@ watch(
         type="error"
         show-icon
         :description="errorMessage"
+        data-testid="lease-detail-error-alert"
     />
 
     <el-alert
@@ -235,6 +230,7 @@ watch(
         type="success"
         show-icon
         :description="successMessage"
+        data-testid="lease-detail-success-alert"
     />
 
     <el-skeleton v-if="isLoading" :rows="6" animated />

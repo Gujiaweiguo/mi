@@ -126,6 +126,13 @@ func TestInvoiceServiceBillNumberingAndCancel(t *testing.T) {
 	if cancelled.Status != invoice.StatusCancelled || cancelled.CancelledAt == nil {
 		t.Fatalf("expected cancelled bill document, got %#v", cancelled)
 	}
+	replayedCancel, err := invoiceService.Cancel(ctx, invoice.CancelInput{DocumentID: document.ID, ActorUserID: 101})
+	if err != nil {
+		t.Fatalf("replay cancel bill document: %v", err)
+	}
+	if replayedCancel.Status != invoice.StatusCancelled || replayedCancel.CancelledAt == nil {
+		t.Fatalf("expected replayed cancel to preserve cancelled bill document, got %#v", replayedCancel)
+	}
 }
 
 func TestInvoiceServiceAdjustmentCreatesNewDraft(t *testing.T) {

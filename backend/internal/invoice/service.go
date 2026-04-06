@@ -143,6 +143,12 @@ func (s *Service) Cancel(ctx context.Context, input CancelInput) (*Document, err
 	if document == nil {
 		return nil, ErrDocumentNotFound
 	}
+	if document.Status == StatusCancelled {
+		if err := tx.Commit(); err != nil {
+			return nil, fmt.Errorf("commit duplicate billing document cancel transaction: %w", err)
+		}
+		return s.repository.FindByID(ctx, document.ID)
+	}
 	if document.Status != StatusApproved {
 		return nil, ErrInvalidDocumentState
 	}

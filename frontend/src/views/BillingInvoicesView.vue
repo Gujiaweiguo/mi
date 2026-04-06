@@ -17,6 +17,8 @@ const rows = ref<InvoiceDocument[]>([])
 const total = ref(0)
 const isLoading = ref(false)
 const errorMessage = ref('')
+const successMessage = ref('')
+const actionDocumentId = ref<number | null>(null)
 
 const { filters, isDirty, reset } = useFilterForm({
   document_type: '',
@@ -114,20 +116,34 @@ const openInvoice = (id: number) => {
 }
 
 const handleSubmit = async (row: InvoiceDocument) => {
+  actionDocumentId.value = row.id
+  errorMessage.value = ''
+  successMessage.value = ''
+
   try {
     await submitInvoice(row.id, { idempotency_key: crypto.randomUUID() })
-    void loadInvoices()
+    successMessage.value = t('billingInvoices.actions.submit')
+    await loadInvoices()
   } catch (error) {
     errorMessage.value = error instanceof Error ? error.message : t('billingInvoices.errors.unableToSubmit')
+  } finally {
+    actionDocumentId.value = null
   }
 }
 
 const handleCancel = async (row: InvoiceDocument) => {
+  actionDocumentId.value = row.id
+  errorMessage.value = ''
+  successMessage.value = ''
+
   try {
     await cancelInvoice(row.id)
-    void loadInvoices()
+    successMessage.value = t('billingInvoices.actions.cancel')
+    await loadInvoices()
   } catch (error) {
     errorMessage.value = error instanceof Error ? error.message : t('billingInvoices.errors.unableToCancel')
+  } finally {
+    actionDocumentId.value = null
   }
 }
 
@@ -152,6 +168,18 @@ onMounted(() => {
       type="error"
       show-icon
       :description="errorMessage"
+      data-testid="billing-invoices-error-alert"
+    />
+
+    <el-alert
+      v-if="successMessage"
+      :closable="false"
+      class="billing-invoices-view__alert"
+      :title="t('invoiceDetail.feedback.actionCompleted')"
+      type="success"
+      show-icon
+      :description="successMessage"
+      data-testid="billing-invoices-success-alert"
     />
 
     <FilterForm
@@ -237,21 +265,23 @@ onMounted(() => {
         </el-table-column>
         <el-table-column :label="t('common.columns.actions')" min-width="200" fixed="right">
           <template #default="scope">
-            <el-button link type="primary" @click.stop="openInvoice(scope.row.id)">
+            <el-button link type="primary" :data-testid="`invoice-row-view-button-${scope.row.id}`" @click.stop="openInvoice(scope.row.id)">
               {{ t('common.actions.view') }}
             </el-button>
             <el-button
-              v-if="scope.row.status === 'draft'"
               link
               type="primary"
+              :disabled="scope.row.status !== 'draft' || actionDocumentId === scope.row.id"
+              :data-testid="`invoice-row-submit-button-${scope.row.id}`"
               @click.stop="handleSubmit(scope.row)"
             >
               {{ t('billingInvoices.actions.submit') }}
             </el-button>
             <el-button
-              v-if="scope.row.status === 'draft' || scope.row.status === 'pending_approval'"
               link
               type="danger"
+              :disabled="scope.row.status !== 'approved' || actionDocumentId === scope.row.id"
+              :data-testid="`invoice-row-cancel-button-${scope.row.id}`"
               @click.stop="handleCancel(scope.row)"
             >
               {{ t('billingInvoices.actions.cancel') }}

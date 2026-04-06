@@ -1298,8 +1298,8 @@ func TestIntegrationAuthAndOrgRoutes(t *testing.T) {
 	if err := json.Unmarshal(originalLeaseGetRecorder.Body.Bytes(), &originalLeaseBody); err != nil {
 		t.Fatalf("decode original lease response after amendment: %v", err)
 	}
-	if originalLeaseBody.Lease.Status != "terminated" || originalLeaseBody.Lease.BillingEffectiveAt != nil {
-		t.Fatalf("expected original lease terminated after amendment, got body=%s", originalLeaseGetRecorder.Body.String())
+	if originalLeaseBody.Lease.Status != "terminated" || originalLeaseBody.Lease.BillingEffectiveAt == nil {
+		t.Fatalf("expected original lease terminated while preserving billing-effective timestamp after amendment, got body=%s", originalLeaseGetRecorder.Body.String())
 	}
 
 	amendedLeaseGetRecorder := httptest.NewRecorder()
@@ -1647,8 +1647,8 @@ func TestIntegrationAuthAndOrgRoutes(t *testing.T) {
 	if err := json.Unmarshal(terminatedLeaseGetRecorder.Body.Bytes(), &terminatedLeaseBody); err != nil {
 		t.Fatalf("decode terminated lease get response: %v", err)
 	}
-	if terminatedLeaseBody.Lease.Status != "terminated" || terminatedLeaseBody.Lease.BillingEffectiveAt != nil {
-		t.Fatalf("expected terminated lease not billing-effective, got body=%s", terminatedLeaseGetRecorder.Body.String())
+	if terminatedLeaseBody.Lease.Status != "terminated" || terminatedLeaseBody.Lease.BillingEffectiveAt == nil {
+		t.Fatalf("expected terminated lease to preserve billing-effective timestamp for proration, got body=%s", terminatedLeaseGetRecorder.Body.String())
 	}
 
 	unauthorizedRecorder := httptest.NewRecorder()

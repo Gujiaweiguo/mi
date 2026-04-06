@@ -65,12 +65,12 @@ func (r *Repository) InsertChargeLine(ctx context.Context, tx *sql.Tx, line *Cha
 func (r *Repository) ListChargeCandidates(ctx context.Context, periodStart, periodEnd time.Time) ([]chargeCandidate, error) {
 	rows, err := r.db.QueryContext(ctx, `
 		SELECT lc.id, lc.lease_no, lc.tenant_name, lc.status, lc.start_date, lc.end_date,
-			COALESCE(lc.billing_effective_at, lc.approved_at), lc.terminated_at, lc.effective_version,
+			lc.billing_effective_at, lc.terminated_at, lc.effective_version,
 			lt.id, lt.term_type, lt.billing_cycle, lt.currency_type_id, lt.amount, lt.effective_from, lt.effective_to
 		FROM lease_contracts lc
 		INNER JOIN lease_contract_terms lt ON lt.lease_contract_id = lc.id
 		WHERE lc.status IN ('active', 'terminated')
-		  AND lc.approved_at IS NOT NULL
+		  AND lc.billing_effective_at IS NOT NULL
 		  AND lt.term_type = 'rent'
 		  AND lt.billing_cycle = 'monthly'
 		  AND lc.start_date <= ?

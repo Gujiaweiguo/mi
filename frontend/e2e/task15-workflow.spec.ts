@@ -624,6 +624,7 @@ test('completes the task 15 lease to billing output workflow with stable test id
   await page.getByTestId('lease-submit-button').click()
   await expect(page.getByText('9001')).toBeVisible()
   await expect(page.getByTestId('lease-submit-button')).toBeDisabled()
+  await expect(page.getByTestId('lease-terminate-button')).toBeDisabled()
 
   await page.goto('/billing/charges')
   await expect(page.getByTestId('billing-charges-view')).toBeVisible()
@@ -639,19 +640,14 @@ test('completes the task 15 lease to billing output workflow with stable test id
   await page.goto('/billing/invoices')
   await expect(page.getByTestId('billing-invoices-view')).toBeVisible()
   await expect(page.getByText('INV-2026-0001')).toBeVisible()
-  await page
-    .getByTestId('invoices-table')
-    .locator('.el-table__row')
-    .filter({ hasText: 'INV-2026-0001' })
-    .locator('button')
-    .first()
-    .click()
+  await page.getByTestId('invoice-row-view-button-501').click()
 
   await expect(page).toHaveURL(/\/billing\/invoices\/501/)
   await expect(page.getByTestId('invoice-detail-view')).toBeVisible()
   await page.getByTestId('invoice-submit-button').click()
   await expect(page.getByText('9101')).toBeVisible()
-  await expect(page.getByTestId('invoice-submit-button')).toHaveCount(0)
+  await expect(page.getByTestId('invoice-submit-button')).toBeDisabled()
+  await expect(page.getByTestId('invoice-cancel-button')).toBeDisabled()
 
   await page.goto('/tax/exports')
   await expect(page.getByTestId('tax-exports-view')).toBeVisible()
