@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import {
   createCurrencyType,
@@ -56,6 +57,7 @@ const storeTypes = ref<ReferenceCatalogItem[]>([])
 const shopTypes = ref<ReferenceCatalogItem[]>([])
 const currencyTypes = ref<ReferenceCatalogItem[]>([])
 const tradeDefinitions = ref<ReferenceCatalogItem[]>([])
+const { t, locale } = useI18n()
 
 const pageFeedback = ref<Feedback | null>(null)
 const storeTypeFeedback = ref<Feedback | null>(null)
@@ -148,22 +150,34 @@ const getErrorMessage = (error: unknown, fallback: string) => (error instanceof 
 
 const formatDate = (value: string) => {
   if (!value) {
-    return '—'
+    return t('common.emptyValue')
   }
 
-  return new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' }).format(new Date(value))
+  return new Intl.DateTimeFormat(locale.value, { dateStyle: 'medium' }).format(new Date(value))
+}
+
+const resolveStatusLabel = (status: string | undefined) => {
+  if (status === 'active') {
+    return t('common.statuses.active')
+  }
+
+  if (status === 'inactive') {
+    return t('common.statuses.inactive')
+  }
+
+  return status ?? t('common.emptyValue')
 }
 
 const resolveStatusTag = (status: string | undefined) => {
   if (status === 'active') {
-    return { label: status, type: 'success' as const }
+    return { label: resolveStatusLabel(status), type: 'success' as const }
   }
 
   if (status === 'inactive') {
-    return { label: status, type: 'info' as const }
+    return { label: resolveStatusLabel(status), type: 'info' as const }
   }
 
-  return { label: status ?? '—', type: 'info' as const }
+  return { label: resolveStatusLabel(status), type: 'info' as const }
 }
 
 const resetStoreTypeForm = () => {
@@ -220,34 +234,34 @@ const loadBaseInfo = async () => {
     storeTypes.value = storeTypesResult.value.data.store_types ?? []
   } else {
     storeTypes.value = []
-    loadErrors.push(getErrorMessage(storeTypesResult.reason, 'Unable to load store types.'))
+    loadErrors.push(getErrorMessage(storeTypesResult.reason, t('baseinfoAdmin.errors.unableToLoadStoreTypes')))
   }
 
   if (shopTypesResult.status === 'fulfilled') {
     shopTypes.value = shopTypesResult.value.data.shop_types ?? []
   } else {
     shopTypes.value = []
-    loadErrors.push(getErrorMessage(shopTypesResult.reason, 'Unable to load shop types.'))
+    loadErrors.push(getErrorMessage(shopTypesResult.reason, t('baseinfoAdmin.errors.unableToLoadShopTypes')))
   }
 
   if (currencyTypesResult.status === 'fulfilled') {
     currencyTypes.value = currencyTypesResult.value.data.currency_types ?? []
   } else {
     currencyTypes.value = []
-    loadErrors.push(getErrorMessage(currencyTypesResult.reason, 'Unable to load currency types.'))
+    loadErrors.push(getErrorMessage(currencyTypesResult.reason, t('baseinfoAdmin.errors.unableToLoadCurrencyTypes')))
   }
 
   if (tradeDefinitionsResult.status === 'fulfilled') {
     tradeDefinitions.value = tradeDefinitionsResult.value.data.trade_definitions ?? []
   } else {
     tradeDefinitions.value = []
-    loadErrors.push(getErrorMessage(tradeDefinitionsResult.reason, 'Unable to load trade definitions.'))
+    loadErrors.push(getErrorMessage(tradeDefinitionsResult.reason, t('baseinfoAdmin.errors.unableToLoadTradeDefinitions')))
   }
 
   if (loadErrors.length > 0) {
     pageFeedback.value = {
       type: 'error',
-      title: 'Base info catalogs unavailable',
+      title: t('baseinfoAdmin.errors.catalogsUnavailable'),
       description: loadErrors.join(' '),
     }
   }
@@ -259,8 +273,8 @@ const handleCreateStoreType = async () => {
   if (!canCreateStoreType.value) {
     storeTypeFeedback.value = {
       type: 'warning',
-      title: 'Store type details required',
-      description: 'Enter both a store type code and name before creating a record.',
+      title: t('baseinfoAdmin.feedback.storeTypeDetailsRequiredTitle'),
+      description: t('baseinfoAdmin.feedback.storeTypeDetailsRequiredDescription'),
     }
     return
   }
@@ -276,15 +290,15 @@ const handleCreateStoreType = async () => {
     storeTypes.value = [response.data.store_type, ...storeTypes.value]
     storeTypeFeedback.value = {
       type: 'success',
-      title: 'Store type created',
-      description: `Store type "${response.data.store_type.code}" is now available for assignment.`,
+      title: t('baseinfoAdmin.feedback.storeTypeCreatedTitle'),
+      description: t('baseinfoAdmin.feedback.storeTypeCreatedDescription', { code: response.data.store_type.code }),
     }
     resetStoreTypeForm()
   } catch (error) {
     storeTypeFeedback.value = {
       type: 'error',
-      title: 'Store type creation failed',
-      description: getErrorMessage(error, 'Unable to create the store type.'),
+      title: t('baseinfoAdmin.errors.storeTypeCreationFailed'),
+      description: getErrorMessage(error, t('baseinfoAdmin.errors.unableToCreateStoreType')),
     }
   } finally {
     isStoreTypeSaving.value = false
@@ -295,8 +309,8 @@ const handleCreateShopType = async () => {
   if (!canCreateShopType.value) {
     shopTypeFeedback.value = {
       type: 'warning',
-      title: 'Shop type details required',
-      description: 'Enter both a shop type code and name before creating a record.',
+      title: t('baseinfoAdmin.feedback.shopTypeDetailsRequiredTitle'),
+      description: t('baseinfoAdmin.feedback.shopTypeDetailsRequiredDescription'),
     }
     return
   }
@@ -314,15 +328,15 @@ const handleCreateShopType = async () => {
     shopTypes.value = [response.data.shop_type, ...shopTypes.value]
     shopTypeFeedback.value = {
       type: 'success',
-      title: 'Shop type created',
-      description: `Shop type "${response.data.shop_type.code}" is now available for store setup.`,
+      title: t('baseinfoAdmin.feedback.shopTypeCreatedTitle'),
+      description: t('baseinfoAdmin.feedback.shopTypeCreatedDescription', { code: response.data.shop_type.code }),
     }
     resetShopTypeForm()
   } catch (error) {
     shopTypeFeedback.value = {
       type: 'error',
-      title: 'Shop type creation failed',
-      description: getErrorMessage(error, 'Unable to create the shop type.'),
+      title: t('baseinfoAdmin.errors.shopTypeCreationFailed'),
+      description: getErrorMessage(error, t('baseinfoAdmin.errors.unableToCreateShopType')),
     }
   } finally {
     isShopTypeSaving.value = false
@@ -333,8 +347,8 @@ const handleCreateCurrencyType = async () => {
   if (!canCreateCurrencyType.value) {
     currencyTypeFeedback.value = {
       type: 'warning',
-      title: 'Currency type details required',
-      description: 'Enter both a currency code and name before creating a record.',
+      title: t('baseinfoAdmin.feedback.currencyTypeDetailsRequiredTitle'),
+      description: t('baseinfoAdmin.feedback.currencyTypeDetailsRequiredDescription'),
     }
     return
   }
@@ -352,15 +366,15 @@ const handleCreateCurrencyType = async () => {
     currencyTypes.value = [response.data.currency_type, ...currencyTypes.value]
     currencyTypeFeedback.value = {
       type: 'success',
-      title: 'Currency type created',
-      description: `Currency "${response.data.currency_type.code}" is now available for invoices and reporting.`,
+      title: t('baseinfoAdmin.feedback.currencyTypeCreatedTitle'),
+      description: t('baseinfoAdmin.feedback.currencyTypeCreatedDescription', { code: response.data.currency_type.code }),
     }
     resetCurrencyTypeForm()
   } catch (error) {
     currencyTypeFeedback.value = {
       type: 'error',
-      title: 'Currency type creation failed',
-      description: getErrorMessage(error, 'Unable to create the currency type.'),
+      title: t('baseinfoAdmin.errors.currencyTypeCreationFailed'),
+      description: getErrorMessage(error, t('baseinfoAdmin.errors.unableToCreateCurrencyType')),
     }
   } finally {
     isCurrencyTypeSaving.value = false
@@ -371,8 +385,8 @@ const handleCreateTradeDefinition = async () => {
   if (!canCreateTradeDefinition.value) {
     tradeDefinitionFeedback.value = {
       type: 'warning',
-      title: 'Trade definition details required',
-      description: 'Enter both a trade definition code and name before creating a record.',
+      title: t('baseinfoAdmin.feedback.tradeDefinitionDetailsRequiredTitle'),
+      description: t('baseinfoAdmin.feedback.tradeDefinitionDetailsRequiredDescription'),
     }
     return
   }
@@ -391,15 +405,15 @@ const handleCreateTradeDefinition = async () => {
     tradeDefinitions.value = [response.data.trade_definition, ...tradeDefinitions.value]
     tradeDefinitionFeedback.value = {
       type: 'success',
-      title: 'Trade definition created',
-      description: `Trade definition "${response.data.trade_definition.code}" is now available for customer and reporting setup.`,
+      title: t('baseinfoAdmin.feedback.tradeDefinitionCreatedTitle'),
+      description: t('baseinfoAdmin.feedback.tradeDefinitionCreatedDescription', { code: response.data.trade_definition.code }),
     }
     resetTradeDefinitionForm()
   } catch (error) {
     tradeDefinitionFeedback.value = {
       type: 'error',
-      title: 'Trade definition creation failed',
-      description: getErrorMessage(error, 'Unable to create the trade definition.'),
+      title: t('baseinfoAdmin.errors.tradeDefinitionCreationFailed'),
+      description: getErrorMessage(error, t('baseinfoAdmin.errors.unableToCreateTradeDefinition')),
     }
   } finally {
     isTradeDefinitionSaving.value = false
@@ -457,8 +471,8 @@ const handleUpdateStoreType = async () => {
   } catch (error) {
     storeTypeFeedback.value = {
       type: 'error',
-      title: 'Store type update failed',
-      description: getErrorMessage(error, 'Unable to update the store type.'),
+      title: t('baseinfoAdmin.errors.storeTypeUpdateFailed'),
+      description: getErrorMessage(error, t('baseinfoAdmin.errors.unableToUpdateStoreType')),
     }
   } finally {
     isStoreTypeUpdating.value = false
@@ -483,8 +497,8 @@ const handleUpdateShopType = async () => {
   } catch (error) {
     shopTypeFeedback.value = {
       type: 'error',
-      title: 'Shop type update failed',
-      description: getErrorMessage(error, 'Unable to update the shop type.'),
+      title: t('baseinfoAdmin.errors.shopTypeUpdateFailed'),
+      description: getErrorMessage(error, t('baseinfoAdmin.errors.unableToUpdateShopType')),
     }
   } finally {
     isShopTypeUpdating.value = false
@@ -509,8 +523,8 @@ const handleUpdateCurrencyType = async () => {
   } catch (error) {
     currencyTypeFeedback.value = {
       type: 'error',
-      title: 'Currency type update failed',
-      description: getErrorMessage(error, 'Unable to update the currency type.'),
+      title: t('baseinfoAdmin.errors.currencyTypeUpdateFailed'),
+      description: getErrorMessage(error, t('baseinfoAdmin.errors.unableToUpdateCurrencyType')),
     }
   } finally {
     isCurrencyTypeUpdating.value = false
@@ -536,8 +550,8 @@ const handleUpdateTradeDefinition = async () => {
   } catch (error) {
     tradeDefinitionFeedback.value = {
       type: 'error',
-      title: 'Trade definition update failed',
-      description: getErrorMessage(error, 'Unable to update the trade definition.'),
+      title: t('baseinfoAdmin.errors.tradeDefinitionUpdateFailed'),
+      description: getErrorMessage(error, t('baseinfoAdmin.errors.unableToUpdateTradeDefinition')),
     }
   } finally {
     isTradeDefinitionUpdating.value = false
@@ -552,14 +566,14 @@ onMounted(() => {
 <template>
   <div class="baseinfo-admin-view" data-testid="baseinfo-admin-view">
     <PageSection
-      eyebrow="Reference catalogs"
-      title="Base info admin"
-      summary="Maintain foundational reference catalogs used throughout the new workflow (store types, shop types, currencies, and trade definitions)."
+      :eyebrow="t('baseinfoAdmin.eyebrow')"
+      :title="t('baseinfoAdmin.title')"
+      :summary="t('baseinfoAdmin.summary')"
     >
       <template #actions>
-        <el-tag effect="plain" type="info">{{ storeTypes.length }} store types</el-tag>
-        <el-tag effect="plain" type="success">{{ shopTypes.length }} shop types</el-tag>
-        <el-tag effect="plain" type="warning">{{ currencyTypes.length }} currencies</el-tag>
+        <el-tag effect="plain" type="info">{{ t('baseinfoAdmin.tags.storeTypes', { count: storeTypes.length }) }}</el-tag>
+        <el-tag effect="plain" type="success">{{ t('baseinfoAdmin.tags.shopTypes', { count: shopTypes.length }) }}</el-tag>
+        <el-tag effect="plain" type="warning">{{ t('baseinfoAdmin.tags.currencies', { count: currencyTypes.length }) }}</el-tag>
       </template>
     </PageSection>
 
@@ -576,10 +590,10 @@ onMounted(() => {
       <el-card class="baseinfo-admin-view__card" shadow="never">
         <template #header>
           <div class="baseinfo-admin-view__card-header">
-            <span>Store types</span>
+            <span>{{ t('baseinfoAdmin.cards.storeTypes') }}</span>
             <div class="baseinfo-admin-view__card-actions">
-              <el-tag effect="plain" type="info">{{ storeTypes.length }} total</el-tag>
-              <el-button :loading="isLoading" @click="loadBaseInfo">Refresh</el-button>
+              <el-tag effect="plain" type="info">{{ t('common.total', { count: storeTypes.length }) }}</el-tag>
+              <el-button :loading="isLoading" @click="loadBaseInfo">{{ t('common.actions.refresh') }}</el-button>
             </div>
           </div>
         </template>
@@ -596,17 +610,17 @@ onMounted(() => {
 
         <el-form label-position="top" class="baseinfo-admin-view__form" @submit.prevent>
           <div class="baseinfo-admin-view__form-grid">
-            <el-form-item label="Code">
+            <el-form-item :label="t('baseinfoAdmin.fields.code')">
               <el-input
                 v-model="storeTypeForm.code"
-                placeholder="e.g. outlet"
+                :placeholder="t('baseinfoAdmin.placeholders.storeTypeCode')"
                 data-testid="baseinfo-store-type-code-input"
               />
             </el-form-item>
-            <el-form-item label="Name">
+            <el-form-item :label="t('baseinfoAdmin.fields.name')">
               <el-input
                 v-model="storeTypeForm.name"
-                placeholder="e.g. Outlet"
+                :placeholder="t('baseinfoAdmin.placeholders.storeTypeName')"
                 data-testid="baseinfo-store-type-name-input"
               />
             </el-form-item>
@@ -620,7 +634,7 @@ onMounted(() => {
               data-testid="baseinfo-store-type-create-button"
               @click="handleCreateStoreType"
             >
-              Create store type
+              {{ t('baseinfoAdmin.actions.createStoreType') }}
             </el-button>
           </div>
         </el-form>
@@ -629,18 +643,18 @@ onMounted(() => {
           :data="storeTypes"
           row-key="id"
           class="baseinfo-admin-view__table"
-          :empty-text="isLoading ? 'Loading store types…' : 'No store types available.'"
+          :empty-text="isLoading ? t('baseinfoAdmin.table.loadingStoreTypes') : t('baseinfoAdmin.table.emptyStoreTypes')"
         >
-          <el-table-column prop="code" label="Code" min-width="140" />
-          <el-table-column prop="name" label="Name" min-width="220" />
-          <el-table-column label="Updated" min-width="160">
+          <el-table-column prop="code" :label="t('baseinfoAdmin.fields.code')" min-width="140" />
+          <el-table-column prop="name" :label="t('baseinfoAdmin.fields.name')" min-width="220" />
+          <el-table-column :label="t('baseinfoAdmin.fields.updated')" min-width="160">
             <template #default="scope">
               {{ formatDate(scope.row.updated_at) }}
             </template>
           </el-table-column>
-          <el-table-column label="Actions" min-width="120" fixed="right">
+          <el-table-column :label="t('common.columns.actions')" min-width="120" fixed="right">
             <template #default="scope">
-              <el-button size="small" @click="openStoreTypeEdit(scope.row)">Edit</el-button>
+              <el-button size="small" @click="openStoreTypeEdit(scope.row)">{{ t('common.actions.edit') }}</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -649,10 +663,10 @@ onMounted(() => {
       <el-card class="baseinfo-admin-view__card" shadow="never">
         <template #header>
           <div class="baseinfo-admin-view__card-header">
-            <span>Shop types</span>
+            <span>{{ t('baseinfoAdmin.cards.shopTypes') }}</span>
             <div class="baseinfo-admin-view__card-actions">
-              <el-tag effect="plain" type="info">{{ shopTypes.length }} total</el-tag>
-              <el-button :loading="isLoading" @click="loadBaseInfo">Refresh</el-button>
+              <el-tag effect="plain" type="info">{{ t('common.total', { count: shopTypes.length }) }}</el-tag>
+              <el-button :loading="isLoading" @click="loadBaseInfo">{{ t('common.actions.refresh') }}</el-button>
             </div>
           </div>
         </template>
@@ -669,31 +683,31 @@ onMounted(() => {
 
         <el-form label-position="top" class="baseinfo-admin-view__form" @submit.prevent>
           <div class="baseinfo-admin-view__form-grid baseinfo-admin-view__form-grid--wide">
-            <el-form-item label="Code">
-              <el-input v-model="shopTypeForm.code" placeholder="e.g. lifestyle" />
+            <el-form-item :label="t('baseinfoAdmin.fields.code')">
+              <el-input v-model="shopTypeForm.code" :placeholder="t('baseinfoAdmin.placeholders.shopTypeCode')" />
             </el-form-item>
-            <el-form-item label="Name">
-              <el-input v-model="shopTypeForm.name" placeholder="e.g. Lifestyle" />
+            <el-form-item :label="t('baseinfoAdmin.fields.name')">
+              <el-input v-model="shopTypeForm.name" :placeholder="t('baseinfoAdmin.placeholders.shopTypeName')" />
             </el-form-item>
-            <el-form-item label="Color hex">
+            <el-form-item :label="t('baseinfoAdmin.fields.colorHex')">
               <div class="baseinfo-admin-view__color-input">
                 <span
                   class="baseinfo-admin-view__color-swatch"
                   :style="{ background: shopTypeForm.color_hex.trim() || 'transparent' }"
                 />
-                <el-input v-model="shopTypeForm.color_hex" placeholder="#112233" />
+                <el-input v-model="shopTypeForm.color_hex" :placeholder="t('baseinfoAdmin.placeholders.colorHex')" />
               </div>
             </el-form-item>
-            <el-form-item label="Status">
+            <el-form-item :label="t('common.columns.status')">
               <el-select v-model="shopTypeForm.status">
-                <el-option v-for="option in statusOptions" :key="option" :label="option" :value="option" />
+                <el-option v-for="option in statusOptions" :key="option" :label="resolveStatusLabel(option)" :value="option" />
               </el-select>
             </el-form-item>
           </div>
 
           <div class="baseinfo-admin-view__form-actions">
             <el-button type="primary" :loading="isShopTypeSaving" :disabled="!canCreateShopType" @click="handleCreateShopType">
-              Create shop type
+              {{ t('baseinfoAdmin.actions.createShopType') }}
             </el-button>
           </div>
         </el-form>
@@ -702,36 +716,36 @@ onMounted(() => {
           :data="shopTypes"
           row-key="id"
           class="baseinfo-admin-view__table"
-          :empty-text="isLoading ? 'Loading shop types…' : 'No shop types available.'"
+          :empty-text="isLoading ? t('baseinfoAdmin.table.loadingShopTypes') : t('baseinfoAdmin.table.emptyShopTypes')"
         >
-          <el-table-column prop="code" label="Code" min-width="140" />
-          <el-table-column prop="name" label="Name" min-width="200" />
-          <el-table-column label="Color" min-width="120">
+          <el-table-column prop="code" :label="t('baseinfoAdmin.fields.code')" min-width="140" />
+          <el-table-column prop="name" :label="t('baseinfoAdmin.fields.name')" min-width="200" />
+          <el-table-column :label="t('baseinfoAdmin.fields.colorHex')" min-width="120">
             <template #default="scope">
               <div class="baseinfo-admin-view__color-cell">
                 <span
                   class="baseinfo-admin-view__color-swatch"
                   :style="{ background: scope.row.color_hex ?? 'transparent' }"
                 />
-                <span class="baseinfo-admin-view__muted">{{ scope.row.color_hex ?? '—' }}</span>
+                <span class="baseinfo-admin-view__muted">{{ scope.row.color_hex ?? t('common.emptyValue') }}</span>
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="Status" min-width="120">
+          <el-table-column :label="t('common.columns.status')" min-width="120">
             <template #default="scope">
               <el-tag :type="resolveStatusTag(scope.row.status).type" effect="plain">
                 {{ resolveStatusTag(scope.row.status).label }}
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="Updated" min-width="160">
+          <el-table-column :label="t('baseinfoAdmin.fields.updated')" min-width="160">
             <template #default="scope">
               {{ formatDate(scope.row.updated_at) }}
             </template>
           </el-table-column>
-          <el-table-column label="Actions" min-width="120" fixed="right">
+          <el-table-column :label="t('common.columns.actions')" min-width="120" fixed="right">
             <template #default="scope">
-              <el-button size="small" @click="openShopTypeEdit(scope.row)">Edit</el-button>
+              <el-button size="small" @click="openShopTypeEdit(scope.row)">{{ t('common.actions.edit') }}</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -740,10 +754,10 @@ onMounted(() => {
       <el-card class="baseinfo-admin-view__card" shadow="never">
         <template #header>
           <div class="baseinfo-admin-view__card-header">
-            <span>Currency types</span>
+            <span>{{ t('baseinfoAdmin.cards.currencyTypes') }}</span>
             <div class="baseinfo-admin-view__card-actions">
-              <el-tag effect="plain" type="info">{{ currencyTypes.length }} total</el-tag>
-              <el-button :loading="isLoading" @click="loadBaseInfo">Refresh</el-button>
+              <el-tag effect="plain" type="info">{{ t('common.total', { count: currencyTypes.length }) }}</el-tag>
+              <el-button :loading="isLoading" @click="loadBaseInfo">{{ t('common.actions.refresh') }}</el-button>
             </div>
           </div>
         </template>
@@ -760,18 +774,18 @@ onMounted(() => {
 
         <el-form label-position="top" class="baseinfo-admin-view__form" @submit.prevent>
           <div class="baseinfo-admin-view__form-grid baseinfo-admin-view__form-grid--wide">
-            <el-form-item label="Code">
-              <el-input v-model="currencyTypeForm.code" placeholder="e.g. USD" />
+            <el-form-item :label="t('baseinfoAdmin.fields.code')">
+              <el-input v-model="currencyTypeForm.code" :placeholder="t('baseinfoAdmin.placeholders.currencyCode')" />
             </el-form-item>
-            <el-form-item label="Name">
-              <el-input v-model="currencyTypeForm.name" placeholder="e.g. US Dollar" />
+            <el-form-item :label="t('baseinfoAdmin.fields.name')">
+              <el-input v-model="currencyTypeForm.name" :placeholder="t('baseinfoAdmin.placeholders.currencyName')" />
             </el-form-item>
-            <el-form-item label="Local currency">
+            <el-form-item :label="t('baseinfoAdmin.fields.localCurrency')">
               <el-switch v-model="currencyTypeForm.is_local" />
             </el-form-item>
-            <el-form-item label="Status">
+            <el-form-item :label="t('common.columns.status')">
               <el-select v-model="currencyTypeForm.status">
-                <el-option v-for="option in statusOptions" :key="option" :label="option" :value="option" />
+                <el-option v-for="option in statusOptions" :key="option" :label="resolveStatusLabel(option)" :value="option" />
               </el-select>
             </el-form-item>
           </div>
@@ -783,7 +797,7 @@ onMounted(() => {
               :disabled="!canCreateCurrencyType"
               @click="handleCreateCurrencyType"
             >
-              Create currency
+              {{ t('baseinfoAdmin.actions.createCurrency') }}
             </el-button>
           </div>
         </el-form>
@@ -792,32 +806,32 @@ onMounted(() => {
           :data="currencyTypes"
           row-key="id"
           class="baseinfo-admin-view__table"
-          :empty-text="isLoading ? 'Loading currencies…' : 'No currency types available.'"
+          :empty-text="isLoading ? t('baseinfoAdmin.table.loadingCurrencies') : t('baseinfoAdmin.table.emptyCurrencies')"
         >
-          <el-table-column prop="code" label="Code" min-width="120" />
-          <el-table-column prop="name" label="Name" min-width="220" />
-          <el-table-column label="Local" min-width="100">
+          <el-table-column prop="code" :label="t('baseinfoAdmin.fields.code')" min-width="120" />
+          <el-table-column prop="name" :label="t('baseinfoAdmin.fields.name')" min-width="220" />
+          <el-table-column :label="t('baseinfoAdmin.fields.local')" min-width="100">
             <template #default="scope">
               <el-tag :type="scope.row.is_local ? 'success' : 'info'" effect="plain">
-                {{ scope.row.is_local ? 'Yes' : 'No' }}
+                {{ scope.row.is_local ? t('common.values.yes') : t('common.values.no') }}
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="Status" min-width="120">
+          <el-table-column :label="t('common.columns.status')" min-width="120">
             <template #default="scope">
               <el-tag :type="resolveStatusTag(scope.row.status).type" effect="plain">
                 {{ resolveStatusTag(scope.row.status).label }}
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="Updated" min-width="160">
+          <el-table-column :label="t('baseinfoAdmin.fields.updated')" min-width="160">
             <template #default="scope">
               {{ formatDate(scope.row.updated_at) }}
             </template>
           </el-table-column>
-          <el-table-column label="Actions" min-width="120" fixed="right">
+          <el-table-column :label="t('common.columns.actions')" min-width="120" fixed="right">
             <template #default="scope">
-              <el-button size="small" @click="openCurrencyTypeEdit(scope.row)">Edit</el-button>
+              <el-button size="small" @click="openCurrencyTypeEdit(scope.row)">{{ t('common.actions.edit') }}</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -826,10 +840,10 @@ onMounted(() => {
       <el-card class="baseinfo-admin-view__card" shadow="never">
         <template #header>
           <div class="baseinfo-admin-view__card-header">
-            <span>Trade definitions</span>
+            <span>{{ t('baseinfoAdmin.cards.tradeDefinitions') }}</span>
             <div class="baseinfo-admin-view__card-actions">
-              <el-tag effect="plain" type="info">{{ tradeDefinitions.length }} total</el-tag>
-              <el-button :loading="isLoading" @click="loadBaseInfo">Refresh</el-button>
+              <el-tag effect="plain" type="info">{{ t('common.total', { count: tradeDefinitions.length }) }}</el-tag>
+              <el-button :loading="isLoading" @click="loadBaseInfo">{{ t('common.actions.refresh') }}</el-button>
             </div>
           </div>
         </template>
@@ -846,21 +860,21 @@ onMounted(() => {
 
         <el-form label-position="top" class="baseinfo-admin-view__form" @submit.prevent>
           <div class="baseinfo-admin-view__form-grid baseinfo-admin-view__form-grid--wide">
-            <el-form-item label="Code">
-              <el-input v-model="tradeDefinitionForm.code" placeholder="e.g. SPORTS" />
+            <el-form-item :label="t('baseinfoAdmin.fields.code')">
+              <el-input v-model="tradeDefinitionForm.code" :placeholder="t('baseinfoAdmin.placeholders.tradeDefinitionCode')" />
             </el-form-item>
-            <el-form-item label="Name">
-              <el-input v-model="tradeDefinitionForm.name" placeholder="e.g. Sports" />
+            <el-form-item :label="t('baseinfoAdmin.fields.name')">
+              <el-input v-model="tradeDefinitionForm.name" :placeholder="t('baseinfoAdmin.placeholders.tradeDefinitionName')" />
             </el-form-item>
-            <el-form-item label="Parent ID">
+            <el-form-item :label="t('baseinfoAdmin.fields.parentId')">
               <el-input-number v-model="tradeDefinitionForm.parent_id" :min="1" controls-position="right" />
             </el-form-item>
-            <el-form-item label="Level">
+            <el-form-item :label="t('baseinfoAdmin.fields.level')">
               <el-input-number v-model="tradeDefinitionForm.level" :min="1" controls-position="right" />
             </el-form-item>
-            <el-form-item label="Status">
+            <el-form-item :label="t('common.columns.status')">
               <el-select v-model="tradeDefinitionForm.status">
-                <el-option v-for="option in statusOptions" :key="option" :label="option" :value="option" />
+                <el-option v-for="option in statusOptions" :key="option" :label="resolveStatusLabel(option)" :value="option" />
               </el-select>
             </el-form-item>
           </div>
@@ -872,7 +886,7 @@ onMounted(() => {
               :disabled="!canCreateTradeDefinition"
               @click="handleCreateTradeDefinition"
             >
-              Create trade definition
+              {{ t('baseinfoAdmin.actions.createTradeDefinition') }}
             </el-button>
           </div>
         </el-form>
@@ -881,137 +895,137 @@ onMounted(() => {
           :data="tradeDefinitions"
           row-key="id"
           class="baseinfo-admin-view__table"
-          :empty-text="isLoading ? 'Loading trade definitions…' : 'No trade definitions available.'"
+          :empty-text="isLoading ? t('baseinfoAdmin.table.loadingTradeDefinitions') : t('baseinfoAdmin.table.emptyTradeDefinitions')"
         >
-          <el-table-column prop="code" label="Code" min-width="140" />
-          <el-table-column prop="name" label="Name" min-width="200" />
-          <el-table-column label="Parent" min-width="120">
+          <el-table-column prop="code" :label="t('baseinfoAdmin.fields.code')" min-width="140" />
+          <el-table-column prop="name" :label="t('baseinfoAdmin.fields.name')" min-width="200" />
+          <el-table-column :label="t('baseinfoAdmin.fields.parent')" min-width="120">
             <template #default="scope">
-              {{ scope.row.parent_id ?? '—' }}
+              {{ scope.row.parent_id ?? t('common.emptyValue') }}
             </template>
           </el-table-column>
-          <el-table-column label="Level" min-width="100">
+          <el-table-column :label="t('baseinfoAdmin.fields.level')" min-width="100">
             <template #default="scope">
-              {{ scope.row.level ?? '—' }}
+              {{ scope.row.level ?? t('common.emptyValue') }}
             </template>
           </el-table-column>
-          <el-table-column label="Status" min-width="120">
+          <el-table-column :label="t('common.columns.status')" min-width="120">
             <template #default="scope">
               <el-tag :type="resolveStatusTag(scope.row.status).type" effect="plain">
                 {{ resolveStatusTag(scope.row.status).label }}
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="Updated" min-width="160">
+          <el-table-column :label="t('baseinfoAdmin.fields.updated')" min-width="160">
             <template #default="scope">
               {{ formatDate(scope.row.updated_at) }}
             </template>
           </el-table-column>
-          <el-table-column label="Actions" min-width="120" fixed="right">
+          <el-table-column :label="t('common.columns.actions')" min-width="120" fixed="right">
             <template #default="scope">
-              <el-button size="small" @click="openTradeDefinitionEdit(scope.row)">Edit</el-button>
+              <el-button size="small" @click="openTradeDefinitionEdit(scope.row)">{{ t('common.actions.edit') }}</el-button>
             </template>
           </el-table-column>
         </el-table>
       </el-card>
     </div>
 
-    <el-dialog v-model="storeTypeEditDialogOpen" title="Edit store type" width="32rem">
+    <el-dialog v-model="storeTypeEditDialogOpen" :title="t('baseinfoAdmin.dialogs.editStoreType')" width="32rem">
       <el-form label-position="top" @submit.prevent>
-        <el-form-item label="Code">
+        <el-form-item :label="t('baseinfoAdmin.fields.code')">
           <el-input v-model="storeTypeEdit.code" />
         </el-form-item>
-        <el-form-item label="Name">
+        <el-form-item :label="t('baseinfoAdmin.fields.name')">
           <el-input v-model="storeTypeEdit.name" />
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button @click="storeTypeEditDialogOpen = false">Cancel</el-button>
-        <el-button type="primary" :loading="isStoreTypeUpdating" @click="handleUpdateStoreType">Save</el-button>
+        <el-button @click="storeTypeEditDialogOpen = false">{{ t('common.actions.cancel') }}</el-button>
+        <el-button type="primary" :loading="isStoreTypeUpdating" @click="handleUpdateStoreType">{{ t('common.actions.save') }}</el-button>
       </template>
     </el-dialog>
 
-    <el-dialog v-model="shopTypeEditDialogOpen" title="Edit shop type" width="34rem">
+    <el-dialog v-model="shopTypeEditDialogOpen" :title="t('baseinfoAdmin.dialogs.editShopType')" width="34rem">
       <el-form label-position="top" @submit.prevent>
         <div class="baseinfo-admin-view__dialog-grid">
-          <el-form-item label="Code">
+          <el-form-item :label="t('baseinfoAdmin.fields.code')">
             <el-input v-model="shopTypeEdit.code" />
           </el-form-item>
-          <el-form-item label="Name">
+          <el-form-item :label="t('baseinfoAdmin.fields.name')">
             <el-input v-model="shopTypeEdit.name" />
           </el-form-item>
-          <el-form-item label="Color hex">
+          <el-form-item :label="t('baseinfoAdmin.fields.colorHex')">
             <div class="baseinfo-admin-view__color-input">
               <span
                 class="baseinfo-admin-view__color-swatch"
                 :style="{ background: shopTypeEdit.color_hex.trim() || 'transparent' }"
               />
-              <el-input v-model="shopTypeEdit.color_hex" placeholder="#112233" />
+              <el-input v-model="shopTypeEdit.color_hex" :placeholder="t('baseinfoAdmin.placeholders.colorHex')" />
             </div>
           </el-form-item>
-          <el-form-item label="Status">
+          <el-form-item :label="t('common.columns.status')">
             <el-select v-model="shopTypeEdit.status">
-              <el-option v-for="option in statusOptions" :key="option" :label="option" :value="option" />
+              <el-option v-for="option in statusOptions" :key="option" :label="resolveStatusLabel(option)" :value="option" />
             </el-select>
           </el-form-item>
         </div>
       </el-form>
       <template #footer>
-        <el-button @click="shopTypeEditDialogOpen = false">Cancel</el-button>
-        <el-button type="primary" :loading="isShopTypeUpdating" @click="handleUpdateShopType">Save</el-button>
+        <el-button @click="shopTypeEditDialogOpen = false">{{ t('common.actions.cancel') }}</el-button>
+        <el-button type="primary" :loading="isShopTypeUpdating" @click="handleUpdateShopType">{{ t('common.actions.save') }}</el-button>
       </template>
     </el-dialog>
 
-    <el-dialog v-model="currencyTypeEditDialogOpen" title="Edit currency" width="34rem">
+    <el-dialog v-model="currencyTypeEditDialogOpen" :title="t('baseinfoAdmin.dialogs.editCurrency')" width="34rem">
       <el-form label-position="top" @submit.prevent>
         <div class="baseinfo-admin-view__dialog-grid">
-          <el-form-item label="Code">
+          <el-form-item :label="t('baseinfoAdmin.fields.code')">
             <el-input v-model="currencyTypeEdit.code" />
           </el-form-item>
-          <el-form-item label="Name">
+          <el-form-item :label="t('baseinfoAdmin.fields.name')">
             <el-input v-model="currencyTypeEdit.name" />
           </el-form-item>
-          <el-form-item label="Local currency">
+          <el-form-item :label="t('baseinfoAdmin.fields.localCurrency')">
             <el-switch v-model="currencyTypeEdit.is_local" />
           </el-form-item>
-          <el-form-item label="Status">
+          <el-form-item :label="t('common.columns.status')">
             <el-select v-model="currencyTypeEdit.status">
-              <el-option v-for="option in statusOptions" :key="option" :label="option" :value="option" />
+              <el-option v-for="option in statusOptions" :key="option" :label="resolveStatusLabel(option)" :value="option" />
             </el-select>
           </el-form-item>
         </div>
       </el-form>
       <template #footer>
-        <el-button @click="currencyTypeEditDialogOpen = false">Cancel</el-button>
-        <el-button type="primary" :loading="isCurrencyTypeUpdating" @click="handleUpdateCurrencyType">Save</el-button>
+        <el-button @click="currencyTypeEditDialogOpen = false">{{ t('common.actions.cancel') }}</el-button>
+        <el-button type="primary" :loading="isCurrencyTypeUpdating" @click="handleUpdateCurrencyType">{{ t('common.actions.save') }}</el-button>
       </template>
     </el-dialog>
 
-    <el-dialog v-model="tradeDefinitionEditDialogOpen" title="Edit trade definition" width="36rem">
+    <el-dialog v-model="tradeDefinitionEditDialogOpen" :title="t('baseinfoAdmin.dialogs.editTradeDefinition')" width="36rem">
       <el-form label-position="top" @submit.prevent>
         <div class="baseinfo-admin-view__dialog-grid baseinfo-admin-view__dialog-grid--trade">
-          <el-form-item label="Code">
+          <el-form-item :label="t('baseinfoAdmin.fields.code')">
             <el-input v-model="tradeDefinitionEdit.code" />
           </el-form-item>
-          <el-form-item label="Name">
+          <el-form-item :label="t('baseinfoAdmin.fields.name')">
             <el-input v-model="tradeDefinitionEdit.name" />
           </el-form-item>
-          <el-form-item label="Parent ID">
+          <el-form-item :label="t('baseinfoAdmin.fields.parentId')">
             <el-input-number v-model="tradeDefinitionEdit.parent_id" :min="1" controls-position="right" />
           </el-form-item>
-          <el-form-item label="Level">
+          <el-form-item :label="t('baseinfoAdmin.fields.level')">
             <el-input-number v-model="tradeDefinitionEdit.level" :min="1" controls-position="right" />
           </el-form-item>
-          <el-form-item label="Status">
+          <el-form-item :label="t('common.columns.status')">
             <el-select v-model="tradeDefinitionEdit.status">
-              <el-option v-for="option in statusOptions" :key="option" :label="option" :value="option" />
+              <el-option v-for="option in statusOptions" :key="option" :label="resolveStatusLabel(option)" :value="option" />
             </el-select>
           </el-form-item>
         </div>
       </el-form>
       <template #footer>
-        <el-button @click="tradeDefinitionEditDialogOpen = false">Cancel</el-button>
-        <el-button type="primary" :loading="isTradeDefinitionUpdating" @click="handleUpdateTradeDefinition">Save</el-button>
+        <el-button @click="tradeDefinitionEditDialogOpen = false">{{ t('common.actions.cancel') }}</el-button>
+        <el-button type="primary" :loading="isTradeDefinitionUpdating" @click="handleUpdateTradeDefinition">{{ t('common.actions.save') }}</el-button>
       </template>
     </el-dialog>
   </div>

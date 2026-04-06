@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 
 import { getLease, submitLease, terminateLease, type LeaseContract } from '../api/lease'
 import PageSection from '../components/platform/PageSection.vue'
+import { useAppStore } from '../stores/app'
 
 const route = useRoute()
 const router = useRouter()
+const { t } = useI18n()
+const appStore = useAppStore()
 
 const lease = ref<LeaseContract | null>(null)
 const errorMessage = ref('')
@@ -29,19 +33,97 @@ const leaseId = computed(() => {
   return Number.isFinite(parsedId) && parsedId > 0 ? parsedId : null
 })
 
+const pageTitle = computed(() => lease.value?.lease_no ?? t('leaseDetail.title'))
+
 const submitDisabled = computed(() => {
   if (!lease.value) {
     return true
   }
 
-  return isSubmitting.value || lease.value.status === 'submitted' || lease.value.status === 'approved' || lease.value.status === 'terminated'
+  return (
+    isSubmitting.value ||
+    lease.value.status === 'submitted' ||
+    lease.value.status === 'pending_approval' ||
+    lease.value.status === 'approved' ||
+    lease.value.status === 'terminated'
+  )
 })
 
 const terminateDisabled = computed(() => !lease.value || isTerminating.value || lease.value.status === 'terminated')
 
+const formatDate = (value: string | null) => {
+  if (!value) {
+    return t('common.emptyValue')
+  }
+
+  return new Intl.DateTimeFormat(appStore.locale, {
+    dateStyle: 'medium',
+  }).format(new Date(`${value}T00:00:00`))
+}
+
+const formatTimestamp = (value: string | null) => {
+  if (!value) {
+    return t('common.emptyValue')
+  }
+
+  return new Intl.DateTimeFormat(appStore.locale, {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  }).format(new Date(value))
+}
+
+const formatDecimal = (value: number) =>
+  new Intl.NumberFormat(appStore.locale, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(value)
+
+const resolveStatusLabel = (status: string) => {
+  switch (status) {
+    case 'draft':
+      return t('common.statuses.draft')
+    case 'pending_approval':
+      return t('common.statuses.pendingApproval')
+    case 'active':
+      return t('common.statuses.active')
+    case 'rejected':
+      return t('common.statuses.rejected')
+    case 'approved':
+      return t('common.statuses.approved')
+    case 'terminated':
+      return t('common.statuses.terminated')
+    default:
+      return status
+  }
+}
+
+const resolveTermTypeLabel = (termType: string) => {
+  switch (termType) {
+    case 'rent':
+      return t('leaseDetail.options.termTypes.rent')
+    case 'deposit':
+      return t('leaseDetail.options.termTypes.deposit')
+    default:
+      return termType
+  }
+}
+
+const resolveBillingCycleLabel = (billingCycle: string) => {
+  switch (billingCycle) {
+    case 'monthly':
+      return t('leaseDetail.options.billingCycles.monthly')
+    case 'quarterly':
+      return t('leaseDetail.options.billingCycles.quarterly')
+    case 'yearly':
+      return t('leaseDetail.options.billingCycles.yearly')
+    default:
+      return billingCycle
+  }
+}
+
 const loadLease = async () => {
   if (!leaseId.value) {
-    errorMessage.value = 'The requested lease contract id is invalid.'
+    errorMessage.value = t('leaseDetail.errors.invalidId')
     lease.value = null
     return
   }
@@ -55,7 +137,7 @@ const loadLease = async () => {
     terminateForm.terminated_at = response.data.lease.terminated_at?.slice(0, 10) ?? today()
   } catch (error) {
     lease.value = null
-    errorMessage.value = error instanceof Error ? error.message : 'Unable to load the lease contract.'
+    errorMessage.value = error instanceof Error ? error.message : t('leaseDetail.errors.unableToLoad')
   } finally {
     isLoading.value = false
   }
@@ -80,9 +162,9 @@ const handleSubmitForApproval = async () => {
     })
 
     lease.value = response.data.lease
-    successMessage.value = 'Lease submitted for approval.'
+    successMessage.value = t('leaseDetail.feedback.submitted')
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : 'Unable to submit the lease for approval.'
+    errorMessage.value = error instanceof Error ? error.message : t('leaseDetail.errors.unableToSubmit')
   } finally {
     isSubmitting.value = false
   }
@@ -104,9 +186,9 @@ const handleTerminate = async () => {
 
     lease.value = response.data.lease
     terminateForm.terminated_at = response.data.lease.terminated_at?.slice(0, 10) ?? terminateForm.terminated_at
-    successMessage.value = 'Lease termination recorded.'
+    successMessage.value = t('leaseDetail.feedback.terminated')
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : 'Unable to terminate the lease contract.'
+    errorMessage.value = error instanceof Error ? error.message : t('leaseDetail.errors.unableToTerminate')
   } finally {
     isTerminating.value = false
   }
@@ -127,32 +209,32 @@ watch(
 <template>
   <div class="lease-detail-view" data-testid="lease-detail-view">
     <PageSection
-      eyebrow="Lease delivery runway"
-      :title="lease ? lease.lease_no : 'Lease contract detail'"
-      summary="Review contract details, workflow state, and perform the next operational actions for the selected lease."
+      :eyebrow="t('lease.eyebrow')"
+      :title="pageTitle"
+      :summary="t('leaseDetail.summary')"
     >
       <template #actions>
-        <el-tag v-if="lease" effect="plain" type="info">{{ lease.status }}</el-tag>
-        <el-button @click="handleBack">Back to list</el-button>
+        <el-tag v-if="lease" effect="plain" type="info">{{ resolveStatusLabel(lease.status) }}</el-tag>
+        <el-button data-testid="lease-detail-back-button" @click="handleBack">{{ t('leaseDetail.actions.backToList') }}</el-button>
       </template>
     </PageSection>
 
     <el-alert
-      v-if="errorMessage"
-      :closable="false"
-      title="Lease detail unavailable"
-      type="error"
-      show-icon
-      :description="errorMessage"
+        v-if="errorMessage"
+        :closable="false"
+        :title="t('leaseDetail.errors.detailUnavailable')"
+        type="error"
+        show-icon
+        :description="errorMessage"
     />
 
     <el-alert
-      v-if="successMessage"
-      :closable="false"
-      title="Lease action completed"
-      type="success"
-      show-icon
-      :description="successMessage"
+        v-if="successMessage"
+        :closable="false"
+        :title="t('leaseDetail.feedback.actionCompleted')"
+        type="success"
+        show-icon
+        :description="successMessage"
     />
 
     <el-skeleton v-if="isLoading" :rows="6" animated />
@@ -162,32 +244,34 @@ watch(
         <el-card class="lease-detail-view__card" shadow="never">
           <template #header>
             <div class="lease-detail-view__card-header">
-              <span>Contract overview</span>
+              <span>{{ t('leaseDetail.cards.overview') }}</span>
             </div>
           </template>
 
           <el-descriptions :column="2" border>
-            <el-descriptions-item label="Lease no.">{{ lease.lease_no }}</el-descriptions-item>
-            <el-descriptions-item label="Tenant">{{ lease.tenant_name }}</el-descriptions-item>
-            <el-descriptions-item label="Department">{{ lease.department_id }}</el-descriptions-item>
-            <el-descriptions-item label="Store">{{ lease.store_id }}</el-descriptions-item>
-            <el-descriptions-item label="Start date">{{ lease.start_date }}</el-descriptions-item>
-            <el-descriptions-item label="End date">{{ lease.end_date }}</el-descriptions-item>
-            <el-descriptions-item label="Status">{{ lease.status }}</el-descriptions-item>
-            <el-descriptions-item label="Workflow instance">
-              {{ lease.workflow_instance_id ?? 'Not created yet' }}
+            <el-descriptions-item :label="t('leaseDetail.fields.leaseNumber')">{{ lease.lease_no }}</el-descriptions-item>
+            <el-descriptions-item :label="t('leaseDetail.fields.tenant')">{{ lease.tenant_name }}</el-descriptions-item>
+            <el-descriptions-item :label="t('leaseDetail.fields.department')">{{ lease.department_id }}</el-descriptions-item>
+            <el-descriptions-item :label="t('leaseDetail.fields.store')">{{ lease.store_id }}</el-descriptions-item>
+            <el-descriptions-item :label="t('leaseDetail.fields.startDate')">{{ formatDate(lease.start_date) }}</el-descriptions-item>
+            <el-descriptions-item :label="t('leaseDetail.fields.endDate')">{{ formatDate(lease.end_date) }}</el-descriptions-item>
+            <el-descriptions-item :label="t('common.columns.status')">{{ resolveStatusLabel(lease.status) }}</el-descriptions-item>
+            <el-descriptions-item :label="t('leaseDetail.fields.workflowInstance')">
+              {{ lease.workflow_instance_id ?? t('leaseDetail.defaults.notCreatedYet') }}
             </el-descriptions-item>
-            <el-descriptions-item label="Submitted at">{{ lease.submitted_at ?? '—' }}</el-descriptions-item>
-            <el-descriptions-item label="Approved at">{{ lease.approved_at ?? '—' }}</el-descriptions-item>
-            <el-descriptions-item label="Billing effective at">{{ lease.billing_effective_at ?? '—' }}</el-descriptions-item>
-            <el-descriptions-item label="Terminated at">{{ lease.terminated_at ?? '—' }}</el-descriptions-item>
+            <el-descriptions-item :label="t('leaseDetail.fields.submittedAt')">{{ formatTimestamp(lease.submitted_at) }}</el-descriptions-item>
+            <el-descriptions-item :label="t('leaseDetail.fields.approvedAt')">{{ formatTimestamp(lease.approved_at) }}</el-descriptions-item>
+            <el-descriptions-item :label="t('leaseDetail.fields.billingEffectiveAt')">
+              {{ formatTimestamp(lease.billing_effective_at) }}
+            </el-descriptions-item>
+            <el-descriptions-item :label="t('leaseDetail.fields.terminatedAt')">{{ formatTimestamp(lease.terminated_at) }}</el-descriptions-item>
           </el-descriptions>
         </el-card>
 
         <el-card class="lease-detail-view__card" shadow="never">
           <template #header>
             <div class="lease-detail-view__card-header">
-              <span>Workflow actions</span>
+              <span>{{ t('leaseDetail.cards.workflowActions') }}</span>
             </div>
           </template>
 
@@ -199,17 +283,18 @@ watch(
               data-testid="lease-submit-button"
               @click="handleSubmitForApproval"
             >
-              Submit for approval
+              {{ t('leaseDetail.actions.submitForApproval') }}
             </el-button>
 
             <div class="lease-detail-view__terminate-panel">
               <el-form label-position="top">
-                <el-form-item label="Terminate on">
+                <el-form-item :label="t('leaseDetail.fields.terminateOn')">
                   <el-date-picker
                     v-model="terminateForm.terminated_at"
                     type="date"
                     value-format="YYYY-MM-DD"
-                    placeholder="Select termination date"
+                    :placeholder="t('leaseDetail.placeholders.selectTerminationDate')"
+                    data-testid="lease-terminate-date-input"
                   />
                 </el-form-item>
               </el-form>
@@ -222,7 +307,7 @@ watch(
                 data-testid="lease-terminate-button"
                 @click="handleTerminate"
               >
-                Terminate lease
+                {{ t('leaseDetail.actions.terminateLease') }}
               </el-button>
             </div>
           </div>
@@ -233,30 +318,54 @@ watch(
         <el-card class="lease-detail-view__card" shadow="never">
           <template #header>
             <div class="lease-detail-view__card-header">
-              <span>Units</span>
+              <span>{{ t('leaseDetail.cards.units') }}</span>
             </div>
           </template>
 
-          <el-table :data="lease.units" row-key="id" empty-text="No units attached.">
-            <el-table-column prop="unit_id" label="Unit id" min-width="120" />
-            <el-table-column prop="rent_area" label="Rent area" min-width="140" />
+          <el-table :data="lease.units" row-key="id" :empty-text="t('leaseDetail.table.unitsEmpty')">
+            <el-table-column prop="unit_id" :label="t('leaseDetail.fields.unitId')" min-width="120" />
+            <el-table-column :label="t('leaseDetail.fields.rentArea')" min-width="140">
+              <template #default="scope">
+                {{ formatDecimal(scope.row.rent_area) }}
+              </template>
+            </el-table-column>
           </el-table>
         </el-card>
 
         <el-card class="lease-detail-view__card" shadow="never">
           <template #header>
             <div class="lease-detail-view__card-header">
-              <span>Terms</span>
+              <span>{{ t('leaseDetail.cards.terms') }}</span>
             </div>
           </template>
 
-          <el-table :data="lease.terms" row-key="id" empty-text="No terms attached.">
-            <el-table-column prop="term_type" label="Term type" min-width="140" />
-            <el-table-column prop="billing_cycle" label="Billing cycle" min-width="140" />
-            <el-table-column prop="currency_type_id" label="Currency" min-width="120" />
-            <el-table-column prop="amount" label="Amount" min-width="120" />
-            <el-table-column prop="effective_from" label="Effective from" min-width="140" />
-            <el-table-column prop="effective_to" label="Effective to" min-width="140" />
+          <el-table :data="lease.terms" row-key="id" :empty-text="t('leaseDetail.table.termsEmpty')">
+            <el-table-column :label="t('leaseDetail.fields.termType')" min-width="140">
+              <template #default="scope">
+                {{ resolveTermTypeLabel(scope.row.term_type) }}
+              </template>
+            </el-table-column>
+            <el-table-column :label="t('leaseDetail.fields.billingCycle')" min-width="140">
+              <template #default="scope">
+                {{ resolveBillingCycleLabel(scope.row.billing_cycle) }}
+              </template>
+            </el-table-column>
+            <el-table-column prop="currency_type_id" :label="t('leaseDetail.fields.currencyTypeId')" min-width="120" />
+            <el-table-column :label="t('leaseDetail.fields.amount')" min-width="120">
+              <template #default="scope">
+                {{ formatDecimal(scope.row.amount) }}
+              </template>
+            </el-table-column>
+            <el-table-column :label="t('leaseDetail.fields.effectiveFrom')" min-width="140">
+              <template #default="scope">
+                {{ formatDate(scope.row.effective_from) }}
+              </template>
+            </el-table-column>
+            <el-table-column :label="t('leaseDetail.fields.effectiveTo')" min-width="140">
+              <template #default="scope">
+                {{ formatDate(scope.row.effective_to) }}
+              </template>
+            </el-table-column>
           </el-table>
         </el-card>
       </section>

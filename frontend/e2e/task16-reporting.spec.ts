@@ -52,6 +52,11 @@ const attachReportingMocks = async (page: Page) => {
   })
 }
 
+const selectGeneralizeReport = async (page: Page, reportCode: string) => {
+  await page.getByTestId('generalize-report-select').click()
+  await page.getByRole('option', { name: new RegExp(`^${reportCode}\\b`) }).click()
+}
+
 test('queries and exports the generalize reporting slice', async ({ page }) => {
   await attachReportingMocks(page)
 
@@ -131,8 +136,7 @@ test('queries and exports the generalize reporting slice', async ({ page }) => {
   await expect(page.getByTestId('generalize-reports-view')).toBeVisible()
   await expect(page.getByText('MI Demo Mall')).toBeVisible()
 
-  await page.getByTestId('generalize-report-select').click()
-  await page.getByRole('option', { name: /R12 Occupancy/ }).click()
+  await selectGeneralizeReport(page, 'R12')
   await page.getByTestId('generalize-store-input').fill('101')
   await page.getByTestId('generalize-query-button').click()
 
@@ -204,8 +208,7 @@ test('queries and exports the traffic annual/monthly summary (R10)', async ({ pa
   await page.getByTestId('nav--reports-generalize').click()
   await expect(page).toHaveURL(/\/reports\/generalize/)
 
-  await page.getByTestId('generalize-report-select').click()
-  await page.getByRole('option', { name: /R10 Traffic/ }).click()
+  await selectGeneralizeReport(page, 'R10')
 
   await page.getByTestId('generalize-store-input').fill('101')
   await page.getByTestId('generalize-year-input').fill('2025')
@@ -274,8 +277,7 @@ test('queries and exports the brand annual sales distribution (R07)', async ({ p
   await page.getByTestId('nav--reports-generalize').click()
   await expect(page).toHaveURL(/\/reports\/generalize/)
 
-  await page.getByTestId('generalize-report-select').click()
-  await page.getByRole('option', { name: /R07 Brand annual sales distribution/ }).click()
+  await selectGeneralizeReport(page, 'R07')
 
   await page.getByTestId('generalize-store-input').fill('101')
   await page.getByTestId('generalize-year-input').fill('2026')
@@ -345,8 +347,7 @@ test('queries AR aging by charge type (R09) with department, customer, trade, an
   await page.getByTestId('nav--reports-generalize').click()
   await expect(page).toHaveURL(/\/reports\/generalize/)
 
-  await page.getByTestId('generalize-report-select').click()
-  await page.getByRole('option', { name: /R09 Customer AR Aging by Charge Type/ }).click()
+  await selectGeneralizeReport(page, 'R09')
 
   await page.getByTestId('generalize-department-input').fill('101')
   await page.getByTestId('generalize-customer-input').fill('101')
@@ -416,8 +417,7 @@ test('queries the unit budget comparison report (R05) using year, store, floor, 
   await page.getByTestId('nav--reports-generalize').click()
   await expect(page).toHaveURL(/\/reports\/generalize/)
 
-  await page.getByTestId('generalize-report-select').click()
-  await page.getByRole('option', { name: /R05 Unit Budget vs Lease\/Prospect Price/ }).click()
+  await selectGeneralizeReport(page, 'R05')
 
   await page.getByTestId('generalize-store-input').fill('101')
   await page.getByTestId('generalize-year-input').fill('2026')
@@ -477,8 +477,7 @@ test('queries the store rent budget execution report (R06)', async ({ page }) =>
   await page.getByTestId('nav--reports-generalize').click()
   await expect(page).toHaveURL(/\/reports\/generalize/)
 
-  await page.getByTestId('generalize-report-select').click()
-  await page.getByRole('option', { name: /R06 Store Rent Budget Execution/ }).click()
+  await selectGeneralizeReport(page, 'R06')
 
   await page.getByTestId('generalize-store-input').fill('101')
   await page.getByTestId('generalize-period-input').fill('2026-04')
@@ -533,8 +532,7 @@ test('queries the sales vs rent income report (R15)', async ({ page }) => {
   await page.getByTestId('nav--reports-generalize').click()
   await expect(page).toHaveURL(/\/reports\/generalize/)
 
-  await page.getByTestId('generalize-report-select').click()
-  await page.getByRole('option', { name: /R15 Sales vs Rent Income Comparison by Shop Type/ }).click()
+  await selectGeneralizeReport(page, 'R15')
 
   await page.getByTestId('generalize-store-input').fill('101')
   await page.getByTestId('generalize-shop-type-input').fill('101')
@@ -590,8 +588,7 @@ test('queries the customer/store/brand composite report (R18)', async ({ page })
   await page.getByTestId('nav--reports-generalize').click()
   await expect(page).toHaveURL(/\/reports\/generalize/)
 
-  await page.getByTestId('generalize-report-select').click()
-  await page.getByRole('option', { name: /R18 Customer \/ Store \/ Brand Composite Report/ }).click()
+  await selectGeneralizeReport(page, 'R18')
 
   await page.getByTestId('generalize-store-input').fill('101')
   await page.getByTestId('generalize-customer-input').fill('101')

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, type CSSProperties } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import {
   exportReport,
@@ -12,6 +13,7 @@ import {
 import FilterForm from '../components/platform/FilterForm.vue'
 import PageSection from '../components/platform/PageSection.vue'
 import { useFilterForm } from '../composables/useFilterForm'
+import { useAppStore } from '../stores/app'
 
 type VisualShopFilters = {
   store_id: string
@@ -27,6 +29,9 @@ type MarkerPresentation = {
   unit: VisualShopUnit
   style: UnitColorStyle
 }
+
+const appStore = useAppStore()
+const { t } = useI18n()
 
 const result = ref<VisualShopReportResponse | null>(null)
 const errorMessage = ref('')
@@ -148,10 +153,12 @@ const generatedAtLabel = computed(() => {
     return ''
   }
 
-  return new Intl.DateTimeFormat('en-US', {
+  const value = new Intl.DateTimeFormat(appStore.locale, {
     dateStyle: 'medium',
     timeStyle: 'short',
   }).format(new Date(result.value.generated_at))
+
+  return t('visualShopAnalysis.meta.generatedAt', { value })
 })
 
 const inferFileExtension = (contentType: string | undefined) => {
@@ -199,7 +206,7 @@ const loadVisualShopReport = async () => {
     result.value = response.data
     selectedUnitId.value = response.data.visual.units[0]?.unit_id ?? null
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : 'Unable to load the visual shop analysis report.'
+    errorMessage.value = error instanceof Error ? error.message : t('visualShopAnalysis.errors.unableToLoad')
     result.value = null
     selectedUnitId.value = null
   } finally {
@@ -223,7 +230,7 @@ const handleExport = async () => {
     link.click()
     URL.revokeObjectURL(url)
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : 'Unable to export the visual shop analysis report.'
+    errorMessage.value = error instanceof Error ? error.message : t('visualShopAnalysis.errors.unableToExport')
   } finally {
     isExporting.value = false
   }
@@ -241,11 +248,22 @@ const selectUnit = (unitId: number) => {
   selectedUnitId.value = unitId
 }
 
-const formatArea = (value: number | null) => (typeof value === 'number' ? `${value.toLocaleString('en-US')} ㎡` : '—')
+const formatArea = (value: number | null) => {
+  if (typeof value !== 'number') {
+    return t('common.emptyValue')
+  }
+
+  const formatted = new Intl.NumberFormat(appStore.locale, {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  }).format(value)
+
+  return `${formatted} ㎡`
+}
 
 const getDetailValue = (value: string | null | undefined) => {
   const normalized = value?.trim()
-  return normalized ? normalized : '—'
+  return normalized ? normalized : t('common.emptyValue')
 }
 
 const legendItems = computed<VisualShopLegendItem[]>(() => {
@@ -256,7 +274,7 @@ const legendItems = computed<VisualShopLegendItem[]>(() => {
   const seen = new Set<string>()
 
   return visualUnits.value.flatMap((unit) => {
-    const label = unit.rent_status.trim() || 'Unknown'
+    const label = unit.rent_status.trim() || t('visualShopAnalysis.defaults.unknownLegendItem')
     if (seen.has(label)) {
       return []
     }
@@ -265,19 +283,18 @@ const legendItems = computed<VisualShopLegendItem[]>(() => {
     return [{ label, color_hex: unit.color_hex }]
   })
 })
-
 </script>
 
 <template>
   <div class="visual-shop-analysis-view" data-testid="visual-shop-analysis-view">
     <PageSection
-      eyebrow="Generalize reporting"
-      title="Visual shop analysis"
-      summary="Map store-floor occupancy into a floor-plan canvas so leasing teams can review unit status, brand placement, and customer coverage at a glance."
+      :eyebrow="t('visualShopAnalysis.eyebrow')"
+      :title="t('visualShopAnalysis.title')"
+      :summary="t('visualShopAnalysis.summary')"
     >
       <template #actions>
-        <el-tag effect="plain" type="info">Task 16 slice</el-tag>
-        <el-tag effect="plain" type="success">R19 visual output</el-tag>
+        <el-tag effect="plain" type="info">{{ t('visualShopAnalysis.tags.batch') }}</el-tag>
+        <el-tag effect="plain" type="success">{{ t('visualShopAnalysis.tags.coverage') }}</el-tag>
       </template>
     </PageSection>
 
@@ -285,44 +302,44 @@ const legendItems = computed<VisualShopLegendItem[]>(() => {
       v-if="errorMessage"
       :closable="false"
       class="visual-shop-analysis-view__alert"
-      title="Visual shop analysis request failed"
+      :title="t('visualShopAnalysis.errors.requestFailed')"
       type="error"
       show-icon
       :description="errorMessage"
     />
 
-    <FilterForm title="Graphic filters" :show-actions="false">
-      <el-form-item label="Store ID">
+    <FilterForm :title="t('visualShopAnalysis.filters.title')" :show-actions="false">
+      <el-form-item :label="t('visualShopAnalysis.fields.storeId')">
         <el-input
           v-model="filters.store_id"
-          placeholder="Enter a store identifier"
+          :placeholder="t('visualShopAnalysis.placeholders.enterStoreId')"
           clearable
           data-testid="visual-shop-store-input"
         />
       </el-form-item>
 
-      <el-form-item label="Floor ID">
+      <el-form-item :label="t('visualShopAnalysis.fields.floorId')">
         <el-input
           v-model="filters.floor_id"
-          placeholder="Enter a floor identifier"
+          :placeholder="t('visualShopAnalysis.placeholders.enterFloorId')"
           clearable
           data-testid="visual-shop-floor-input"
         />
       </el-form-item>
 
-      <el-form-item label="Area ID">
+      <el-form-item :label="t('visualShopAnalysis.fields.areaId')">
         <el-input
           v-model="filters.area_id"
-          placeholder="Enter an area identifier"
+          :placeholder="t('visualShopAnalysis.placeholders.enterAreaId')"
           clearable
           data-testid="visual-shop-area-input"
         />
       </el-form-item>
 
       <div class="visual-shop-analysis-view__filter-actions">
-        <el-button @click="handleReset">Reset</el-button>
+        <el-button @click="handleReset">{{ t('filterForm.reset') }}</el-button>
         <el-button type="primary" :loading="isQuerying" data-testid="visual-shop-query-button" @click="loadVisualShopReport">
-          Query visual layout
+          {{ t('common.actions.query') }}
         </el-button>
         <el-button
           type="success"
@@ -331,7 +348,7 @@ const legendItems = computed<VisualShopLegendItem[]>(() => {
           data-testid="visual-shop-export-button"
           @click="handleExport"
         >
-          Export R19
+          {{ t('common.actions.export') }}
         </el-button>
       </div>
     </FilterForm>
@@ -341,21 +358,23 @@ const legendItems = computed<VisualShopLegendItem[]>(() => {
         <template #header>
           <div class="visual-shop-analysis-view__card-header">
             <div class="visual-shop-analysis-view__card-copy">
-              <span>Floor graphic</span>
+              <span>{{ t('visualShopAnalysis.cards.floorGraphic') }}</span>
               <p>
-                {{ visualFloor?.name ?? 'Floor layout unavailable' }}
+                {{ visualFloor?.name ?? t('visualShopAnalysis.defaults.floorGraphicUnavailable') }}
               </p>
             </div>
 
-            <el-tag v-if="generatedAtLabel" effect="plain" type="info">Generated {{ generatedAtLabel }}</el-tag>
+            <el-tag v-if="generatedAtLabel" effect="plain" type="info">{{ generatedAtLabel }}</el-tag>
           </div>
         </template>
 
         <div class="visual-shop-analysis-view__canvas-shell">
           <div class="visual-shop-analysis-view__canvas-frame">
             <div class="visual-shop-analysis-view__canvas-meta">
-              <el-tag effect="plain" type="success">{{ visualUnits.length }} units</el-tag>
-              <el-tag effect="plain" type="info">{{ visualFloor?.name ?? 'No floor selected' }}</el-tag>
+              <el-tag effect="plain" type="success">
+                {{ t('visualShopAnalysis.meta.unitCount', { count: visualUnits.length }) }}
+              </el-tag>
+              <el-tag effect="plain" type="info">{{ visualFloor?.name ?? t('visualShopAnalysis.defaults.noFloorSelected') }}</el-tag>
             </div>
 
             <div class="visual-shop-analysis-view__canvas" :style="canvasStyle" data-testid="visual-shop-canvas">
@@ -374,50 +393,50 @@ const legendItems = computed<VisualShopLegendItem[]>(() => {
               </button>
 
               <div v-if="hasQueried && !markerUnits.length" class="visual-shop-analysis-view__empty-state">
-                Query a store, floor, or area slice to render unit markers on the visual layout.
+                {{ t('visualShopAnalysis.emptyStates.canvas') }}
               </div>
             </div>
           </div>
 
           <aside class="visual-shop-analysis-view__detail-panel">
             <div class="visual-shop-analysis-view__detail-header">
-              <span>Selected unit</span>
-              <strong data-testid="visual-shop-selected-unit-code">{{ selectedUnit?.unit_code ?? '—' }}</strong>
+              <span>{{ t('visualShopAnalysis.fields.selectedUnit') }}</span>
+              <strong data-testid="visual-shop-selected-unit-code">{{ selectedUnit?.unit_code ?? t('common.emptyValue') }}</strong>
             </div>
 
             <dl v-if="selectedUnit" class="visual-shop-analysis-view__detail-list">
               <div>
-                <dt>Unit name</dt>
+                <dt>{{ t('visualShopAnalysis.fields.unitName') }}</dt>
                 <dd>{{ getDetailValue(selectedUnit.unit_name) }}</dd>
               </div>
               <div>
-                <dt>Status</dt>
+                <dt>{{ t('common.columns.status') }}</dt>
                 <dd>{{ getDetailValue(selectedUnit.rent_status) }}</dd>
               </div>
               <div>
-                <dt>Brand</dt>
+                <dt>{{ t('visualShopAnalysis.fields.brand') }}</dt>
                 <dd>{{ getDetailValue(selectedUnit.brand_name) }}</dd>
               </div>
               <div>
-                <dt>Customer</dt>
+                <dt>{{ t('visualShopAnalysis.fields.customer') }}</dt>
                 <dd>{{ getDetailValue(selectedUnit.customer_name) }}</dd>
               </div>
               <div>
-                <dt>Shop type</dt>
+                <dt>{{ t('visualShopAnalysis.fields.shopType') }}</dt>
                 <dd>{{ getDetailValue(selectedUnit.shop_type_name) }}</dd>
               </div>
               <div>
-                <dt>Floor area</dt>
+                <dt>{{ t('visualShopAnalysis.fields.floorArea') }}</dt>
                 <dd>{{ formatArea(selectedUnit.floor_area) }}</dd>
               </div>
               <div>
-                <dt>Rent area</dt>
+                <dt>{{ t('visualShopAnalysis.fields.rentArea') }}</dt>
                 <dd>{{ formatArea(selectedUnit.rent_area) }}</dd>
               </div>
             </dl>
 
             <p v-else class="visual-shop-analysis-view__detail-empty">
-              No unit is selected yet. Query the report and click a marker to inspect lease details.
+              {{ t('visualShopAnalysis.emptyStates.detail') }}
             </p>
           </aside>
         </div>
@@ -427,8 +446,8 @@ const legendItems = computed<VisualShopLegendItem[]>(() => {
         <template #header>
           <div class="visual-shop-analysis-view__card-header">
             <div class="visual-shop-analysis-view__card-copy">
-              <span>Legend</span>
-              <p>Occupancy colors from the report payload.</p>
+              <span>{{ t('visualShopAnalysis.cards.legend') }}</span>
+              <p>{{ t('visualShopAnalysis.cards.legendSummary') }}</p>
             </div>
           </div>
         </template>
@@ -439,7 +458,9 @@ const legendItems = computed<VisualShopLegendItem[]>(() => {
             <span>{{ item.label }}</span>
           </div>
 
-          <p v-if="!legendItems.length" class="visual-shop-analysis-view__legend-empty">Legend will appear once the report returns visual items.</p>
+          <p v-if="!legendItems.length" class="visual-shop-analysis-view__legend-empty">
+            {{ t('visualShopAnalysis.emptyStates.legend') }}
+          </p>
         </div>
       </el-card>
     </div>

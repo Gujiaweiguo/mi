@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import DataTable from '../components/platform/DataTable.vue'
 import FilterForm from '../components/platform/FilterForm.vue'
@@ -17,6 +18,8 @@ const props = defineProps<{
   testId: string
 }>()
 
+const { t } = useI18n()
+
 const { filters, isDirty, reset } = useFilterForm({
   query: '',
 })
@@ -32,14 +35,16 @@ const visibleRows = computed(() => {
     Object.values(row).some((value) => String(value).toLowerCase().includes(normalizedQuery.value)),
   )
 })
+
+const queueTitle = computed(() => t('workbench.table.queueTitle', { title: props.title }))
 </script>
 
 <template>
   <div class="workbench-view" :data-testid="testId">
     <PageSection :eyebrow="eyebrow" :title="title" :summary="summary">
       <template #actions>
-        <el-tag type="info" effect="plain">Shell scaffold</el-tag>
-        <el-tag type="success" effect="plain">Ready for Task 15</el-tag>
+        <el-tag type="info" effect="plain">{{ t('workbench.tags.shellScaffold') }}</el-tag>
+        <el-tag type="success" effect="plain">{{ t('workbench.tags.readyForTask15') }}</el-tag>
       </template>
     </PageSection>
 
@@ -49,7 +54,7 @@ const visibleRows = computed(() => {
       </el-form-item>
     </FilterForm>
 
-    <DataTable :title="`${title} queue`" :rows="visibleRows" :columns="columns" :empty-text="'No stub records match the current filters.'" />
+    <DataTable :title="queueTitle" :rows="visibleRows" :columns="columns" :empty-text="t('workbench.table.empty')" />
   </div>
 </template>
 

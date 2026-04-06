@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import {
   createCustomerTraffic,
@@ -13,6 +14,8 @@ import { listStructureStores, listStructureUnits, type StructureStore, type Stru
 import FilterForm from '../components/platform/FilterForm.vue'
 import PageSection from '../components/platform/PageSection.vue'
 import { useFilterForm } from '../composables/useFilterForm'
+
+const { t } = useI18n()
 
 type Feedback = {
   type: 'success' | 'error' | 'warning'
@@ -172,14 +175,14 @@ const loadMasterData = async () => {
     stores.value = storesResult.value.data.stores ?? []
   } else {
     stores.value = []
-    loadErrors.push(getErrorMessage(storesResult.reason, 'Unable to load stores.'))
+    loadErrors.push(getErrorMessage(storesResult.reason, t('salesAdmin.errors.unableToLoadStores')))
   }
 
   if (unitsResult.status === 'fulfilled') {
     units.value = unitsResult.value.data.units ?? []
   } else {
     units.value = []
-    loadErrors.push(getErrorMessage(unitsResult.reason, 'Unable to load units.'))
+    loadErrors.push(getErrorMessage(unitsResult.reason, t('salesAdmin.errors.unableToLoadUnits')))
   }
 
   syncMasterDataSelections()
@@ -187,7 +190,7 @@ const loadMasterData = async () => {
   if (loadErrors.length > 0) {
     pageFeedback.value = {
       type: 'warning',
-      title: 'Sales master data partially unavailable',
+      title: t('salesAdmin.errors.masterDataPartiallyUnavailable'),
       description: loadErrors.join(' '),
     }
   }
@@ -256,8 +259,8 @@ const loadDailySales = async () => {
     dailySales.value = []
     dailyFeedback.value = {
       type: 'error',
-      title: 'Daily sales unavailable',
-      description: getErrorMessage(error, 'Unable to load daily sales.'),
+      title: t('salesAdmin.errors.dailySalesUnavailable'),
+      description: getErrorMessage(error, t('salesAdmin.errors.unableToLoadDailySales')),
     }
   } finally {
     isDailyLoading.value = false
@@ -279,8 +282,8 @@ const loadTraffic = async () => {
     customerTraffic.value = []
     trafficFeedback.value = {
       type: 'error',
-      title: 'Customer traffic unavailable',
-      description: getErrorMessage(error, 'Unable to load customer traffic.'),
+      title: t('salesAdmin.errors.customerTrafficUnavailable'),
+      description: getErrorMessage(error, t('salesAdmin.errors.unableToLoadTraffic')),
     }
   } finally {
     isTrafficLoading.value = false
@@ -291,8 +294,8 @@ const handleCreateDailySale = async () => {
   if (!canCreateDailySale.value) {
     dailyFeedback.value = {
       type: 'warning',
-      title: 'Daily sale details required',
-      description: 'Provide store, unit, sale date, and sales amount before creating a record.',
+      title: t('salesAdmin.feedback.dailySaleDetailsRequiredTitle'),
+      description: t('salesAdmin.feedback.dailySaleDetailsRequiredDescription'),
     }
     return
   }
@@ -305,8 +308,8 @@ const handleCreateDailySale = async () => {
   if (storeId === undefined || unitId === undefined || salesAmount === undefined || !saleDate) {
     dailyFeedback.value = {
       type: 'warning',
-      title: 'Daily sale details required',
-      description: 'Provide store, unit, sale date, and sales amount before creating a record.',
+      title: t('salesAdmin.feedback.dailySaleDetailsRequiredTitle'),
+      description: t('salesAdmin.feedback.dailySaleDetailsRequiredDescription'),
     }
     return
   }
@@ -327,15 +330,15 @@ const handleCreateDailySale = async () => {
     }
     dailyFeedback.value = {
       type: 'success',
-      title: 'Daily sale created',
-      description: 'The daily sale record is now available for reporting and review.',
+      title: t('salesAdmin.feedback.dailySaleCreatedTitle'),
+      description: t('salesAdmin.feedback.dailySaleCreatedDescription'),
     }
     resetDailyForm()
   } catch (error) {
     dailyFeedback.value = {
       type: 'error',
-      title: 'Daily sale creation failed',
-      description: getErrorMessage(error, 'Unable to create the daily sale.'),
+      title: t('salesAdmin.errors.dailySaleCreationFailed'),
+      description: getErrorMessage(error, t('salesAdmin.errors.unableToCreateDailySale')),
     }
   } finally {
     isDailySaving.value = false
@@ -346,8 +349,8 @@ const handleCreateTraffic = async () => {
   if (!canCreateTraffic.value) {
     trafficFeedback.value = {
       type: 'warning',
-      title: 'Traffic details required',
-      description: 'Provide store, traffic date, and inbound count before creating a record.',
+      title: t('salesAdmin.feedback.trafficDetailsRequiredTitle'),
+      description: t('salesAdmin.feedback.trafficDetailsRequiredDescription'),
     }
     return
   }
@@ -359,8 +362,8 @@ const handleCreateTraffic = async () => {
   if (storeId === undefined || inboundCount === undefined || !trafficDate) {
     trafficFeedback.value = {
       type: 'warning',
-      title: 'Traffic details required',
-      description: 'Provide store, traffic date, and inbound count before creating a record.',
+      title: t('salesAdmin.feedback.trafficDetailsRequiredTitle'),
+      description: t('salesAdmin.feedback.trafficDetailsRequiredDescription'),
     }
     return
   }
@@ -380,15 +383,15 @@ const handleCreateTraffic = async () => {
     }
     trafficFeedback.value = {
       type: 'success',
-      title: 'Traffic record created',
-      description: 'The customer traffic record is now available for reporting and review.',
+      title: t('salesAdmin.feedback.trafficRecordCreatedTitle'),
+      description: t('salesAdmin.feedback.trafficRecordCreatedDescription'),
     }
     resetTrafficForm()
   } catch (error) {
     trafficFeedback.value = {
       type: 'error',
-      title: 'Traffic creation failed',
-      description: getErrorMessage(error, 'Unable to create the traffic record.'),
+      title: t('salesAdmin.errors.trafficCreationFailed'),
+      description: getErrorMessage(error, t('salesAdmin.errors.unableToCreateTraffic')),
     }
   } finally {
     isTrafficSaving.value = false
@@ -405,13 +408,13 @@ onMounted(() => {
 <template>
   <div class="sales-admin-view" data-testid="sales-admin-view">
     <PageSection
-      eyebrow="Sales data maintenance"
-      title="Sales data admin"
-      summary="Capture daily sales and customer traffic records for reporting slices, using a minimal admin console guarded by the sales.admin permission."
+      :eyebrow="t('salesAdmin.eyebrow')"
+      :title="t('salesAdmin.title')"
+      :summary="t('salesAdmin.summary')"
     >
       <template #actions>
-        <el-tag effect="plain" type="info">{{ dailySales.length }} daily sales</el-tag>
-        <el-tag effect="plain" type="success">{{ customerTraffic.length }} traffic rows</el-tag>
+        <el-tag effect="plain" type="info">{{ t('salesAdmin.tags.dailySales', { count: dailySales.length }) }}</el-tag>
+        <el-tag effect="plain" type="success">{{ t('salesAdmin.tags.trafficRows', { count: customerTraffic.length }) }}</el-tag>
       </template>
     </PageSection>
 
@@ -425,20 +428,20 @@ onMounted(() => {
     />
 
     <el-card class="sales-admin-view__card" shadow="never">
-      <template #header>
-        <div class="sales-admin-view__card-header">
-          <span>Daily sales</span>
-          <div class="sales-admin-view__card-actions">
-            <el-button
-              :loading="isDailyLoading"
-              data-testid="sales-daily-refresh-button"
-              @click="loadDailySales"
-            >
-              Refresh
-            </el-button>
+        <template #header>
+          <div class="sales-admin-view__card-header">
+            <span>{{ t('salesAdmin.cards.dailySales') }}</span>
+            <div class="sales-admin-view__card-actions">
+              <el-button
+                :loading="isDailyLoading"
+                data-testid="sales-daily-refresh-button"
+                @click="loadDailySales"
+              >
+                {{ t('common.actions.refresh') }}
+              </el-button>
+            </div>
           </div>
-        </div>
-      </template>
+        </template>
 
       <el-alert
         v-if="dailyFeedback"
@@ -450,13 +453,13 @@ onMounted(() => {
         show-icon
       />
 
-      <FilterForm class="sales-admin-view__filter-form" title="Daily sales filters" :show-actions="false">
-        <el-form-item label="Store">
+      <FilterForm class="sales-admin-view__filter-form" :title="t('salesAdmin.filters.dailySales')" :show-actions="false">
+        <el-form-item :label="t('salesAdmin.fields.store')">
           <el-select
             v-model="dailyFilters.store_id"
             clearable
             filterable
-            placeholder="All stores"
+            :placeholder="t('salesAdmin.placeholders.allStores')"
             :loading="isMasterDataLoading"
             data-testid="sales-daily-filter-store"
           >
@@ -464,12 +467,12 @@ onMounted(() => {
           </el-select>
         </el-form-item>
 
-        <el-form-item label="Unit">
+        <el-form-item :label="t('salesAdmin.fields.unit')">
           <el-select
             v-model="dailyFilters.unit_id"
             clearable
             filterable
-            placeholder="All units"
+            :placeholder="t('salesAdmin.placeholders.allUnits')"
             :loading="isMasterDataLoading"
             data-testid="sales-daily-filter-unit"
           >
@@ -477,23 +480,23 @@ onMounted(() => {
           </el-select>
         </el-form-item>
 
-        <el-form-item label="Date from">
+        <el-form-item :label="t('salesAdmin.fields.dateFrom')">
           <div data-testid="sales-daily-filter-date-from">
             <el-date-picker
               v-model="dailyFilters.date_from"
               type="date"
-              placeholder="Start date"
+              :placeholder="t('salesAdmin.placeholders.startDate')"
               value-format="YYYY-MM-DD"
             />
           </div>
         </el-form-item>
 
-        <el-form-item label="Date to">
+        <el-form-item :label="t('salesAdmin.fields.dateTo')">
           <div data-testid="sales-daily-filter-date-to">
             <el-date-picker
               v-model="dailyFilters.date_to"
               type="date"
-              placeholder="End date"
+              :placeholder="t('salesAdmin.placeholders.endDate')"
               value-format="YYYY-MM-DD"
             />
           </div>
@@ -501,7 +504,7 @@ onMounted(() => {
 
         <div class="sales-admin-view__filter-actions-row">
           <el-button :disabled="!isDailyFiltersDirty" data-testid="sales-daily-filter-reset" @click="handleResetDailyFilters">
-            Reset
+            {{ t('common.actions.reset') }}
           </el-button>
           <el-button
             type="primary"
@@ -509,18 +512,18 @@ onMounted(() => {
             data-testid="sales-daily-filter-submit"
             @click="loadDailySales"
           >
-            Apply filters
+            {{ t('common.actions.query') }}
           </el-button>
         </div>
       </FilterForm>
 
       <el-form label-position="top" class="sales-admin-view__form" @submit.prevent>
         <div class="sales-admin-view__form-grid">
-          <el-form-item label="Store">
+          <el-form-item :label="t('salesAdmin.fields.store')">
             <el-select
               v-model="dailyForm.store_id"
               filterable
-              placeholder="Select a store"
+              :placeholder="t('salesAdmin.placeholders.selectStore')"
               :loading="isMasterDataLoading"
               data-testid="sales-daily-store-select"
             >
@@ -528,11 +531,11 @@ onMounted(() => {
             </el-select>
           </el-form-item>
 
-          <el-form-item label="Unit">
+          <el-form-item :label="t('salesAdmin.fields.unit')">
             <el-select
               v-model="dailyForm.unit_id"
               filterable
-              placeholder="Select a unit"
+              :placeholder="t('salesAdmin.placeholders.selectUnit')"
               :loading="isMasterDataLoading"
               data-testid="sales-daily-unit-select"
             >
@@ -540,18 +543,18 @@ onMounted(() => {
             </el-select>
           </el-form-item>
 
-          <el-form-item label="Sale date">
+          <el-form-item :label="t('salesAdmin.fields.saleDate')">
             <div data-testid="sales-daily-date-input">
               <el-date-picker
                 v-model="dailyForm.sale_date"
                 type="date"
-                placeholder="Select a date"
+                :placeholder="t('salesAdmin.placeholders.selectDate')"
                 value-format="YYYY-MM-DD"
               />
             </div>
           </el-form-item>
 
-          <el-form-item label="Sales amount">
+          <el-form-item :label="t('salesAdmin.fields.salesAmount')">
             <el-input-number
               v-model="dailyForm.sales_amount"
               :min="0"
@@ -571,7 +574,7 @@ onMounted(() => {
             data-testid="sales-daily-create-button"
             @click="handleCreateDailySale"
           >
-            Create daily sale
+            {{ t('salesAdmin.actions.createDailySale') }}
           </el-button>
         </div>
       </el-form>
@@ -580,12 +583,12 @@ onMounted(() => {
         :data="dailySales"
         row-key="id"
         class="sales-admin-view__table"
-        :empty-text="isDailyLoading ? 'Loading daily sales…' : 'No daily sales available.'"
+        :empty-text="isDailyLoading ? t('salesAdmin.table.loadingDailySales') : t('salesAdmin.table.emptyDailySales')"
       >
-        <el-table-column prop="store_id" label="Store" min-width="100" />
-        <el-table-column prop="unit_id" label="Unit" min-width="100" />
-        <el-table-column prop="sale_date" label="Sale date" min-width="140" />
-        <el-table-column label="Sales amount" min-width="140">
+        <el-table-column prop="store_id" :label="t('salesAdmin.fields.store')" min-width="100" />
+        <el-table-column prop="unit_id" :label="t('salesAdmin.fields.unit')" min-width="100" />
+        <el-table-column prop="sale_date" :label="t('salesAdmin.fields.saleDate')" min-width="140" />
+        <el-table-column :label="t('salesAdmin.fields.salesAmount')" min-width="140">
           <template #default="scope">
             {{ String(scope.row.sales_amount) }}
           </template>
@@ -594,18 +597,14 @@ onMounted(() => {
     </el-card>
 
     <el-card class="sales-admin-view__card" shadow="never">
-      <template #header>
-        <div class="sales-admin-view__card-header">
-          <span>Customer traffic</span>
-          <div class="sales-admin-view__card-actions">
-              <el-button
-                :loading="isTrafficLoading"
-                data-testid="sales-traffic-refresh-button"
-                @click="loadTraffic"
-              >
-                Refresh
+        <template #header>
+          <div class="sales-admin-view__card-header">
+            <span>{{ t('salesAdmin.cards.customerTraffic') }}</span>
+            <div class="sales-admin-view__card-actions">
+              <el-button :loading="isTrafficLoading" data-testid="sales-traffic-refresh-button" @click="loadTraffic">
+                {{ t('common.actions.refresh') }}
               </el-button>
-          </div>
+            </div>
         </div>
       </template>
 
@@ -619,13 +618,13 @@ onMounted(() => {
         show-icon
       />
 
-      <FilterForm class="sales-admin-view__filter-form" title="Traffic filters" :show-actions="false">
-        <el-form-item label="Store">
+      <FilterForm class="sales-admin-view__filter-form" :title="t('salesAdmin.filters.customerTraffic')" :show-actions="false">
+        <el-form-item :label="t('salesAdmin.fields.store')">
           <el-select
             v-model="trafficFilters.store_id"
             clearable
             filterable
-            placeholder="All stores"
+            :placeholder="t('salesAdmin.placeholders.allStores')"
             :loading="isMasterDataLoading"
             data-testid="sales-traffic-filter-store"
           >
@@ -633,23 +632,23 @@ onMounted(() => {
           </el-select>
         </el-form-item>
 
-        <el-form-item label="Date from">
+        <el-form-item :label="t('salesAdmin.fields.dateFrom')">
           <div data-testid="sales-traffic-filter-date-from">
             <el-date-picker
               v-model="trafficFilters.date_from"
               type="date"
-              placeholder="Start date"
+              :placeholder="t('salesAdmin.placeholders.startDate')"
               value-format="YYYY-MM-DD"
             />
           </div>
         </el-form-item>
 
-        <el-form-item label="Date to">
+        <el-form-item :label="t('salesAdmin.fields.dateTo')">
           <div data-testid="sales-traffic-filter-date-to">
             <el-date-picker
               v-model="trafficFilters.date_to"
               type="date"
-              placeholder="End date"
+              :placeholder="t('salesAdmin.placeholders.endDate')"
               value-format="YYYY-MM-DD"
             />
           </div>
@@ -661,7 +660,7 @@ onMounted(() => {
             data-testid="sales-traffic-filter-reset"
             @click="handleResetTrafficFilters"
           >
-            Reset
+            {{ t('common.actions.reset') }}
           </el-button>
           <el-button
             type="primary"
@@ -669,18 +668,18 @@ onMounted(() => {
             data-testid="sales-traffic-filter-submit"
             @click="loadTraffic"
           >
-            Apply filters
+            {{ t('common.actions.query') }}
           </el-button>
         </div>
       </FilterForm>
 
       <el-form label-position="top" class="sales-admin-view__form" @submit.prevent>
         <div class="sales-admin-view__form-grid">
-          <el-form-item label="Store">
+          <el-form-item :label="t('salesAdmin.fields.store')">
             <el-select
               v-model="trafficForm.store_id"
               filterable
-              placeholder="Select a store"
+              :placeholder="t('salesAdmin.placeholders.selectStore')"
               :loading="isMasterDataLoading"
               data-testid="sales-traffic-store-select"
             >
@@ -688,18 +687,18 @@ onMounted(() => {
             </el-select>
           </el-form-item>
 
-          <el-form-item label="Traffic date">
+          <el-form-item :label="t('salesAdmin.fields.trafficDate')">
             <div data-testid="sales-traffic-date-input">
               <el-date-picker
                 v-model="trafficForm.traffic_date"
                 type="date"
-                placeholder="Select a date"
+                :placeholder="t('salesAdmin.placeholders.selectDate')"
                 value-format="YYYY-MM-DD"
               />
             </div>
           </el-form-item>
 
-          <el-form-item label="Inbound count">
+          <el-form-item :label="t('salesAdmin.fields.inboundCount')">
             <el-input-number
               v-model="trafficForm.inbound_count"
               :min="0"
@@ -718,7 +717,7 @@ onMounted(() => {
             data-testid="sales-traffic-create-button"
             @click="handleCreateTraffic"
           >
-            Create traffic record
+            {{ t('salesAdmin.actions.createTrafficRecord') }}
           </el-button>
         </div>
       </el-form>
@@ -727,11 +726,11 @@ onMounted(() => {
         :data="customerTraffic"
         row-key="id"
         class="sales-admin-view__table"
-        :empty-text="isTrafficLoading ? 'Loading traffic…' : 'No customer traffic available.'"
+        :empty-text="isTrafficLoading ? t('salesAdmin.table.loadingTraffic') : t('salesAdmin.table.emptyTraffic')"
       >
-        <el-table-column prop="store_id" label="Store" min-width="100" />
-        <el-table-column prop="traffic_date" label="Traffic date" min-width="140" />
-        <el-table-column label="Inbound count" min-width="140">
+        <el-table-column prop="store_id" :label="t('salesAdmin.fields.store')" min-width="100" />
+        <el-table-column prop="traffic_date" :label="t('salesAdmin.fields.trafficDate')" min-width="140" />
+        <el-table-column :label="t('salesAdmin.fields.inboundCount')" min-width="140">
           <template #default="scope">
             {{ String(scope.row.inbound_count) }}
           </template>

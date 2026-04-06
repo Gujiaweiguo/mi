@@ -383,17 +383,18 @@ test('filters and updates rentable units from the dedicated admin view', async (
   await selectByTestId(page, 'rentable-area-floor-filter', 'F-1 — Floor 1')
   await selectByTestId(page, 'rentable-area-area-filter', 'AR-1 — North Arcade')
   await page.getByTestId('rentable-area-rentable-switch').click()
-  await selectByTestId(page, 'rentable-area-status-filter', 'active')
+  await page.getByTestId('rentable-area-status-filter').click()
+  await page.getByTestId('rentable-area-status-option-active').click()
   await page.getByTestId('rentable-area-apply-button').click()
 
   await expect(page.getByTestId('rentable-area-units-table')).toContainText('RA-201')
-  await page.getByTestId('rentable-area-units-table').getByRole('button', { name: 'Edit' }).click()
+  await page.getByTestId('rentable-area-edit-button-601').click()
 
   await expect(page.getByTestId('rentable-area-edit-dialog')).toBeVisible()
   await page.getByTestId('rentable-area-unit-edit-rent-area').locator('input').fill('140.5')
   await selectByTestId(page, 'rentable-area-edit-shop-type-select', 'fashion — Fashion')
   await page.getByTestId('rentable-area-unit-edit-status').click()
-  await page.locator('.el-select-dropdown:visible .el-select-dropdown__item').filter({ hasText: 'inactive' }).first().click()
+  await page.getByTestId('rentable-area-edit-status-option-inactive').click()
   await page.getByTestId('rentable-area-unit-edit-save').click()
 
   await expect.poll(mocks.getUpdatePayload).not.toBeNull()
@@ -412,5 +413,5 @@ test('filters and updates rentable units from the dedicated admin view', async (
     is_rentable: true,
     status: 'inactive',
   })
-  await expect(page.getByText('Unit updated')).toBeVisible()
+  await expect(page.getByTestId('rentable-area-feedback-alert')).toContainText('RA-201')
 })

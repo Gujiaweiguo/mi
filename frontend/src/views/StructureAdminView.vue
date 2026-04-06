@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import {
   createStructureArea,
@@ -98,6 +99,7 @@ const floors = ref<StructureFloor[]>([])
 const areas = ref<StructureArea[]>([])
 const locations = ref<StructureLocation[]>([])
 const units = ref<StructureUnit[]>([])
+const { t, locale } = useI18n()
 
 const departments = ref<Department[]>([])
 const storeTypes = ref<ReferenceCatalogItem[]>([])
@@ -315,10 +317,22 @@ const getErrorMessage = (error: unknown, fallback: string) => (error instanceof 
 
 const formatDate = (value: string) => {
   if (!value) {
-    return '—'
+    return t('common.emptyValue')
   }
 
-  return new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' }).format(new Date(value))
+  return new Intl.DateTimeFormat(locale.value, { dateStyle: 'medium' }).format(new Date(value))
+}
+
+const resolveStatusLabel = (status: string) => {
+  if (status === 'active') {
+    return t('common.statuses.active')
+  }
+
+  if (status === 'inactive') {
+    return t('common.statuses.inactive')
+  }
+
+  return status || t('common.emptyValue')
 }
 
 const replaceRow = <T extends { id: number }>(rows: T[], updated: T) => {
@@ -481,8 +495,8 @@ const loadBuildings = async () => {
     units.value = []
     buildingFeedback.value = {
       type: 'error',
-      title: 'Buildings unavailable',
-      description: getErrorMessage(error, 'Unable to load buildings for the selected store.'),
+      title: t('structureAdmin.errors.buildingsUnavailable'),
+      description: getErrorMessage(error, t('structureAdmin.errors.unableToLoadBuildings')),
     }
   } finally {
     isBuildingsLoading.value = false
@@ -524,8 +538,8 @@ const loadFloors = async () => {
     units.value = []
     floorFeedback.value = {
       type: 'error',
-      title: 'Floors unavailable',
-      description: getErrorMessage(error, 'Unable to load floors for the selected building.'),
+      title: t('structureAdmin.errors.floorsUnavailable'),
+      description: getErrorMessage(error, t('structureAdmin.errors.unableToLoadFloors')),
     }
   } finally {
     isFloorsLoading.value = false
@@ -554,8 +568,8 @@ const loadAreas = async () => {
     selectedAreaId.value = null
     areaFeedback.value = {
       type: 'error',
-      title: 'Areas unavailable',
-      description: getErrorMessage(error, 'Unable to load areas for the selected store.'),
+      title: t('structureAdmin.errors.areasUnavailable'),
+      description: getErrorMessage(error, t('structureAdmin.errors.unableToLoadAreas')),
     }
   } finally {
     isAreasLoading.value = false
@@ -588,8 +602,8 @@ const loadLocations = async () => {
     selectedLocationId.value = null
     locationFeedback.value = {
       type: 'error',
-      title: 'Locations unavailable',
-      description: getErrorMessage(error, 'Unable to load locations for the selected floor.'),
+      title: t('structureAdmin.errors.locationsUnavailable'),
+      description: getErrorMessage(error, t('structureAdmin.errors.unableToLoadLocations')),
     }
   } finally {
     isLocationsLoading.value = false
@@ -616,8 +630,8 @@ const loadUnits = async () => {
     units.value = []
     unitFeedback.value = {
       type: 'error',
-      title: 'Units unavailable',
-      description: getErrorMessage(error, 'Unable to load units for the selected filters.'),
+      title: t('structureAdmin.errors.unitsUnavailable'),
+      description: getErrorMessage(error, t('structureAdmin.errors.unableToLoadUnits')),
     }
   } finally {
     isUnitsLoading.value = false
@@ -660,8 +674,8 @@ const loadStores = async () => {
     units.value = []
     storeFeedback.value = {
       type: 'error',
-      title: 'Stores unavailable',
-      description: getErrorMessage(error, 'Unable to load structure stores.'),
+      title: t('structureAdmin.errors.storesUnavailable'),
+      description: getErrorMessage(error, t('structureAdmin.errors.unableToLoadStores')),
     }
   } finally {
     isStoresLoading.value = false
@@ -684,41 +698,41 @@ const loadReferenceData = async () => {
     departments.value = departmentsResult.value.data.departments ?? []
   } else {
     departments.value = []
-    loadErrors.push(getErrorMessage(departmentsResult.reason, 'Unable to load departments.'))
+    loadErrors.push(getErrorMessage(departmentsResult.reason, t('structureAdmin.errors.unableToLoadDepartments')))
   }
 
   if (storeTypesResult.status === 'fulfilled') {
     storeTypes.value = storeTypesResult.value.data.store_types ?? []
   } else {
     storeTypes.value = []
-    loadErrors.push(getErrorMessage(storeTypesResult.reason, 'Unable to load store types.'))
+    loadErrors.push(getErrorMessage(storeTypesResult.reason, t('structureAdmin.errors.unableToLoadStoreTypes')))
   }
 
   if (managementTypesResult.status === 'fulfilled') {
     managementTypes.value = managementTypesResult.value.data.store_management_types ?? []
   } else {
     managementTypes.value = []
-    loadErrors.push(getErrorMessage(managementTypesResult.reason, 'Unable to load management types.'))
+    loadErrors.push(getErrorMessage(managementTypesResult.reason, t('structureAdmin.errors.unableToLoadManagementTypes')))
   }
 
   if (areaLevelsResult.status === 'fulfilled') {
     areaLevels.value = areaLevelsResult.value.data.area_levels ?? []
   } else {
     areaLevels.value = []
-    loadErrors.push(getErrorMessage(areaLevelsResult.reason, 'Unable to load area levels.'))
+    loadErrors.push(getErrorMessage(areaLevelsResult.reason, t('structureAdmin.errors.unableToLoadAreaLevels')))
   }
 
   if (unitTypesResult.status === 'fulfilled') {
     unitTypes.value = unitTypesResult.value.data.unit_types ?? []
   } else {
     unitTypes.value = []
-    loadErrors.push(getErrorMessage(unitTypesResult.reason, 'Unable to load unit types.'))
+    loadErrors.push(getErrorMessage(unitTypesResult.reason, t('structureAdmin.errors.unableToLoadUnitTypes')))
   }
 
   if (loadErrors.length > 0) {
     pageFeedback.value = {
       type: 'warning',
-      title: 'Reference lookups partially unavailable',
+      title: t('structureAdmin.errors.referenceLookupsPartiallyUnavailable'),
       description: loadErrors.join(' '),
     }
   }
@@ -786,8 +800,8 @@ const handleCreateStore = async () => {
   if (!canCreateStore.value) {
     storeFeedback.value = {
       type: 'warning',
-      title: 'Store details required',
-      description: 'Provide department, store type, management type, code, name, and short name before creating a store.',
+      title: t('structureAdmin.feedback.storeDetailsRequiredTitle'),
+      description: t('structureAdmin.feedback.storeDetailsRequiredDescription'),
     }
     return
   }
@@ -799,8 +813,8 @@ const handleCreateStore = async () => {
   if (!departmentId || !storeTypeId || !managementTypeId) {
     storeFeedback.value = {
       type: 'warning',
-      title: 'Store details required',
-      description: 'Provide department, store type, and management type IDs before creating a store.',
+      title: t('structureAdmin.feedback.storeDetailsRequiredTitle'),
+      description: t('structureAdmin.feedback.storeIdsRequiredDescription'),
     }
     return
   }
@@ -836,16 +850,16 @@ const handleCreateStore = async () => {
 
     storeFeedback.value = {
       type: 'success',
-      title: 'Store created',
-      description: `Store "${response.data.store.code}" is ready for building and floor setup.`,
+      title: t('structureAdmin.feedback.storeCreatedTitle'),
+      description: t('structureAdmin.feedback.storeCreatedDescription', { code: response.data.store.code }),
     }
     resetStoreForm()
     await Promise.all([loadBuildings(), loadAreas()])
   } catch (error) {
     storeFeedback.value = {
       type: 'error',
-      title: 'Store creation failed',
-      description: getErrorMessage(error, 'Unable to create the structure store.'),
+      title: t('structureAdmin.errors.storeCreationFailed'),
+      description: getErrorMessage(error, t('structureAdmin.errors.unableToCreateStore')),
     }
   } finally {
     isStoreSaving.value = false
@@ -856,8 +870,8 @@ const handleCreateBuilding = async () => {
   if (!canCreateBuilding.value || selectedStoreId.value === null) {
     buildingFeedback.value = {
       type: 'warning',
-      title: 'Building details required',
-      description: 'Select a store and provide both building code and name before creating a building.',
+      title: t('structureAdmin.feedback.buildingDetailsRequiredTitle'),
+      description: t('structureAdmin.feedback.buildingDetailsRequiredDescription'),
     }
     return
   }
@@ -878,16 +892,16 @@ const handleCreateBuilding = async () => {
 
     buildingFeedback.value = {
       type: 'success',
-      title: 'Building created',
-      description: `Building "${response.data.building.code}" is ready for floor setup.`,
+      title: t('structureAdmin.feedback.buildingCreatedTitle'),
+      description: t('structureAdmin.feedback.buildingCreatedDescription', { code: response.data.building.code }),
     }
     resetBuildingForm()
     await loadFloors()
   } catch (error) {
     buildingFeedback.value = {
       type: 'error',
-      title: 'Building creation failed',
-      description: getErrorMessage(error, 'Unable to create the building.'),
+      title: t('structureAdmin.errors.buildingCreationFailed'),
+      description: getErrorMessage(error, t('structureAdmin.errors.unableToCreateBuilding')),
     }
   } finally {
     isBuildingSaving.value = false
@@ -898,8 +912,8 @@ const handleCreateFloor = async () => {
   if (!canCreateFloor.value || selectedBuildingId.value === null) {
     floorFeedback.value = {
       type: 'warning',
-      title: 'Floor details required',
-      description: 'Select a building and provide both floor code and name before creating a floor.',
+      title: t('structureAdmin.feedback.floorDetailsRequiredTitle'),
+      description: t('structureAdmin.feedback.floorDetailsRequiredDescription'),
     }
     return
   }
@@ -925,16 +939,16 @@ const handleCreateFloor = async () => {
 
     floorFeedback.value = {
       type: 'success',
-      title: 'Floor created',
-      description: `Floor "${response.data.floor.code}" is now part of the selected building.`,
+      title: t('structureAdmin.feedback.floorCreatedTitle'),
+      description: t('structureAdmin.feedback.floorCreatedDescription', { code: response.data.floor.code }),
     }
     resetFloorForm()
     await Promise.all([loadLocations(), loadUnits()])
   } catch (error) {
     floorFeedback.value = {
       type: 'error',
-      title: 'Floor creation failed',
-      description: getErrorMessage(error, 'Unable to create the floor.'),
+      title: t('structureAdmin.errors.floorCreationFailed'),
+      description: getErrorMessage(error, t('structureAdmin.errors.unableToCreateFloor')),
     }
   } finally {
     isFloorSaving.value = false
@@ -945,8 +959,8 @@ const handleCreateArea = async () => {
   if (!canCreateArea.value || selectedStoreId.value === null || !isPositiveInteger(areaForm.area_level_id)) {
     areaFeedback.value = {
       type: 'warning',
-      title: 'Area details required',
-      description: 'Select a store and provide area level, code, and name before creating an area.',
+      title: t('structureAdmin.feedback.areaDetailsRequiredTitle'),
+      description: t('structureAdmin.feedback.areaDetailsRequiredDescription'),
     }
     return
   }
@@ -966,16 +980,16 @@ const handleCreateArea = async () => {
     areas.value = [response.data.area, ...areas.value]
     areaFeedback.value = {
       type: 'success',
-      title: 'Area created',
-      description: `Area "${response.data.area.code}" is now available for unit allocation.`,
+      title: t('structureAdmin.feedback.areaCreatedTitle'),
+      description: t('structureAdmin.feedback.areaCreatedDescription', { code: response.data.area.code }),
     }
     resetAreaForm()
     await loadUnits()
   } catch (error) {
     areaFeedback.value = {
       type: 'error',
-      title: 'Area creation failed',
-      description: getErrorMessage(error, 'Unable to create the area.'),
+      title: t('structureAdmin.errors.areaCreationFailed'),
+      description: getErrorMessage(error, t('structureAdmin.errors.unableToCreateArea')),
     }
   } finally {
     isAreaSaving.value = false
@@ -986,8 +1000,8 @@ const handleCreateLocation = async () => {
   if (!canCreateLocation.value || selectedStoreId.value === null || !isPositiveInteger(locationForm.floor_id)) {
     locationFeedback.value = {
       type: 'warning',
-      title: 'Location details required',
-      description: 'Select a store and floor, then provide location code and name before creating a location.',
+      title: t('structureAdmin.feedback.locationDetailsRequiredTitle'),
+      description: t('structureAdmin.feedback.locationDetailsRequiredDescription'),
     }
     return
   }
@@ -1010,16 +1024,16 @@ const handleCreateLocation = async () => {
 
     locationFeedback.value = {
       type: 'success',
-      title: 'Location created',
-      description: `Location "${response.data.location.code}" is now available for unit allocation.`,
+      title: t('structureAdmin.feedback.locationCreatedTitle'),
+      description: t('structureAdmin.feedback.locationCreatedDescription', { code: response.data.location.code }),
     }
     resetLocationForm()
     await loadUnits()
   } catch (error) {
     locationFeedback.value = {
       type: 'error',
-      title: 'Location creation failed',
-      description: getErrorMessage(error, 'Unable to create the location.'),
+      title: t('structureAdmin.errors.locationCreationFailed'),
+      description: getErrorMessage(error, t('structureAdmin.errors.unableToCreateLocation')),
     }
   } finally {
     isLocationSaving.value = false
@@ -1040,9 +1054,8 @@ const handleCreateUnit = async () => {
   ) {
     unitFeedback.value = {
       type: 'warning',
-      title: 'Unit details required',
-      description:
-        'Select building/floor context and provide unit type, area, location, code, floor area, use area, and rent area.',
+      title: t('structureAdmin.feedback.unitDetailsRequiredTitle'),
+      description: t('structureAdmin.feedback.unitDetailsRequiredDescription'),
     }
     return
   }
@@ -1068,15 +1081,15 @@ const handleCreateUnit = async () => {
     units.value = [response.data.unit, ...units.value]
     unitFeedback.value = {
       type: 'success',
-      title: 'Unit created',
-      description: `Unit "${response.data.unit.code}" is now available for lease and billing operations.`,
+      title: t('structureAdmin.feedback.unitCreatedTitle'),
+      description: t('structureAdmin.feedback.unitCreatedDescription', { code: response.data.unit.code }),
     }
     resetUnitForm()
   } catch (error) {
     unitFeedback.value = {
       type: 'error',
-      title: 'Unit creation failed',
-      description: getErrorMessage(error, 'Unable to create the unit.'),
+      title: t('structureAdmin.errors.unitCreationFailed'),
+      description: getErrorMessage(error, t('structureAdmin.errors.unableToCreateUnit')),
     }
   } finally {
     isUnitSaving.value = false
@@ -1181,8 +1194,8 @@ const handleUpdateStore = async () => {
   } catch (error) {
     storeFeedback.value = {
       type: 'error',
-      title: 'Store update failed',
-      description: getErrorMessage(error, 'Unable to update the store.'),
+      title: t('structureAdmin.errors.storeUpdateFailed'),
+      description: getErrorMessage(error, t('structureAdmin.errors.unableToUpdateStore')),
     }
   } finally {
     isStoreUpdating.value = false
@@ -1214,8 +1227,8 @@ const handleUpdateBuilding = async () => {
   } catch (error) {
     buildingFeedback.value = {
       type: 'error',
-      title: 'Building update failed',
-      description: getErrorMessage(error, 'Unable to update the building.'),
+      title: t('structureAdmin.errors.buildingUpdateFailed'),
+      description: getErrorMessage(error, t('structureAdmin.errors.unableToUpdateBuilding')),
     }
   } finally {
     isBuildingUpdating.value = false
@@ -1248,8 +1261,8 @@ const handleUpdateFloor = async () => {
   } catch (error) {
     floorFeedback.value = {
       type: 'error',
-      title: 'Floor update failed',
-      description: getErrorMessage(error, 'Unable to update the floor.'),
+      title: t('structureAdmin.errors.floorUpdateFailed'),
+      description: getErrorMessage(error, t('structureAdmin.errors.unableToUpdateFloor')),
     }
   } finally {
     isFloorUpdating.value = false
@@ -1283,8 +1296,8 @@ const handleUpdateArea = async () => {
   } catch (error) {
     areaFeedback.value = {
       type: 'error',
-      title: 'Area update failed',
-      description: getErrorMessage(error, 'Unable to update the area.'),
+      title: t('structureAdmin.errors.areaUpdateFailed'),
+      description: getErrorMessage(error, t('structureAdmin.errors.unableToUpdateArea')),
     }
   } finally {
     isAreaUpdating.value = false
@@ -1318,8 +1331,8 @@ const handleUpdateLocation = async () => {
   } catch (error) {
     locationFeedback.value = {
       type: 'error',
-      title: 'Location update failed',
-      description: getErrorMessage(error, 'Unable to update the location.'),
+      title: t('structureAdmin.errors.locationUpdateFailed'),
+      description: getErrorMessage(error, t('structureAdmin.errors.unableToUpdateLocation')),
     }
   } finally {
     isLocationUpdating.value = false
@@ -1364,8 +1377,8 @@ const handleUpdateUnit = async () => {
   } catch (error) {
     unitFeedback.value = {
       type: 'error',
-      title: 'Unit update failed',
-      description: getErrorMessage(error, 'Unable to update the unit.'),
+      title: t('structureAdmin.errors.unitUpdateFailed'),
+      description: getErrorMessage(error, t('structureAdmin.errors.unableToUpdateUnit')),
     }
   } finally {
     isUnitUpdating.value = false
@@ -1389,17 +1402,17 @@ onMounted(async () => {
 <template>
   <div class="structure-admin-view" data-testid="structure-admin-view">
     <PageSection
-      eyebrow="Structure hierarchy"
-      title="Structure admin"
-      summary="Maintain stores, buildings, floors, areas, locations, and units in a pragmatic cascading hierarchy for downstream lease, billing, and reporting operations."
+      :eyebrow="t('structureAdmin.eyebrow')"
+      :title="t('structureAdmin.title')"
+      :summary="t('structureAdmin.summary')"
     >
       <template #actions>
-        <el-tag effect="plain" type="info">{{ stores.length }} stores</el-tag>
-        <el-tag effect="plain" type="success">{{ buildings.length }} buildings</el-tag>
-        <el-tag effect="plain" type="warning">{{ floors.length }} floors</el-tag>
-        <el-tag effect="plain" type="info">{{ areas.length }} areas</el-tag>
-        <el-tag effect="plain" type="success">{{ locations.length }} locations</el-tag>
-        <el-tag effect="plain" type="warning">{{ units.length }} units</el-tag>
+        <el-tag effect="plain" type="info">{{ t('structureAdmin.tags.stores', { count: stores.length }) }}</el-tag>
+        <el-tag effect="plain" type="success">{{ t('structureAdmin.tags.buildings', { count: buildings.length }) }}</el-tag>
+        <el-tag effect="plain" type="warning">{{ t('structureAdmin.tags.floors', { count: floors.length }) }}</el-tag>
+        <el-tag effect="plain" type="info">{{ t('structureAdmin.tags.areas', { count: areas.length }) }}</el-tag>
+        <el-tag effect="plain" type="success">{{ t('structureAdmin.tags.locations', { count: locations.length }) }}</el-tag>
+        <el-tag effect="plain" type="warning">{{ t('structureAdmin.tags.units', { count: units.length }) }}</el-tag>
       </template>
     </PageSection>
 
@@ -1416,10 +1429,10 @@ onMounted(async () => {
       <el-card class="structure-admin-view__card" shadow="never">
         <template #header>
           <div class="structure-admin-view__card-header">
-            <span>Stores</span>
+            <span>{{ t('structureAdmin.cards.stores') }}</span>
             <div class="structure-admin-view__card-actions">
-              <el-tag effect="plain" type="info">{{ stores.length }} total</el-tag>
-              <el-button :loading="isStoresLoading || isBootstrapping" @click="loadStores">Refresh</el-button>
+              <el-tag effect="plain" type="info">{{ t('common.total', { count: stores.length }) }}</el-tag>
+              <el-button :loading="isStoresLoading || isBootstrapping" @click="loadStores">{{ t('common.actions.refresh') }}</el-button>
             </div>
           </div>
         </template>
@@ -1436,31 +1449,31 @@ onMounted(async () => {
 
         <el-form label-position="top" class="structure-admin-view__form" @submit.prevent>
           <div class="structure-admin-view__form-grid structure-admin-view__form-grid--store">
-            <el-form-item label="Store code">
+            <el-form-item :label="t('structureAdmin.fields.storeCode')">
               <el-input
                 v-model="storeForm.code"
-                placeholder="e.g. MI-101"
+                :placeholder="t('structureAdmin.placeholders.storeCode')"
                 data-testid="structure-store-code-input"
               />
             </el-form-item>
 
-            <el-form-item label="Store name">
+            <el-form-item :label="t('structureAdmin.fields.storeName')">
               <el-input
                 v-model="storeForm.name"
-                placeholder="e.g. Harbor Center"
+                :placeholder="t('structureAdmin.placeholders.storeName')"
                 data-testid="structure-store-name-input"
               />
             </el-form-item>
 
-            <el-form-item label="Store short name">
+            <el-form-item :label="t('structureAdmin.fields.storeShortName')">
               <el-input
                 v-model="storeForm.short_name"
-                placeholder="e.g. Harbor"
+                :placeholder="t('structureAdmin.placeholders.storeShortName')"
                 data-testid="structure-store-short-name-input"
               />
             </el-form-item>
 
-            <el-form-item label="Department ID">
+            <el-form-item :label="t('structureAdmin.fields.departmentId')">
               <el-input-number
                 v-model="storeForm.department_id"
                 :min="1"
@@ -1469,7 +1482,7 @@ onMounted(async () => {
               />
             </el-form-item>
 
-            <el-form-item label="Store type ID">
+            <el-form-item :label="t('structureAdmin.fields.storeTypeId')">
               <el-input-number
                 v-model="storeForm.store_type_id"
                 :min="1"
@@ -1478,7 +1491,7 @@ onMounted(async () => {
               />
             </el-form-item>
 
-            <el-form-item label="Management type ID">
+            <el-form-item :label="t('structureAdmin.fields.managementTypeId')">
               <el-input-number
                 v-model="storeForm.management_type_id"
                 :min="1"
@@ -1487,17 +1500,23 @@ onMounted(async () => {
               />
             </el-form-item>
 
-            <el-form-item label="Status">
+            <el-form-item :label="t('common.columns.status')">
               <el-select v-model="storeForm.status">
-                <el-option v-for="option in statusOptions" :key="option" :label="option" :value="option" />
+                <el-option v-for="option in statusOptions" :key="option" :label="resolveStatusLabel(option)" :value="option" />
               </el-select>
             </el-form-item>
           </div>
 
           <p class="structure-admin-view__hint">
-            Departments: {{ departments.length }} loaded · Store types: {{ storeTypes.length }} loaded · Management
-            types: {{ managementTypes.length }} loaded · Area levels: {{ areaLevels.length }} loaded · Unit types:
-            {{ unitTypes.length }} loaded
+            {{
+              t('structureAdmin.hints.lookupsLoaded', {
+                departments: departments.length,
+                storeTypes: storeTypes.length,
+                managementTypes: managementTypes.length,
+                areaLevels: areaLevels.length,
+                unitTypes: unitTypes.length,
+              })
+            }}
           </p>
 
           <div class="structure-admin-view__form-actions">
@@ -1508,7 +1527,7 @@ onMounted(async () => {
               data-testid="structure-store-create-button"
               @click="handleCreateStore"
             >
-              Create store
+              {{ t('structureAdmin.actions.createStore') }}
             </el-button>
           </div>
         </el-form>
@@ -1517,40 +1536,40 @@ onMounted(async () => {
           :data="stores"
           row-key="id"
           class="structure-admin-view__table"
-          :empty-text="isStoresLoading || isBootstrapping ? 'Loading stores…' : 'No stores available.'"
+          :empty-text="isStoresLoading || isBootstrapping ? t('structureAdmin.table.loadingStores') : t('structureAdmin.table.emptyStores')"
           data-testid="structure-stores-table"
         >
-          <el-table-column prop="code" label="Code" min-width="130" />
-          <el-table-column prop="name" label="Name" min-width="180" />
-          <el-table-column prop="short_name" label="Short" min-width="120" />
-          <el-table-column label="Department" min-width="180">
+          <el-table-column prop="code" :label="t('structureAdmin.fields.code')" min-width="130" />
+          <el-table-column prop="name" :label="t('structureAdmin.fields.name')" min-width="180" />
+          <el-table-column prop="short_name" :label="t('structureAdmin.fields.short')" min-width="120" />
+          <el-table-column :label="t('structureAdmin.fields.department')" min-width="180">
             <template #default="scope">
               {{ resolveDepartmentLabel(scope.row.department_id) }}
             </template>
           </el-table-column>
-          <el-table-column label="Store type" min-width="180">
+          <el-table-column :label="t('structureAdmin.fields.storeType')" min-width="180">
             <template #default="scope">
               {{ resolveStoreTypeLabel(scope.row.store_type_id) }}
             </template>
           </el-table-column>
-          <el-table-column label="Management" min-width="180">
+          <el-table-column :label="t('structureAdmin.fields.management')" min-width="180">
             <template #default="scope">
               {{ resolveManagementTypeLabel(scope.row.management_type_id) }}
             </template>
           </el-table-column>
-          <el-table-column label="Status" min-width="110">
+          <el-table-column :label="t('common.columns.status')" min-width="110">
             <template #default="scope">
               <el-tag :type="scope.row.status === 'active' ? 'success' : 'info'" effect="plain">
-                {{ scope.row.status }}
+                {{ resolveStatusLabel(scope.row.status) }}
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="Updated" min-width="150">
+          <el-table-column :label="t('structureAdmin.fields.updated')" min-width="150">
             <template #default="scope">
               {{ formatDate(scope.row.updated_at) }}
             </template>
           </el-table-column>
-          <el-table-column label="Actions" min-width="160" fixed="right">
+          <el-table-column :label="t('common.columns.actions')" min-width="160" fixed="right">
             <template #default="scope">
               <div class="structure-admin-view__row-actions">
                 <el-button
@@ -1559,9 +1578,9 @@ onMounted(async () => {
                   plain
                   @click="handleSelectStore(scope.row.id)"
                 >
-                  {{ scope.row.id === selectedStoreId ? 'Selected' : 'Select' }}
+                  {{ scope.row.id === selectedStoreId ? t('structureAdmin.actions.selected') : t('structureAdmin.actions.select') }}
                 </el-button>
-                <el-button size="small" @click="openStoreEdit(scope.row)">Edit</el-button>
+                <el-button size="small" @click="openStoreEdit(scope.row)">{{ t('common.actions.edit') }}</el-button>
               </div>
             </template>
           </el-table-column>
@@ -1571,11 +1590,11 @@ onMounted(async () => {
       <el-card class="structure-admin-view__card" shadow="never">
         <template #header>
           <div class="structure-admin-view__card-header">
-            <span>Buildings</span>
+            <span>{{ t('structureAdmin.cards.buildings') }}</span>
             <div class="structure-admin-view__card-actions">
-              <el-tag effect="plain" type="info">{{ buildings.length }} total</el-tag>
+              <el-tag effect="plain" type="info">{{ t('common.total', { count: buildings.length }) }}</el-tag>
               <el-button :loading="isBuildingsLoading" :disabled="selectedStoreId === null" @click="loadBuildings">
-                Refresh
+                {{ t('common.actions.refresh') }}
               </el-button>
             </div>
           </div>
@@ -1595,37 +1614,37 @@ onMounted(async () => {
           v-if="selectedStoreId === null"
           :closable="false"
           class="structure-admin-view__feedback"
-          title="Select a store to manage buildings"
+          :title="t('structureAdmin.alerts.selectStoreForBuildingsTitle')"
           type="info"
-          description="Choose a store row in the stores table before creating or editing buildings."
+          :description="t('structureAdmin.alerts.selectStoreForBuildingsDescription')"
           show-icon
         />
 
         <el-form label-position="top" class="structure-admin-view__form" @submit.prevent>
           <div class="structure-admin-view__form-grid">
-            <el-form-item label="Selected store ID">
+            <el-form-item :label="t('structureAdmin.fields.selectedStoreId')">
               <el-input :model-value="selectedStoreId === null ? '' : String(selectedStoreId)" readonly />
             </el-form-item>
 
-            <el-form-item label="Building code">
+            <el-form-item :label="t('structureAdmin.fields.buildingCode')">
               <el-input
                 v-model="buildingForm.code"
-                placeholder="e.g. BLD-101"
+                :placeholder="t('structureAdmin.placeholders.buildingCode')"
                 data-testid="structure-building-code-input"
               />
             </el-form-item>
 
-            <el-form-item label="Building name">
+            <el-form-item :label="t('structureAdmin.fields.buildingName')">
               <el-input
                 v-model="buildingForm.name"
-                placeholder="e.g. East Tower"
+                :placeholder="t('structureAdmin.placeholders.buildingName')"
                 data-testid="structure-building-name-input"
               />
             </el-form-item>
 
-            <el-form-item label="Status">
+            <el-form-item :label="t('common.columns.status')">
               <el-select v-model="buildingForm.status">
-                <el-option v-for="option in statusOptions" :key="option" :label="option" :value="option" />
+                <el-option v-for="option in statusOptions" :key="option" :label="resolveStatusLabel(option)" :value="option" />
               </el-select>
             </el-form-item>
           </div>
@@ -1638,7 +1657,7 @@ onMounted(async () => {
               data-testid="structure-building-create-button"
               @click="handleCreateBuilding"
             >
-              Create building
+              {{ t('structureAdmin.actions.createBuilding') }}
             </el-button>
           </div>
         </el-form>
@@ -1647,25 +1666,25 @@ onMounted(async () => {
           :data="buildings"
           row-key="id"
           class="structure-admin-view__table"
-          :empty-text="selectedStoreId === null ? 'Select a store first.' : isBuildingsLoading ? 'Loading buildings…' : 'No buildings available.'"
+          :empty-text="selectedStoreId === null ? t('structureAdmin.table.selectStoreFirst') : isBuildingsLoading ? t('structureAdmin.table.loadingBuildings') : t('structureAdmin.table.emptyBuildings')"
           data-testid="structure-buildings-table"
         >
-          <el-table-column prop="code" label="Code" min-width="130" />
-          <el-table-column prop="name" label="Name" min-width="180" />
-          <el-table-column prop="store_id" label="Store ID" min-width="100" />
-          <el-table-column label="Status" min-width="110">
+          <el-table-column prop="code" :label="t('structureAdmin.fields.code')" min-width="130" />
+          <el-table-column prop="name" :label="t('structureAdmin.fields.name')" min-width="180" />
+          <el-table-column prop="store_id" :label="t('structureAdmin.fields.storeId')" min-width="100" />
+          <el-table-column :label="t('common.columns.status')" min-width="110">
             <template #default="scope">
               <el-tag :type="scope.row.status === 'active' ? 'success' : 'info'" effect="plain">
-                {{ scope.row.status }}
+                {{ resolveStatusLabel(scope.row.status) }}
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="Updated" min-width="150">
+          <el-table-column :label="t('structureAdmin.fields.updated')" min-width="150">
             <template #default="scope">
               {{ formatDate(scope.row.updated_at) }}
             </template>
           </el-table-column>
-          <el-table-column label="Actions" min-width="160" fixed="right">
+          <el-table-column :label="t('common.columns.actions')" min-width="160" fixed="right">
             <template #default="scope">
               <div class="structure-admin-view__row-actions">
                 <el-button
@@ -1674,9 +1693,9 @@ onMounted(async () => {
                   plain
                   @click="handleSelectBuilding(scope.row.id)"
                 >
-                  {{ scope.row.id === selectedBuildingId ? 'Selected' : 'Select' }}
+                  {{ scope.row.id === selectedBuildingId ? t('structureAdmin.actions.selected') : t('structureAdmin.actions.select') }}
                 </el-button>
-                <el-button size="small" @click="openBuildingEdit(scope.row)">Edit</el-button>
+                <el-button size="small" @click="openBuildingEdit(scope.row)">{{ t('common.actions.edit') }}</el-button>
               </div>
             </template>
           </el-table-column>
@@ -1686,11 +1705,11 @@ onMounted(async () => {
       <el-card class="structure-admin-view__card" shadow="never">
         <template #header>
           <div class="structure-admin-view__card-header">
-            <span>Floors</span>
+            <span>{{ t('structureAdmin.cards.floors') }}</span>
             <div class="structure-admin-view__card-actions">
-              <el-tag effect="plain" type="info">{{ floors.length }} total</el-tag>
+              <el-tag effect="plain" type="info">{{ t('common.total', { count: floors.length }) }}</el-tag>
               <el-button :loading="isFloorsLoading" :disabled="selectedBuildingId === null" @click="loadFloors">
-                Refresh
+                {{ t('common.actions.refresh') }}
               </el-button>
             </div>
           </div>
@@ -1710,44 +1729,44 @@ onMounted(async () => {
           v-if="selectedBuildingId === null"
           :closable="false"
           class="structure-admin-view__feedback"
-          title="Select a building to manage floors"
+          :title="t('structureAdmin.alerts.selectBuildingForFloorsTitle')"
           type="info"
-          description="Choose a building row in the buildings table before creating or editing floors."
+          :description="t('structureAdmin.alerts.selectBuildingForFloorsDescription')"
           show-icon
         />
 
         <el-form label-position="top" class="structure-admin-view__form" @submit.prevent>
           <div class="structure-admin-view__form-grid">
-            <el-form-item label="Selected building ID">
+            <el-form-item :label="t('structureAdmin.fields.selectedBuildingId')">
               <el-input :model-value="selectedBuildingId === null ? '' : String(selectedBuildingId)" readonly />
             </el-form-item>
 
-            <el-form-item label="Floor code">
+            <el-form-item :label="t('structureAdmin.fields.floorCode')">
               <el-input
                 v-model="floorForm.code"
-                placeholder="e.g. F-1"
+                :placeholder="t('structureAdmin.placeholders.floorCode')"
                 data-testid="structure-floor-code-input"
               />
             </el-form-item>
 
-            <el-form-item label="Floor name">
+            <el-form-item :label="t('structureAdmin.fields.floorName')">
               <el-input
                 v-model="floorForm.name"
-                placeholder="e.g. Floor 1"
+                :placeholder="t('structureAdmin.placeholders.floorName')"
                 data-testid="structure-floor-name-input"
               />
             </el-form-item>
 
-            <el-form-item label="Status">
+            <el-form-item :label="t('common.columns.status')">
               <el-select v-model="floorForm.status">
-                <el-option v-for="option in statusOptions" :key="option" :label="option" :value="option" />
+                <el-option v-for="option in statusOptions" :key="option" :label="resolveStatusLabel(option)" :value="option" />
               </el-select>
             </el-form-item>
 
-            <el-form-item label="Floor plan URL">
+            <el-form-item :label="t('structureAdmin.fields.floorPlanUrl')">
               <el-input
                 v-model="floorForm.floor_plan_image_url"
-                placeholder="https://example.com/floor-1.png"
+                :placeholder="t('structureAdmin.placeholders.floorPlanUrl')"
                 data-testid="structure-floor-plan-input"
               />
             </el-form-item>
@@ -1761,7 +1780,7 @@ onMounted(async () => {
               data-testid="structure-floor-create-button"
               @click="handleCreateFloor"
             >
-              Create floor
+              {{ t('structureAdmin.actions.createFloor') }}
             </el-button>
           </div>
         </el-form>
@@ -1770,30 +1789,30 @@ onMounted(async () => {
           :data="floors"
           row-key="id"
           class="structure-admin-view__table"
-          :empty-text="selectedBuildingId === null ? 'Select a building first.' : isFloorsLoading ? 'Loading floors…' : 'No floors available.'"
+          :empty-text="selectedBuildingId === null ? t('structureAdmin.table.selectBuildingFirst') : isFloorsLoading ? t('structureAdmin.table.loadingFloors') : t('structureAdmin.table.emptyFloors')"
           data-testid="structure-floors-table"
         >
-          <el-table-column prop="code" label="Code" min-width="120" />
-          <el-table-column prop="name" label="Name" min-width="180" />
-          <el-table-column prop="building_id" label="Building ID" min-width="110" />
-          <el-table-column label="Plan URL" min-width="200">
+          <el-table-column prop="code" :label="t('structureAdmin.fields.code')" min-width="120" />
+          <el-table-column prop="name" :label="t('structureAdmin.fields.name')" min-width="180" />
+          <el-table-column prop="building_id" :label="t('structureAdmin.fields.buildingId')" min-width="110" />
+          <el-table-column :label="t('structureAdmin.fields.planUrl')" min-width="200">
             <template #default="scope">
-              <span class="structure-admin-view__muted">{{ scope.row.floor_plan_image_url ?? '—' }}</span>
+              <span class="structure-admin-view__muted">{{ scope.row.floor_plan_image_url ?? t('common.emptyValue') }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="Status" min-width="110">
+          <el-table-column :label="t('common.columns.status')" min-width="110">
             <template #default="scope">
               <el-tag :type="scope.row.status === 'active' ? 'success' : 'info'" effect="plain">
-                {{ scope.row.status }}
+                {{ resolveStatusLabel(scope.row.status) }}
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="Updated" min-width="150">
+          <el-table-column :label="t('structureAdmin.fields.updated')" min-width="150">
             <template #default="scope">
               {{ formatDate(scope.row.updated_at) }}
             </template>
           </el-table-column>
-          <el-table-column label="Actions" min-width="170" fixed="right">
+          <el-table-column :label="t('common.columns.actions')" min-width="170" fixed="right">
             <template #default="scope">
               <div class="structure-admin-view__row-actions">
                 <el-button
@@ -1802,9 +1821,9 @@ onMounted(async () => {
                   plain
                   @click="handleSelectFloor(scope.row.id)"
                 >
-                  {{ scope.row.id === selectedFloorId ? 'Selected' : 'Select' }}
+                  {{ scope.row.id === selectedFloorId ? t('structureAdmin.actions.selected') : t('structureAdmin.actions.select') }}
                 </el-button>
-                <el-button size="small" @click="openFloorEdit(scope.row)">Edit</el-button>
+                <el-button size="small" @click="openFloorEdit(scope.row)">{{ t('common.actions.edit') }}</el-button>
               </div>
             </template>
           </el-table-column>
@@ -1814,10 +1833,10 @@ onMounted(async () => {
       <el-card class="structure-admin-view__card" shadow="never">
         <template #header>
           <div class="structure-admin-view__card-header">
-            <span>Areas</span>
+            <span>{{ t('structureAdmin.cards.areas') }}</span>
             <div class="structure-admin-view__card-actions">
-              <el-tag effect="plain" type="info">{{ areas.length }} total</el-tag>
-              <el-button :loading="isAreasLoading" :disabled="selectedStoreId === null" @click="loadAreas">Refresh</el-button>
+              <el-tag effect="plain" type="info">{{ t('common.total', { count: areas.length }) }}</el-tag>
+              <el-button :loading="isAreasLoading" :disabled="selectedStoreId === null" @click="loadAreas">{{ t('common.actions.refresh') }}</el-button>
             </div>
           </div>
         </template>
@@ -1836,28 +1855,28 @@ onMounted(async () => {
           v-if="selectedStoreId === null"
           :closable="false"
           class="structure-admin-view__feedback"
-          title="Select a store to manage areas"
+          :title="t('structureAdmin.alerts.selectStoreForAreasTitle')"
           type="info"
-          description="Choose a store row in the stores table before creating or editing areas."
+          :description="t('structureAdmin.alerts.selectStoreForAreasDescription')"
           show-icon
         />
 
         <el-form label-position="top" class="structure-admin-view__form" @submit.prevent>
           <div class="structure-admin-view__form-grid">
-            <el-form-item label="Selected store ID">
+            <el-form-item :label="t('structureAdmin.fields.selectedStoreId')">
               <el-input :model-value="selectedStoreId === null ? '' : String(selectedStoreId)" readonly />
             </el-form-item>
 
-            <el-form-item label="Area code">
-              <el-input v-model="areaForm.code" placeholder="e.g. AR-101" data-testid="structure-area-code-input" />
+            <el-form-item :label="t('structureAdmin.fields.areaCode')">
+              <el-input v-model="areaForm.code" :placeholder="t('structureAdmin.placeholders.areaCode')" data-testid="structure-area-code-input" />
             </el-form-item>
 
-            <el-form-item label="Area name">
-              <el-input v-model="areaForm.name" placeholder="e.g. Main Atrium" data-testid="structure-area-name-input" />
+            <el-form-item :label="t('structureAdmin.fields.areaName')">
+              <el-input v-model="areaForm.name" :placeholder="t('structureAdmin.placeholders.areaName')" data-testid="structure-area-name-input" />
             </el-form-item>
 
-            <el-form-item label="Area level ID">
-              <el-select v-model="areaForm.area_level_id" placeholder="Select area level" data-testid="structure-area-level-input">
+            <el-form-item :label="t('structureAdmin.fields.areaLevelId')">
+              <el-select v-model="areaForm.area_level_id" :placeholder="t('structureAdmin.placeholders.selectAreaLevel')" data-testid="structure-area-level-input">
                 <el-option
                   v-for="option in areaLevels"
                   :key="option.id"
@@ -1867,9 +1886,9 @@ onMounted(async () => {
               </el-select>
             </el-form-item>
 
-            <el-form-item label="Status">
+            <el-form-item :label="t('common.columns.status')">
               <el-select v-model="areaForm.status">
-                <el-option v-for="option in statusOptions" :key="option" :label="option" :value="option" />
+                <el-option v-for="option in statusOptions" :key="option" :label="resolveStatusLabel(option)" :value="option" />
               </el-select>
             </el-form-item>
           </div>
@@ -1882,7 +1901,7 @@ onMounted(async () => {
               data-testid="structure-area-create-button"
               @click="handleCreateArea"
             >
-              Create area
+              {{ t('structureAdmin.actions.createArea') }}
             </el-button>
           </div>
         </el-form>
@@ -1891,29 +1910,29 @@ onMounted(async () => {
           :data="areas"
           row-key="id"
           class="structure-admin-view__table"
-          :empty-text="selectedStoreId === null ? 'Select a store first.' : isAreasLoading ? 'Loading areas…' : 'No areas available.'"
+          :empty-text="selectedStoreId === null ? t('structureAdmin.table.selectStoreFirst') : isAreasLoading ? t('structureAdmin.table.loadingAreas') : t('structureAdmin.table.emptyAreas')"
           data-testid="structure-areas-table"
         >
-          <el-table-column prop="code" label="Code" min-width="130" />
-          <el-table-column prop="name" label="Name" min-width="180" />
-          <el-table-column label="Area level" min-width="180">
+          <el-table-column prop="code" :label="t('structureAdmin.fields.code')" min-width="130" />
+          <el-table-column prop="name" :label="t('structureAdmin.fields.name')" min-width="180" />
+          <el-table-column :label="t('structureAdmin.fields.areaLevel')" min-width="180">
             <template #default="scope">
               {{ resolveAreaLevelLabel(scope.row.area_level_id) }}
             </template>
           </el-table-column>
-          <el-table-column label="Status" min-width="110">
+          <el-table-column :label="t('common.columns.status')" min-width="110">
             <template #default="scope">
               <el-tag :type="scope.row.status === 'active' ? 'success' : 'info'" effect="plain">
-                {{ scope.row.status }}
+                {{ resolveStatusLabel(scope.row.status) }}
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="Updated" min-width="150">
+          <el-table-column :label="t('structureAdmin.fields.updated')" min-width="150">
             <template #default="scope">
               {{ formatDate(scope.row.updated_at) }}
             </template>
           </el-table-column>
-          <el-table-column label="Actions" min-width="180" fixed="right">
+          <el-table-column :label="t('common.columns.actions')" min-width="180" fixed="right">
             <template #default="scope">
               <div class="structure-admin-view__row-actions">
                 <el-button
@@ -1922,9 +1941,9 @@ onMounted(async () => {
                   plain
                   @click="handleToggleAreaFilter(scope.row.id)"
                 >
-                  {{ scope.row.id === selectedAreaId ? 'Filtered' : 'Filter' }}
+                  {{ scope.row.id === selectedAreaId ? t('structureAdmin.actions.filtered') : t('structureAdmin.actions.filter') }}
                 </el-button>
-                <el-button size="small" @click="openAreaEdit(scope.row)">Edit</el-button>
+                <el-button size="small" @click="openAreaEdit(scope.row)">{{ t('common.actions.edit') }}</el-button>
               </div>
             </template>
           </el-table-column>
@@ -1934,15 +1953,15 @@ onMounted(async () => {
       <el-card class="structure-admin-view__card" shadow="never">
         <template #header>
           <div class="structure-admin-view__card-header">
-            <span>Locations</span>
+            <span>{{ t('structureAdmin.cards.locations') }}</span>
             <div class="structure-admin-view__card-actions">
-              <el-tag effect="plain" type="info">{{ locations.length }} total</el-tag>
+              <el-tag effect="plain" type="info">{{ t('common.total', { count: locations.length }) }}</el-tag>
               <el-button
                 :loading="isLocationsLoading"
                 :disabled="selectedStoreId === null || selectedFloorId === null"
                 @click="loadLocations"
               >
-                Refresh
+                {{ t('common.actions.refresh') }}
               </el-button>
             </div>
           </div>
@@ -1962,43 +1981,43 @@ onMounted(async () => {
           v-if="selectedStoreId === null || selectedFloorId === null"
           :closable="false"
           class="structure-admin-view__feedback"
-          title="Select a store and floor to manage locations"
+          :title="t('structureAdmin.alerts.selectStoreAndFloorForLocationsTitle')"
           type="info"
-          description="Choose a store and floor before creating or editing locations."
+          :description="t('structureAdmin.alerts.selectStoreAndFloorForLocationsDescription')"
           show-icon
         />
 
         <el-form label-position="top" class="structure-admin-view__form" @submit.prevent>
           <div class="structure-admin-view__form-grid">
-            <el-form-item label="Selected store ID">
+            <el-form-item :label="t('structureAdmin.fields.selectedStoreId')">
               <el-input :model-value="selectedStoreId === null ? '' : String(selectedStoreId)" readonly />
             </el-form-item>
 
-            <el-form-item label="Floor ID">
-              <el-select v-model="locationForm.floor_id" placeholder="Select floor" data-testid="structure-location-floor-input">
+            <el-form-item :label="t('structureAdmin.fields.floorId')">
+              <el-select v-model="locationForm.floor_id" :placeholder="t('structureAdmin.placeholders.selectFloor')" data-testid="structure-location-floor-input">
                 <el-option v-for="item in floors" :key="item.id" :label="`${item.code} — ${item.name}`" :value="item.id" />
               </el-select>
             </el-form-item>
 
-            <el-form-item label="Location code">
+            <el-form-item :label="t('structureAdmin.fields.locationCode')">
               <el-input
                 v-model="locationForm.code"
-                placeholder="e.g. LOC-101"
+                :placeholder="t('structureAdmin.placeholders.locationCode')"
                 data-testid="structure-location-code-input"
               />
             </el-form-item>
 
-            <el-form-item label="Location name">
+            <el-form-item :label="t('structureAdmin.fields.locationName')">
               <el-input
                 v-model="locationForm.name"
-                placeholder="e.g. East Corridor"
+                :placeholder="t('structureAdmin.placeholders.locationName')"
                 data-testid="structure-location-name-input"
               />
             </el-form-item>
 
-            <el-form-item label="Status">
+            <el-form-item :label="t('common.columns.status')">
               <el-select v-model="locationForm.status">
-                <el-option v-for="option in statusOptions" :key="option" :label="option" :value="option" />
+                <el-option v-for="option in statusOptions" :key="option" :label="resolveStatusLabel(option)" :value="option" />
               </el-select>
             </el-form-item>
           </div>
@@ -2011,7 +2030,7 @@ onMounted(async () => {
               data-testid="structure-location-create-button"
               @click="handleCreateLocation"
             >
-              Create location
+              {{ t('structureAdmin.actions.createLocation') }}
             </el-button>
           </div>
         </el-form>
@@ -2020,25 +2039,25 @@ onMounted(async () => {
           :data="locations"
           row-key="id"
           class="structure-admin-view__table"
-          :empty-text="selectedFloorId === null ? 'Select a floor first.' : isLocationsLoading ? 'Loading locations…' : 'No locations available.'"
+          :empty-text="selectedFloorId === null ? t('structureAdmin.table.selectFloorFirst') : isLocationsLoading ? t('structureAdmin.table.loadingLocations') : t('structureAdmin.table.emptyLocations')"
           data-testid="structure-locations-table"
         >
-          <el-table-column prop="code" label="Code" min-width="130" />
-          <el-table-column prop="name" label="Name" min-width="180" />
-          <el-table-column prop="floor_id" label="Floor ID" min-width="110" />
-          <el-table-column label="Status" min-width="110">
+          <el-table-column prop="code" :label="t('structureAdmin.fields.code')" min-width="130" />
+          <el-table-column prop="name" :label="t('structureAdmin.fields.name')" min-width="180" />
+          <el-table-column prop="floor_id" :label="t('structureAdmin.fields.floorId')" min-width="110" />
+          <el-table-column :label="t('common.columns.status')" min-width="110">
             <template #default="scope">
               <el-tag :type="scope.row.status === 'active' ? 'success' : 'info'" effect="plain">
-                {{ scope.row.status }}
+                {{ resolveStatusLabel(scope.row.status) }}
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="Updated" min-width="150">
+          <el-table-column :label="t('structureAdmin.fields.updated')" min-width="150">
             <template #default="scope">
               {{ formatDate(scope.row.updated_at) }}
             </template>
           </el-table-column>
-          <el-table-column label="Actions" min-width="180" fixed="right">
+          <el-table-column :label="t('common.columns.actions')" min-width="180" fixed="right">
             <template #default="scope">
               <div class="structure-admin-view__row-actions">
                 <el-button
@@ -2047,9 +2066,9 @@ onMounted(async () => {
                   plain
                   @click="handleToggleLocationFilter(scope.row.id)"
                 >
-                  {{ scope.row.id === selectedLocationId ? 'Filtered' : 'Filter' }}
+                  {{ scope.row.id === selectedLocationId ? t('structureAdmin.actions.filtered') : t('structureAdmin.actions.filter') }}
                 </el-button>
-                <el-button size="small" @click="openLocationEdit(scope.row)">Edit</el-button>
+                <el-button size="small" @click="openLocationEdit(scope.row)">{{ t('common.actions.edit') }}</el-button>
               </div>
             </template>
           </el-table-column>
@@ -2059,10 +2078,10 @@ onMounted(async () => {
       <el-card class="structure-admin-view__card" shadow="never">
         <template #header>
           <div class="structure-admin-view__card-header">
-            <span>Units</span>
+            <span>{{ t('structureAdmin.cards.units') }}</span>
             <div class="structure-admin-view__card-actions">
-              <el-tag effect="plain" type="info">{{ units.length }} total</el-tag>
-              <el-button :loading="isUnitsLoading" :disabled="selectedBuildingId === null" @click="loadUnits">Refresh</el-button>
+              <el-tag effect="plain" type="info">{{ t('common.total', { count: units.length }) }}</el-tag>
+              <el-button :loading="isUnitsLoading" :disabled="selectedBuildingId === null" @click="loadUnits">{{ t('common.actions.refresh') }}</el-button>
             </div>
           </div>
         </template>
@@ -2081,28 +2100,28 @@ onMounted(async () => {
           v-if="selectedBuildingId === null || selectedFloorId === null"
           :closable="false"
           class="structure-admin-view__feedback"
-          title="Select a building and floor to manage units"
+          :title="t('structureAdmin.alerts.selectBuildingAndFloorForUnitsTitle')"
           type="info"
-          description="Choose a building and floor, then optional area/location filters, before creating or editing units."
+          :description="t('structureAdmin.alerts.selectBuildingAndFloorForUnitsDescription')"
           show-icon
         />
 
         <el-form label-position="top" class="structure-admin-view__form" @submit.prevent>
           <div class="structure-admin-view__form-grid structure-admin-view__form-grid--unit">
-            <el-form-item label="Selected building ID">
+            <el-form-item :label="t('structureAdmin.fields.selectedBuildingId')">
               <el-input :model-value="selectedBuildingId === null ? '' : String(selectedBuildingId)" readonly />
             </el-form-item>
 
-            <el-form-item label="Selected floor ID">
+            <el-form-item :label="t('structureAdmin.fields.selectedFloorId')">
               <el-input :model-value="selectedFloorId === null ? '' : String(selectedFloorId)" readonly />
             </el-form-item>
 
-            <el-form-item label="Unit code">
-              <el-input v-model="unitForm.code" placeholder="e.g. U-101" data-testid="structure-unit-code-input" />
+            <el-form-item :label="t('structureAdmin.fields.unitCode')">
+              <el-input v-model="unitForm.code" :placeholder="t('structureAdmin.placeholders.unitCode')" data-testid="structure-unit-code-input" />
             </el-form-item>
 
-            <el-form-item label="Unit type ID">
-              <el-select v-model="unitForm.unit_type_id" placeholder="Select unit type" data-testid="structure-unit-type-input">
+            <el-form-item :label="t('structureAdmin.fields.unitTypeId')">
+              <el-select v-model="unitForm.unit_type_id" :placeholder="t('structureAdmin.placeholders.selectUnitType')" data-testid="structure-unit-type-input">
                 <el-option
                   v-for="option in unitTypes"
                   :key="option.id"
@@ -2112,14 +2131,14 @@ onMounted(async () => {
               </el-select>
             </el-form-item>
 
-            <el-form-item label="Area ID">
-              <el-select v-model="unitForm.area_id" placeholder="Select area" data-testid="structure-unit-area-input">
+            <el-form-item :label="t('structureAdmin.fields.areaId')">
+              <el-select v-model="unitForm.area_id" :placeholder="t('structureAdmin.placeholders.selectArea')" data-testid="structure-unit-area-input">
                 <el-option v-for="item in areas" :key="item.id" :label="`${item.code} — ${item.name}`" :value="item.id" />
               </el-select>
             </el-form-item>
 
-            <el-form-item label="Location ID">
-              <el-select v-model="unitForm.location_id" placeholder="Select location" data-testid="structure-unit-location-input">
+            <el-form-item :label="t('structureAdmin.fields.locationId')">
+              <el-select v-model="unitForm.location_id" :placeholder="t('structureAdmin.placeholders.selectLocation')" data-testid="structure-unit-location-input">
                 <el-option
                   v-for="item in locations"
                   :key="item.id"
@@ -2129,7 +2148,7 @@ onMounted(async () => {
               </el-select>
             </el-form-item>
 
-            <el-form-item label="Floor area">
+            <el-form-item :label="t('structureAdmin.fields.floorArea')">
               <el-input-number
                 v-model="unitForm.floor_area"
                 :min="0"
@@ -2139,7 +2158,7 @@ onMounted(async () => {
               />
             </el-form-item>
 
-            <el-form-item label="Use area">
+            <el-form-item :label="t('structureAdmin.fields.useArea')">
               <el-input-number
                 v-model="unitForm.use_area"
                 :min="0"
@@ -2149,7 +2168,7 @@ onMounted(async () => {
               />
             </el-form-item>
 
-            <el-form-item label="Rent area">
+            <el-form-item :label="t('structureAdmin.fields.rentArea')">
               <el-input-number
                 v-model="unitForm.rent_area"
                 :min="0"
@@ -2159,13 +2178,13 @@ onMounted(async () => {
               />
             </el-form-item>
 
-            <el-form-item label="Rentable">
+            <el-form-item :label="t('structureAdmin.fields.rentable')">
               <el-switch v-model="unitForm.is_rentable" data-testid="structure-unit-rentable-input" />
             </el-form-item>
 
-            <el-form-item label="Status">
+            <el-form-item :label="t('common.columns.status')">
               <el-select v-model="unitForm.status">
-                <el-option v-for="option in statusOptions" :key="option" :label="option" :value="option" />
+                <el-option v-for="option in statusOptions" :key="option" :label="resolveStatusLabel(option)" :value="option" />
               </el-select>
             </el-form-item>
           </div>
@@ -2178,7 +2197,7 @@ onMounted(async () => {
               data-testid="structure-unit-create-button"
               @click="handleCreateUnit"
             >
-              Create unit
+              {{ t('structureAdmin.actions.createUnit') }}
             </el-button>
           </div>
         </el-form>
@@ -2187,169 +2206,169 @@ onMounted(async () => {
           :data="units"
           row-key="id"
           class="structure-admin-view__table"
-          :empty-text="selectedBuildingId === null ? 'Select a building first.' : isUnitsLoading ? 'Loading units…' : 'No units available.'"
+          :empty-text="selectedBuildingId === null || selectedFloorId === null ? t('structureAdmin.table.selectBuildingAndFloorFirst') : isUnitsLoading ? t('structureAdmin.table.loadingUnits') : t('structureAdmin.table.emptyUnits')"
           data-testid="structure-units-table"
         >
-          <el-table-column prop="code" label="Code" min-width="130" />
-          <el-table-column prop="building_id" label="Building ID" min-width="110" />
-          <el-table-column prop="floor_id" label="Floor ID" min-width="110" />
-          <el-table-column label="Area" min-width="170">
+          <el-table-column prop="code" :label="t('structureAdmin.fields.code')" min-width="130" />
+          <el-table-column prop="building_id" :label="t('structureAdmin.fields.buildingId')" min-width="110" />
+          <el-table-column prop="floor_id" :label="t('structureAdmin.fields.floorId')" min-width="110" />
+          <el-table-column :label="t('structureAdmin.fields.area')" min-width="170">
             <template #default="scope">
               {{ resolveAreaLabel(scope.row.area_id) }}
             </template>
           </el-table-column>
-          <el-table-column label="Location" min-width="170">
+          <el-table-column :label="t('structureAdmin.fields.location')" min-width="170">
             <template #default="scope">
               {{ resolveLocationLabel(scope.row.location_id) }}
             </template>
           </el-table-column>
-          <el-table-column label="Unit type" min-width="170">
+          <el-table-column :label="t('structureAdmin.fields.unitType')" min-width="170">
             <template #default="scope">
               {{ resolveUnitTypeLabel(scope.row.unit_type_id) }}
             </template>
           </el-table-column>
-          <el-table-column prop="floor_area" label="Floor area" min-width="110" />
-          <el-table-column prop="use_area" label="Use area" min-width="110" />
-          <el-table-column prop="rent_area" label="Rent area" min-width="110" />
-          <el-table-column label="Rentable" min-width="100">
+          <el-table-column prop="floor_area" :label="t('structureAdmin.fields.floorArea')" min-width="110" />
+          <el-table-column prop="use_area" :label="t('structureAdmin.fields.useArea')" min-width="110" />
+          <el-table-column prop="rent_area" :label="t('structureAdmin.fields.rentArea')" min-width="110" />
+          <el-table-column :label="t('structureAdmin.fields.rentable')" min-width="100">
             <template #default="scope">
               <el-tag :type="scope.row.is_rentable ? 'success' : 'info'" effect="plain">
-                {{ scope.row.is_rentable ? 'yes' : 'no' }}
+                {{ scope.row.is_rentable ? t('common.values.yes') : t('common.values.no') }}
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="Status" min-width="110">
+          <el-table-column :label="t('common.columns.status')" min-width="110">
             <template #default="scope">
               <el-tag :type="scope.row.status === 'active' ? 'success' : 'info'" effect="plain">
-                {{ scope.row.status }}
+                {{ resolveStatusLabel(scope.row.status) }}
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="Updated" min-width="150">
+          <el-table-column :label="t('structureAdmin.fields.updated')" min-width="150">
             <template #default="scope">
               {{ formatDate(scope.row.updated_at) }}
             </template>
           </el-table-column>
-          <el-table-column label="Actions" min-width="120" fixed="right">
+          <el-table-column :label="t('common.columns.actions')" min-width="120" fixed="right">
             <template #default="scope">
-              <el-button size="small" @click="openUnitEdit(scope.row)">Edit</el-button>
+              <el-button size="small" @click="openUnitEdit(scope.row)">{{ t('common.actions.edit') }}</el-button>
             </template>
           </el-table-column>
         </el-table>
       </el-card>
     </div>
 
-    <el-dialog v-model="storeEditDialogOpen" title="Edit store" width="42rem">
+    <el-dialog v-model="storeEditDialogOpen" :title="t('structureAdmin.dialogs.editStore')" width="42rem">
       <el-form label-position="top" @submit.prevent>
         <div class="structure-admin-view__dialog-grid structure-admin-view__dialog-grid--store">
-          <el-form-item label="Department ID">
+          <el-form-item :label="t('structureAdmin.fields.departmentId')">
             <el-input-number v-model="storeEdit.department_id" :min="1" controls-position="right" />
           </el-form-item>
 
-          <el-form-item label="Store type ID">
+          <el-form-item :label="t('structureAdmin.fields.storeTypeId')">
             <el-input-number v-model="storeEdit.store_type_id" :min="1" controls-position="right" />
           </el-form-item>
 
-          <el-form-item label="Management type ID">
+          <el-form-item :label="t('structureAdmin.fields.managementTypeId')">
             <el-input-number v-model="storeEdit.management_type_id" :min="1" controls-position="right" />
           </el-form-item>
 
-          <el-form-item label="Code">
+          <el-form-item :label="t('structureAdmin.fields.code')">
             <el-input v-model="storeEdit.code" />
           </el-form-item>
 
-          <el-form-item label="Name">
+          <el-form-item :label="t('structureAdmin.fields.name')">
             <el-input v-model="storeEdit.name" />
           </el-form-item>
 
-          <el-form-item label="Short name">
+          <el-form-item :label="t('structureAdmin.fields.shortName')">
             <el-input v-model="storeEdit.short_name" />
           </el-form-item>
 
-          <el-form-item label="Status">
+          <el-form-item :label="t('common.columns.status')">
             <el-select v-model="storeEdit.status">
-              <el-option v-for="option in statusOptions" :key="option" :label="option" :value="option" />
+              <el-option v-for="option in statusOptions" :key="option" :label="resolveStatusLabel(option)" :value="option" />
             </el-select>
           </el-form-item>
         </div>
       </el-form>
 
       <template #footer>
-        <el-button @click="storeEditDialogOpen = false">Cancel</el-button>
-        <el-button type="primary" :loading="isStoreUpdating" @click="handleUpdateStore">Save</el-button>
+        <el-button @click="storeEditDialogOpen = false">{{ t('common.actions.cancel') }}</el-button>
+        <el-button type="primary" :loading="isStoreUpdating" @click="handleUpdateStore">{{ t('common.actions.save') }}</el-button>
       </template>
     </el-dialog>
 
-    <el-dialog v-model="buildingEditDialogOpen" title="Edit building" width="36rem">
+    <el-dialog v-model="buildingEditDialogOpen" :title="t('structureAdmin.dialogs.editBuilding')" width="36rem">
       <el-form label-position="top" @submit.prevent>
         <div class="structure-admin-view__dialog-grid">
-          <el-form-item label="Store ID">
+          <el-form-item :label="t('structureAdmin.fields.storeId')">
             <el-input-number v-model="buildingEdit.store_id" :min="1" controls-position="right" />
           </el-form-item>
 
-          <el-form-item label="Code">
+          <el-form-item :label="t('structureAdmin.fields.code')">
             <el-input v-model="buildingEdit.code" />
           </el-form-item>
 
-          <el-form-item label="Name">
+          <el-form-item :label="t('structureAdmin.fields.name')">
             <el-input v-model="buildingEdit.name" />
           </el-form-item>
 
-          <el-form-item label="Status">
+          <el-form-item :label="t('common.columns.status')">
             <el-select v-model="buildingEdit.status">
-              <el-option v-for="option in statusOptions" :key="option" :label="option" :value="option" />
+              <el-option v-for="option in statusOptions" :key="option" :label="resolveStatusLabel(option)" :value="option" />
             </el-select>
           </el-form-item>
         </div>
       </el-form>
 
       <template #footer>
-        <el-button @click="buildingEditDialogOpen = false">Cancel</el-button>
-        <el-button type="primary" :loading="isBuildingUpdating" @click="handleUpdateBuilding">Save</el-button>
+        <el-button @click="buildingEditDialogOpen = false">{{ t('common.actions.cancel') }}</el-button>
+        <el-button type="primary" :loading="isBuildingUpdating" @click="handleUpdateBuilding">{{ t('common.actions.save') }}</el-button>
       </template>
     </el-dialog>
 
-    <el-dialog v-model="floorEditDialogOpen" title="Edit floor" width="38rem">
+    <el-dialog v-model="floorEditDialogOpen" :title="t('structureAdmin.dialogs.editFloor')" width="38rem">
       <el-form label-position="top" @submit.prevent>
         <div class="structure-admin-view__dialog-grid">
-          <el-form-item label="Building ID">
+          <el-form-item :label="t('structureAdmin.fields.buildingId')">
             <el-input-number v-model="floorEdit.building_id" :min="1" controls-position="right" />
           </el-form-item>
 
-          <el-form-item label="Code">
+          <el-form-item :label="t('structureAdmin.fields.code')">
             <el-input v-model="floorEdit.code" />
           </el-form-item>
 
-          <el-form-item label="Name">
+          <el-form-item :label="t('structureAdmin.fields.name')">
             <el-input v-model="floorEdit.name" />
           </el-form-item>
 
-          <el-form-item label="Status">
+          <el-form-item :label="t('common.columns.status')">
             <el-select v-model="floorEdit.status">
-              <el-option v-for="option in statusOptions" :key="option" :label="option" :value="option" />
+              <el-option v-for="option in statusOptions" :key="option" :label="resolveStatusLabel(option)" :value="option" />
             </el-select>
           </el-form-item>
 
-          <el-form-item label="Floor plan URL">
+          <el-form-item :label="t('structureAdmin.fields.floorPlanUrl')">
             <el-input v-model="floorEdit.floor_plan_image_url" />
           </el-form-item>
         </div>
       </el-form>
 
       <template #footer>
-        <el-button @click="floorEditDialogOpen = false">Cancel</el-button>
-        <el-button type="primary" :loading="isFloorUpdating" @click="handleUpdateFloor">Save</el-button>
+        <el-button @click="floorEditDialogOpen = false">{{ t('common.actions.cancel') }}</el-button>
+        <el-button type="primary" :loading="isFloorUpdating" @click="handleUpdateFloor">{{ t('common.actions.save') }}</el-button>
       </template>
     </el-dialog>
 
-    <el-dialog v-model="areaEditDialogOpen" title="Edit area" width="36rem">
+    <el-dialog v-model="areaEditDialogOpen" :title="t('structureAdmin.dialogs.editArea')" width="36rem">
       <el-form label-position="top" @submit.prevent>
         <div class="structure-admin-view__dialog-grid">
-          <el-form-item label="Store ID">
+          <el-form-item :label="t('structureAdmin.fields.storeId')">
             <el-input-number v-model="areaEdit.store_id" :min="1" controls-position="right" />
           </el-form-item>
 
-          <el-form-item label="Area level ID">
+          <el-form-item :label="t('structureAdmin.fields.areaLevelId')">
             <el-select v-model="areaEdit.area_level_id">
               <el-option
                 v-for="option in areaLevels"
@@ -2360,81 +2379,81 @@ onMounted(async () => {
             </el-select>
           </el-form-item>
 
-          <el-form-item label="Code">
+          <el-form-item :label="t('structureAdmin.fields.code')">
             <el-input v-model="areaEdit.code" />
           </el-form-item>
 
-          <el-form-item label="Name">
+          <el-form-item :label="t('structureAdmin.fields.name')">
             <el-input v-model="areaEdit.name" />
           </el-form-item>
 
-          <el-form-item label="Status">
+          <el-form-item :label="t('common.columns.status')">
             <el-select v-model="areaEdit.status">
-              <el-option v-for="option in statusOptions" :key="option" :label="option" :value="option" />
+              <el-option v-for="option in statusOptions" :key="option" :label="resolveStatusLabel(option)" :value="option" />
             </el-select>
           </el-form-item>
         </div>
       </el-form>
 
       <template #footer>
-        <el-button @click="areaEditDialogOpen = false">Cancel</el-button>
-        <el-button type="primary" :loading="isAreaUpdating" @click="handleUpdateArea">Save</el-button>
+        <el-button @click="areaEditDialogOpen = false">{{ t('common.actions.cancel') }}</el-button>
+        <el-button type="primary" :loading="isAreaUpdating" @click="handleUpdateArea">{{ t('common.actions.save') }}</el-button>
       </template>
     </el-dialog>
 
-    <el-dialog v-model="locationEditDialogOpen" title="Edit location" width="36rem">
+    <el-dialog v-model="locationEditDialogOpen" :title="t('structureAdmin.dialogs.editLocation')" width="36rem">
       <el-form label-position="top" @submit.prevent>
         <div class="structure-admin-view__dialog-grid">
-          <el-form-item label="Store ID">
+          <el-form-item :label="t('structureAdmin.fields.storeId')">
             <el-input-number v-model="locationEdit.store_id" :min="1" controls-position="right" />
           </el-form-item>
 
-          <el-form-item label="Floor ID">
+          <el-form-item :label="t('structureAdmin.fields.floorId')">
             <el-select v-model="locationEdit.floor_id">
               <el-option v-for="item in floors" :key="item.id" :label="`${item.code} — ${item.name}`" :value="item.id" />
             </el-select>
           </el-form-item>
 
-          <el-form-item label="Code">
+          <el-form-item :label="t('structureAdmin.fields.code')">
             <el-input v-model="locationEdit.code" />
           </el-form-item>
 
-          <el-form-item label="Name">
+          <el-form-item :label="t('structureAdmin.fields.name')">
             <el-input v-model="locationEdit.name" />
           </el-form-item>
 
-          <el-form-item label="Status">
+          <el-form-item :label="t('common.columns.status')">
             <el-select v-model="locationEdit.status">
-              <el-option v-for="option in statusOptions" :key="option" :label="option" :value="option" />
+              <el-option v-for="option in statusOptions" :key="option" :label="resolveStatusLabel(option)" :value="option" />
             </el-select>
           </el-form-item>
         </div>
       </el-form>
 
       <template #footer>
-        <el-button @click="locationEditDialogOpen = false">Cancel</el-button>
-        <el-button type="primary" :loading="isLocationUpdating" @click="handleUpdateLocation">Save</el-button>
+        <el-button @click="locationEditDialogOpen = false">{{ t('common.actions.cancel') }}</el-button>
+        <el-button type="primary" :loading="isLocationUpdating" @click="handleUpdateLocation">{{ t('common.actions.save') }}</el-button>
       </template>
     </el-dialog>
 
-    <el-dialog v-model="unitEditDialogOpen" title="Edit unit" width="42rem">
+    <el-dialog v-model="unitEditDialogOpen" :title="t('structureAdmin.dialogs.editUnit')" width="42rem">
       <el-form label-position="top" @submit.prevent>
         <div class="structure-admin-view__dialog-grid structure-admin-view__dialog-grid--unit">
-          <el-form-item label="Building ID">
+          <el-form-item :label="t('structureAdmin.fields.buildingId')">
             <el-input-number v-model="unitEdit.building_id" :min="1" controls-position="right" />
           </el-form-item>
 
-          <el-form-item label="Floor ID">
+          <el-form-item :label="t('structureAdmin.fields.floorId')">
             <el-input-number v-model="unitEdit.floor_id" :min="1" controls-position="right" />
           </el-form-item>
 
-          <el-form-item label="Area ID">
+          <el-form-item :label="t('structureAdmin.fields.areaId')">
             <el-select v-model="unitEdit.area_id">
               <el-option v-for="item in areas" :key="item.id" :label="`${item.code} — ${item.name}`" :value="item.id" />
             </el-select>
           </el-form-item>
 
-          <el-form-item label="Location ID">
+          <el-form-item :label="t('structureAdmin.fields.locationId')">
             <el-select v-model="unitEdit.location_id">
               <el-option
                 v-for="item in locations"
@@ -2445,7 +2464,7 @@ onMounted(async () => {
             </el-select>
           </el-form-item>
 
-          <el-form-item label="Unit type ID">
+          <el-form-item :label="t('structureAdmin.fields.unitTypeId')">
             <el-select v-model="unitEdit.unit_type_id">
               <el-option
                 v-for="option in unitTypes"
@@ -2456,37 +2475,37 @@ onMounted(async () => {
             </el-select>
           </el-form-item>
 
-          <el-form-item label="Code">
+          <el-form-item :label="t('structureAdmin.fields.code')">
             <el-input v-model="unitEdit.code" />
           </el-form-item>
 
-          <el-form-item label="Floor area">
+          <el-form-item :label="t('structureAdmin.fields.floorArea')">
             <el-input-number v-model="unitEdit.floor_area" :min="0" :precision="2" controls-position="right" />
           </el-form-item>
 
-          <el-form-item label="Use area">
+          <el-form-item :label="t('structureAdmin.fields.useArea')">
             <el-input-number v-model="unitEdit.use_area" :min="0" :precision="2" controls-position="right" />
           </el-form-item>
 
-          <el-form-item label="Rent area">
+          <el-form-item :label="t('structureAdmin.fields.rentArea')">
             <el-input-number v-model="unitEdit.rent_area" :min="0" :precision="2" controls-position="right" />
           </el-form-item>
 
-          <el-form-item label="Rentable">
+          <el-form-item :label="t('structureAdmin.fields.rentable')">
             <el-switch v-model="unitEdit.is_rentable" />
           </el-form-item>
 
-          <el-form-item label="Status">
+          <el-form-item :label="t('common.columns.status')">
             <el-select v-model="unitEdit.status">
-              <el-option v-for="option in statusOptions" :key="option" :label="option" :value="option" />
+              <el-option v-for="option in statusOptions" :key="option" :label="resolveStatusLabel(option)" :value="option" />
             </el-select>
           </el-form-item>
         </div>
       </el-form>
 
       <template #footer>
-        <el-button @click="unitEditDialogOpen = false">Cancel</el-button>
-        <el-button type="primary" :loading="isUnitUpdating" @click="handleUpdateUnit">Save</el-button>
+        <el-button @click="unitEditDialogOpen = false">{{ t('common.actions.cancel') }}</el-button>
+        <el-button type="primary" :loading="isUnitUpdating" @click="handleUpdateUnit">{{ t('common.actions.save') }}</el-button>
       </template>
     </el-dialog>
   </div>

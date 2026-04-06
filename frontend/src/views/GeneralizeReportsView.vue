@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import { exportReport, queryReport, type ReportId, type ReportQueryPayload, type ReportQueryResponse } from '../api/reports'
 import FilterForm from '../components/platform/FilterForm.vue'
 import PageSection from '../components/platform/PageSection.vue'
 import { useFilterForm } from '../composables/useFilterForm'
+import { useAppStore } from '../stores/app'
 
 type GeneralizeReportId = Exclude<ReportId, 'r19'>
 
@@ -30,55 +32,65 @@ type ReportFilters = {
   management_type_id: string
 }
 
-const reportOptions: ReportOption[] = [
-  { value: 'r01', label: 'R01 Lease Status Area Summary' },
-  { value: 'r02', label: 'R02 Contract Ledger' },
-  { value: 'r03', label: 'R03 Shop Type Sales & Rent Analysis' },
-  { value: 'r04', label: 'R04 Daily Shop Sales Analysis' },
-  { value: 'r05', label: 'R05 Unit Budget vs Lease/Prospect Price' },
-  { value: 'r06', label: 'R06 Store Rent Budget Execution' },
-  { value: 'r07', label: 'R07 Brand annual sales distribution' },
-  { value: 'r08', label: 'R08 Customer AR Aging Summary' },
-  { value: 'r09', label: 'R09 Customer AR Aging by Charge Type' },
-  { value: 'r10', label: 'R10 Traffic Annual/Monthly Summary' },
-  { value: 'r11', label: 'R11 Lease Area vs Total Area' },
-  { value: 'r12', label: 'R12 Occupancy / Unit Status Structure' },
-  { value: 'r13', label: 'R13 Shop type sales YoY/MoM' },
-  { value: 'r14', label: 'R14 Sales efficiency' },
-  { value: 'r15', label: 'R15 Sales vs Rent Income Comparison by Shop Type' },
-  { value: 'r16', label: 'R16 Subsidiary AR Aging Summary' },
-  { value: 'r17', label: 'R17 Subsidiary AR Aging by Charge Type' },
-  { value: 'r18', label: 'R18 Customer / Store / Brand Composite Report' },
+const appStore = useAppStore()
+const { t } = useI18n()
+
+const reportIds: GeneralizeReportId[] = [
+  'r01',
+  'r02',
+  'r03',
+  'r04',
+  'r05',
+  'r06',
+  'r07',
+  'r08',
+  'r09',
+  'r10',
+  'r11',
+  'r12',
+  'r13',
+  'r14',
+  'r15',
+  'r16',
+  'r17',
+  'r18',
 ]
 
-const reportSummaries: Record<GeneralizeReportId, string> = {
-  r01: 'Summarize lease status by area for a selected operating period and store.',
-  r02: 'Review contract ledger rows with status, organizational, customer, and management filters.',
-  r03: 'Analyze sales and rent by shop type for a selected reporting slice.',
-  r04: 'Review daily shop sales totals for a selected reporting slice.',
-  r05: 'Compare unit budget price, current lease price, and prospect pricing for the selected fiscal year.',
-  r06: 'Compare store rent budget against period receivable/received values for the selected period.',
-  r07: 'Distribute annual sales by brand within the selected store.',
-  r08: 'Summarize customer receivables by aging bucket as of the selected cutoff period.',
-  r09: 'Break customer receivables aging down by charge type for the selected cutoff period.',
-  r10: 'Summarize traffic metrics for the selected year (annual and monthly breakdown).',
-  r11: 'Compare leased area against total area for the selected operating slice.',
-  r12: 'Review occupancy and unit-status structure for the selected operating slice.',
-  r13: 'Compare shop-type sales year-over-year and month-over-month for the selected slice.',
-  r14: 'Review sales efficiency metrics by shop type for the selected slice.',
-  r15: 'Compare sales and rent income by shop type for the selected operating period.',
-  r16: 'Summarize subsidiary receivables aging totals as of the selected cutoff period.',
-  r17: 'Break subsidiary receivables aging down by charge type for the selected cutoff period.',
-  r18: 'Review combined sales, receivable, arrears, and efficiency metrics by customer, store, brand, and unit.',
-}
+const reportOptions = computed<ReportOption[]>(() =>
+  reportIds.map((reportId) => ({
+    value: reportId,
+    label: t(`generalizeReports.reportOptions.${reportId}`),
+  })),
+)
 
-const statusOptions = [
-  { label: 'Draft', value: 'draft' },
-  { label: 'Pending approval', value: 'pending_approval' },
-  { label: 'Active', value: 'active' },
-  { label: 'Rejected', value: 'rejected' },
-  { label: 'Terminated', value: 'terminated' },
-]
+const reportSummaries = computed<Record<GeneralizeReportId, string>>(() => ({
+  r01: t('generalizeReports.reportSummaries.r01'),
+  r02: t('generalizeReports.reportSummaries.r02'),
+  r03: t('generalizeReports.reportSummaries.r03'),
+  r04: t('generalizeReports.reportSummaries.r04'),
+  r05: t('generalizeReports.reportSummaries.r05'),
+  r06: t('generalizeReports.reportSummaries.r06'),
+  r07: t('generalizeReports.reportSummaries.r07'),
+  r08: t('generalizeReports.reportSummaries.r08'),
+  r09: t('generalizeReports.reportSummaries.r09'),
+  r10: t('generalizeReports.reportSummaries.r10'),
+  r11: t('generalizeReports.reportSummaries.r11'),
+  r12: t('generalizeReports.reportSummaries.r12'),
+  r13: t('generalizeReports.reportSummaries.r13'),
+  r14: t('generalizeReports.reportSummaries.r14'),
+  r15: t('generalizeReports.reportSummaries.r15'),
+  r16: t('generalizeReports.reportSummaries.r16'),
+  r17: t('generalizeReports.reportSummaries.r17'),
+  r18: t('generalizeReports.reportSummaries.r18'),
+}))
+
+const statusOptions = computed(() => [
+  { label: t('common.statuses.draft'), value: 'draft' },
+  { label: t('common.statuses.pendingApproval'), value: 'pending_approval' },
+  { label: t('common.statuses.active'), value: 'active' },
+  { label: t('common.statuses.rejected'), value: 'rejected' },
+  { label: t('common.statuses.terminated'), value: 'terminated' },
+])
 
 const result = ref<ReportQueryResponse | null>(null)
 const errorMessage = ref('')
@@ -116,20 +128,22 @@ const needsTradeFilter = computed(() => ['r02', 'r08', 'r09'].includes(filters.r
 const needsChargeTypeFilter = computed(() => ['r09', 'r17'].includes(filters.report_id))
 
 const selectedReportLabel = computed(
-  () => reportOptions.find((option) => option.value === filters.report_id)?.label ?? reportOptions[0].label,
+  () => reportOptions.value.find((option) => option.value === filters.report_id)?.label ?? reportOptions.value[0]?.label ?? '',
 )
 
-const selectedReportSummary = computed(() => reportSummaries[filters.report_id])
+const selectedReportSummary = computed(() => reportSummaries.value[filters.report_id])
 
 const generatedAtLabel = computed(() => {
   if (!result.value?.generated_at) {
     return ''
   }
 
-  return new Intl.DateTimeFormat('en-US', {
+  const value = new Intl.DateTimeFormat(appStore.locale, {
     dateStyle: 'medium',
     timeStyle: 'short',
   }).format(new Date(result.value.generated_at))
+
+  return t('generalizeReports.meta.generatedAt', { value })
 })
 
 const parsePositiveInteger = (value: string) => {
@@ -271,7 +285,7 @@ const loadReport = async () => {
     const response = await queryReport(filters.report_id, buildPayload())
     result.value = response.data
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : 'Unable to load the selected Generalize report.'
+    errorMessage.value = error instanceof Error ? error.message : t('generalizeReports.errors.unableToLoad')
     result.value = null
   } finally {
     isQuerying.value = false
@@ -334,7 +348,7 @@ const handleExport = async () => {
     link.click()
     URL.revokeObjectURL(url)
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : 'Unable to export the selected Generalize report.'
+    errorMessage.value = error instanceof Error ? error.message : t('generalizeReports.errors.unableToExport')
   } finally {
     isExporting.value = false
   }
@@ -348,13 +362,13 @@ onMounted(() => {
 <template>
   <div class="generalize-reports-view" data-testid="generalize-reports-view">
     <PageSection
-      eyebrow="Generalize reporting"
-      title="Generalize reports"
-      summary="Run the current reporting slice for lease, budget, sales, traffic, and AR aging reports across the currently implemented Generalize inventory."
+      :eyebrow="t('generalizeReports.eyebrow')"
+      :title="t('generalizeReports.title')"
+      :summary="t('generalizeReports.summary')"
     >
       <template #actions>
-        <el-tag effect="plain" type="info">Task 16 slice</el-tag>
-        <el-tag effect="plain" type="success">R01 / R02 / R03 / R04 / R05 / R06 / R07 / R08 / R09 / R10 / R11 / R12 / R13 / R14 / R15 / R16 / R17 / R18</el-tag>
+        <el-tag effect="plain" type="info">{{ t('generalizeReports.tags.batch') }}</el-tag>
+        <el-tag effect="plain" type="success">{{ t('generalizeReports.tags.coverage') }}</el-tag>
       </template>
     </PageSection>
 
@@ -362,127 +376,127 @@ onMounted(() => {
       v-if="errorMessage"
       :closable="false"
       class="generalize-reports-view__alert"
-      title="Generalize report request failed"
+      :title="t('generalizeReports.errors.requestFailed')"
       type="error"
       show-icon
       :description="errorMessage"
     />
 
-    <FilterForm title="Report parameters" :show-actions="false">
-      <el-form-item label="Report">
+    <FilterForm :title="t('generalizeReports.filters.title')" :show-actions="false">
+      <el-form-item :label="t('generalizeReports.fields.report')">
         <el-select
           v-model="filters.report_id"
-          placeholder="Select a report"
+          :placeholder="t('generalizeReports.placeholders.selectReport')"
           data-testid="generalize-report-select"
         >
           <el-option v-for="option in reportOptions" :key="option.value" :label="option.label" :value="option.value" />
         </el-select>
       </el-form-item>
 
-        <el-form-item v-if="!isYearReport" label="Period">
-          <el-input
-            v-model="filters.period"
-            placeholder="Enter a period, e.g. 2026-03"
-            clearable
-            data-testid="generalize-period-input"
-          />
-        </el-form-item>
+      <el-form-item v-if="!isYearReport" :label="t('generalizeReports.fields.period')">
+        <el-input
+          v-model="filters.period"
+          :placeholder="t('generalizeReports.placeholders.enterPeriod')"
+          clearable
+          data-testid="generalize-period-input"
+        />
+      </el-form-item>
 
-        <el-form-item v-else label="Year">
-          <el-input
-            v-model="filters.year"
-            placeholder="Enter a year, e.g. 2026"
-            clearable
-            data-testid="generalize-year-input"
-          />
-        </el-form-item>
+      <el-form-item v-else :label="t('generalizeReports.fields.year')">
+        <el-input
+          v-model="filters.year"
+          :placeholder="t('generalizeReports.placeholders.enterYear')"
+          clearable
+          data-testid="generalize-year-input"
+        />
+      </el-form-item>
 
-       <el-form-item label="Store ID">
-         <el-input
-           v-model="filters.store_id"
-           placeholder="Enter a store identifier"
-           clearable
-           data-testid="generalize-store-input"
-         />
-       </el-form-item>
+      <el-form-item :label="t('generalizeReports.fields.storeId')">
+        <el-input
+          v-model="filters.store_id"
+          :placeholder="t('generalizeReports.placeholders.enterStoreId')"
+          clearable
+          data-testid="generalize-store-input"
+        />
+      </el-form-item>
 
-        <el-form-item v-if="needsShopTypeFilter" label="Shop type ID">
-          <el-input
-            v-model="filters.shop_type_id"
-            placeholder="Enter a shop type identifier"
-            clearable
-            data-testid="generalize-shop-type-input"
-          />
-        </el-form-item>
+      <el-form-item v-if="needsShopTypeFilter" :label="t('generalizeReports.fields.shopTypeId')">
+        <el-input
+          v-model="filters.shop_type_id"
+          :placeholder="t('generalizeReports.placeholders.enterShopTypeId')"
+          clearable
+          data-testid="generalize-shop-type-input"
+        />
+      </el-form-item>
 
-        <el-form-item v-if="needsBrandFilter" label="Brand ID">
-          <el-input
-            v-model="filters.brand_id"
-            placeholder="Enter a brand identifier"
-            clearable
-            data-testid="generalize-brand-input"
-          />
-        </el-form-item>
+      <el-form-item v-if="needsBrandFilter" :label="t('generalizeReports.fields.brandId')">
+        <el-input
+          v-model="filters.brand_id"
+          :placeholder="t('generalizeReports.placeholders.enterBrandId')"
+          clearable
+          data-testid="generalize-brand-input"
+        />
+      </el-form-item>
 
-        <el-form-item v-if="needsFloorFilter" label="Floor ID">
-          <el-input
-            v-model="filters.floor_id"
-            placeholder="Enter a floor identifier"
-            clearable
-            data-testid="generalize-floor-input"
-          />
-        </el-form-item>
+      <el-form-item v-if="needsFloorFilter" :label="t('generalizeReports.fields.floorId')">
+        <el-input
+          v-model="filters.floor_id"
+          :placeholder="t('generalizeReports.placeholders.enterFloorId')"
+          clearable
+          data-testid="generalize-floor-input"
+        />
+      </el-form-item>
 
-        <el-form-item v-if="needsUnitFilter" label="Unit ID">
-          <el-input
-            v-model="filters.unit_id"
-            placeholder="Enter a unit identifier"
-            clearable
-            data-testid="generalize-unit-input"
-          />
-        </el-form-item>
+      <el-form-item v-if="needsUnitFilter" :label="t('generalizeReports.fields.unitId')">
+        <el-input
+          v-model="filters.unit_id"
+          :placeholder="t('generalizeReports.placeholders.enterUnitId')"
+          clearable
+          data-testid="generalize-unit-input"
+        />
+      </el-form-item>
 
-      <el-form-item v-if="needsDepartmentFilter" label="Department ID">
+      <el-form-item v-if="needsDepartmentFilter" :label="t('generalizeReports.fields.departmentId')">
         <el-input
           v-model="filters.department_id"
-          placeholder="Enter a department identifier"
+          :placeholder="t('generalizeReports.placeholders.enterDepartmentId')"
           clearable
           data-testid="generalize-department-input"
         />
       </el-form-item>
 
-      <el-form-item v-if="needsCustomerFilter" label="Customer ID">
+      <el-form-item v-if="needsCustomerFilter" :label="t('generalizeReports.fields.customerId')">
         <el-input
           v-model="filters.customer_id"
-          placeholder="Enter a customer identifier"
+          :placeholder="t('generalizeReports.placeholders.enterCustomerId')"
           clearable
           data-testid="generalize-customer-input"
         />
       </el-form-item>
 
-      <el-form-item v-if="needsTradeFilter" label="Trade ID">
+      <el-form-item v-if="needsTradeFilter" :label="t('generalizeReports.fields.tradeId')">
         <el-input
           v-model="filters.trade_id"
-          placeholder="Enter a trade identifier"
+          :placeholder="t('generalizeReports.placeholders.enterTradeId')"
           clearable
           data-testid="generalize-trade-input"
         />
       </el-form-item>
 
-      <el-form-item v-if="needsChargeTypeFilter" label="Charge type">
+      <el-form-item v-if="needsChargeTypeFilter" :label="t('generalizeReports.fields.chargeType')">
         <el-input
           v-model="filters.charge_type"
-          placeholder="Enter a charge type, e.g. rent"
+          :placeholder="t('generalizeReports.placeholders.enterChargeType')"
           clearable
           data-testid="generalize-charge-type-input"
         />
       </el-form-item>
 
       <template v-if="isR02Report">
-        <el-form-item label="Status">
+        <el-form-item :label="t('common.columns.status')">
           <el-select
             v-model="filters.status"
-            placeholder="All statuses"
+            :placeholder="t('generalizeReports.placeholders.allStatuses')"
             clearable
             data-testid="generalize-status-input"
           >
@@ -495,10 +509,10 @@ onMounted(() => {
           </el-select>
         </el-form-item>
 
-        <el-form-item label="Management type ID">
+        <el-form-item :label="t('generalizeReports.fields.managementTypeId')">
           <el-input
             v-model="filters.management_type_id"
-            placeholder="Enter a management type identifier"
+            :placeholder="t('generalizeReports.placeholders.enterManagementTypeId')"
             clearable
             data-testid="generalize-management-type-input"
           />
@@ -515,9 +529,9 @@ onMounted(() => {
           </div>
 
           <div class="generalize-reports-view__actions">
-            <el-button :disabled="!isDirty" @click="handleReset">Reset</el-button>
+            <el-button :disabled="!isDirty" @click="handleReset">{{ t('filterForm.reset') }}</el-button>
             <el-button data-testid="generalize-query-button" :loading="isQuerying" @click="loadReport">
-              Query report
+              {{ t('common.actions.query') }}
             </el-button>
             <el-button
               type="primary"
@@ -525,20 +539,20 @@ onMounted(() => {
               :loading="isExporting"
               @click="handleExport"
             >
-              Export report
+              {{ t('common.actions.export') }}
             </el-button>
           </div>
         </div>
       </template>
 
       <div v-if="generatedAtLabel" class="generalize-reports-view__meta">
-        <el-tag effect="plain" type="info">Generated {{ generatedAtLabel }}</el-tag>
+        <el-tag effect="plain" type="info">{{ generatedAtLabel }}</el-tag>
       </div>
 
       <el-table
         :data="result?.rows ?? []"
         class="generalize-reports-view__table"
-        empty-text="Run a report to view results."
+        :empty-text="t('generalizeReports.table.empty')"
         data-testid="generalize-report-table"
       >
         <el-table-column

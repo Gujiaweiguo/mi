@@ -1,14 +1,19 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import { listPrintTemplates, renderPrintPdf, type PrintTemplate } from '../api/print'
 import PageSection from '../components/platform/PageSection.vue'
+import { useAppStore } from '../stores/app'
 
 type Feedback = {
   type: 'success' | 'error' | 'warning'
   title: string
   description: string
 }
+
+const appStore = useAppStore()
+const { t } = useI18n()
 
 const templates = ref<PrintTemplate[]>([])
 const total = ref(0)
@@ -18,6 +23,14 @@ const feedback = ref<Feedback | null>(null)
 
 const selectedTemplateCode = ref('')
 const documentIdsInput = ref('')
+
+const resolveStatusLabel = (status: string) => {
+  if (status === 'active') {
+    return t('common.statuses.active')
+  }
+
+  return status
+}
 
 const loadTemplates = async () => {
   isLoading.value = true
@@ -32,8 +45,8 @@ const loadTemplates = async () => {
     total.value = 0
     feedback.value = {
       type: 'error',
-      title: 'Print templates unavailable',
-      description: error instanceof Error ? error.message : 'Unable to load print templates.',
+      title: t('printPreview.errors.templatesUnavailable'),
+      description: error instanceof Error ? error.message : t('printPreview.errors.unableToLoadTemplates'),
     }
   } finally {
     isLoading.value = false
@@ -52,8 +65,11 @@ const parseDocumentIds = () => {
 const canRender = () => Boolean(selectedTemplateCode.value && parseDocumentIds().length > 0)
 
 const formatDate = (value: string) => {
-  if (!value) return '\u2014'
-  return new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' }).format(new Date(value))
+  if (!value) {
+    return t('common.emptyValue')
+  }
+
+  return new Intl.DateTimeFormat(appStore.locale, { dateStyle: 'medium' }).format(new Date(value))
 }
 
 const handleRenderPdf = async () => {
@@ -61,8 +77,8 @@ const handleRenderPdf = async () => {
   if (!selectedTemplateCode.value || ids.length === 0) {
     feedback.value = {
       type: 'warning',
-      title: 'Render parameters required',
-      description: 'Select a template and enter at least one document ID.',
+      title: t('printPreview.feedback.parametersRequiredTitle'),
+      description: t('printPreview.feedback.parametersRequiredDescription'),
     }
     return
   }
@@ -86,14 +102,14 @@ const handleRenderPdf = async () => {
 
     feedback.value = {
       type: 'success',
-      title: 'PDF generated',
-      description: 'Document has been rendered and downloaded successfully.',
+      title: t('printPreview.feedback.generatedTitle'),
+      description: t('printPreview.feedback.generatedDescription'),
     }
   } catch (error) {
     feedback.value = {
       type: 'error',
-      title: 'PDF generation failed',
-      description: error instanceof Error ? error.message : 'Unable to generate PDF output.',
+      title: t('printPreview.errors.generationFailed'),
+      description: error instanceof Error ? error.message : t('printPreview.errors.unableToGeneratePdf'),
     }
   } finally {
     isRendering.value = false
@@ -108,13 +124,14 @@ onMounted(() => {
 <template>
   <div class="print-preview-view" data-testid="print-preview-view">
     <PageSection
-      eyebrow="Document output"
-      title="Print preview"
-      summary="Select a print template and document IDs to generate PDF output for billing documents."
+      :eyebrow="t('printPreview.eyebrow')"
+      :title="t('printPreview.title')"
+      :summary="t('printPreview.summary')"
     />
 
     <el-alert
       v-if="feedback"
+      data-testid="print-preview-feedback"
       :closable="false"
       :title="feedback.title"
       :type="feedback.type"
@@ -125,34 +142,34 @@ onMounted(() => {
     <el-card class="print-preview-view__card" shadow="never">
       <template #header>
         <div class="print-preview-view__card-header">
-          <span>Render PDF</span>
+          <span>{{ t('printPreview.cards.renderPdf') }}</span>
         </div>
       </template>
 
       <div class="print-preview-view__render-form">
         <el-form label-position="top">
           <div class="print-preview-view__render-grid">
-            <el-form-item label="Template">
+            <el-form-item :label="t('printPreview.fields.template')">
               <el-select
                 v-model="selectedTemplateCode"
-                placeholder="Select a print template"
+                :placeholder="t('printPreview.placeholders.selectTemplate')"
                 clearable
                 filterable
                 data-testid="print-template-select"
               >
                 <el-option
-                  v-for="t in templates"
-                  :key="t.id"
-                  :label="t.code + ' \u2014 ' + t.name"
-                  :value="t.code"
+                  v-for="template in templates"
+                  :key="template.id"
+                  :label="template.code + ' — ' + template.name"
+                  :value="template.code"
                 />
               </el-select>
             </el-form-item>
 
-            <el-form-item label="Document IDs">
+            <el-form-item :label="t('printPreview.fields.documentIds')">
               <el-input
                 v-model="documentIdsInput"
-                placeholder="Comma-separated document IDs (e.g. 1, 2, 3)"
+                :placeholder="t('printPreview.placeholders.enterDocumentIds')"
                 clearable
                 data-testid="print-document-ids"
               />
@@ -166,7 +183,7 @@ onMounted(() => {
             data-testid="print-render-pdf-button"
             @click="handleRenderPdf"
           >
-            Generate PDF
+            {{ t('printPreview.actions.generatePdf') }}
           </el-button>
         </el-form>
       </div>
@@ -175,30 +192,31 @@ onMounted(() => {
     <el-card class="print-preview-view__card" shadow="never">
       <template #header>
         <div class="print-preview-view__card-header">
-          <span>Available templates</span>
-          <el-tag effect="plain" type="info">{{ total }} total</el-tag>
+          <span>{{ t('printPreview.cards.availableTemplates') }}</span>
+          <el-tag effect="plain" type="info">{{ t('common.total', { count: total }) }}</el-tag>
         </div>
       </template>
 
       <el-table
+        v-loading="isLoading"
         :data="templates"
         row-key="id"
         class="print-preview-view__table"
-        empty-text="No print templates available."
+        :empty-text="t('printPreview.table.empty')"
         data-testid="print-templates-table"
       >
-        <el-table-column prop="code" label="Code" min-width="160" />
-        <el-table-column prop="name" label="Name" min-width="220" />
-        <el-table-column prop="document_type" label="Document type" min-width="140" />
-        <el-table-column prop="output_mode" label="Output mode" min-width="120" />
-        <el-table-column prop="status" label="Status" min-width="120">
+        <el-table-column prop="code" :label="t('printPreview.columns.code')" min-width="160" />
+        <el-table-column prop="name" :label="t('printPreview.columns.name')" min-width="220" />
+        <el-table-column prop="document_type" :label="t('printPreview.columns.documentType')" min-width="140" />
+        <el-table-column prop="output_mode" :label="t('printPreview.columns.outputMode')" min-width="120" />
+        <el-table-column :label="t('common.columns.status')" min-width="120">
           <template #default="scope">
             <el-tag :type="scope.row.status === 'active' ? 'success' : 'info'" effect="plain">
-              {{ scope.row.status }}
+              {{ resolveStatusLabel(scope.row.status) }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="Created" min-width="160">
+        <el-table-column :label="t('common.columns.createdAt')" min-width="160">
           <template #default="scope">
             {{ formatDate(scope.row.created_at) }}
           </template>

@@ -1,13 +1,17 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 
 import { cancelInvoice, listInvoices, submitInvoice, type InvoiceDocument } from '../api/invoice'
 import FilterForm from '../components/platform/FilterForm.vue'
 import PageSection from '../components/platform/PageSection.vue'
 import { useFilterForm } from '../composables/useFilterForm'
+import { useAppStore } from '../stores/app'
 
 const router = useRouter()
+const { t } = useI18n()
+const appStore = useAppStore()
 
 const rows = ref<InvoiceDocument[]>([])
 const total = ref(0)
@@ -19,23 +23,49 @@ const { filters, isDirty, reset } = useFilterForm({
   status: '',
 })
 
-const documentTypeOptions = [
-  { label: 'Bill', value: 'bill' },
-  { label: 'Invoice', value: 'invoice' },
-]
+const documentTypeOptions = computed(() => [
+  { label: t('billingInvoices.documentTypes.bill'), value: 'bill' },
+  { label: t('billingInvoices.documentTypes.invoice'), value: 'invoice' },
+])
 
-const statusOptions = [
-  { label: 'Draft', value: 'draft' },
-  { label: 'Pending approval', value: 'pending_approval' },
-  { label: 'Approved', value: 'approved' },
-  { label: 'Cancelled', value: 'cancelled' },
-]
+const statusOptions = computed(() => [
+  { label: t('common.statuses.draft'), value: 'draft' },
+  { label: t('common.statuses.pendingApproval'), value: 'pending_approval' },
+  { label: t('common.statuses.approved'), value: 'approved' },
+  { label: t('common.statuses.cancelled'), value: 'cancelled' },
+])
 
 const formatAmount = (value: number) =>
-  new Intl.NumberFormat('en-US', {
+  new Intl.NumberFormat(appStore.locale, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(value)
+
+const resolveDocumentTypeLabel = (type: string) => {
+  switch (type) {
+    case 'bill':
+      return t('billingInvoices.documentTypes.bill')
+    case 'invoice':
+      return t('billingInvoices.documentTypes.invoice')
+    default:
+      return type
+  }
+}
+
+const resolveStatusLabel = (status: string) => {
+  switch (status) {
+    case 'draft':
+      return t('common.statuses.draft')
+    case 'pending_approval':
+      return t('common.statuses.pendingApproval')
+    case 'approved':
+      return t('common.statuses.approved')
+    case 'cancelled':
+      return t('common.statuses.cancelled')
+    default:
+      return status
+  }
+}
 
 const documentTypeTag = (type: string) => (type === 'bill' ? 'warning' : 'primary')
 const statusTag = (status: string) => {
@@ -66,7 +96,7 @@ const loadInvoices = async () => {
     rows.value = response.data.items
     total.value = response.data.total
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : 'Unable to load billing invoices.'
+    errorMessage.value = error instanceof Error ? error.message : t('billingInvoices.errors.unableToLoad')
     rows.value = []
     total.value = 0
   } finally {
@@ -88,7 +118,7 @@ const handleSubmit = async (row: InvoiceDocument) => {
     await submitInvoice(row.id, { idempotency_key: crypto.randomUUID() })
     void loadInvoices()
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : 'Failed to submit invoice.'
+    errorMessage.value = error instanceof Error ? error.message : t('billingInvoices.errors.unableToSubmit')
   }
 }
 
@@ -97,7 +127,7 @@ const handleCancel = async (row: InvoiceDocument) => {
     await cancelInvoice(row.id)
     void loadInvoices()
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : 'Failed to cancel invoice.'
+    errorMessage.value = error instanceof Error ? error.message : t('billingInvoices.errors.unableToCancel')
   }
 }
 
@@ -109,32 +139,32 @@ onMounted(() => {
 <template>
   <div class="billing-invoices-view" data-testid="billing-invoices-view">
     <PageSection
-      eyebrow="Billing operations"
-      title="Billing invoices"
-      summary="Review billing documents, manage lifecycle from draft through approval, and navigate to detail for adjustments."
+      :eyebrow="t('billingInvoices.eyebrow')"
+      :title="t('billingInvoices.title')"
+      :summary="t('billingInvoices.summary')"
     />
 
     <el-alert
       v-if="errorMessage"
       :closable="false"
       class="billing-invoices-view__alert"
-      title="Invoice records unavailable"
+      :title="t('billingInvoices.errors.recordsUnavailable')"
       type="error"
       show-icon
       :description="errorMessage"
     />
 
     <FilterForm
-      title="Invoice filters"
+      :title="t('billingInvoices.filters.title')"
       :busy="isLoading"
       :reset-disabled="!isDirty"
       @reset="handleReset"
       @submit="loadInvoices"
     >
-      <el-form-item label="Document type">
+      <el-form-item :label="t('billingInvoices.fields.documentType')">
         <el-select
           v-model="filters.document_type"
-          placeholder="All types"
+          :placeholder="t('billingInvoices.placeholders.allTypes')"
           clearable
           data-testid="invoice-document-type-filter"
         >
@@ -147,10 +177,10 @@ onMounted(() => {
         </el-select>
       </el-form-item>
 
-      <el-form-item label="Status">
+      <el-form-item :label="t('common.columns.status')">
         <el-select
           v-model="filters.status"
-          placeholder="All statuses"
+          :placeholder="t('billingInvoices.placeholders.allStatuses')"
           clearable
           data-testid="invoice-status-filter"
         >
@@ -167,8 +197,8 @@ onMounted(() => {
     <el-card class="billing-invoices-view__table-card" shadow="never">
       <template #header>
         <div class="billing-invoices-view__table-header">
-          <span>Invoice queue</span>
-          <el-tag effect="plain" type="info">{{ total }} total</el-tag>
+          <span>{{ t('billingInvoices.table.queueTitle') }}</span>
+          <el-tag effect="plain" type="info">{{ t('common.total', { count: total }) }}</el-tag>
         </div>
       </template>
 
@@ -176,45 +206,47 @@ onMounted(() => {
         :data="rows"
         row-key="id"
         class="billing-invoices-view__table"
-        empty-text="No billing invoices match the current filters."
+        :empty-text="t('billingInvoices.table.empty')"
         data-testid="invoices-table"
       >
-        <el-table-column prop="document_no" label="Document no." min-width="180" />
-        <el-table-column label="Type" min-width="100">
+        <el-table-column prop="document_no" :label="t('billingInvoices.fields.documentNumber')" min-width="180" />
+        <el-table-column :label="t('billingInvoices.fields.type')" min-width="100">
           <template #default="scope">
             <el-tag :type="documentTypeTag(scope.row.document_type)" effect="plain">
-              {{ scope.row.document_type }}
+              {{ resolveDocumentTypeLabel(scope.row.document_type) }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="tenant_name" label="Tenant" min-width="220" />
-        <el-table-column label="Period" min-width="220">
+        <el-table-column prop="tenant_name" :label="t('billingInvoices.fields.tenant')" min-width="220" />
+        <el-table-column :label="t('billingInvoices.fields.period')" min-width="220">
           <template #default="scope">
             {{ scope.row.period_start }} → {{ scope.row.period_end }}
           </template>
         </el-table-column>
-        <el-table-column label="Total" min-width="140" align="right" header-align="right">
+        <el-table-column :label="t('billingInvoices.fields.total')" min-width="140" align="right" header-align="right">
           <template #default="scope">
             {{ formatAmount(scope.row.total_amount) }}
           </template>
         </el-table-column>
-        <el-table-column label="Status" min-width="140">
+        <el-table-column :label="t('common.columns.status')" min-width="140">
           <template #default="scope">
             <el-tag :type="statusTag(scope.row.status)" effect="plain">
-              {{ scope.row.status }}
+              {{ resolveStatusLabel(scope.row.status) }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="Actions" min-width="200" fixed="right">
+        <el-table-column :label="t('common.columns.actions')" min-width="200" fixed="right">
           <template #default="scope">
-            <el-button link type="primary" @click.stop="openInvoice(scope.row.id)">View</el-button>
+            <el-button link type="primary" @click.stop="openInvoice(scope.row.id)">
+              {{ t('common.actions.view') }}
+            </el-button>
             <el-button
               v-if="scope.row.status === 'draft'"
               link
               type="primary"
               @click.stop="handleSubmit(scope.row)"
             >
-              Submit
+              {{ t('billingInvoices.actions.submit') }}
             </el-button>
             <el-button
               v-if="scope.row.status === 'draft' || scope.row.status === 'pending_approval'"
@@ -222,7 +254,7 @@ onMounted(() => {
               type="danger"
               @click.stop="handleCancel(scope.row)"
             >
-              Cancel
+              {{ t('billingInvoices.actions.cancel') }}
             </el-button>
           </template>
         </el-table-column>

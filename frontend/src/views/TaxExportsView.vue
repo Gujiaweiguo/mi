@@ -1,16 +1,21 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import { listTaxRuleSets, exportTaxVouchers, type TaxRuleSet } from '../api/tax'
 import FilterForm from '../components/platform/FilterForm.vue'
 import PageSection from '../components/platform/PageSection.vue'
 import { useFilterForm } from '../composables/useFilterForm'
+import { useAppStore } from '../stores/app'
 
 type Feedback = {
   type: 'success' | 'error' | 'warning'
   title: string
   description: string
 }
+
+const appStore = useAppStore()
+const { t } = useI18n()
 
 const ruleSets = ref<TaxRuleSet[]>([])
 const total = ref(0)
@@ -25,6 +30,14 @@ const { filters, isDirty, reset } = useFilterForm({
   search: '',
 })
 
+const resolveStatusLabel = (status: string) => {
+  if (status === 'active') {
+    return t('common.statuses.active')
+  }
+
+  return status
+}
+
 const loadRuleSets = async () => {
   isLoading.value = true
   feedback.value = null
@@ -38,8 +51,8 @@ const loadRuleSets = async () => {
     total.value = 0
     feedback.value = {
       type: 'error',
-      title: 'Tax rule sets unavailable',
-      description: error instanceof Error ? error.message : 'Unable to load tax rule sets.',
+      title: t('taxExports.errors.ruleSetsUnavailable'),
+      description: error instanceof Error ? error.message : t('taxExports.errors.unableToLoadRuleSets'),
     }
   } finally {
     isLoading.value = false
@@ -58,8 +71,8 @@ const handleExport = async () => {
   if (!canExport()) {
     feedback.value = {
       type: 'warning',
-      title: 'Export parameters required',
-      description: 'Select a rule set code and specify both from/to dates before exporting.',
+      title: t('taxExports.feedback.parametersRequiredTitle'),
+      description: t('taxExports.feedback.parametersRequiredDescription'),
     }
     return
   }
@@ -84,14 +97,18 @@ const handleExport = async () => {
 
     feedback.value = {
       type: 'success',
-      title: 'Tax export completed',
-      description: `Vouchers exported for rule set "${selectedRuleSetCode.value}" from ${exportFrom.value} to ${exportTo.value}.`,
+      title: t('taxExports.feedback.completedTitle'),
+      description: t('taxExports.feedback.completedDescription', {
+        ruleSetCode: selectedRuleSetCode.value,
+        fromDate: exportFrom.value,
+        toDate: exportTo.value,
+      }),
     }
   } catch (error) {
     feedback.value = {
       type: 'error',
-      title: 'Tax export failed',
-      description: error instanceof Error ? error.message : 'Unable to export tax vouchers.',
+      title: t('taxExports.errors.exportFailed'),
+      description: error instanceof Error ? error.message : t('taxExports.errors.unableToExport'),
     }
   } finally {
     isExporting.value = false
@@ -99,8 +116,11 @@ const handleExport = async () => {
 }
 
 const formatDate = (value: string) => {
-  if (!value) return '—'
-  return new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' }).format(new Date(value))
+  if (!value) {
+    return t('common.emptyValue')
+  }
+
+  return new Intl.DateTimeFormat(appStore.locale, { dateStyle: 'medium' }).format(new Date(value))
 }
 
 onMounted(() => {
@@ -111,13 +131,14 @@ onMounted(() => {
 <template>
   <div class="tax-exports-view" data-testid="tax-exports-view">
     <PageSection
-      eyebrow="Tax output"
-      title="Tax exports"
-      summary="Select a tax rule set and date range to export accounting vouchers for tax reporting."
+      :eyebrow="t('taxExports.eyebrow')"
+      :title="t('taxExports.title')"
+      :summary="t('taxExports.summary')"
     />
 
     <el-alert
       v-if="feedback"
+      data-testid="tax-exports-feedback"
       :closable="false"
       :title="feedback.title"
       :type="feedback.type"
@@ -126,16 +147,16 @@ onMounted(() => {
     />
 
     <FilterForm
-      title="Rule set filters"
+      :title="t('taxExports.filters.title')"
       :busy="isLoading"
       :reset-disabled="!isDirty"
       @reset="handleReset"
       @submit="loadRuleSets"
     >
-      <el-form-item label="Search">
+      <el-form-item :label="t('taxExports.fields.search')">
         <el-input
           v-model="filters.search"
-          placeholder="Filter rule sets by code or name"
+          :placeholder="t('taxExports.placeholders.searchRuleSets')"
           clearable
           data-testid="tax-ruleset-search"
         />
@@ -145,17 +166,17 @@ onMounted(() => {
     <el-card class="tax-exports-view__card" shadow="never">
       <template #header>
         <div class="tax-exports-view__card-header">
-          <span>Voucher export</span>
+          <span>{{ t('taxExports.cards.voucherExport') }}</span>
         </div>
       </template>
 
       <div class="tax-exports-view__export-form">
         <el-form label-position="top">
           <div class="tax-exports-view__export-grid">
-            <el-form-item label="Rule set code">
+            <el-form-item :label="t('taxExports.fields.ruleSetCode')">
               <el-select
                 v-model="selectedRuleSetCode"
-                placeholder="Select a rule set"
+                :placeholder="t('taxExports.placeholders.selectRuleSet')"
                 clearable
                 filterable
                 data-testid="tax-ruleset-select"
@@ -169,24 +190,24 @@ onMounted(() => {
               </el-select>
             </el-form-item>
 
-            <el-form-item label="From date">
+            <el-form-item :label="t('taxExports.fields.fromDate')">
               <el-date-picker
                 v-model="exportFrom"
                 type="date"
                 value-format="YYYY-MM-DD"
                 format="YYYY-MM-DD"
-                placeholder="Select start date"
+                :placeholder="t('taxExports.placeholders.selectStartDate')"
                 data-testid="tax-export-from"
               />
             </el-form-item>
 
-            <el-form-item label="To date">
+            <el-form-item :label="t('taxExports.fields.toDate')">
               <el-date-picker
                 v-model="exportTo"
                 type="date"
                 value-format="YYYY-MM-DD"
                 format="YYYY-MM-DD"
-                placeholder="Select end date"
+                :placeholder="t('taxExports.placeholders.selectEndDate')"
                 data-testid="tax-export-to"
               />
             </el-form-item>
@@ -199,7 +220,7 @@ onMounted(() => {
             data-testid="tax-export-button"
             @click="handleExport"
           >
-            Export vouchers
+            {{ t('taxExports.actions.exportVouchers') }}
           </el-button>
         </el-form>
       </div>
@@ -208,8 +229,8 @@ onMounted(() => {
     <el-card class="tax-exports-view__card" shadow="never">
       <template #header>
         <div class="tax-exports-view__card-header">
-          <span>Available rule sets</span>
-          <el-tag effect="plain" type="info">{{ total }} total</el-tag>
+          <span>{{ t('taxExports.cards.availableRuleSets') }}</span>
+          <el-tag effect="plain" type="info">{{ t('common.total', { count: total }) }}</el-tag>
         </div>
       </template>
 
@@ -217,25 +238,25 @@ onMounted(() => {
         :data="ruleSets"
         row-key="id"
         class="tax-exports-view__table"
-        empty-text="No tax rule sets available."
+        :empty-text="t('taxExports.table.empty')"
         data-testid="tax-rulesets-table"
       >
-        <el-table-column prop="code" label="Code" min-width="160" />
-        <el-table-column prop="name" label="Name" min-width="220" />
-        <el-table-column prop="document_type" label="Document type" min-width="140" />
-        <el-table-column prop="status" label="Status" min-width="120">
+        <el-table-column prop="code" :label="t('taxExports.columns.code')" min-width="160" />
+        <el-table-column prop="name" :label="t('taxExports.columns.name')" min-width="220" />
+        <el-table-column prop="document_type" :label="t('taxExports.columns.documentType')" min-width="140" />
+        <el-table-column :label="t('common.columns.status')" min-width="120">
           <template #default="scope">
             <el-tag :type="scope.row.status === 'active' ? 'success' : 'info'" effect="plain">
-              {{ scope.row.status }}
+              {{ resolveStatusLabel(scope.row.status) }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="Rules" min-width="100">
+        <el-table-column :label="t('taxExports.columns.rules')" min-width="100">
           <template #default="scope">
             {{ scope.row.rules?.length ?? 0 }}
           </template>
         </el-table-column>
-        <el-table-column label="Created" min-width="160">
+        <el-table-column :label="t('common.columns.createdAt')" min-width="160">
           <template #default="scope">
             {{ formatDate(scope.row.created_at) }}
           </template>

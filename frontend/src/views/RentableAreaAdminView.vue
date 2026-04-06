@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import { listShopTypes, listUnitTypes, type ReferenceCatalogItem } from '../api/baseinfo'
 import {
@@ -55,6 +56,7 @@ const areas = ref<StructureArea[]>([])
 const units = ref<StructureUnit[]>([])
 const unitTypes = ref<ReferenceCatalogItem[]>([])
 const shopTypes = ref<ReferenceCatalogItem[]>([])
+const { t } = useI18n()
 
 const isBootstrapping = ref(false)
 const isStoresLoading = ref(false)
@@ -109,6 +111,18 @@ const isPositiveInteger = (value: number | undefined): value is number =>
 const isFiniteNumber = (value: number | undefined): value is number => typeof value === 'number' && Number.isFinite(value)
 
 const getErrorMessage = (error: unknown, fallback: string) => (error instanceof Error ? error.message : fallback)
+
+const resolveStatusLabel = (status: string) => {
+  if (status === 'active') {
+    return t('common.statuses.active')
+  }
+
+  if (status === 'inactive') {
+    return t('common.statuses.inactive')
+  }
+
+  return status || t('common.emptyValue')
+}
 
 const syncFilterBaseline = () => {
   filterBaseline.value = {
@@ -180,7 +194,7 @@ const resolveUnitTypeLabel = (unitTypeId: number) => {
 
 const resolveShopTypeLabel = (shopTypeId: number | null) => {
   if (shopTypeId === null) {
-    return '—'
+    return t('common.emptyValue')
   }
 
   const shopType = shopTypes.value.find((item) => item.id === shopTypeId)
@@ -189,14 +203,14 @@ const resolveShopTypeLabel = (shopTypeId: number | null) => {
 
 const resolveStatusTag = (status: string) => {
   if (status === 'active') {
-    return { label: status, type: 'success' as const }
+    return { label: resolveStatusLabel(status), type: 'success' as const }
   }
 
   if (status === 'inactive') {
-    return { label: status, type: 'info' as const }
+    return { label: resolveStatusLabel(status), type: 'info' as const }
   }
 
-  return { label: status || '—', type: 'warning' as const }
+  return { label: resolveStatusLabel(status), type: 'warning' as const }
 }
 
 const formatArea = (value: number) => value.toFixed(2)
@@ -235,8 +249,8 @@ const loadUnitTypes = async () => {
     unitTypes.value = []
     feedback.value = {
       type: 'warning',
-      title: 'Unit types unavailable',
-      description: getErrorMessage(error, 'Unable to load unit types for rentable-area review.'),
+      title: t('rentableAreaAdmin.errors.unitTypesUnavailable'),
+      description: getErrorMessage(error, t('rentableAreaAdmin.errors.unableToLoadUnitTypes')),
     }
   }
 }
@@ -249,8 +263,8 @@ const loadShopTypes = async () => {
     shopTypes.value = []
     feedback.value = {
       type: 'warning',
-      title: 'Shop types unavailable',
-      description: getErrorMessage(error, 'Unable to load shop types for rentable-area review.'),
+      title: t('rentableAreaAdmin.errors.shopTypesUnavailable'),
+      description: getErrorMessage(error, t('rentableAreaAdmin.errors.unableToLoadShopTypes')),
     }
   }
 }
@@ -277,8 +291,8 @@ const loadFloors = async () => {
     filters.floorId = undefined
     feedback.value = {
       type: 'error',
-      title: 'Floors unavailable',
-      description: getErrorMessage(error, 'Unable to load floors for the selected building.'),
+      title: t('rentableAreaAdmin.errors.floorsUnavailable'),
+      description: getErrorMessage(error, t('rentableAreaAdmin.errors.unableToLoadFloors')),
     }
   } finally {
     isFloorsLoading.value = false
@@ -313,8 +327,8 @@ const loadBuildings = async () => {
     filters.floorId = undefined
     feedback.value = {
       type: 'error',
-      title: 'Buildings unavailable',
-      description: getErrorMessage(error, 'Unable to load buildings for the selected store.'),
+      title: t('rentableAreaAdmin.errors.buildingsUnavailable'),
+      description: getErrorMessage(error, t('rentableAreaAdmin.errors.unableToLoadBuildings')),
     }
   } finally {
     isBuildingsLoading.value = false
@@ -343,8 +357,8 @@ const loadAreas = async () => {
     filters.areaId = undefined
     feedback.value = {
       type: 'error',
-      title: 'Areas unavailable',
-      description: getErrorMessage(error, 'Unable to load areas for the selected store.'),
+      title: t('rentableAreaAdmin.errors.areasUnavailable'),
+      description: getErrorMessage(error, t('rentableAreaAdmin.errors.unableToLoadAreas')),
     }
   } finally {
     isAreasLoading.value = false
@@ -375,8 +389,8 @@ const loadStores = async () => {
     filters.areaId = undefined
     feedback.value = {
       type: 'error',
-      title: 'Stores unavailable',
-      description: getErrorMessage(error, 'Unable to load structure stores.'),
+      title: t('rentableAreaAdmin.errors.storesUnavailable'),
+      description: getErrorMessage(error, t('rentableAreaAdmin.errors.unableToLoadStores')),
     }
   } finally {
     isStoresLoading.value = false
@@ -403,8 +417,8 @@ const loadUnits = async () => {
     units.value = []
     feedback.value = {
       type: 'error',
-      title: 'Rentable units unavailable',
-      description: getErrorMessage(error, 'Unable to load units for the selected rentable-area filters.'),
+      title: t('rentableAreaAdmin.errors.unitsUnavailable'),
+      description: getErrorMessage(error, t('rentableAreaAdmin.errors.unableToLoadUnits')),
     }
   } finally {
     isUnitsLoading.value = false
@@ -502,14 +516,14 @@ const handleSave = async () => {
     editDialogOpen.value = false
     feedback.value = {
       type: 'success',
-      title: 'Rentable unit updated',
-      description: `Unit "${response.data.unit.code}" now reflects the latest rentable-area settings.`,
+      title: t('rentableAreaAdmin.feedback.unitUpdatedTitle'),
+      description: t('rentableAreaAdmin.feedback.unitUpdatedDescription', { code: response.data.unit.code }),
     }
   } catch (error) {
     feedback.value = {
       type: 'error',
-      title: 'Rentable unit update failed',
-      description: getErrorMessage(error, 'Unable to update the selected rentable unit.'),
+      title: t('rentableAreaAdmin.errors.updateFailed'),
+      description: getErrorMessage(error, t('rentableAreaAdmin.errors.unableToUpdateUnit')),
     }
   } finally {
     isSaving.value = false
@@ -528,18 +542,19 @@ onMounted(async () => {
 <template>
   <div class="rentable-area-admin-view" data-testid="rentable-area-admin-view">
     <PageSection
-      eyebrow="Structure operations"
-      title="Rentable areas"
-      summary="Review rentable-unit inventory, focus the structure slice with fast hierarchy filters, and adjust rent area or status without opening the full structure admin workspace."
+      :eyebrow="t('rentableAreaAdmin.eyebrow')"
+      :title="t('rentableAreaAdmin.title')"
+      :summary="t('rentableAreaAdmin.summary')"
     >
       <template #actions>
-        <el-tag effect="plain" type="info">{{ selectedStore?.short_name ?? 'No store' }}</el-tag>
-        <el-tag effect="plain" type="success">{{ filteredUnits.length }} visible units</el-tag>
+        <el-tag effect="plain" type="info">{{ selectedStore?.short_name ?? t('rentableAreaAdmin.tags.noStore') }}</el-tag>
+        <el-tag effect="plain" type="success">{{ t('rentableAreaAdmin.tags.visibleUnits', { count: filteredUnits.length }) }}</el-tag>
       </template>
     </PageSection>
 
     <el-alert
       v-if="feedback"
+      data-testid="rentable-area-feedback-alert"
       :closable="false"
       :title="feedback.title"
       :type="feedback.type"
@@ -550,17 +565,17 @@ onMounted(async () => {
     <el-card class="rentable-area-admin-view__card" shadow="never">
       <template #header>
         <div class="rentable-area-admin-view__card-header">
-          <span>Rentable area filters</span>
+          <span>{{ t('rentableAreaAdmin.cards.filters') }}</span>
         </div>
       </template>
 
       <el-form label-position="top" @submit.prevent>
         <div class="rentable-area-admin-view__filter-grid">
-          <el-form-item label="Store">
+          <el-form-item :label="t('rentableAreaAdmin.fields.store')">
             <el-select
               v-model="filters.storeId"
               filterable
-              placeholder="Select a store"
+              :placeholder="t('rentableAreaAdmin.placeholders.selectStore')"
               :loading="isStoresLoading || isBootstrapping"
               data-testid="rentable-area-store-filter"
               @change="handleStoreChange"
@@ -574,11 +589,11 @@ onMounted(async () => {
             </el-select>
           </el-form-item>
 
-          <el-form-item label="Building">
+          <el-form-item :label="t('rentableAreaAdmin.fields.building')">
             <el-select
               v-model="filters.buildingId"
               filterable
-              placeholder="Select a building"
+              :placeholder="t('rentableAreaAdmin.placeholders.selectBuilding')"
               :disabled="!filters.storeId"
               :loading="isBuildingsLoading"
               data-testid="rentable-area-building-filter"
@@ -593,12 +608,12 @@ onMounted(async () => {
             </el-select>
           </el-form-item>
 
-          <el-form-item label="Floor">
+          <el-form-item :label="t('rentableAreaAdmin.fields.floor')">
             <el-select
               v-model="filters.floorId"
               clearable
               filterable
-              placeholder="All floors"
+              :placeholder="t('rentableAreaAdmin.placeholders.allFloors')"
               :disabled="!filters.buildingId"
               :loading="isFloorsLoading"
               data-testid="rentable-area-floor-filter"
@@ -612,12 +627,12 @@ onMounted(async () => {
             </el-select>
           </el-form-item>
 
-          <el-form-item label="Area">
+          <el-form-item :label="t('rentableAreaAdmin.fields.area')">
             <el-select
               v-model="filters.areaId"
               clearable
               filterable
-              placeholder="All areas"
+              :placeholder="t('rentableAreaAdmin.placeholders.allAreas')"
               :disabled="!filters.storeId"
               :loading="isAreasLoading"
               data-testid="rentable-area-area-filter"
@@ -631,31 +646,37 @@ onMounted(async () => {
             </el-select>
           </el-form-item>
 
-          <el-form-item label="Rentable only" class="rentable-area-admin-view__switch-field">
+          <el-form-item :label="t('rentableAreaAdmin.fields.rentableOnly')" class="rentable-area-admin-view__switch-field">
             <el-switch v-model="filters.rentableOnly" data-testid="rentable-area-rentable-switch" />
           </el-form-item>
 
-          <el-form-item label="Status">
+          <el-form-item :label="t('rentableAreaAdmin.fields.status')">
             <el-select
               v-model="filters.status"
               clearable
-              placeholder="All statuses"
+              :placeholder="t('rentableAreaAdmin.placeholders.allStatuses')"
               data-testid="rentable-area-status-filter"
             >
-              <el-option v-for="option in statusOptions" :key="option" :label="option" :value="option" />
+              <el-option
+                v-for="option in statusOptions"
+                :key="option"
+                :label="resolveStatusLabel(option)"
+                :value="option"
+                :data-testid="`rentable-area-status-option-${option}`"
+              />
             </el-select>
           </el-form-item>
         </div>
 
         <div class="rentable-area-admin-view__filter-actions">
-          <el-button :disabled="!isDirty" data-testid="rentable-area-reset-button" @click="handleReset">Reset</el-button>
+          <el-button :disabled="!isDirty" data-testid="rentable-area-reset-button" @click="handleReset">{{ t('filterForm.reset') }}</el-button>
           <el-button
             type="primary"
             :loading="isUnitsLoading"
             data-testid="rentable-area-apply-button"
             @click="applyFilters"
           >
-            Apply filters
+            {{ t('filterForm.submit') }}
           </el-button>
         </div>
       </el-form>
@@ -664,8 +685,8 @@ onMounted(async () => {
     <el-card class="rentable-area-admin-view__card" shadow="never">
       <template #header>
         <div class="rentable-area-admin-view__card-header">
-          <span>Rentable units</span>
-          <el-tag effect="plain" type="info">{{ filteredUnits.length }} matching units</el-tag>
+          <span>{{ t('rentableAreaAdmin.cards.units') }}</span>
+          <el-tag effect="plain" type="info">{{ t('rentableAreaAdmin.tags.matchingUnits', { count: filteredUnits.length }) }}</el-tag>
         </div>
       </template>
 
@@ -673,100 +694,100 @@ onMounted(async () => {
         :data="filteredUnits"
         row-key="id"
         class="rentable-area-admin-view__table"
-        empty-text="No rentable units found for the selected filters."
+        :empty-text="t('rentableAreaAdmin.table.empty')"
         data-testid="rentable-area-units-table"
       >
-        <el-table-column prop="code" label="Unit" min-width="140" />
-        <el-table-column label="Building" min-width="180">
+        <el-table-column prop="code" :label="t('rentableAreaAdmin.fields.unit')" min-width="140" />
+        <el-table-column :label="t('rentableAreaAdmin.fields.building')" min-width="180">
           <template #default="scope">
             {{ resolveBuildingLabel(scope.row.building_id) }}
           </template>
         </el-table-column>
-        <el-table-column label="Floor" min-width="160">
+        <el-table-column :label="t('rentableAreaAdmin.fields.floor')" min-width="160">
           <template #default="scope">
             {{ resolveFloorLabel(scope.row.floor_id) }}
           </template>
         </el-table-column>
-        <el-table-column label="Area" min-width="180">
+        <el-table-column :label="t('rentableAreaAdmin.fields.area')" min-width="180">
           <template #default="scope">
             {{ resolveAreaLabel(scope.row.area_id) }}
           </template>
         </el-table-column>
-        <el-table-column label="Type" min-width="160">
+        <el-table-column :label="t('rentableAreaAdmin.fields.type')" min-width="160">
           <template #default="scope">
             {{ resolveUnitTypeLabel(scope.row.unit_type_id) }}
           </template>
         </el-table-column>
-        <el-table-column label="Shop type" min-width="180">
+        <el-table-column :label="t('rentableAreaAdmin.fields.shopType')" min-width="180">
           <template #default="scope">
             {{ resolveShopTypeLabel(scope.row.shop_type_id) }}
           </template>
         </el-table-column>
-        <el-table-column label="Floor area" min-width="120" align="right">
+        <el-table-column :label="t('rentableAreaAdmin.fields.floorArea')" min-width="120" align="right">
           <template #default="scope">
             {{ formatArea(scope.row.floor_area) }}
           </template>
         </el-table-column>
-        <el-table-column label="Use area" min-width="120" align="right">
+        <el-table-column :label="t('rentableAreaAdmin.fields.useArea')" min-width="120" align="right">
           <template #default="scope">
             {{ formatArea(scope.row.use_area) }}
           </template>
         </el-table-column>
-        <el-table-column label="Rent area" min-width="120" align="right">
+        <el-table-column :label="t('rentableAreaAdmin.fields.rentArea')" min-width="120" align="right">
           <template #default="scope">
             {{ formatArea(scope.row.rent_area) }}
           </template>
         </el-table-column>
-        <el-table-column label="Rentable" min-width="120">
+        <el-table-column :label="t('rentableAreaAdmin.fields.rentable')" min-width="120">
           <template #default="scope">
             <el-tag :type="scope.row.is_rentable ? 'success' : 'info'" effect="plain">
-              {{ scope.row.is_rentable ? 'rentable' : 'non-rentable' }}
+              {{ scope.row.is_rentable ? t('rentableAreaAdmin.values.rentable') : t('rentableAreaAdmin.values.nonRentable') }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="Status" min-width="110">
+        <el-table-column :label="t('common.columns.status')" min-width="110">
           <template #default="scope">
             <el-tag :type="resolveStatusTag(scope.row.status).type" effect="plain">
               {{ resolveStatusTag(scope.row.status).label }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="Actions" min-width="120" fixed="right">
+        <el-table-column :label="t('common.columns.actions')" min-width="120" fixed="right">
           <template #default="scope">
-            <el-button text type="primary" @click="openEditDialog(scope.row)">Edit</el-button>
+            <el-button text type="primary" :data-testid="`rentable-area-edit-button-${scope.row.id}`" @click="openEditDialog(scope.row)">{{ t('common.actions.edit') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
     </el-card>
 
-    <el-dialog v-model="editDialogOpen" title="Edit rentable unit" width="36rem">
+    <el-dialog v-model="editDialogOpen" :title="t('rentableAreaAdmin.dialogs.editUnit')" width="36rem">
       <div class="rentable-area-admin-view__dialog" data-testid="rentable-area-edit-dialog">
         <div class="rentable-area-admin-view__dialog-meta">
           <div class="rentable-area-admin-view__meta-block">
-            <span class="rentable-area-admin-view__meta-label">Unit</span>
-            <strong>{{ unitEdit.code || '—' }}</strong>
+            <span class="rentable-area-admin-view__meta-label">{{ t('rentableAreaAdmin.fields.unit') }}</span>
+            <strong>{{ unitEdit.code || t('common.emptyValue') }}</strong>
           </div>
           <div class="rentable-area-admin-view__meta-block">
-            <span class="rentable-area-admin-view__meta-label">Placement</span>
+            <span class="rentable-area-admin-view__meta-label">{{ t('rentableAreaAdmin.fields.placement') }}</span>
             <strong>
-              {{ isPositiveInteger(unitEdit.floor_id) ? resolveFloorLabel(unitEdit.floor_id) : '—' }}
+              {{ isPositiveInteger(unitEdit.floor_id) ? resolveFloorLabel(unitEdit.floor_id) : t('common.emptyValue') }}
             </strong>
           </div>
           <div class="rentable-area-admin-view__meta-block">
-            <span class="rentable-area-admin-view__meta-label">Type</span>
+            <span class="rentable-area-admin-view__meta-label">{{ t('rentableAreaAdmin.fields.type') }}</span>
             <strong>
-              {{ isPositiveInteger(unitEdit.unit_type_id) ? resolveUnitTypeLabel(unitEdit.unit_type_id) : '—' }}
+              {{ isPositiveInteger(unitEdit.unit_type_id) ? resolveUnitTypeLabel(unitEdit.unit_type_id) : t('common.emptyValue') }}
             </strong>
           </div>
           <div class="rentable-area-admin-view__meta-block">
-            <span class="rentable-area-admin-view__meta-label">Shop type</span>
+            <span class="rentable-area-admin-view__meta-label">{{ t('rentableAreaAdmin.fields.shopType') }}</span>
             <strong>{{ resolveShopTypeLabel(unitEdit.shop_type_id ?? null) }}</strong>
           </div>
         </div>
 
         <el-form label-position="top" @submit.prevent>
           <div class="rentable-area-admin-view__dialog-grid">
-            <el-form-item label="Rent area">
+            <el-form-item :label="t('rentableAreaAdmin.fields.rentArea')">
               <el-input-number
                 v-model="unitEdit.rent_area"
                 :min="0"
@@ -776,18 +797,24 @@ onMounted(async () => {
               />
             </el-form-item>
 
-            <el-form-item label="Status">
+            <el-form-item :label="t('rentableAreaAdmin.fields.status')">
               <el-select v-model="unitEdit.status" data-testid="rentable-area-unit-edit-status">
-                <el-option v-for="option in statusOptions" :key="option" :label="option" :value="option" />
+                <el-option
+                  v-for="option in statusOptions"
+                  :key="option"
+                  :label="resolveStatusLabel(option)"
+                  :value="option"
+                  :data-testid="`rentable-area-edit-status-option-${option}`"
+                />
               </el-select>
             </el-form-item>
 
-            <el-form-item label="Shop type">
+            <el-form-item :label="t('rentableAreaAdmin.fields.shopType')">
               <el-select
                 v-model="unitEdit.shop_type_id"
                 clearable
                 filterable
-                placeholder="Select a shop type"
+                :placeholder="t('rentableAreaAdmin.placeholders.selectShopType')"
                 data-testid="rentable-area-edit-shop-type-select"
               >
                 <el-option
@@ -799,7 +826,7 @@ onMounted(async () => {
               </el-select>
             </el-form-item>
 
-            <el-form-item label="Rentable" class="rentable-area-admin-view__switch-field">
+            <el-form-item :label="t('rentableAreaAdmin.fields.rentable')" class="rentable-area-admin-view__switch-field">
               <el-switch v-model="unitEdit.is_rentable" data-testid="rentable-area-unit-edit-rentable" />
             </el-form-item>
           </div>
@@ -807,7 +834,7 @@ onMounted(async () => {
       </div>
 
       <template #footer>
-        <el-button @click="editDialogOpen = false">Cancel</el-button>
+        <el-button @click="editDialogOpen = false">{{ t('common.actions.cancel') }}</el-button>
         <el-button
           type="primary"
           :disabled="!canSaveEdit"
@@ -815,7 +842,7 @@ onMounted(async () => {
           data-testid="rentable-area-unit-edit-save"
           @click="handleSave"
         >
-          Save
+          {{ t('common.actions.save') }}
         </el-button>
       </template>
     </el-dialog>

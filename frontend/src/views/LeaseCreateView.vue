@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 
 import { listBrands, listCustomers, type Brand, type Customer } from '../api/masterdata'
@@ -30,6 +31,7 @@ type LeaseCreateForm = {
 }
 
 const router = useRouter()
+const { t } = useI18n()
 
 const formRef = ref<FormInstance>()
 const isSaving = ref(false)
@@ -62,22 +64,33 @@ const form = reactive<LeaseCreateForm>({
   effective_to: '',
 })
 
-const rules: FormRules<LeaseCreateForm> = {
-  lease_no: [{ required: true, message: 'Enter the lease number.', trigger: 'blur' }],
-  tenant_name: [{ required: true, message: 'Enter the tenant name.', trigger: 'blur' }],
-  department_id: [{ required: true, message: 'Select the department.', trigger: 'change' }],
-  store_id: [{ required: true, message: 'Select the store.', trigger: 'change' }],
-  start_date: [{ required: true, message: 'Select the lease start date.', trigger: 'change' }],
-  end_date: [{ required: true, message: 'Select the lease end date.', trigger: 'change' }],
-  unit_id: [{ required: true, message: 'Enter the unit id.', trigger: 'change' }],
-  rent_area: [{ required: true, message: 'Enter the rent area.', trigger: 'change' }],
-  term_type: [{ required: true, message: 'Select the term type.', trigger: 'change' }],
-  billing_cycle: [{ required: true, message: 'Select the billing cycle.', trigger: 'change' }],
-  currency_type_id: [{ required: true, message: 'Enter the currency type id.', trigger: 'change' }],
-  amount: [{ required: true, message: 'Enter the term amount.', trigger: 'change' }],
-  effective_from: [{ required: true, message: 'Select the term start date.', trigger: 'change' }],
-  effective_to: [{ required: true, message: 'Select the term end date.', trigger: 'change' }],
-}
+const rules = computed<FormRules<LeaseCreateForm>>(() => ({
+  lease_no: [{ required: true, message: t('leaseCreate.validation.leaseNumberRequired'), trigger: 'blur' }],
+  tenant_name: [{ required: true, message: t('leaseCreate.validation.tenantNameRequired'), trigger: 'blur' }],
+  department_id: [{ required: true, message: t('leaseCreate.validation.departmentRequired'), trigger: 'change' }],
+  store_id: [{ required: true, message: t('leaseCreate.validation.storeRequired'), trigger: 'change' }],
+  start_date: [{ required: true, message: t('leaseCreate.validation.startDateRequired'), trigger: 'change' }],
+  end_date: [{ required: true, message: t('leaseCreate.validation.endDateRequired'), trigger: 'change' }],
+  unit_id: [{ required: true, message: t('leaseCreate.validation.unitIdRequired'), trigger: 'change' }],
+  rent_area: [{ required: true, message: t('leaseCreate.validation.rentAreaRequired'), trigger: 'change' }],
+  term_type: [{ required: true, message: t('leaseCreate.validation.termTypeRequired'), trigger: 'change' }],
+  billing_cycle: [{ required: true, message: t('leaseCreate.validation.billingCycleRequired'), trigger: 'change' }],
+  currency_type_id: [{ required: true, message: t('leaseCreate.validation.currencyTypeIdRequired'), trigger: 'change' }],
+  amount: [{ required: true, message: t('leaseCreate.validation.amountRequired'), trigger: 'change' }],
+  effective_from: [{ required: true, message: t('leaseCreate.validation.effectiveFromRequired'), trigger: 'change' }],
+  effective_to: [{ required: true, message: t('leaseCreate.validation.effectiveToRequired'), trigger: 'change' }],
+}))
+
+const termTypeOptions = computed(() => [
+  { label: t('leaseCreate.options.termTypes.rent'), value: 'rent' },
+  { label: t('leaseCreate.options.termTypes.deposit'), value: 'deposit' },
+])
+
+const billingCycleOptions = computed(() => [
+  { label: t('leaseCreate.options.billingCycles.monthly'), value: 'monthly' },
+  { label: t('leaseCreate.options.billingCycles.quarterly'), value: 'quarterly' },
+  { label: t('leaseCreate.options.billingCycles.yearly'), value: 'yearly' },
+])
 
 const availableStores = computed(() => {
   if (form.department_id === null) {
@@ -109,7 +122,7 @@ const loadReferenceData = async () => {
     departments.value = []
     stores.value = []
     setupErrorMessage.value =
-      error instanceof Error ? error.message : 'Unable to load customer, brand, department, and store selections.'
+      error instanceof Error ? error.message : t('leaseCreate.errors.unableToLoadReferenceData')
   } finally {
     isLoadingOptions.value = false
   }
@@ -181,7 +194,7 @@ const handleSubmit = async () => {
       params: { id: String(response.data.lease.id) },
     })
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : 'Unable to create the lease contract.'
+    errorMessage.value = error instanceof Error ? error.message : t('leaseCreate.errors.unableToCreate')
   } finally {
     isSaving.value = false
   }
@@ -195,19 +208,19 @@ onMounted(() => {
 <template>
   <div class="lease-create-view" data-testid="lease-create-view">
     <PageSection
-      eyebrow="Lease delivery runway"
-      title="Create lease contract"
-      summary="Capture the contract header, one initial unit, and one billing term to open the lease workflow."
+      :eyebrow="t('lease.eyebrow')"
+      :title="t('leaseCreate.title')"
+      :summary="t('leaseCreate.summary')"
     >
       <template #actions>
-        <el-button @click="handleCancel">Back to list</el-button>
+        <el-button data-testid="lease-create-back-button" @click="handleCancel">{{ t('leaseCreate.actions.backToList') }}</el-button>
       </template>
     </PageSection>
 
     <el-card class="lease-create-view__card" shadow="never">
       <template #header>
         <div class="lease-create-view__card-header">
-          <span>Lease contract setup</span>
+          <span>{{ t('leaseCreate.cards.setup') }}</span>
         </div>
       </template>
 
@@ -215,7 +228,7 @@ onMounted(() => {
         v-if="errorMessage"
         :closable="false"
         class="lease-create-view__alert"
-        title="Lease creation failed"
+        :title="t('leaseCreate.errors.creationFailed')"
         type="error"
         show-icon
         :description="errorMessage"
@@ -225,7 +238,7 @@ onMounted(() => {
         v-if="setupErrorMessage"
         :closable="false"
         class="lease-create-view__alert"
-        title="Reference data unavailable"
+        :title="t('leaseCreate.errors.referenceDataUnavailable')"
         type="warning"
         show-icon
         :description="setupErrorMessage"
@@ -240,18 +253,26 @@ onMounted(() => {
         data-testid="lease-create-form"
       >
         <div class="lease-create-view__grid">
-          <el-form-item label="Lease number" prop="lease_no">
-            <el-input v-model="form.lease_no" placeholder="Enter lease number" />
+          <el-form-item :label="t('leaseCreate.fields.leaseNumber')" prop="lease_no">
+            <el-input
+              v-model="form.lease_no"
+              :placeholder="t('leaseCreate.placeholders.enterLeaseNumber')"
+              data-testid="lease-number-input"
+            />
           </el-form-item>
 
-          <el-form-item label="Tenant name" prop="tenant_name">
-            <el-input v-model="form.tenant_name" placeholder="Enter tenant name" />
+          <el-form-item :label="t('leaseCreate.fields.tenantName')" prop="tenant_name">
+            <el-input
+              v-model="form.tenant_name"
+              :placeholder="t('leaseCreate.placeholders.enterTenantName')"
+              data-testid="lease-tenant-name-input"
+            />
           </el-form-item>
 
-          <el-form-item label="Department" prop="department_id">
+          <el-form-item :label="t('leaseCreate.fields.department')" prop="department_id">
             <el-select
               v-model="form.department_id"
-              placeholder="Select department"
+              :placeholder="t('leaseCreate.placeholders.selectDepartment')"
               filterable
               :loading="isLoadingOptions"
               data-testid="lease-department-select"
@@ -265,10 +286,10 @@ onMounted(() => {
             </el-select>
           </el-form-item>
 
-          <el-form-item label="Store" prop="store_id">
+          <el-form-item :label="t('leaseCreate.fields.store')" prop="store_id">
             <el-select
               v-model="form.store_id"
-              placeholder="Select store"
+              :placeholder="t('leaseCreate.placeholders.selectStore')"
               filterable
               :loading="isLoadingOptions"
               :disabled="form.department_id === null"
@@ -283,10 +304,10 @@ onMounted(() => {
             </el-select>
           </el-form-item>
 
-          <el-form-item label="Customer">
+          <el-form-item :label="t('leaseCreate.fields.customer')">
             <el-select
               v-model="form.customer_id"
-              placeholder="Select customer"
+              :placeholder="t('leaseCreate.placeholders.selectCustomer')"
               clearable
               filterable
               :loading="isLoadingOptions"
@@ -301,10 +322,10 @@ onMounted(() => {
             </el-select>
           </el-form-item>
 
-          <el-form-item label="Brand">
+          <el-form-item :label="t('leaseCreate.fields.brand')">
             <el-select
               v-model="form.brand_id"
-              placeholder="Select brand"
+              :placeholder="t('leaseCreate.placeholders.selectBrand')"
               clearable
               filterable
               :loading="isLoadingOptions"
@@ -319,75 +340,98 @@ onMounted(() => {
             </el-select>
           </el-form-item>
 
-          <el-form-item label="Trade ID">
+          <el-form-item :label="t('leaseCreate.fields.tradeId')">
             <el-input-number v-model="form.trade_id" :min="1" controls-position="right" />
           </el-form-item>
 
-          <el-form-item label="Management type ID">
+          <el-form-item :label="t('leaseCreate.fields.managementTypeId')">
             <el-input-number v-model="form.management_type_id" :min="1" controls-position="right" />
           </el-form-item>
 
-          <el-form-item label="Start date" prop="start_date">
-            <el-date-picker v-model="form.start_date" type="date" value-format="YYYY-MM-DD" placeholder="Select start date" />
+          <el-form-item :label="t('leaseCreate.fields.startDate')" prop="start_date">
+            <el-date-picker
+              v-model="form.start_date"
+              type="date"
+              value-format="YYYY-MM-DD"
+              :placeholder="t('leaseCreate.placeholders.selectStartDate')"
+              data-testid="lease-start-date-input"
+            />
           </el-form-item>
 
-          <el-form-item label="End date" prop="end_date">
-            <el-date-picker v-model="form.end_date" type="date" value-format="YYYY-MM-DD" placeholder="Select end date" />
+          <el-form-item :label="t('leaseCreate.fields.endDate')" prop="end_date">
+            <el-date-picker
+              v-model="form.end_date"
+              type="date"
+              value-format="YYYY-MM-DD"
+              :placeholder="t('leaseCreate.placeholders.selectEndDate')"
+              data-testid="lease-end-date-input"
+            />
           </el-form-item>
 
-          <el-form-item label="Unit id" prop="unit_id">
+          <el-form-item :label="t('leaseCreate.fields.unitId')" prop="unit_id">
             <el-input-number v-model="form.unit_id" :min="1" controls-position="right" />
           </el-form-item>
 
-          <el-form-item label="Rent area" prop="rent_area">
+          <el-form-item :label="t('leaseCreate.fields.rentArea')" prop="rent_area">
             <el-input-number v-model="form.rent_area" :min="0" :precision="2" controls-position="right" />
           </el-form-item>
 
-          <el-form-item label="Term type" prop="term_type">
-            <el-select v-model="form.term_type">
-              <el-option label="Rent" value="rent" />
-              <el-option label="Deposit" value="deposit" />
+          <el-form-item :label="t('leaseCreate.fields.termType')" prop="term_type">
+            <el-select v-model="form.term_type" :placeholder="t('leaseCreate.placeholders.selectTermType')">
+              <el-option
+                v-for="option in termTypeOptions"
+                :key="option.value"
+                :label="option.label"
+                :value="option.value"
+              />
             </el-select>
           </el-form-item>
 
-          <el-form-item label="Billing cycle" prop="billing_cycle">
-            <el-select v-model="form.billing_cycle">
-              <el-option label="Monthly" value="monthly" />
-              <el-option label="Quarterly" value="quarterly" />
-              <el-option label="Yearly" value="yearly" />
+          <el-form-item :label="t('leaseCreate.fields.billingCycle')" prop="billing_cycle">
+            <el-select v-model="form.billing_cycle" :placeholder="t('leaseCreate.placeholders.selectBillingCycle')">
+              <el-option
+                v-for="option in billingCycleOptions"
+                :key="option.value"
+                :label="option.label"
+                :value="option.value"
+              />
             </el-select>
           </el-form-item>
 
-          <el-form-item label="Currency type id" prop="currency_type_id">
+          <el-form-item :label="t('leaseCreate.fields.currencyTypeId')" prop="currency_type_id">
             <el-input-number v-model="form.currency_type_id" :min="1" controls-position="right" />
           </el-form-item>
 
-          <el-form-item label="Amount" prop="amount">
+          <el-form-item :label="t('leaseCreate.fields.amount')" prop="amount">
             <el-input-number v-model="form.amount" :min="0" :precision="2" controls-position="right" />
           </el-form-item>
 
-          <el-form-item label="Term effective from" prop="effective_from">
+          <el-form-item :label="t('leaseCreate.fields.effectiveFrom')" prop="effective_from">
             <el-date-picker
               v-model="form.effective_from"
               type="date"
               value-format="YYYY-MM-DD"
-              placeholder="Select effective from"
+              :placeholder="t('leaseCreate.placeholders.selectEffectiveFrom')"
+              data-testid="lease-effective-from-input"
             />
           </el-form-item>
 
-          <el-form-item label="Term effective to" prop="effective_to">
+          <el-form-item :label="t('leaseCreate.fields.effectiveTo')" prop="effective_to">
             <el-date-picker
               v-model="form.effective_to"
               type="date"
               value-format="YYYY-MM-DD"
-              placeholder="Select effective to"
+              :placeholder="t('leaseCreate.placeholders.selectEffectiveTo')"
+              data-testid="lease-effective-to-input"
             />
           </el-form-item>
         </div>
 
         <div class="lease-create-view__actions">
-          <el-button @click="handleCancel">Cancel</el-button>
-          <el-button type="primary" :loading="isSaving" @click="handleSubmit">Create lease</el-button>
+          <el-button data-testid="lease-create-cancel-button" @click="handleCancel">{{ t('leaseCreate.actions.cancel') }}</el-button>
+          <el-button type="primary" :loading="isSaving" data-testid="lease-create-submit-button" @click="handleSubmit">
+            {{ t('leaseCreate.actions.create') }}
+          </el-button>
         </div>
       </el-form>
     </el-card>
