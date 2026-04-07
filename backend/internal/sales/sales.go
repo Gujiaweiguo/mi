@@ -39,6 +39,10 @@ type CreateTrafficInput struct {
 	InboundCount int
 }
 
+type BatchDailySaleInput = CreateDailySaleInput
+
+type BatchTrafficInput = CreateTrafficInput
+
 type DailySaleFilter struct {
 	StoreID  *int64
 	UnitID   *int64
@@ -102,6 +106,30 @@ func (r *Repository) CreateDailySale(ctx context.Context, input CreateDailySaleI
 	return r.findDailySaleByNaturalKey(ctx, input.StoreID, input.UnitID, saleDate)
 }
 
+func (r *Repository) BatchUpsertDailySales(ctx context.Context, inputs []BatchDailySaleInput) error {
+	if len(inputs) == 0 {
+		return nil
+	}
+	tx, err := r.db.BeginTx(ctx, nil)
+	if err != nil {
+		return fmt.Errorf("begin daily sales batch transaction: %w", err)
+	}
+	defer func() { _ = tx.Rollback() }()
+	for _, input := range inputs {
+		if _, err := tx.ExecContext(ctx, `
+			INSERT INTO daily_shop_sales (store_id, unit_id, sale_date, sales_amount)
+			VALUES (?, ?, ?, ?)
+			ON DUPLICATE KEY UPDATE sales_amount = VALUES(sales_amount)
+		`, input.StoreID, input.UnitID, input.SaleDate.Format("2006-01-02"), input.SalesAmount); err != nil {
+			return fmt.Errorf("batch upsert daily sale for store %d unit %d: %w", input.StoreID, input.UnitID, err)
+		}
+	}
+	if err := tx.Commit(); err != nil {
+		return fmt.Errorf("commit daily sales batch transaction: %w", err)
+	}
+	return nil
+}
+
 func (r *Repository) ListTraffic(ctx context.Context, filter TrafficFilter) ([]CustomerTraffic, error) {
 	rows, err := r.db.QueryContext(ctx, `
 		SELECT id, store_id, traffic_date, inbound_count, created_at, updated_at
@@ -143,6 +171,30 @@ func (r *Repository) CreateTraffic(ctx context.Context, input CreateTrafficInput
 	return r.findTrafficByNaturalKey(ctx, input.StoreID, trafficDate)
 }
 
+func (r *Repository) BatchUpsertTraffic(ctx context.Context, inputs []BatchTrafficInput) error {
+	if len(inputs) == 0 {
+		return nil
+	}
+	tx, err := r.db.BeginTx(ctx, nil)
+	if err != nil {
+		return fmt.Errorf("begin customer traffic batch transaction: %w", err)
+	}
+	defer func() { _ = tx.Rollback() }()
+	for _, input := range inputs {
+		if _, err := tx.ExecContext(ctx, `
+			INSERT INTO customer_traffic (store_id, traffic_date, inbound_count)
+			VALUES (?, ?, ?)
+			ON DUPLICATE KEY UPDATE inbound_count = VALUES(inbound_count)
+		`, input.StoreID, input.TrafficDate.Format("2006-01-02"), input.InboundCount); err != nil {
+			return fmt.Errorf("batch upsert customer traffic for store %d: %w", input.StoreID, err)
+		}
+	}
+	if err := tx.Commit(); err != nil {
+		return fmt.Errorf("commit customer traffic batch transaction: %w", err)
+	}
+	return nil
+}
+
 func (r *Repository) findDailySaleByNaturalKey(ctx context.Context, storeID, unitID int64, saleDate string) (*DailySale, error) {
 	var item DailySale
 	if err := r.db.QueryRowContext(ctx, `
@@ -182,6 +234,18 @@ func (s *Service) CreateDailySale(ctx context.Context, input CreateDailySaleInpu
 	return s.repo.CreateDailySale(ctx, input)
 }
 
+func (s *Service) BatchUpsertDailySales(ctx context.Context, inputs []BatchDailySaleInput) (int, error) {
+	for _, input := range inputs {
+		if input.StoreID == 0 || input.UnitID == 0 || input.SaleDate.IsZero() {
+			return 0, fmt.Errorf("invalid daily sale input")
+		}
+	}
+	if err := s.repo.BatchUpsertDailySales(ctx, inputs); err != nil {
+		return 0, err
+	}
+	return len(inputs), nil
+}
+
 func (s *Service) ListTraffic(ctx context.Context, filter TrafficFilter) ([]CustomerTraffic, error) {
 	return s.repo.ListTraffic(ctx, filter)
 }
@@ -191,6 +255,18 @@ func (s *Service) CreateTraffic(ctx context.Context, input CreateTrafficInput) (
 		return nil, fmt.Errorf("invalid customer traffic input")
 	}
 	return s.repo.CreateTraffic(ctx, input)
+}
+
+func (s *Service) BatchUpsertTraffic(ctx context.Context, inputs []BatchTrafficInput) (int, error) {
+	for _, input := range inputs {
+		if input.StoreID == 0 || input.TrafficDate.IsZero() {
+			return 0, fmt.Errorf("invalid customer traffic input")
+		}
+	}
+	if err := s.repo.BatchUpsertTraffic(ctx, inputs); err != nil {
+		return 0, err
+	}
+	return len(inputs), nil
 }
 
 func normalizeLimit(limit int) int {
