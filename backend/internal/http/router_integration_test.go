@@ -793,6 +793,74 @@ func TestIntegrationAuthAndOrgRoutes(t *testing.T) {
 		t.Fatal("expected customer traffic results")
 	}
 
+	dailyTemplateRecorder := httptest.NewRecorder()
+	dailyTemplateRequest := httptest.NewRequest(http.MethodGet, "/api/excel/templates/daily-sales", nil)
+	dailyTemplateRequest.Header.Set("Authorization", "Bearer "+loginBody.Token)
+	router.ServeHTTP(dailyTemplateRecorder, dailyTemplateRequest)
+	if dailyTemplateRecorder.Code != http.StatusOK {
+		t.Fatalf("expected 200 from daily sales template endpoint, got %d body=%s", dailyTemplateRecorder.Code, dailyTemplateRecorder.Body.String())
+	}
+
+	dailyImportBody := &bytes.Buffer{}
+	dailyImportWriter := multipart.NewWriter(dailyImportBody)
+	dailyImportFile, err := dailyImportWriter.CreateFormFile("file", "daily-sales.xlsx")
+	if err != nil {
+		t.Fatalf("create daily import form file: %v", err)
+	}
+	dailyImportWorkbook := excelize.NewFile()
+	_ = dailyImportWorkbook.SetSheetName(dailyImportWorkbook.GetSheetName(0), "DailySales")
+	_ = dailyImportWorkbook.SetSheetRow("DailySales", "A1", &[]string{"store_code", "unit_code", "sale_date", "sales_amount"})
+	_ = dailyImportWorkbook.SetSheetRow("DailySales", "A2", &[]string{"MI-001", "U-101", "2026-05-02", "6200"})
+	if _, err := dailyImportWorkbook.WriteTo(dailyImportFile); err != nil {
+		t.Fatalf("write daily import workbook: %v", err)
+	}
+	_ = dailyImportWorkbook.Close()
+	if err := dailyImportWriter.Close(); err != nil {
+		t.Fatalf("close daily import writer: %v", err)
+	}
+	dailyImportRecorder := httptest.NewRecorder()
+	dailyImportRequest := httptest.NewRequest(http.MethodPost, "/api/excel/imports/daily-sales", dailyImportBody)
+	dailyImportRequest.Header.Set("Content-Type", dailyImportWriter.FormDataContentType())
+	dailyImportRequest.Header.Set("Authorization", "Bearer "+loginBody.Token)
+	router.ServeHTTP(dailyImportRecorder, dailyImportRequest)
+	if dailyImportRecorder.Code != http.StatusOK {
+		t.Fatalf("expected 200 from daily sales import endpoint, got %d body=%s", dailyImportRecorder.Code, dailyImportRecorder.Body.String())
+	}
+
+	trafficTemplateRecorder := httptest.NewRecorder()
+	trafficTemplateRequest := httptest.NewRequest(http.MethodGet, "/api/excel/templates/customer-traffic", nil)
+	trafficTemplateRequest.Header.Set("Authorization", "Bearer "+loginBody.Token)
+	router.ServeHTTP(trafficTemplateRecorder, trafficTemplateRequest)
+	if trafficTemplateRecorder.Code != http.StatusOK {
+		t.Fatalf("expected 200 from traffic template endpoint, got %d body=%s", trafficTemplateRecorder.Code, trafficTemplateRecorder.Body.String())
+	}
+
+	trafficImportBody := &bytes.Buffer{}
+	trafficImportWriter := multipart.NewWriter(trafficImportBody)
+	trafficImportFile, err := trafficImportWriter.CreateFormFile("file", "customer-traffic.xlsx")
+	if err != nil {
+		t.Fatalf("create traffic import form file: %v", err)
+	}
+	trafficImportWorkbook := excelize.NewFile()
+	_ = trafficImportWorkbook.SetSheetName(trafficImportWorkbook.GetSheetName(0), "CustomerTraffic")
+	_ = trafficImportWorkbook.SetSheetRow("CustomerTraffic", "A1", &[]string{"store_code", "traffic_date", "inbound_count"})
+	_ = trafficImportWorkbook.SetSheetRow("CustomerTraffic", "A2", &[]string{"MI-001", "2026-05-02", "550"})
+	if _, err := trafficImportWorkbook.WriteTo(trafficImportFile); err != nil {
+		t.Fatalf("write traffic import workbook: %v", err)
+	}
+	_ = trafficImportWorkbook.Close()
+	if err := trafficImportWriter.Close(); err != nil {
+		t.Fatalf("close traffic import writer: %v", err)
+	}
+	trafficImportRecorder := httptest.NewRecorder()
+	trafficImportRequest := httptest.NewRequest(http.MethodPost, "/api/excel/imports/customer-traffic", trafficImportBody)
+	trafficImportRequest.Header.Set("Content-Type", trafficImportWriter.FormDataContentType())
+	trafficImportRequest.Header.Set("Authorization", "Bearer "+loginBody.Token)
+	router.ServeHTTP(trafficImportRecorder, trafficImportRequest)
+	if trafficImportRecorder.Code != http.StatusOK {
+		t.Fatalf("expected 200 from traffic import endpoint, got %d body=%s", trafficImportRecorder.Code, trafficImportRecorder.Body.String())
+	}
+
 	reportR03QueryRecorder := httptest.NewRecorder()
 	reportR03QueryRequest := httptest.NewRequest(http.MethodPost, "/api/reports/r03/query", bytes.NewBufferString(`{"period":"2026-04","store_id":101,"shop_type_id":101}`))
 	reportR03QueryRequest.Header.Set("Content-Type", "application/json")

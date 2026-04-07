@@ -25,6 +25,26 @@ func (h *ExcelIOHandler) DownloadUnitTemplate(c *gin.Context) {
 	c.Data(http.StatusOK, artifact.ContentType, artifact.Body)
 }
 
+func (h *ExcelIOHandler) DownloadDailySalesTemplate(c *gin.Context) {
+	artifact, err := h.service.DownloadDailySalesTemplate(c.Request.Context())
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to generate daily sales template"})
+		return
+	}
+	c.Header("Content-Disposition", "attachment; filename="+artifact.FileName)
+	c.Data(http.StatusOK, artifact.ContentType, artifact.Body)
+}
+
+func (h *ExcelIOHandler) DownloadTrafficTemplate(c *gin.Context) {
+	artifact, err := h.service.DownloadTrafficTemplate(c.Request.Context())
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to generate customer traffic template"})
+		return
+	}
+	c.Header("Content-Disposition", "attachment; filename="+artifact.FileName)
+	c.Data(http.StatusOK, artifact.ContentType, artifact.Body)
+}
+
 func (h *ExcelIOHandler) ImportUnits(c *gin.Context) {
 	if _, ok := middleware.CurrentSessionUser(c); !ok {
 		c.JSON(http.StatusUnauthorized, gin.H{"message": "missing session user"})
@@ -37,6 +57,52 @@ func (h *ExcelIOHandler) ImportUnits(c *gin.Context) {
 	}
 	defer file.Close()
 	result, importErr := h.service.ImportUnits(c.Request.Context(), file)
+	if importErr != nil {
+		if errors.Is(importErr, excelio.ErrInvalidImport) {
+			c.JSON(http.StatusBadRequest, gin.H{"imported_count": result.ImportedCount, "diagnostics": result.Diagnostics})
+			return
+		}
+		c.JSON(http.StatusInternalServerError, gin.H{"message": importErr.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"imported_count": result.ImportedCount, "diagnostics": result.Diagnostics})
+}
+
+func (h *ExcelIOHandler) ImportDailySales(c *gin.Context) {
+	if _, ok := middleware.CurrentSessionUser(c); !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{"message": "missing session user"})
+		return
+	}
+	file, _, err := c.Request.FormFile("file")
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "missing daily sales import file"})
+		return
+	}
+	defer file.Close()
+	result, importErr := h.service.ImportDailySales(c.Request.Context(), file)
+	if importErr != nil {
+		if errors.Is(importErr, excelio.ErrInvalidImport) {
+			c.JSON(http.StatusBadRequest, gin.H{"imported_count": result.ImportedCount, "diagnostics": result.Diagnostics})
+			return
+		}
+		c.JSON(http.StatusInternalServerError, gin.H{"message": importErr.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"imported_count": result.ImportedCount, "diagnostics": result.Diagnostics})
+}
+
+func (h *ExcelIOHandler) ImportTraffic(c *gin.Context) {
+	if _, ok := middleware.CurrentSessionUser(c); !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{"message": "missing session user"})
+		return
+	}
+	file, _, err := c.Request.FormFile("file")
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "missing customer traffic import file"})
+		return
+	}
+	defer file.Close()
+	result, importErr := h.service.ImportTraffic(c.Request.Context(), file)
 	if importErr != nil {
 		if errors.Is(importErr, excelio.ErrInvalidImport) {
 			c.JSON(http.StatusBadRequest, gin.H{"imported_count": result.ImportedCount, "diagnostics": result.Diagnostics})
