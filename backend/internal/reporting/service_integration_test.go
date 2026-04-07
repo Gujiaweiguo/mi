@@ -6,6 +6,7 @@ import (
 	"bytes"
 	"context"
 	"database/sql"
+	"math"
 	"os"
 	"testing"
 	"time"
@@ -35,6 +36,7 @@ func TestReportingServiceQueryAndExportCoreReports(t *testing.T) {
 		t.Fatalf("expected active lease, got %#v", activeLease)
 	}
 	seedAROpenItems(t, ctx, db, activeLease.ID)
+	seedDailyShopSales(t, ctx, db)
 	seedBudgetFacts(t, ctx, db, activeLease.ID)
 
 	periodStart, periodEnd, periodLabel, err := reporting.ParsePeriod("2026-04")
@@ -43,25 +45,27 @@ func TestReportingServiceQueryAndExportCoreReports(t *testing.T) {
 	}
 	storeID := int64(101)
 	shopTypeID := int64(101)
+	baseInput := reporting.QueryInput{
+		PeriodStart:   periodStart,
+		PeriodEnd:     periodEnd,
+		PeriodLabel:   periodLabel,
+		StoreID:       &storeID,
+		FloorID:       int64Ptr(101),
+		AreaID:        int64Ptr(101),
+		UnitID:        int64Ptr(101),
+		DepartmentID:  int64Ptr(101),
+		CustomerID:    int64Ptr(101),
+		ShopTypeID:    &shopTypeID,
+		TradeID:       int64Ptr(102),
+		ChargeType:    stringPointer("rent"),
+		Status:        stringPointer("active"),
+		RequestedByID: 101,
+	}
 
 	for _, reportID := range []reporting.ReportID{reporting.ReportR01, reporting.ReportR02, reporting.ReportR03, reporting.ReportR04, reporting.ReportR05, reporting.ReportR06, reporting.ReportR07, reporting.ReportR08, reporting.ReportR09, reporting.ReportR10, reporting.ReportR11, reporting.ReportR12, reporting.ReportR13, reporting.ReportR14, reporting.ReportR15, reporting.ReportR16, reporting.ReportR17, reporting.ReportR18, reporting.ReportID("r19")} {
-		result, err := service.QueryReport(ctx, reporting.QueryInput{
-			ReportID:      reportID,
-			PeriodStart:   periodStart,
-			PeriodEnd:     periodEnd,
-			PeriodLabel:   periodLabel,
-			StoreID:       &storeID,
-			FloorID:       int64Ptr(101),
-			AreaID:        int64Ptr(101),
-			UnitID:        int64Ptr(101),
-			DepartmentID:  int64Ptr(101),
-			CustomerID:    int64Ptr(101),
-			ShopTypeID:    &shopTypeID,
-			TradeID:       int64Ptr(102),
-			ChargeType:    stringPointer("rent"),
-			Status:        stringPointer("active"),
-			RequestedByID: 101,
-		})
+		queryInput := baseInput
+		queryInput.ReportID = reportID
+		result, err := service.QueryReport(ctx, queryInput)
 		if err != nil {
 			t.Fatalf("query %s: %v", reportID, err)
 		}
@@ -69,23 +73,7 @@ func TestReportingServiceQueryAndExportCoreReports(t *testing.T) {
 			t.Fatalf("expected populated result for %s, got %#v", reportID, result)
 		}
 
-		artifact, err := service.ExportReport(ctx, reporting.QueryInput{
-			ReportID:      reportID,
-			PeriodStart:   periodStart,
-			PeriodEnd:     periodEnd,
-			PeriodLabel:   periodLabel,
-			StoreID:       &storeID,
-			FloorID:       int64Ptr(101),
-			AreaID:        int64Ptr(101),
-			UnitID:        int64Ptr(101),
-			DepartmentID:  int64Ptr(101),
-			CustomerID:    int64Ptr(101),
-			ShopTypeID:    &shopTypeID,
-			TradeID:       int64Ptr(102),
-			ChargeType:    stringPointer("rent"),
-			Status:        stringPointer("active"),
-			RequestedByID: 101,
-		})
+		artifact, err := service.ExportReport(ctx, queryInput)
 		if err != nil {
 			t.Fatalf("export %s: %v", reportID, err)
 		}
@@ -102,6 +90,156 @@ func TestReportingServiceQueryAndExportCoreReports(t *testing.T) {
 			t.Fatalf("expected workbook data rows for %s, got %v", reportID, rows)
 		}
 	}
+
+	t.Run("R02 and R11 preserve contract and area semantics", func(t *testing.T) {
+		r02 := mustQueryReport(t, ctx, service, withReportID(baseInput, reporting.ReportR02))
+		if len(r02.Rows) != 1 {
+			t.Fatalf("expected one contract ledger row, got %d", len(r02.Rows))
+		}
+		contractRow := r02.Rows[0]
+		if got := rowString(t, contractRow, "lease_no"); got != "RPT-101" {
+			t.Fatalf("expected seeded lease number, got %q", got)
+		}
+		if got := rowFloat64(t, contractRow, "rent_area"); got != 118 {
+			t.Fatalf("expected seeded rent area 118, got %v", got)
+		}
+		for _, key := range []string{"customer_name", "trade_name", "management_type_name", "unit_code", "unit_name", "brand_name", "shop_type_name", "department_name", "store_name"} {
+			if value := rowString(t, contractRow, key); value == "" {
+				t.Fatalf("expected %s to be populated", key)
+			}
+		}
+
+		r11 := mustQueryReport(t, ctx, service, withReportID(baseInput, reporting.ReportR11))
+		if len(r11.Rows) != 1 {
+			t.Fatalf("expected one leased area row, got %d", len(r11.Rows))
+		}
+		areaRow := r11.Rows[0]
+		if got := rowString(t, areaRow, "period"); got != periodLabel {
+			t.Fatalf("expected period %q, got %q", periodLabel, got)
+		}
+		if got := rowString(t, areaRow, "store_name"); got != rowString(t, contractRow, "store_name") {
+			t.Fatalf("expected store names to align, got R02=%q R11=%q", rowString(t, contractRow, "store_name"), got)
+		}
+		leasedArea := rowFloat64(t, areaRow, "leased_area")
+		totalArea := rowFloat64(t, areaRow, "total_area")
+		if leasedArea <= 0 {
+			t.Fatalf("expected seeded lease to contribute positive leased area, got %v", leasedArea)
+		}
+		if leasedArea > totalArea {
+			t.Fatalf("expected leased area <= total area, got leased=%v total=%v", leasedArea, totalArea)
+		}
+	})
+
+	t.Run("R03 and R14 preserve sales and efficiency semantics", func(t *testing.T) {
+		r03 := mustQueryReport(t, ctx, service, withReportID(baseInput, reporting.ReportR03))
+		if len(r03.Rows) != 1 {
+			t.Fatalf("expected one sales analysis row, got %d", len(r03.Rows))
+		}
+		salesRow := r03.Rows[0]
+		if got := rowFloat64(t, salesRow, "rent_area"); got != 118 {
+			t.Fatalf("expected seeded rent area 118, got %v", got)
+		}
+		currentSales := rowFloat64(t, salesRow, "current_sales")
+		if currentSales <= 0 {
+			t.Fatalf("expected positive current sales, got %v", currentSales)
+		}
+		samePeriodSales := rowFloat64(t, salesRow, "same_period_sales")
+		if samePeriodSales <= 0 {
+			t.Fatalf("expected positive same-period sales, got %v", samePeriodSales)
+		}
+		if got := rowFloat64(t, salesRow, "comparable_sales"); got != samePeriodSales {
+			t.Fatalf("expected comparable sales %v to match same-period sales, got %v", samePeriodSales, got)
+		}
+		if got := rowFloat64(t, salesRow, "monthly_rent"); got != 12000 {
+			t.Fatalf("expected active monthly rent 12000, got %v", got)
+		}
+
+		r14 := mustQueryReport(t, ctx, service, withReportID(baseInput, reporting.ReportR14))
+		if len(r14.Rows) != 1 {
+			t.Fatalf("expected one efficiency row, got %d", len(r14.Rows))
+		}
+		efficiencyRow := r14.Rows[0]
+		if got := rowString(t, efficiencyRow, "period"); got != periodLabel {
+			t.Fatalf("expected period %q, got %q", periodLabel, got)
+		}
+		if got := rowFloat64(t, efficiencyRow, "sales_amount"); got != currentSales {
+			t.Fatalf("expected efficiency sales %v to align with current sales report, got %v", currentSales, got)
+		}
+		if got := rowInt(t, efficiencyRow, "days_in_month"); got != 30 {
+			t.Fatalf("expected 30 days in month, got %d", got)
+		}
+		areaTotal := rowFloat64(t, efficiencyRow, "area_total")
+		efficiency := rowOptionalFloat64(t, efficiencyRow, "efficiency")
+		if areaTotal <= 0 || efficiency == nil {
+			t.Fatalf("expected non-zero area and calculated efficiency, got area=%v efficiency=%v", areaTotal, efficiency)
+		}
+		expected := rowFloat64(t, efficiencyRow, "sales_amount") / float64(rowInt(t, efficiencyRow, "days_in_month")) / areaTotal
+		if math.Abs(*efficiency-expected) > 1e-9 {
+			t.Fatalf("expected efficiency %v, got %v", expected, *efficiency)
+		}
+	})
+
+	t.Run("R08 reconciles with R16 and R17 aging outputs", func(t *testing.T) {
+		r08 := mustQueryReport(t, ctx, service, withReportID(baseInput, reporting.ReportR08))
+		if len(r08.Rows) != 1 {
+			t.Fatalf("expected one customer aging row, got %d", len(r08.Rows))
+		}
+		customerRow := r08.Rows[0]
+		assertAgingBucketTotal(t, customerRow)
+		if got := rowFloat64(t, customerRow, "deposit_amount"); got != 3000 {
+			t.Fatalf("expected deposit bucket to stay separate at 3000, got %v", got)
+		}
+		if got := rowFloat64(t, customerRow, "within_one_month"); got != 500 {
+			t.Fatalf("expected <=30 day bucket 500, got %v", got)
+		}
+		if got := rowFloat64(t, customerRow, "one_to_two_months"); got != 1000 {
+			t.Fatalf("expected 31-60 day bucket 1000, got %v", got)
+		}
+		if got := rowFloat64(t, customerRow, "two_to_three_months"); got != 2000 {
+			t.Fatalf("expected 61-90 day bucket 2000, got %v", got)
+		}
+		if got := rowFloat64(t, customerRow, "total"); got != 3500 {
+			t.Fatalf("expected non-deposit aging total 3500, got %v", got)
+		}
+
+		r16 := mustQueryReport(t, ctx, service, withReportID(baseInput, reporting.ReportR16))
+		if len(r16.Rows) != 1 {
+			t.Fatalf("expected one department aging row, got %d", len(r16.Rows))
+		}
+		departmentRow := r16.Rows[0]
+		assertAgingBucketTotal(t, departmentRow)
+		if rowFloat64(t, departmentRow, "deposit_amount") != rowFloat64(t, customerRow, "deposit_amount") || rowFloat64(t, departmentRow, "total") != rowFloat64(t, customerRow, "total") {
+			t.Fatalf("expected department aging to reconcile with customer aging, got customer deposit/total=%v/%v department=%v/%v", rowFloat64(t, customerRow, "deposit_amount"), rowFloat64(t, customerRow, "total"), rowFloat64(t, departmentRow, "deposit_amount"), rowFloat64(t, departmentRow, "total"))
+		}
+
+		r17Input := withReportID(baseInput, reporting.ReportR17)
+		r17Input.ChargeType = nil
+		r17 := mustQueryReport(t, ctx, service, r17Input)
+		if len(r17.Rows) == 0 {
+			t.Fatal("expected department aging-by-charge rows")
+		}
+		chargeRows := make(map[string]map[string]any, len(r17.Rows))
+		var chargeTypeDeposit, chargeTypeTotal float64
+		for _, row := range r17.Rows {
+			assertAgingBucketTotal(t, row)
+			chargeType := rowString(t, row, "charge_type")
+			chargeRows[chargeType] = row
+			chargeTypeDeposit += rowFloat64(t, row, "deposit_amount")
+			chargeTypeTotal += rowFloat64(t, row, "total")
+		}
+		if got := rowFloat64(t, chargeRows["rent"], "total"); got != 1500 {
+			t.Fatalf("expected rent aging total 1500, got %v", got)
+		}
+		if got := rowFloat64(t, chargeRows["service"], "total"); got != 2000 {
+			t.Fatalf("expected service aging total 2000, got %v", got)
+		}
+		if got := rowFloat64(t, chargeRows["deposit"], "deposit_amount"); got != 3000 {
+			t.Fatalf("expected deposit row to carry 3000 deposit, got %v", got)
+		}
+		if chargeTypeDeposit != rowFloat64(t, departmentRow, "deposit_amount") || chargeTypeTotal != rowFloat64(t, departmentRow, "total") {
+			t.Fatalf("expected aging-by-charge to reconcile with department aging, got charge deposit/total=%v/%v department=%v/%v", chargeTypeDeposit, chargeTypeTotal, rowFloat64(t, departmentRow, "deposit_amount"), rowFloat64(t, departmentRow, "total"))
+		}
+	})
 }
 func activateReportingLease(t *testing.T, ctx context.Context, leaseService *lease.Service, workflowService *workflow.Service) *lease.Contract {
 	t.Helper()
@@ -180,6 +318,23 @@ func seedAROpenItems(t *testing.T, ctx context.Context, db *sql.DB, leaseID int6
 	}
 }
 
+func seedDailyShopSales(t *testing.T, ctx context.Context, db *sql.DB) {
+	t.Helper()
+	entries := []struct {
+		saleDate string
+		amount   float64
+	}{
+		{saleDate: "2026-04-05", amount: 3100},
+		{saleDate: "2026-04-18", amount: 900},
+		{saleDate: "2025-04-10", amount: 3000},
+	}
+	for _, entry := range entries {
+		if _, err := db.ExecContext(ctx, `INSERT INTO daily_shop_sales (store_id, unit_id, sale_date, sales_amount) VALUES (101, 101, ?, ?) ON DUPLICATE KEY UPDATE sales_amount = VALUES(sales_amount)`, entry.saleDate, entry.amount); err != nil {
+			t.Fatalf("seed daily shop sale: %v", err)
+		}
+	}
+}
+
 func seedBudgetFacts(t *testing.T, ctx context.Context, db *sql.DB, leaseID int64) {
 	t.Helper()
 	var leaseTermID int64
@@ -248,6 +403,107 @@ func seedBudgetFacts(t *testing.T, ctx context.Context, db *sql.DB, leaseID int6
 func int64Ptr(value int64) *int64 { return &value }
 
 func stringPointer(value string) *string { return &value }
+
+func withReportID(input reporting.QueryInput, reportID reporting.ReportID) reporting.QueryInput {
+	input.ReportID = reportID
+	return input
+}
+
+func mustQueryReport(t *testing.T, ctx context.Context, service *reporting.Service, input reporting.QueryInput) *reporting.Result {
+	t.Helper()
+	result, err := service.QueryReport(ctx, input)
+	if err != nil {
+		t.Fatalf("query %s: %v", input.ReportID, err)
+	}
+	return result
+}
+
+func assertAgingBucketTotal(t *testing.T, row map[string]any) {
+	t.Helper()
+	bucketSum := rowFloat64(t, row, "within_one_month") +
+		rowFloat64(t, row, "one_to_two_months") +
+		rowFloat64(t, row, "two_to_three_months") +
+		rowFloat64(t, row, "three_to_six_months") +
+		rowFloat64(t, row, "six_to_nine_months") +
+		rowFloat64(t, row, "nine_to_twelve_months") +
+		rowFloat64(t, row, "one_to_two_years") +
+		rowFloat64(t, row, "two_to_three_years") +
+		rowFloat64(t, row, "over_three_years")
+	if bucketSum != rowFloat64(t, row, "total") {
+		t.Fatalf("expected aging buckets %v to equal total %v", bucketSum, rowFloat64(t, row, "total"))
+	}
+}
+
+func rowString(t *testing.T, row map[string]any, key string) string {
+	t.Helper()
+	value, ok := row[key]
+	if !ok {
+		t.Fatalf("missing row key %q", key)
+	}
+	stringValue, ok := value.(string)
+	if !ok {
+		t.Fatalf("expected string for %q, got %T", key, value)
+	}
+	return stringValue
+}
+
+func rowFloat64(t *testing.T, row map[string]any, key string) float64 {
+	t.Helper()
+	value, ok := row[key]
+	if !ok {
+		t.Fatalf("missing row key %q", key)
+	}
+	switch v := value.(type) {
+	case float64:
+		return v
+	case float32:
+		return float64(v)
+	case int:
+		return float64(v)
+	case int64:
+		return float64(v)
+	default:
+		t.Fatalf("expected numeric value for %q, got %T", key, value)
+		return 0
+	}
+}
+
+func rowOptionalFloat64(t *testing.T, row map[string]any, key string) *float64 {
+	t.Helper()
+	value, ok := row[key]
+	if !ok {
+		t.Fatalf("missing row key %q", key)
+	}
+	if value == nil {
+		return nil
+	}
+	switch v := value.(type) {
+	case *float64:
+		return v
+	case float64:
+		return &v
+	default:
+		t.Fatalf("expected optional float64 for %q, got %T", key, value)
+		return nil
+	}
+}
+
+func rowInt(t *testing.T, row map[string]any, key string) int {
+	t.Helper()
+	value, ok := row[key]
+	if !ok {
+		t.Fatalf("missing row key %q", key)
+	}
+	switch v := value.(type) {
+	case int:
+		return v
+	case int64:
+		return int(v)
+	default:
+		t.Fatalf("expected int value for %q, got %T", key, value)
+		return 0
+	}
+}
 
 func newReportingTestDB(t *testing.T, ctx context.Context) *sql.DB {
 	t.Helper()
