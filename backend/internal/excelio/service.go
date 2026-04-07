@@ -8,7 +8,9 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"time"
 
+	"github.com/Gujiaweiguo/mi/backend/internal/sales"
 	"github.com/xuri/excelize/v2"
 )
 
@@ -17,9 +19,19 @@ var (
 	ErrInvalidImport  = errors.New("invalid excel import")
 )
 
-type Service struct{ repository *Repository }
+type SalesImporter interface {
+	BatchUpsertDailySales(ctx context.Context, inputs []sales.BatchDailySaleInput) (int, error)
+	BatchUpsertTraffic(ctx context.Context, inputs []sales.BatchTrafficInput) (int, error)
+}
 
-func NewService(repository *Repository) *Service { return &Service{repository: repository} }
+type Service struct {
+	repository    *Repository
+	salesImporter SalesImporter
+}
+
+func NewService(repository *Repository, salesImporter SalesImporter) *Service {
+	return &Service{repository: repository, salesImporter: salesImporter}
+}
 
 func (s *Service) DownloadUnitTemplate(ctx context.Context) (*TemplateArtifact, error) {
 	refs, err := s.repository.LoadUnitReference(ctx)
@@ -78,6 +90,113 @@ func (s *Service) ImportUnits(ctx context.Context, reader io.Reader) (*ImportRes
 		return nil, err
 	}
 	return &ImportResult{ImportedCount: len(parsedRows), Diagnostics: []Diagnostic{}}, nil
+}
+
+func (s *Service) DownloadDailySalesTemplate(ctx context.Context) (*TemplateArtifact, error) {
+	refs, err := s.repository.LoadSalesReference(ctx)
+	if err != nil {
+		return nil, err
+	}
+	f := excelize.NewFile()
+	defer func() { _ = f.Close() }()
+	_ = f.SetSheetName(f.GetSheetName(0), DailySalesSheetName)
+	headers := []string{"store_code", "unit_code", "sale_date", "sales_amount"}
+	for index, header := range headers {
+		cell, _ := excelize.CoordinatesToCellName(index+1, 1)
+		_ = f.SetCellValue(DailySalesSheetName, cell, header)
+	}
+	_, _ = f.NewSheet(RefSheetName)
+	writeReferenceSection(f, RefSheetName, 1, "stores", refs.Stores)
+	writeReferenceSection(f, RefSheetName, 5, "units", refs.Units)
+	buffer, err := f.WriteToBuffer()
+	if err != nil {
+		return nil, fmt.Errorf("write daily sales template workbook: %w", err)
+	}
+	return &TemplateArtifact{FileName: "daily-sales-template.xlsx", ContentType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", Body: buffer.Bytes()}, nil
+}
+
+func (s *Service) DownloadTrafficTemplate(ctx context.Context) (*TemplateArtifact, error) {
+	refs, err := s.repository.LoadSalesReference(ctx)
+	if err != nil {
+		return nil, err
+	}
+	f := excelize.NewFile()
+	defer func() { _ = f.Close() }()
+	_ = f.SetSheetName(f.GetSheetName(0), TrafficSheetName)
+	headers := []string{"store_code", "traffic_date", "inbound_count"}
+	for index, header := range headers {
+		cell, _ := excelize.CoordinatesToCellName(index+1, 1)
+		_ = f.SetCellValue(TrafficSheetName, cell, header)
+	}
+	_, _ = f.NewSheet(RefSheetName)
+	writeReferenceSection(f, RefSheetName, 1, "stores", refs.Stores)
+	buffer, err := f.WriteToBuffer()
+	if err != nil {
+		return nil, fmt.Errorf("write traffic template workbook: %w", err)
+	}
+	return &TemplateArtifact{FileName: "customer-traffic-template.xlsx", ContentType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", Body: buffer.Bytes()}, nil
+}
+
+func (s *Service) ImportDailySales(ctx context.Context, reader io.Reader) (*ImportResult, error) {
+	if s.salesImporter == nil {
+		return nil, fmt.Errorf("sales importer is not configured")
+	}
+	f, err := excelize.OpenReader(reader)
+	if err != nil {
+		return nil, fmt.Errorf("open daily sales import workbook: %w", err)
+	}
+	defer func() { _ = f.Close() }()
+	rows, err := f.GetRows(DailySalesSheetName)
+	if err != nil {
+		return nil, fmt.Errorf("read daily sales import sheet: %w", err)
+	}
+	parsedRows, diagnostics := parseDailySaleRows(rows)
+	refs, err := s.repository.LoadSalesReference(ctx)
+	if err != nil {
+		return nil, err
+	}
+	diagnostics = append(diagnostics, validateDailySaleRows(parsedRows, refs)...)
+	sortDiagnostics(diagnostics)
+	if len(diagnostics) > 0 {
+		return &ImportResult{ImportedCount: 0, Diagnostics: diagnostics}, ErrInvalidImport
+	}
+	inputs := buildDailySaleInputs(parsedRows, refs)
+	count, err := s.salesImporter.BatchUpsertDailySales(ctx, inputs)
+	if err != nil {
+		return nil, err
+	}
+	return &ImportResult{ImportedCount: count, Diagnostics: []Diagnostic{}}, nil
+}
+
+func (s *Service) ImportTraffic(ctx context.Context, reader io.Reader) (*ImportResult, error) {
+	if s.salesImporter == nil {
+		return nil, fmt.Errorf("sales importer is not configured")
+	}
+	f, err := excelize.OpenReader(reader)
+	if err != nil {
+		return nil, fmt.Errorf("open traffic import workbook: %w", err)
+	}
+	defer func() { _ = f.Close() }()
+	rows, err := f.GetRows(TrafficSheetName)
+	if err != nil {
+		return nil, fmt.Errorf("read traffic import sheet: %w", err)
+	}
+	parsedRows, diagnostics := parseTrafficRows(rows)
+	refs, err := s.repository.LoadSalesReference(ctx)
+	if err != nil {
+		return nil, err
+	}
+	diagnostics = append(diagnostics, validateTrafficRows(parsedRows, refs)...)
+	sortDiagnostics(diagnostics)
+	if len(diagnostics) > 0 {
+		return &ImportResult{ImportedCount: 0, Diagnostics: diagnostics}, ErrInvalidImport
+	}
+	inputs := buildTrafficInputs(parsedRows, refs)
+	count, err := s.salesImporter.BatchUpsertTraffic(ctx, inputs)
+	if err != nil {
+		return nil, err
+	}
+	return &ImportResult{ImportedCount: count, Diagnostics: []Diagnostic{}}, nil
 }
 
 func (s *Service) ExportOperationalDataset(ctx context.Context, input ExportInput) (*ExportArtifact, error) {
@@ -191,6 +310,54 @@ func parseUnitRows(rows [][]string) ([]UnitImportRow, []Diagnostic) {
 	return parsed, diagnostics
 }
 
+func parseDailySaleRows(rows [][]string) ([]DailySaleImportRow, []Diagnostic) {
+	if len(rows) == 0 {
+		return nil, []Diagnostic{{Row: 1, Field: "sheet", Message: "DailySales sheet is empty"}}
+	}
+	parsed := make([]DailySaleImportRow, 0)
+	diagnostics := make([]Diagnostic, 0)
+	for rowIndex, row := range rows[1:] {
+		excelRow := rowIndex + 2
+		if isEmptyRow(row) {
+			continue
+		}
+		parsedRow := DailySaleImportRow{StoreCode: cellValue(row, 0), UnitCode: cellValue(row, 1)}
+		var err error
+		if parsedRow.SaleDate, err = parseDate(cellValue(row, 2)); err != nil {
+			diagnostics = append(diagnostics, Diagnostic{Row: excelRow, Field: "sale_date", Message: err.Error()})
+		}
+		if parsedRow.SalesAmount, err = parsePositiveFloat(cellValue(row, 3)); err != nil {
+			diagnostics = append(diagnostics, Diagnostic{Row: excelRow, Field: "sales_amount", Message: err.Error()})
+		}
+		parsed = append(parsed, parsedRow)
+	}
+	return parsed, diagnostics
+}
+
+func parseTrafficRows(rows [][]string) ([]TrafficImportRow, []Diagnostic) {
+	if len(rows) == 0 {
+		return nil, []Diagnostic{{Row: 1, Field: "sheet", Message: "CustomerTraffic sheet is empty"}}
+	}
+	parsed := make([]TrafficImportRow, 0)
+	diagnostics := make([]Diagnostic, 0)
+	for rowIndex, row := range rows[1:] {
+		excelRow := rowIndex + 2
+		if isEmptyRow(row) {
+			continue
+		}
+		parsedRow := TrafficImportRow{StoreCode: cellValue(row, 0)}
+		var err error
+		if parsedRow.TrafficDate, err = parseDate(cellValue(row, 1)); err != nil {
+			diagnostics = append(diagnostics, Diagnostic{Row: excelRow, Field: "traffic_date", Message: err.Error()})
+		}
+		if parsedRow.InboundCount, err = parsePositiveInt(cellValue(row, 2)); err != nil {
+			diagnostics = append(diagnostics, Diagnostic{Row: excelRow, Field: "inbound_count", Message: err.Error()})
+		}
+		parsed = append(parsed, parsedRow)
+	}
+	return parsed, diagnostics
+}
+
 func validateUnitRows(rows []UnitImportRow, refs *UnitReference) []Diagnostic {
 	diagnostics := make([]Diagnostic, 0)
 	seenCodes := make(map[string]int)
@@ -231,6 +398,82 @@ func validateUnitRows(rows []UnitImportRow, refs *UnitReference) []Diagnostic {
 	return diagnostics
 }
 
+func validateDailySaleRows(rows []DailySaleImportRow, refs *SalesReference) []Diagnostic {
+	diagnostics := make([]Diagnostic, 0)
+	storeByCode := referenceByCode(refs.Stores)
+	unitByCode := referenceByCode(refs.Units)
+	seenKeys := make(map[string]int)
+	for index, row := range rows {
+		excelRow := index + 2
+		if row.StoreCode == "" || storeByCode[row.StoreCode].ID == 0 {
+			diagnostics = append(diagnostics, Diagnostic{Row: excelRow, Field: "store_code", Message: "unknown store_code"})
+		}
+		if row.UnitCode == "" || unitByCode[row.UnitCode].ID == 0 {
+			diagnostics = append(diagnostics, Diagnostic{Row: excelRow, Field: "unit_code", Message: "unknown unit_code"})
+		}
+		if row.SaleDate.IsZero() {
+			diagnostics = append(diagnostics, Diagnostic{Row: excelRow, Field: "sale_date", Message: "sale_date is required"})
+		}
+		key := fmt.Sprintf("%s|%s|%s", row.StoreCode, row.UnitCode, row.SaleDate.Format(DateLayout))
+		if previousRow, ok := seenKeys[key]; ok && row.StoreCode != "" && row.UnitCode != "" && !row.SaleDate.IsZero() {
+			diagnostics = append(diagnostics, Diagnostic{Row: excelRow, Field: "store_code", Message: fmt.Sprintf("duplicate business key also appears on row %d", previousRow)})
+		} else if row.StoreCode != "" && row.UnitCode != "" && !row.SaleDate.IsZero() {
+			seenKeys[key] = excelRow
+		}
+	}
+	return diagnostics
+}
+
+func validateTrafficRows(rows []TrafficImportRow, refs *SalesReference) []Diagnostic {
+	diagnostics := make([]Diagnostic, 0)
+	storeByCode := referenceByCode(refs.Stores)
+	seenKeys := make(map[string]int)
+	for index, row := range rows {
+		excelRow := index + 2
+		if row.StoreCode == "" || storeByCode[row.StoreCode].ID == 0 {
+			diagnostics = append(diagnostics, Diagnostic{Row: excelRow, Field: "store_code", Message: "unknown store_code"})
+		}
+		if row.TrafficDate.IsZero() {
+			diagnostics = append(diagnostics, Diagnostic{Row: excelRow, Field: "traffic_date", Message: "traffic_date is required"})
+		}
+		key := fmt.Sprintf("%s|%s", row.StoreCode, row.TrafficDate.Format(DateLayout))
+		if previousRow, ok := seenKeys[key]; ok && row.StoreCode != "" && !row.TrafficDate.IsZero() {
+			diagnostics = append(diagnostics, Diagnostic{Row: excelRow, Field: "store_code", Message: fmt.Sprintf("duplicate business key also appears on row %d", previousRow)})
+		} else if row.StoreCode != "" && !row.TrafficDate.IsZero() {
+			seenKeys[key] = excelRow
+		}
+	}
+	return diagnostics
+}
+
+func buildDailySaleInputs(rows []DailySaleImportRow, refs *SalesReference) []sales.BatchDailySaleInput {
+	storeByCode := referenceByCode(refs.Stores)
+	unitByCode := referenceByCode(refs.Units)
+	inputs := make([]sales.BatchDailySaleInput, 0, len(rows))
+	for _, row := range rows {
+		inputs = append(inputs, sales.BatchDailySaleInput{StoreID: storeByCode[row.StoreCode].ID, UnitID: unitByCode[row.UnitCode].ID, SaleDate: row.SaleDate, SalesAmount: row.SalesAmount})
+	}
+	return inputs
+}
+
+func buildTrafficInputs(rows []TrafficImportRow, refs *SalesReference) []sales.BatchTrafficInput {
+	storeByCode := referenceByCode(refs.Stores)
+	inputs := make([]sales.BatchTrafficInput, 0, len(rows))
+	for _, row := range rows {
+		inputs = append(inputs, sales.BatchTrafficInput{StoreID: storeByCode[row.StoreCode].ID, TrafficDate: row.TrafficDate, InboundCount: row.InboundCount})
+	}
+	return inputs
+}
+
+func sortDiagnostics(diagnostics []Diagnostic) {
+	sort.Slice(diagnostics, func(i, j int) bool {
+		if diagnostics[i].Row == diagnostics[j].Row {
+			return diagnostics[i].Field < diagnostics[j].Field
+		}
+		return diagnostics[i].Row < diagnostics[j].Row
+	})
+}
+
 func cellValue(row []string, index int) string {
 	if index >= len(row) {
 		return ""
@@ -253,6 +496,26 @@ func parsePositiveFloat(value string) (float64, error) {
 		return 0, errors.New("must be a positive number")
 	}
 	return v, nil
+}
+
+func parsePositiveInt(value string) (int, error) {
+	v, err := strconv.Atoi(strings.TrimSpace(value))
+	if err != nil || v <= 0 {
+		return 0, errors.New("must be a positive integer")
+	}
+	return v, nil
+}
+
+func parseDate(value string) (time.Time, error) {
+	trimmed := strings.TrimSpace(value)
+	if trimmed == "" {
+		return time.Time{}, errors.New("must be a valid date")
+	}
+	parsed, err := time.Parse(DateLayout, trimmed)
+	if err != nil {
+		return time.Time{}, errors.New("must be a valid date")
+	}
+	return parsed, nil
 }
 
 func parseBool(value string) (bool, error) {

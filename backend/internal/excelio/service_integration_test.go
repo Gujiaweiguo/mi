@@ -17,6 +17,7 @@ import (
 	"github.com/Gujiaweiguo/mi/backend/internal/lease"
 	platformdb "github.com/Gujiaweiguo/mi/backend/internal/platform/database"
 	bootstrap "github.com/Gujiaweiguo/mi/backend/internal/platform/database/bootstrap"
+	"github.com/Gujiaweiguo/mi/backend/internal/sales"
 	"github.com/Gujiaweiguo/mi/backend/internal/workflow"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/testcontainers/testcontainers-go"
@@ -30,7 +31,7 @@ func TestExcelIOServiceDownloadsUnitTemplate(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
 	db := newExcelIOTestDB(t, ctx)
-	service := excelio.NewService(excelio.NewRepository(db))
+	service := excelio.NewService(excelio.NewRepository(db), sales.NewService(sales.NewRepository(db)))
 
 	artifact, err := service.DownloadUnitTemplate(ctx)
 	if err != nil {
@@ -53,7 +54,7 @@ func TestExcelIOServiceImportsUnitsDeterministically(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
 	db := newExcelIOTestDB(t, ctx)
-	service := excelio.NewService(excelio.NewRepository(db))
+	service := excelio.NewService(excelio.NewRepository(db), sales.NewService(sales.NewRepository(db)))
 
 	workbookBytes := buildUnitWorkbook(t, [][]string{{"U-201", "BLD-A", "F1", "L1", "A01", "shop", "130", "128", "128", "true", "active"}, {"U-202", "BLD-A", "F1", "L1", "A01", "shop", "140", "138", "138", "false", "inactive"}})
 	result, err := service.ImportUnits(ctx, bytes.NewReader(workbookBytes))
@@ -93,7 +94,7 @@ func TestExcelIOServiceRejectsInvalidImportWithoutPartialCommit(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
 	db := newExcelIOTestDB(t, ctx)
-	service := excelio.NewService(excelio.NewRepository(db))
+	service := excelio.NewService(excelio.NewRepository(db), sales.NewService(sales.NewRepository(db)))
 
 	invalidWorkbook := buildUnitWorkbook(t, [][]string{{"U-301", "BLD-A", "F1", "L1", "A01", "shop", "130", "128", "128", "true", "active"}, {"U-301", "UNKNOWN", "F1", "L1", "A01", "shop", "x", "138", "138", "false", "inactive"}})
 	result, err := service.ImportUnits(ctx, bytes.NewReader(invalidWorkbook))
@@ -116,7 +117,7 @@ func TestExcelIOServiceExportsOperationalDatasets(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
 	db := newExcelIOTestDB(t, ctx)
-	service := excelio.NewService(excelio.NewRepository(db))
+	service := excelio.NewService(excelio.NewRepository(db), sales.NewService(sales.NewRepository(db)))
 	prepareApprovedInvoiceForExcel(t, ctx, db)
 
 	invoiceExport, err := service.ExportOperationalDataset(ctx, excelio.ExportInput{Dataset: "invoices"})
@@ -154,6 +155,134 @@ func TestExcelIOServiceExportsOperationalDatasets(t *testing.T) {
 	}
 }
 
+func TestExcelIOServiceDownloadsSalesTemplates(t *testing.T) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+	defer cancel()
+	db := newExcelIOTestDB(t, ctx)
+	service := excelio.NewService(excelio.NewRepository(db), sales.NewService(sales.NewRepository(db)))
+
+	dailyArtifact, err := service.DownloadDailySalesTemplate(ctx)
+	if err != nil {
+		t.Fatalf("download daily sales template: %v", err)
+	}
+	dailyWorkbook, err := excelize.OpenReader(bytes.NewReader(dailyArtifact.Body))
+	if err != nil {
+		t.Fatalf("open daily sales template workbook: %v", err)
+	}
+	defer func() { _ = dailyWorkbook.Close() }()
+	if value, err := dailyWorkbook.GetCellValue(excelio.DailySalesSheetName, "A1"); err != nil || value != "store_code" {
+		t.Fatalf("expected daily sales header store_code, got %q err=%v", value, err)
+	}
+	if value, err := dailyWorkbook.GetCellValue(excelio.RefSheetName, "A3"); err != nil || value != "MI-001" {
+		t.Fatalf("expected store reference MI-001, got %q err=%v", value, err)
+	}
+
+	trafficArtifact, err := service.DownloadTrafficTemplate(ctx)
+	if err != nil {
+		t.Fatalf("download traffic template: %v", err)
+	}
+	trafficWorkbook, err := excelize.OpenReader(bytes.NewReader(trafficArtifact.Body))
+	if err != nil {
+		t.Fatalf("open traffic template workbook: %v", err)
+	}
+	defer func() { _ = trafficWorkbook.Close() }()
+	if value, err := trafficWorkbook.GetCellValue(excelio.TrafficSheetName, "A1"); err != nil || value != "store_code" {
+		t.Fatalf("expected traffic header store_code, got %q err=%v", value, err)
+	}
+}
+
+func TestExcelIOServiceImportsSalesDataDeterministically(t *testing.T) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+	defer cancel()
+	db := newExcelIOTestDB(t, ctx)
+	service := excelio.NewService(excelio.NewRepository(db), sales.NewService(sales.NewRepository(db)))
+
+	dailyWorkbook := buildGenericWorkbook(t, excelio.DailySalesSheetName, []string{"store_code", "unit_code", "sale_date", "sales_amount"}, [][]string{{"MI-001", "U-101", "2026-05-01", "6000"}, {"MI-001", "U-101", "2026-05-02", "4500"}})
+	dailyResult, err := service.ImportDailySales(ctx, bytes.NewReader(dailyWorkbook))
+	if err != nil {
+		t.Fatalf("import daily sales workbook: %v", err)
+	}
+	if dailyResult.ImportedCount != 2 || len(dailyResult.Diagnostics) != 0 {
+		t.Fatalf("unexpected daily sales import result %#v", dailyResult)
+	}
+	var count int
+	if err := db.QueryRowContext(ctx, `SELECT COUNT(*) FROM daily_shop_sales WHERE store_id = ? AND unit_id = ? AND sale_date IN ('2026-05-01', '2026-05-02')`, 101, 101).Scan(&count); err != nil {
+		t.Fatalf("count imported daily sales: %v", err)
+	}
+	if count != 2 {
+		t.Fatalf("expected 2 imported daily sales, got %d", count)
+	}
+	reimportWorkbook := buildGenericWorkbook(t, excelio.DailySalesSheetName, []string{"store_code", "unit_code", "sale_date", "sales_amount"}, [][]string{{"MI-001", "U-101", "2026-05-01", "6100"}})
+	dailyResult, err = service.ImportDailySales(ctx, bytes.NewReader(reimportWorkbook))
+	if err != nil {
+		t.Fatalf("reimport daily sales workbook: %v", err)
+	}
+	if dailyResult.ImportedCount != 1 {
+		t.Fatalf("expected one reimported daily sale, got %#v", dailyResult)
+	}
+	var salesAmount float64
+	if err := db.QueryRowContext(ctx, `SELECT sales_amount FROM daily_shop_sales WHERE store_id = ? AND unit_id = ? AND sale_date = '2026-05-01'`, 101, 101).Scan(&salesAmount); err != nil {
+		t.Fatalf("load updated daily sale: %v", err)
+	}
+	if salesAmount != 6100 {
+		t.Fatalf("expected updated daily sales amount 6100, got %v", salesAmount)
+	}
+
+	trafficWorkbook := buildGenericWorkbook(t, excelio.TrafficSheetName, []string{"store_code", "traffic_date", "inbound_count"}, [][]string{{"MI-001", "2026-05-01", "500"}, {"MI-001", "2026-05-02", "360"}})
+	trafficResult, err := service.ImportTraffic(ctx, bytes.NewReader(trafficWorkbook))
+	if err != nil {
+		t.Fatalf("import traffic workbook: %v", err)
+	}
+	if trafficResult.ImportedCount != 2 || len(trafficResult.Diagnostics) != 0 {
+		t.Fatalf("unexpected traffic import result %#v", trafficResult)
+	}
+	var inboundCount int
+	if err := db.QueryRowContext(ctx, `SELECT inbound_count FROM customer_traffic WHERE store_id = ? AND traffic_date = '2026-05-01'`, 101).Scan(&inboundCount); err != nil {
+		t.Fatalf("load imported traffic row: %v", err)
+	}
+	if inboundCount != 500 {
+		t.Fatalf("expected imported inbound_count 500, got %d", inboundCount)
+	}
+}
+
+func TestExcelIOServiceRejectsInvalidSalesImportsWithoutPartialCommit(t *testing.T) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+	defer cancel()
+	db := newExcelIOTestDB(t, ctx)
+	service := excelio.NewService(excelio.NewRepository(db), sales.NewService(sales.NewRepository(db)))
+
+	invalidDailyWorkbook := buildGenericWorkbook(t, excelio.DailySalesSheetName, []string{"store_code", "unit_code", "sale_date", "sales_amount"}, [][]string{{"MI-001", "U-101", "2026-05-01", "6000"}, {"UNKNOWN", "U-101", "2026-05-01", "bad"}})
+	result, err := service.ImportDailySales(ctx, bytes.NewReader(invalidDailyWorkbook))
+	if !errors.Is(err, excelio.ErrInvalidImport) {
+		t.Fatalf("expected invalid daily sales import error, got %v", err)
+	}
+	if len(result.Diagnostics) == 0 {
+		t.Fatalf("expected diagnostics for invalid daily sales import, got %#v", result)
+	}
+	var count int
+	if err := db.QueryRowContext(ctx, `SELECT COUNT(*) FROM daily_shop_sales WHERE sale_date = '2026-05-01'`).Scan(&count); err != nil {
+		t.Fatalf("count invalid imported daily sales: %v", err)
+	}
+	if count != 0 {
+		t.Fatalf("expected no partial daily sales commit, got count=%d", count)
+	}
+
+	invalidTrafficWorkbook := buildGenericWorkbook(t, excelio.TrafficSheetName, []string{"store_code", "traffic_date", "inbound_count"}, [][]string{{"MI-001", "2026-05-01", "500"}, {"MI-001", "2026-05-01", "0"}})
+	trafficResult, err := service.ImportTraffic(ctx, bytes.NewReader(invalidTrafficWorkbook))
+	if !errors.Is(err, excelio.ErrInvalidImport) {
+		t.Fatalf("expected invalid traffic import error, got %v", err)
+	}
+	if len(trafficResult.Diagnostics) == 0 {
+		t.Fatalf("expected diagnostics for invalid traffic import, got %#v", trafficResult)
+	}
+	if err := db.QueryRowContext(ctx, `SELECT COUNT(*) FROM customer_traffic WHERE traffic_date = '2026-05-01'`).Scan(&count); err != nil {
+		t.Fatalf("count invalid imported traffic rows: %v", err)
+	}
+	if count != 0 {
+		t.Fatalf("expected no partial traffic commit, got count=%d", count)
+	}
+}
+
 func buildUnitWorkbook(t *testing.T, dataRows [][]string) []byte {
 	t.Helper()
 	f := excelize.NewFile()
@@ -173,6 +302,28 @@ func buildUnitWorkbook(t *testing.T, dataRows [][]string) []byte {
 	buffer, err := f.WriteToBuffer()
 	if err != nil {
 		t.Fatalf("write unit workbook: %v", err)
+	}
+	return buffer.Bytes()
+}
+
+func buildGenericWorkbook(t *testing.T, sheetName string, headers []string, dataRows [][]string) []byte {
+	t.Helper()
+	f := excelize.NewFile()
+	defer func() { _ = f.Close() }()
+	_ = f.SetSheetName(f.GetSheetName(0), sheetName)
+	for index, header := range headers {
+		cell, _ := excelize.CoordinatesToCellName(index+1, 1)
+		_ = f.SetCellValue(sheetName, cell, header)
+	}
+	for rowIndex, row := range dataRows {
+		for colIndex, value := range row {
+			cell, _ := excelize.CoordinatesToCellName(colIndex+1, rowIndex+2)
+			_ = f.SetCellValue(sheetName, cell, value)
+		}
+	}
+	buffer, err := f.WriteToBuffer()
+	if err != nil {
+		t.Fatalf("write generic workbook: %v", err)
 	}
 	return buffer.Bytes()
 }

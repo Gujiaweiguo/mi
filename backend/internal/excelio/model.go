@@ -3,12 +3,14 @@ package excelio
 import "time"
 
 const (
-	DateLayout      = "2006-01-02"
-	DefaultPage     = 1
-	DefaultPageSize = 20
-	MaxPageSize     = 100
-	UnitSheetName   = "Units"
-	RefSheetName    = "ReferenceData"
+	DateLayout          = "2006-01-02"
+	DefaultPage         = 1
+	DefaultPageSize     = 20
+	MaxPageSize         = 100
+	UnitSheetName       = "Units"
+	DailySalesSheetName = "DailySales"
+	TrafficSheetName    = "CustomerTraffic"
+	RefSheetName        = "ReferenceData"
 )
 
 type TemplateArtifact struct {
@@ -58,6 +60,24 @@ type UnitReference struct {
 	Locations []ReferenceItem
 	Areas     []ReferenceItem
 	UnitTypes []ReferenceItem
+}
+
+type DailySaleImportRow struct {
+	StoreCode   string
+	UnitCode    string
+	SaleDate    time.Time
+	SalesAmount float64
+}
+
+type TrafficImportRow struct {
+	StoreCode    string
+	TrafficDate  time.Time
+	InboundCount int
+}
+
+type SalesReference struct {
+	Stores []ReferenceItem
+	Units  []ReferenceItem
 }
 
 type ReferenceItem struct {

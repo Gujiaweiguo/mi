@@ -34,6 +34,18 @@ func (r *Repository) LoadUnitReference(ctx context.Context) (*UnitReference, err
 	return &UnitReference{Buildings: buildings, Floors: floors, Locations: locations, Areas: areas, UnitTypes: unitTypes}, nil
 }
 
+func (r *Repository) LoadSalesReference(ctx context.Context) (*SalesReference, error) {
+	stores, err := loadReferenceItems(ctx, r.db, `SELECT id, code, name FROM stores ORDER BY code`)
+	if err != nil {
+		return nil, err
+	}
+	units, err := loadReferenceItems(ctx, r.db, `SELECT id, code, code AS name FROM units ORDER BY code`)
+	if err != nil {
+		return nil, err
+	}
+	return &SalesReference{Stores: stores, Units: units}, nil
+}
+
 func (r *Repository) UpsertUnits(ctx context.Context, rows []UnitImportRow, refs *UnitReference) error {
 	tx, err := r.db.BeginTx(ctx, nil)
 	if err != nil {
