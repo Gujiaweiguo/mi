@@ -57,11 +57,48 @@ type UnitFixture = {
   updated_at: string
 }
 
+type ImportDiagnosticFixture = {
+  row: number
+  field: string
+  message: string
+}
+
+type ImportMockFixture<Row> = {
+  imported_count: number
+  diagnostics?: ImportDiagnosticFixture[]
+  importedRows?: Row[]
+  status?: number
+}
+
 const now = '2026-04-02T08:00:00Z'
+
+const workbookMimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 
 const selectByTestId = async (page: Page, testId: string, label: string) => {
   await page.getByTestId(testId).click()
   await page.locator('.el-select-dropdown:visible .el-select-dropdown__item').filter({ hasText: label }).first().click()
+}
+
+const attachWorkbook = async (page: Page, testId: string, filename: string) => {
+  await page.getByTestId(testId).locator('input[type="file"]').setInputFiles({
+    name: filename,
+    mimeType: workbookMimeType,
+    buffer: Buffer.from(`mock workbook:${filename}`),
+  })
+}
+
+const loginToSalesAdmin = async (page: Page) => {
+  await page.goto('/login')
+  await page.getByTestId('login-username-input').fill('sales-admin')
+  await page.getByTestId('login-password-input').fill('password')
+  await page.getByTestId('login-submit-button').click()
+
+  await expect(page).toHaveURL(/\/health/)
+  await expect(page.getByTestId('nav--admin-sales')).toBeVisible()
+
+  await page.getByTestId('nav--admin-sales').click()
+  await expect(page).toHaveURL(/\/admin\/sales/)
+  await expect(page.getByTestId('sales-admin-view')).toBeVisible()
 }
 
 const toOptionalInteger = (value: string | null) => {
@@ -75,7 +112,12 @@ const toOptionalInteger = (value: string | null) => {
 
 const attachSalesAdminMocks = async (
   page: Page,
-  options: { dailySales?: DailySaleFixture[]; trafficRows?: CustomerTrafficFixture[] } = {},
+  options: {
+    dailySales?: DailySaleFixture[]
+    trafficRows?: CustomerTrafficFixture[]
+    dailySalesImport?: ImportMockFixture<DailySaleFixture>
+    trafficImport?: ImportMockFixture<CustomerTrafficFixture>
+  } = {},
 ) => {
   const permissions: PermissionFixture[] = [
     {
@@ -150,6 +192,10 @@ const attachSalesAdminMocks = async (
 
   let dailySales: DailySaleFixture[] = options.dailySales ? [...options.dailySales] : []
   let trafficRows: CustomerTrafficFixture[] = options.trafficRows ? [...options.trafficRows] : []
+  let dailyTemplateDownloads = 0
+  let trafficTemplateDownloads = 0
+  let dailyImportRequests = 0
+  let trafficImportRequests = 0
 
   await page.route('**/api/auth/me', async (route) => {
     await route.fulfill({
@@ -197,6 +243,62 @@ const attachSalesAdminMocks = async (
       status: 200,
       contentType: 'application/json',
       body: JSON.stringify({ units }),
+    })
+  })
+
+  await page.route('**/api/excel/templates/daily-sales', async (route) => {
+    dailyTemplateDownloads += 1
+    await route.fulfill({
+      status: 200,
+      contentType: workbookMimeType,
+      body: 'daily-sales-template',
+    })
+  })
+
+  await page.route('**/api/excel/templates/customer-traffic', async (route) => {
+    trafficTemplateDownloads += 1
+    await route.fulfill({
+      status: 200,
+      contentType: workbookMimeType,
+      body: 'customer-traffic-template',
+    })
+  })
+
+  await page.route('**/api/excel/imports/daily-sales', async (route) => {
+    dailyImportRequests += 1
+    const result = options.dailySalesImport ?? { imported_count: 0, diagnostics: [] }
+    const status = result.status ?? (result.diagnostics?.length ? 400 : 200)
+
+    if (status < 400 && result.importedRows?.length) {
+      dailySales = [...result.importedRows, ...dailySales]
+    }
+
+    await route.fulfill({
+      status,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        imported_count: result.imported_count,
+        diagnostics: result.diagnostics ?? [],
+      }),
+    })
+  })
+
+  await page.route('**/api/excel/imports/customer-traffic', async (route) => {
+    trafficImportRequests += 1
+    const result = options.trafficImport ?? { imported_count: 0, diagnostics: [] }
+    const status = result.status ?? (result.diagnostics?.length ? 400 : 200)
+
+    if (status < 400 && result.importedRows?.length) {
+      trafficRows = [...result.importedRows, ...trafficRows]
+    }
+
+    await route.fulfill({
+      status,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        imported_count: result.imported_count,
+        diagnostics: result.diagnostics ?? [],
+      }),
     })
   })
 
@@ -316,40 +418,146 @@ const attachSalesAdminMocks = async (
       body: JSON.stringify({ customer_traffic: filteredTrafficRows }),
     })
   })
+
+  return {
+    dailyTemplateDownloads: () => dailyTemplateDownloads,
+    trafficTemplateDownloads: () => trafficTemplateDownloads,
+    dailyImportRequests: () => dailyImportRequests,
+    trafficImportRequests: () => trafficImportRequests,
+  }
 }
 
-test('creates daily sales and customer traffic records from the sales admin view', async ({ page }) => {
-  await attachSalesAdminMocks(page)
+test('supports workbook download/import alongside single-record maintenance', async ({ page }) => {
+  const tracker = await attachSalesAdminMocks(page, {
+    dailySalesImport: {
+      imported_count: 2,
+      importedRows: [
+        {
+          id: 1201,
+          store_id: 101,
+          unit_id: 201,
+          sale_date: '2026-05-02',
+          sales_amount: 1800,
+          created_at: now,
+          updated_at: now,
+        },
+        {
+          id: 1202,
+          store_id: 102,
+          unit_id: 202,
+          sale_date: '2026-05-03',
+          sales_amount: 2200,
+          created_at: now,
+          updated_at: now,
+        },
+      ],
+    },
+    trafficImport: {
+      imported_count: 1,
+      importedRows: [
+        {
+          id: 2201,
+          store_id: 101,
+          traffic_date: '2026-05-02',
+          inbound_count: 340,
+          created_at: now,
+          updated_at: now,
+        },
+      ],
+    },
+  })
 
-  await page.goto('/login')
-  await page.getByTestId('login-username-input').fill('sales-admin')
-  await page.getByTestId('login-password-input').fill('password')
-  await page.getByTestId('login-submit-button').click()
+  await loginToSalesAdmin(page)
 
-  await expect(page).toHaveURL(/\/health/)
-  await expect(page.getByTestId('nav--admin-sales')).toBeVisible()
+  await page.getByTestId('sales-daily-download-template').click()
+  await expect(page.getByTestId('sales-daily-feedback')).toContainText('日销售模板已下载')
+  expect(tracker.dailyTemplateDownloads()).toBe(1)
 
-  await page.getByTestId('nav--admin-sales').click()
-  await expect(page).toHaveURL(/\/admin\/sales/)
-  await expect(page.getByTestId('sales-admin-view')).toBeVisible()
+  await attachWorkbook(page, 'sales-daily-upload-input', 'daily-sales.xlsx')
+  await expect(page.getByTestId('sales-daily-selected-file')).toContainText('daily-sales.xlsx')
+  await page.getByTestId('sales-daily-import-button').click()
+
+  await expect(page.getByTestId('sales-daily-feedback')).toContainText('日销售导入完成')
+  await expect(page.getByTestId('sales-daily-import-summary')).toContainText('2')
+  await expect(page.getByText('2026-05-02')).toBeVisible()
+  await expect(page.getByText('1800')).toBeVisible()
+  expect(tracker.dailyImportRequests()).toBe(1)
 
   await selectByTestId(page, 'sales-daily-store-select', 'MI-101 — Harbor Center')
   await selectByTestId(page, 'sales-daily-unit-select', 'U-201 (#201)')
-  await page.getByTestId('sales-daily-date-input').locator('input').fill('2026-05-01')
+  await page.getByTestId('sales-daily-date-input').locator('input').fill('2026-05-05')
   await page.getByTestId('sales-daily-date-input').locator('input').press('Tab')
   await page.getByTestId('sales-daily-amount-input').locator('input').fill('6000')
   await page.getByTestId('sales-daily-create-button').click()
 
-  await expect(page.getByText('2026-05-01')).toBeVisible()
+  await expect(page.getByTestId('sales-daily-feedback')).toContainText('日销售已创建')
+  await expect(page.getByText('2026-05-05')).toBeVisible()
   await expect(page.getByText('6000')).toBeVisible()
 
+  await page.getByTestId('sales-traffic-download-template').click()
+  await expect(page.getByTestId('sales-traffic-feedback')).toContainText('客流模板已下载')
+  expect(tracker.trafficTemplateDownloads()).toBe(1)
+
+  await attachWorkbook(page, 'sales-traffic-upload-input', 'customer-traffic.xlsx')
+  await expect(page.getByTestId('sales-traffic-selected-file')).toContainText('customer-traffic.xlsx')
+  await page.getByTestId('sales-traffic-import-button').click()
+
+  await expect(page.getByTestId('sales-traffic-feedback')).toContainText('客流导入完成')
+  await expect(page.getByTestId('sales-traffic-import-summary')).toContainText('1')
+  await expect(page.getByText('340')).toBeVisible()
+  expect(tracker.trafficImportRequests()).toBe(1)
+
   await selectByTestId(page, 'sales-traffic-store-select', 'MI-101 — Harbor Center')
-  await page.getByTestId('sales-traffic-date-input').locator('input').fill('2026-05-01')
+  await page.getByTestId('sales-traffic-date-input').locator('input').fill('2026-05-05')
   await page.getByTestId('sales-traffic-date-input').locator('input').press('Tab')
   await page.getByTestId('sales-traffic-count-input').locator('input').fill('500')
   await page.getByTestId('sales-traffic-create-button').click()
 
+  await expect(page.getByTestId('sales-traffic-feedback')).toContainText('客流记录已创建')
   await expect(page.getByText('500')).toBeVisible()
+})
+
+test('renders daily sales import diagnostics and preserves manual fallback', async ({ page }) => {
+  const tracker = await attachSalesAdminMocks(page, {
+    dailySalesImport: {
+      imported_count: 0,
+      status: 400,
+      diagnostics: [
+        {
+          row: 4,
+          field: 'unit_code',
+          message: 'Unknown unit code U-999.',
+        },
+        {
+          row: 7,
+          field: 'sales_amount',
+          message: 'Sales amount must be greater than or equal to zero.',
+        },
+      ],
+    },
+  })
+
+  await loginToSalesAdmin(page)
+
+  await attachWorkbook(page, 'sales-daily-upload-input', 'invalid-daily-sales.xlsx')
+  await page.getByTestId('sales-daily-import-button').click()
+
+  await expect(page.getByTestId('sales-daily-feedback')).toContainText('日销售导入需要处理')
+  await expect(page.getByTestId('sales-daily-import-summary')).toContainText('0')
+  await expect(page.getByTestId('sales-daily-diagnostics-table')).toContainText('unit_code')
+  await expect(page.getByTestId('sales-daily-diagnostics-table')).toContainText('Unknown unit code U-999.')
+  await expect(page.getByTestId('sales-daily-diagnostics-table')).toContainText('sales_amount')
+  expect(tracker.dailyImportRequests()).toBe(1)
+
+  await selectByTestId(page, 'sales-daily-store-select', 'MI-101 — Harbor Center')
+  await selectByTestId(page, 'sales-daily-unit-select', 'U-201 (#201)')
+  await page.getByTestId('sales-daily-date-input').locator('input').fill('2026-05-06')
+  await page.getByTestId('sales-daily-date-input').locator('input').press('Tab')
+  await page.getByTestId('sales-daily-amount-input').locator('input').fill('4100')
+  await page.getByTestId('sales-daily-create-button').click()
+
+  await expect(page.getByTestId('sales-daily-feedback')).toContainText('日销售已创建')
+  await expect(page.getByText('4100')).toBeVisible()
 })
 
 test('filters daily sales rows by store and date range', async ({ page }) => {
@@ -376,14 +584,7 @@ test('filters daily sales rows by store and date range', async ({ page }) => {
     ],
   })
 
-  await page.goto('/login')
-  await page.getByTestId('login-username-input').fill('sales-admin')
-  await page.getByTestId('login-password-input').fill('password')
-  await page.getByTestId('login-submit-button').click()
-
-  await expect(page).toHaveURL(/\/health/)
-  await page.getByTestId('nav--admin-sales').click()
-  await expect(page).toHaveURL(/\/admin\/sales/)
+  await loginToSalesAdmin(page)
 
   await expect(page.getByText('2026-05-01')).toBeVisible()
   await expect(page.getByText('2026-05-03')).toBeVisible()

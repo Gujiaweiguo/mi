@@ -5,10 +5,15 @@ import { useI18n } from 'vue-i18n'
 import {
   createCustomerTraffic,
   createDailySale,
+  downloadCustomerTrafficTemplate,
+  downloadDailySalesTemplate,
+  importCustomerTrafficWorkbook,
+  importDailySalesWorkbook,
   listCustomerTraffic,
   listDailySales,
   type CustomerTraffic,
   type DailySale,
+  type SalesImportResult,
 } from '../api/sales'
 import { listStructureStores, listStructureUnits, type StructureStore, type StructureUnit } from '../api/structure'
 import FilterForm from '../components/platform/FilterForm.vue'
@@ -46,10 +51,18 @@ const isDailyLoading = ref(false)
 const isTrafficLoading = ref(false)
 const isDailySaving = ref(false)
 const isTrafficSaving = ref(false)
+const isDailyTemplateDownloading = ref(false)
+const isTrafficTemplateDownloading = ref(false)
+const isDailyImporting = ref(false)
+const isTrafficImporting = ref(false)
 
 const pageFeedback = ref<Feedback | null>(null)
 const dailyFeedback = ref<Feedback | null>(null)
 const trafficFeedback = ref<Feedback | null>(null)
+const dailyImportFile = ref<File | null>(null)
+const trafficImportFile = ref<File | null>(null)
+const dailyImportResult = ref<SalesImportResult | null>(null)
+const trafficImportResult = ref<SalesImportResult | null>(null)
 
 const { filters: dailyFilters, isDirty: isDailyFiltersDirty, reset: resetDailyFilterState } = useFilterForm({
   store_id: '',
@@ -81,6 +94,16 @@ const trafficForm = reactive<TrafficCreateForm>({
 })
 
 const getErrorMessage = (error: unknown, fallback: string) => (error instanceof Error ? error.message : fallback)
+
+const downloadBlob = (data: unknown, filename: string) => {
+  const blob = new Blob([data as BlobPart], { type: 'application/octet-stream' })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = filename
+  link.click()
+  URL.revokeObjectURL(url)
+}
 
 const normalizeFilterValue = (value: string | null | undefined) => value?.trim() ?? ''
 
@@ -243,9 +266,12 @@ const handleResetTrafficFilters = () => {
   void loadTraffic()
 }
 
-const loadDailySales = async () => {
+const loadDailySales = async (options?: { preserveFeedback?: boolean }) => {
   isDailyLoading.value = true
-  dailyFeedback.value = null
+
+  if (!options?.preserveFeedback) {
+    dailyFeedback.value = null
+  }
 
   try {
     const response = await listDailySales({
@@ -267,9 +293,12 @@ const loadDailySales = async () => {
   }
 }
 
-const loadTraffic = async () => {
+const loadTraffic = async (options?: { preserveFeedback?: boolean }) => {
   isTrafficLoading.value = true
-  trafficFeedback.value = null
+
+  if (!options?.preserveFeedback) {
+    trafficFeedback.value = null
+  }
 
   try {
     const response = await listCustomerTraffic({
@@ -287,6 +316,162 @@ const loadTraffic = async () => {
     }
   } finally {
     isTrafficLoading.value = false
+  }
+}
+
+const handleDownloadDailyTemplate = async () => {
+  isDailyTemplateDownloading.value = true
+  dailyFeedback.value = null
+
+  try {
+    const response = await downloadDailySalesTemplate()
+    downloadBlob(response.data, 'daily-sales-template.xlsx')
+    dailyFeedback.value = {
+      type: 'success',
+      title: t('salesAdmin.feedback.dailySalesTemplateDownloadedTitle'),
+      description: t('salesAdmin.feedback.dailySalesTemplateDownloadedDescription'),
+    }
+  } catch (error) {
+    dailyFeedback.value = {
+      type: 'error',
+      title: t('salesAdmin.errors.dailySalesTemplateDownloadFailed'),
+      description: getErrorMessage(error, t('salesAdmin.errors.unableToDownloadDailySalesTemplate')),
+    }
+  } finally {
+    isDailyTemplateDownloading.value = false
+  }
+}
+
+const handleDownloadTrafficTemplate = async () => {
+  isTrafficTemplateDownloading.value = true
+  trafficFeedback.value = null
+
+  try {
+    const response = await downloadCustomerTrafficTemplate()
+    downloadBlob(response.data, 'customer-traffic-template.xlsx')
+    trafficFeedback.value = {
+      type: 'success',
+      title: t('salesAdmin.feedback.customerTrafficTemplateDownloadedTitle'),
+      description: t('salesAdmin.feedback.customerTrafficTemplateDownloadedDescription'),
+    }
+  } catch (error) {
+    trafficFeedback.value = {
+      type: 'error',
+      title: t('salesAdmin.errors.customerTrafficTemplateDownloadFailed'),
+      description: getErrorMessage(error, t('salesAdmin.errors.unableToDownloadCustomerTrafficTemplate')),
+    }
+  } finally {
+    isTrafficTemplateDownloading.value = false
+  }
+}
+
+const handleDailyImportFileChange = (file: File | null) => {
+  dailyImportFile.value = file
+}
+
+const handleTrafficImportFileChange = (file: File | null) => {
+  trafficImportFile.value = file
+}
+
+const handleDailyUploadChange = (file: { raw?: File }) => {
+  handleDailyImportFileChange(file.raw ?? null)
+}
+
+const handleTrafficUploadChange = (file: { raw?: File }) => {
+  handleTrafficImportFileChange(file.raw ?? null)
+}
+
+const handleImportDailySales = async () => {
+  if (!dailyImportFile.value) {
+    dailyFeedback.value = {
+      type: 'warning',
+      title: t('salesAdmin.feedback.workbookRequiredTitle'),
+      description: t('salesAdmin.feedback.workbookRequiredDescription'),
+    }
+    return
+  }
+
+  isDailyImporting.value = true
+  dailyFeedback.value = null
+  dailyImportResult.value = null
+
+  try {
+    const response = await importDailySalesWorkbook(dailyImportFile.value)
+    dailyImportResult.value = response.data
+
+    if (response.status >= 400 || response.data.diagnostics.length > 0) {
+      dailyFeedback.value = {
+        type: 'warning',
+        title: t('salesAdmin.feedback.dailySalesImportDiagnosticsTitle'),
+        description: t('salesAdmin.feedback.dailySalesImportDiagnosticsDescription'),
+      }
+      return
+    }
+
+    await loadDailySales({ preserveFeedback: true })
+    dailyFeedback.value = {
+      type: 'success',
+      title: t('salesAdmin.feedback.dailySalesImportCompletedTitle'),
+      description: t('salesAdmin.feedback.dailySalesImportCompletedDescription', {
+        count: response.data.imported_count,
+      }),
+    }
+  } catch (error) {
+    dailyImportResult.value = null
+    dailyFeedback.value = {
+      type: 'error',
+      title: t('salesAdmin.errors.dailySalesImportFailed'),
+      description: getErrorMessage(error, t('salesAdmin.errors.unableToImportDailySales')),
+    }
+  } finally {
+    isDailyImporting.value = false
+  }
+}
+
+const handleImportTraffic = async () => {
+  if (!trafficImportFile.value) {
+    trafficFeedback.value = {
+      type: 'warning',
+      title: t('salesAdmin.feedback.workbookRequiredTitle'),
+      description: t('salesAdmin.feedback.workbookRequiredDescription'),
+    }
+    return
+  }
+
+  isTrafficImporting.value = true
+  trafficFeedback.value = null
+  trafficImportResult.value = null
+
+  try {
+    const response = await importCustomerTrafficWorkbook(trafficImportFile.value)
+    trafficImportResult.value = response.data
+
+    if (response.status >= 400 || response.data.diagnostics.length > 0) {
+      trafficFeedback.value = {
+        type: 'warning',
+        title: t('salesAdmin.feedback.customerTrafficImportDiagnosticsTitle'),
+        description: t('salesAdmin.feedback.customerTrafficImportDiagnosticsDescription'),
+      }
+      return
+    }
+
+    await loadTraffic({ preserveFeedback: true })
+    trafficFeedback.value = {
+      type: 'success',
+      title: t('salesAdmin.feedback.customerTrafficImportCompletedTitle'),
+      description: t('salesAdmin.feedback.customerTrafficImportCompletedDescription', {
+        count: response.data.imported_count,
+      }),
+    }
+  } catch (error) {
+    trafficImportResult.value = null
+    trafficFeedback.value = {
+      type: 'error',
+      title: t('salesAdmin.errors.customerTrafficImportFailed'),
+      description: getErrorMessage(error, t('salesAdmin.errors.unableToImportCustomerTraffic')),
+    }
+  } finally {
+    isTrafficImporting.value = false
   }
 }
 
@@ -428,20 +613,16 @@ onMounted(() => {
     />
 
     <el-card class="sales-admin-view__card" shadow="never">
-        <template #header>
-          <div class="sales-admin-view__card-header">
-            <span>{{ t('salesAdmin.cards.dailySales') }}</span>
-            <div class="sales-admin-view__card-actions">
-              <el-button
-                :loading="isDailyLoading"
-                data-testid="sales-daily-refresh-button"
-                @click="loadDailySales"
-              >
-                {{ t('common.actions.refresh') }}
-              </el-button>
-            </div>
+      <template #header>
+        <div class="sales-admin-view__card-header">
+          <span>{{ t('salesAdmin.cards.dailySales') }}</span>
+          <div class="sales-admin-view__card-actions">
+            <el-button :loading="isDailyLoading" data-testid="sales-daily-refresh-button" @click="loadDailySales">
+              {{ t('common.actions.refresh') }}
+            </el-button>
           </div>
-        </template>
+        </div>
+      </template>
 
       <el-alert
         v-if="dailyFeedback"
@@ -450,8 +631,74 @@ onMounted(() => {
         :title="dailyFeedback.title"
         :type="dailyFeedback.type"
         :description="dailyFeedback.description"
+        data-testid="sales-daily-feedback"
         show-icon
       />
+
+      <section class="sales-admin-view__import-panel" data-testid="sales-daily-import-panel">
+        <div class="sales-admin-view__import-copy">
+          <p class="sales-admin-view__import-label">{{ t('salesAdmin.imports.dailySalesTitle') }}</p>
+          <p class="sales-admin-view__import-description">{{ t('salesAdmin.imports.dailySalesDescription') }}</p>
+        </div>
+
+        <div class="sales-admin-view__import-actions">
+          <el-button
+            :loading="isDailyTemplateDownloading"
+            data-testid="sales-daily-download-template"
+            @click="handleDownloadDailyTemplate"
+          >
+            {{ t('salesAdmin.actions.downloadTemplate') }}
+          </el-button>
+
+          <el-upload
+            :auto-upload="false"
+            :limit="1"
+            accept=".xlsx,.xls"
+            :show-file-list="false"
+            :on-change="handleDailyUploadChange"
+            data-testid="sales-daily-upload-input"
+          >
+            <template #trigger>
+              <el-button>{{ t('salesAdmin.actions.selectWorkbook') }}</el-button>
+            </template>
+          </el-upload>
+
+          <el-button
+            type="primary"
+            :loading="isDailyImporting"
+            :disabled="!dailyImportFile"
+            data-testid="sales-daily-import-button"
+            @click="handleImportDailySales"
+          >
+            {{ t('salesAdmin.actions.importWorkbook') }}
+          </el-button>
+        </div>
+
+        <p v-if="dailyImportFile" class="sales-admin-view__selected-file" data-testid="sales-daily-selected-file">
+          {{ t('salesAdmin.feedback.selectedWorkbook', { name: dailyImportFile.name }) }}
+        </p>
+      </section>
+
+      <div v-if="dailyImportResult" class="sales-admin-view__import-result" data-testid="sales-daily-import-result">
+        <el-tag
+          effect="plain"
+          :type="dailyImportResult.diagnostics.length === 0 ? 'success' : 'warning'"
+          data-testid="sales-daily-import-summary"
+        >
+          {{ t('salesAdmin.feedback.importedTag', { count: dailyImportResult.imported_count }) }}
+        </el-tag>
+
+        <el-table
+          v-if="dailyImportResult.diagnostics.length > 0"
+          :data="dailyImportResult.diagnostics"
+          class="sales-admin-view__table"
+          data-testid="sales-daily-diagnostics-table"
+        >
+          <el-table-column prop="row" :label="t('salesAdmin.columns.row')" min-width="96" />
+          <el-table-column prop="field" :label="t('salesAdmin.columns.field')" min-width="160" />
+          <el-table-column prop="message" :label="t('salesAdmin.columns.message')" min-width="320" />
+        </el-table>
+      </div>
 
       <FilterForm class="sales-admin-view__filter-form" :title="t('salesAdmin.filters.dailySales')" :show-actions="false">
         <el-form-item :label="t('salesAdmin.fields.store')">
@@ -506,12 +753,7 @@ onMounted(() => {
           <el-button :disabled="!isDailyFiltersDirty" data-testid="sales-daily-filter-reset" @click="handleResetDailyFilters">
             {{ t('common.actions.reset') }}
           </el-button>
-          <el-button
-            type="primary"
-            :loading="isDailyLoading"
-            data-testid="sales-daily-filter-submit"
-            @click="loadDailySales"
-          >
+          <el-button type="primary" :loading="isDailyLoading" data-testid="sales-daily-filter-submit" @click="loadDailySales">
             {{ t('common.actions.query') }}
           </el-button>
         </div>
@@ -597,14 +839,14 @@ onMounted(() => {
     </el-card>
 
     <el-card class="sales-admin-view__card" shadow="never">
-        <template #header>
-          <div class="sales-admin-view__card-header">
-            <span>{{ t('salesAdmin.cards.customerTraffic') }}</span>
-            <div class="sales-admin-view__card-actions">
-              <el-button :loading="isTrafficLoading" data-testid="sales-traffic-refresh-button" @click="loadTraffic">
-                {{ t('common.actions.refresh') }}
-              </el-button>
-            </div>
+      <template #header>
+        <div class="sales-admin-view__card-header">
+          <span>{{ t('salesAdmin.cards.customerTraffic') }}</span>
+          <div class="sales-admin-view__card-actions">
+            <el-button :loading="isTrafficLoading" data-testid="sales-traffic-refresh-button" @click="loadTraffic">
+              {{ t('common.actions.refresh') }}
+            </el-button>
+          </div>
         </div>
       </template>
 
@@ -615,8 +857,74 @@ onMounted(() => {
         :title="trafficFeedback.title"
         :type="trafficFeedback.type"
         :description="trafficFeedback.description"
+        data-testid="sales-traffic-feedback"
         show-icon
       />
+
+      <section class="sales-admin-view__import-panel" data-testid="sales-traffic-import-panel">
+        <div class="sales-admin-view__import-copy">
+          <p class="sales-admin-view__import-label">{{ t('salesAdmin.imports.customerTrafficTitle') }}</p>
+          <p class="sales-admin-view__import-description">{{ t('salesAdmin.imports.customerTrafficDescription') }}</p>
+        </div>
+
+        <div class="sales-admin-view__import-actions">
+          <el-button
+            :loading="isTrafficTemplateDownloading"
+            data-testid="sales-traffic-download-template"
+            @click="handleDownloadTrafficTemplate"
+          >
+            {{ t('salesAdmin.actions.downloadTemplate') }}
+          </el-button>
+
+          <el-upload
+            :auto-upload="false"
+            :limit="1"
+            accept=".xlsx,.xls"
+            :show-file-list="false"
+            :on-change="handleTrafficUploadChange"
+            data-testid="sales-traffic-upload-input"
+          >
+            <template #trigger>
+              <el-button>{{ t('salesAdmin.actions.selectWorkbook') }}</el-button>
+            </template>
+          </el-upload>
+
+          <el-button
+            type="primary"
+            :loading="isTrafficImporting"
+            :disabled="!trafficImportFile"
+            data-testid="sales-traffic-import-button"
+            @click="handleImportTraffic"
+          >
+            {{ t('salesAdmin.actions.importWorkbook') }}
+          </el-button>
+        </div>
+
+        <p v-if="trafficImportFile" class="sales-admin-view__selected-file" data-testid="sales-traffic-selected-file">
+          {{ t('salesAdmin.feedback.selectedWorkbook', { name: trafficImportFile.name }) }}
+        </p>
+      </section>
+
+      <div v-if="trafficImportResult" class="sales-admin-view__import-result" data-testid="sales-traffic-import-result">
+        <el-tag
+          effect="plain"
+          :type="trafficImportResult.diagnostics.length === 0 ? 'success' : 'warning'"
+          data-testid="sales-traffic-import-summary"
+        >
+          {{ t('salesAdmin.feedback.importedTag', { count: trafficImportResult.imported_count }) }}
+        </el-tag>
+
+        <el-table
+          v-if="trafficImportResult.diagnostics.length > 0"
+          :data="trafficImportResult.diagnostics"
+          class="sales-admin-view__table"
+          data-testid="sales-traffic-diagnostics-table"
+        >
+          <el-table-column prop="row" :label="t('salesAdmin.columns.row')" min-width="96" />
+          <el-table-column prop="field" :label="t('salesAdmin.columns.field')" min-width="160" />
+          <el-table-column prop="message" :label="t('salesAdmin.columns.message')" min-width="320" />
+        </el-table>
+      </div>
 
       <FilterForm class="sales-admin-view__filter-form" :title="t('salesAdmin.filters.customerTraffic')" :show-actions="false">
         <el-form-item :label="t('salesAdmin.fields.store')">
@@ -662,19 +970,14 @@ onMounted(() => {
           >
             {{ t('common.actions.reset') }}
           </el-button>
-          <el-button
-            type="primary"
-            :loading="isTrafficLoading"
-            data-testid="sales-traffic-filter-submit"
-            @click="loadTraffic"
-          >
+          <el-button type="primary" :loading="isTrafficLoading" data-testid="sales-traffic-filter-submit" @click="loadTraffic">
             {{ t('common.actions.query') }}
           </el-button>
         </div>
       </FilterForm>
 
       <el-form label-position="top" class="sales-admin-view__form" @submit.prevent>
-        <div class="sales-admin-view__form-grid">
+        <div class="sales-admin-view__form-grid sales-admin-view__form-grid--traffic">
           <el-form-item :label="t('salesAdmin.fields.store')">
             <el-select
               v-model="trafficForm.store_id"
@@ -747,7 +1050,8 @@ onMounted(() => {
   gap: var(--mi-space-5);
 }
 
-.sales-admin-view__filter-form {
+.sales-admin-view__filter-form,
+.sales-admin-view__import-result {
   margin-bottom: var(--mi-space-4);
 }
 
@@ -768,7 +1072,8 @@ onMounted(() => {
   color: var(--mi-color-text);
 }
 
-.sales-admin-view__card-actions {
+.sales-admin-view__card-actions,
+.sales-admin-view__import-actions {
   display: flex;
   align-items: center;
   gap: var(--mi-space-3);
@@ -776,6 +1081,46 @@ onMounted(() => {
 
 .sales-admin-view__feedback {
   margin-bottom: var(--mi-space-4);
+}
+
+.sales-admin-view__import-panel,
+.sales-admin-view__import-result {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mi-space-3);
+}
+
+.sales-admin-view__import-panel {
+  margin-bottom: var(--mi-space-4);
+  padding: var(--mi-space-4);
+  border: var(--mi-border-width-thin) solid var(--mi-color-border);
+  border-radius: var(--mi-radius-md);
+  background: var(--mi-color-surface);
+  box-shadow: var(--mi-shadow-sm);
+}
+
+.sales-admin-view__import-copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mi-space-2);
+}
+
+.sales-admin-view__import-label,
+.sales-admin-view__selected-file {
+  margin: 0;
+}
+
+.sales-admin-view__import-label {
+  font-size: var(--mi-font-size-200);
+  font-weight: var(--mi-font-weight-semibold);
+  color: var(--mi-color-text);
+}
+
+.sales-admin-view__import-description,
+.sales-admin-view__selected-file {
+  font-size: var(--mi-font-size-100);
+  line-height: var(--mi-line-height-base);
+  color: var(--mi-color-muted);
 }
 
 .sales-admin-view__form {
@@ -789,6 +1134,10 @@ onMounted(() => {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--mi-space-4);
+}
+
+.sales-admin-view__form-grid--traffic {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .sales-admin-view__form-actions {
@@ -806,19 +1155,22 @@ onMounted(() => {
 
 .sales-admin-view__table,
 .sales-admin-view :deep(.el-select),
+.sales-admin-view :deep(.el-upload),
 .sales-admin-view__form-grid :deep(.el-input-number),
 .sales-admin-view :deep(.el-date-editor) {
   width: 100%;
 }
 
 @media (max-width: 52rem) {
-  .sales-admin-view__form-grid {
+  .sales-admin-view__form-grid,
+  .sales-admin-view__form-grid--traffic {
     grid-template-columns: minmax(0, 1fr);
   }
 
   .sales-admin-view__card-header,
   .sales-admin-view__filter-actions-row,
-  .sales-admin-view__form-actions {
+  .sales-admin-view__form-actions,
+  .sales-admin-view__import-actions {
     align-items: flex-start;
     flex-direction: column;
   }

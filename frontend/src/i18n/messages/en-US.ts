@@ -312,7 +312,8 @@ export const enUSMessages = {
   salesAdmin: {
     eyebrow: 'Sales data maintenance',
     title: 'Sales data admin',
-    summary: 'Capture daily sales and customer traffic records for reporting slices from a minimal admin console guarded by the sales.admin permission.',
+    summary:
+      'Download daily-sales and customer-traffic workbooks, import validated rows with diagnostics, and keep single-record fallback for isolated corrections.',
     tags: {
       dailySales: '{count} daily sales',
       trafficRows: '{count} traffic rows',
@@ -321,6 +322,12 @@ export const enUSMessages = {
       dailySales: 'Daily sales',
       customerTraffic: 'Customer traffic',
     },
+    imports: {
+      dailySalesTitle: 'Daily sales workbook import',
+      dailySalesDescription: 'Download the template, fill in store and unit codes, then import the completed workbook.',
+      customerTrafficTitle: 'Customer traffic workbook import',
+      customerTrafficDescription: 'Download the template, fill in store codes, then import the completed workbook.',
+    },
     filters: {
       dailySales: 'Daily sales filters',
       customerTraffic: 'Traffic filters',
@@ -328,6 +335,9 @@ export const enUSMessages = {
     actions: {
       createDailySale: 'Create daily sale',
       createTrafficRecord: 'Create traffic record',
+      downloadTemplate: 'Download template',
+      selectWorkbook: 'Select workbook',
+      importWorkbook: 'Import workbook',
     },
     fields: {
       store: 'Store',
@@ -338,6 +348,11 @@ export const enUSMessages = {
       salesAmount: 'Sales amount',
       trafficDate: 'Traffic date',
       inboundCount: 'Inbound count',
+    },
+    columns: {
+      row: 'Row',
+      field: 'Field',
+      message: 'Message',
     },
     placeholders: {
       allStores: 'All stores',
@@ -359,10 +374,26 @@ export const enUSMessages = {
       dailySaleDetailsRequiredDescription: 'Provide store, unit, sale date, and sales amount before creating a record.',
       dailySaleCreatedTitle: 'Daily sale created',
       dailySaleCreatedDescription: 'The daily sale record is now available for reporting and review.',
+      dailySalesTemplateDownloadedTitle: 'Daily sales template downloaded',
+      dailySalesTemplateDownloadedDescription: 'Use the workbook to prepare daily sales import rows with current reference data.',
+      dailySalesImportCompletedTitle: 'Daily sales import completed',
+      dailySalesImportCompletedDescription: 'Imported {count} daily sales rows and refreshed the section list.',
+      dailySalesImportDiagnosticsTitle: 'Daily sales import needs attention',
+      dailySalesImportDiagnosticsDescription: 'Fix the highlighted workbook rows and retry the import.',
       trafficDetailsRequiredTitle: 'Traffic details required',
       trafficDetailsRequiredDescription: 'Provide store, traffic date, and inbound count before creating a record.',
       trafficRecordCreatedTitle: 'Traffic record created',
       trafficRecordCreatedDescription: 'The customer traffic record is now available for reporting and review.',
+      customerTrafficTemplateDownloadedTitle: 'Customer traffic template downloaded',
+      customerTrafficTemplateDownloadedDescription: 'Use the workbook to prepare customer traffic import rows with current reference data.',
+      customerTrafficImportCompletedTitle: 'Customer traffic import completed',
+      customerTrafficImportCompletedDescription: 'Imported {count} customer traffic rows and refreshed the section list.',
+      customerTrafficImportDiagnosticsTitle: 'Customer traffic import needs attention',
+      customerTrafficImportDiagnosticsDescription: 'Fix the highlighted workbook rows and retry the import.',
+      workbookRequiredTitle: 'Workbook required',
+      workbookRequiredDescription: 'Select an .xlsx workbook before starting the import.',
+      selectedWorkbook: 'Selected workbook: {name}',
+      importedTag: '{count} imported',
     },
     errors: {
       masterDataPartiallyUnavailable: 'Sales master data partially unavailable',
@@ -374,8 +405,16 @@ export const enUSMessages = {
       unableToLoadTraffic: 'Unable to load customer traffic.',
       dailySaleCreationFailed: 'Daily sale creation failed',
       unableToCreateDailySale: 'Unable to create the daily sale.',
+      dailySalesTemplateDownloadFailed: 'Daily sales template download failed',
+      unableToDownloadDailySalesTemplate: 'Unable to download the daily sales template.',
+      dailySalesImportFailed: 'Daily sales import failed',
+      unableToImportDailySales: 'Unable to import the daily sales workbook.',
       trafficCreationFailed: 'Traffic creation failed',
       unableToCreateTraffic: 'Unable to create the traffic record.',
+      customerTrafficTemplateDownloadFailed: 'Customer traffic template download failed',
+      unableToDownloadCustomerTrafficTemplate: 'Unable to download the customer traffic template.',
+      customerTrafficImportFailed: 'Customer traffic import failed',
+      unableToImportCustomerTraffic: 'Unable to import the customer traffic workbook.',
     },
   },
   workbench: {
