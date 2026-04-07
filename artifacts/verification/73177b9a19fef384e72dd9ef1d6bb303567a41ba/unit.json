@@ -1,0 +1,22 @@
+{
+  "schema_version": "1",
+  "project": "mi",
+  "change": "report-acceptance-closure",
+  "commit_sha": "73177b9a19fef384e72dd9ef1d6bb303567a41ba",
+  "test_type": "unit",
+  "status": "passed",
+  "started_at": "2026-04-07T04:15:05Z",
+  "finished_at": "2026-04-07T04:15:07Z",
+  "source": {
+    "kind": "local",
+    "workflow": "unit",
+    "run_id": "local"
+  },
+  "stats": {
+    "total": 2,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0
+  },
+  "artifacts": []
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": "1",
+  "project": "mi",
+  "change": "report-acceptance-closure",
+  "commit_sha": "73177b9a19fef384e72dd9ef1d6bb303567a41ba",
+  "test_type": "e2e",
+  "status": "passed",
+  "started_at": "2026-04-07T04:16:01Z",
+  "finished_at": "2026-04-07T04:16:31Z",
+  "source": {
+    "kind": "local",
+    "workflow": "e2e",
+    "run_id": "local"
+  },
+  "stats": {
+    "total": 2,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0
+  },
+  "artifacts": [
+    "frontend/playwright-report"
+  ]
+}

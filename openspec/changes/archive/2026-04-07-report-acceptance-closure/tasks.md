@@ -17,6 +17,6 @@
 
 ## 4. Verification and evidence
 
-- [ ] 4.1 Run the report-acceptance verification suite needed for the current commit, including any unit/integration/e2e checks or report-focused evidence required to demonstrate closure.
-- [ ] 4.2 Record machine-readable evidence using `artifacts/verification/<commit-sha>/unit.json`, `artifacts/verification/<commit-sha>/integration.json`, and `artifacts/verification/<commit-sha>/e2e.json` for the current commit.
-- [ ] 4.3 Confirm the change satisfies current gate expectations: CI requires passing `unit` and `integration` evidence for the current commit, while archive requires passing `unit`, `integration`, and `e2e` evidence for the current commit.
+- [x] 4.1 Run the report-acceptance verification suite needed for the current commit, including any unit/integration/e2e checks or report-focused evidence required to demonstrate closure.
+- [x] 4.2 Record machine-readable evidence using `artifacts/verification/<commit-sha>/unit.json`, `artifacts/verification/<commit-sha>/integration.json`, and `artifacts/verification/<commit-sha>/e2e.json` for the current commit.
+- [x] 4.3 Confirm the change satisfies current gate expectations: CI requires passing `unit` and `integration` evidence for the current commit, while archive requires passing `unit`, `integration`, and `e2e` evidence for the current commit.
