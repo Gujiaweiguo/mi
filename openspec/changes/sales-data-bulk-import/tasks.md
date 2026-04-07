@@ -20,5 +20,5 @@
 
 - [x] 4.1 Add backend automated coverage for template generation, invalid import rejection, deterministic batch upsert, and reference validation.
 - [x] 4.2 Add frontend automated coverage for upload flow, diagnostics rendering, and coexistence of batch import with single-record entry.
-- [ ] 4.3 Run the verification suite required for the current commit and record machine-readable evidence in `artifacts/verification/<commit-sha>/unit.json`, `artifacts/verification/<commit-sha>/integration.json`, and `artifacts/verification/<commit-sha>/e2e.json`.
-- [ ] 4.4 Confirm the current commit satisfies gate expectations: CI requires passing `unit` and `integration` evidence, while archive requires passing `unit`, `integration`, and `e2e` evidence for the same commit SHA.
+- [x] 4.3 Run the verification suite required for the current commit and record machine-readable evidence in `artifacts/verification/<commit-sha>/unit.json`, `artifacts/verification/<commit-sha>/integration.json`, and `artifacts/verification/<commit-sha>/e2e.json`.
+- [x] 4.4 Confirm the current commit satisfies gate expectations: CI requires passing `unit` and `integration` evidence, while archive requires passing `unit`, `integration`, and `e2e` evidence for the same commit SHA.
