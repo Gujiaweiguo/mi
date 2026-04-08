@@ -281,14 +281,18 @@ func TestLeaseServiceRejectsTerminateWhenBillingDocumentInFlight(t *testing.T) {
 
 func newLeaseCreateInput(leaseNo string, actorUserID int64) lease.CreateDraftInput {
 	return lease.CreateDraftInput{
-		LeaseNo:      leaseNo,
-		DepartmentID: 101,
-		StoreID:      101,
-		BuildingID:   int64Pointer(101),
-		TenantName:   "ACME Retail",
-		StartDate:    time.Date(2026, 4, 1, 0, 0, 0, 0, time.UTC),
-		EndDate:      time.Date(2027, 3, 31, 0, 0, 0, 0, time.UTC),
-		Units:        []lease.UnitInput{{UnitID: 101, RentArea: 118}},
+		LeaseNo:          leaseNo,
+		DepartmentID:     101,
+		StoreID:          101,
+		BuildingID:       int64Pointer(101),
+		CustomerID:       int64Pointer(101),
+		BrandID:          int64Pointer(101),
+		TradeID:          int64Pointer(102),
+		ManagementTypeID: int64Pointer(101),
+		TenantName:       "ACME Retail",
+		StartDate:        time.Date(2026, 4, 1, 0, 0, 0, 0, time.UTC),
+		EndDate:          time.Date(2027, 3, 31, 0, 0, 0, 0, time.UTC),
+		Units:            []lease.UnitInput{{UnitID: 101, RentArea: 118}},
 		Terms: []lease.TermInput{{
 			TermType:       lease.TermTypeRent,
 			BillingCycle:   lease.BillingCycleMonthly,

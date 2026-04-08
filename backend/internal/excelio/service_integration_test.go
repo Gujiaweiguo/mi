@@ -387,7 +387,11 @@ func prepareApprovedInvoiceForExcel(t *testing.T, ctx context.Context, db *sql.D
 	start := time.Date(2026, 4, 1, 0, 0, 0, 0, time.UTC)
 	end := time.Date(2027, 3, 31, 0, 0, 0, 0, time.UTC)
 	buildingID := int64(101)
-	draft, err := leaseService.CreateDraft(ctx, lease.CreateDraftInput{LeaseNo: "CON-EXCEL-101", DepartmentID: 101, StoreID: 101, BuildingID: &buildingID, TenantName: "ACME Retail", StartDate: start, EndDate: end, Units: []lease.UnitInput{{UnitID: 101, RentArea: 118}}, Terms: []lease.TermInput{{TermType: lease.TermTypeRent, BillingCycle: lease.BillingCycleMonthly, CurrencyTypeID: 101, Amount: 12000, EffectiveFrom: start, EffectiveTo: end}}, ActorUserID: 101})
+	customerID := int64(101)
+	brandID := int64(101)
+	tradeID := int64(102)
+	managementTypeID := int64(101)
+	draft, err := leaseService.CreateDraft(ctx, lease.CreateDraftInput{LeaseNo: "CON-EXCEL-101", DepartmentID: 101, StoreID: 101, BuildingID: &buildingID, CustomerID: &customerID, BrandID: &brandID, TradeID: &tradeID, ManagementTypeID: &managementTypeID, TenantName: "ACME Retail", StartDate: start, EndDate: end, Units: []lease.UnitInput{{UnitID: 101, RentArea: 118}}, Terms: []lease.TermInput{{TermType: lease.TermTypeRent, BillingCycle: lease.BillingCycleMonthly, CurrencyTypeID: 101, Amount: 12000, EffectiveFrom: start, EffectiveTo: end}}, ActorUserID: 101})
 	if err != nil {
 		t.Fatalf("create lease draft: %v", err)
 	}
