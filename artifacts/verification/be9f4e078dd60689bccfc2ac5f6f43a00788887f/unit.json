@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "project": "mi",
+  "change": "payment-and-ar-tracking",
+  "commit_sha": "be9f4e078dd60689bccfc2ac5f6f43a00788887f",
+  "test_type": "unit",
+  "status": "passed",
+  "started_at": "2026-04-08T06:58:00Z",
+  "finished_at": "2026-04-08T06:58:54Z",
+  "source": {
+    "workspace": "/opt/code/mi",
+    "commands": [
+      "go test ./...",
+      "npm run test:unit",
+      "npm run build"
+    ],
+    "notes": [
+      "vite reported chunk-size warnings only; build exited 0"
+    ]
+  },
+  "stats": {
+    "command_count": 3,
+    "passed_count": 3,
+    "failed_count": 0
+  }
+}

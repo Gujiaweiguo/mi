@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "project": "mi",
+  "change": "payment-and-ar-tracking",
+  "commit_sha": "be9f4e078dd60689bccfc2ac5f6f43a00788887f",
+  "test_type": "e2e",
+  "status": "passed",
+  "started_at": "2026-04-08T06:58:00Z",
+  "finished_at": "2026-04-08T06:58:54Z",
+  "source": {
+    "workspace": "/opt/code/mi",
+    "commands": [
+      "npm run test:e2e -- e2e/task20-payment-ar.spec.ts"
+    ]
+  },
+  "stats": {
+    "command_count": 1,
+    "passed_count": 1,
+    "failed_count": 0,
+    "test_count": 1
+  }
+}
