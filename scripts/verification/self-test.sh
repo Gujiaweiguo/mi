@@ -46,5 +46,25 @@ expect_failure \
   "archive gate fails on failed e2e status" \
   "$VALIDATOR" archive --root "$TESTDATA_DIR/failed-status" --commit-sha 6666666666666666666666666666666666666666
 
+expect_failure \
+  "ci gate fails on test_type mismatch" \
+  "$VALIDATOR" ci --root "$TESTDATA_DIR/test-type-mismatch" --commit-sha 7777777777777777777777777777777777777777
+
+expect_failure \
+  "archive gate fails when e2e stats fields are missing" \
+  "$VALIDATOR" archive --root "$TESTDATA_DIR/missing-stats-fields" --commit-sha 8888888888888888888888888888888888888888
+
+expect_failure \
+  "archive gate fails when e2e stats are inconsistent" \
+  "$VALIDATOR" archive --root "$TESTDATA_DIR/stats-impossible" --commit-sha 9999999999999999999999999999999999999999
+
+expect_failure \
+  "archive gate fails when e2e artifacts field is missing" \
+  "$VALIDATOR" archive --root "$TESTDATA_DIR/missing-artifacts-e2e" --commit-sha aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+expect_failure \
+  "archive gate fails when timestamps are reversed" \
+  "$VALIDATOR" archive --root "$TESTDATA_DIR/timestamp-reversed" --commit-sha bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+
 echo
 echo "All verification self-tests passed."

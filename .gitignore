@@ -2,6 +2,8 @@
 .opencode/node_modules/
 .opencode/package-lock.json
 artifacts/
+!scripts/verification/testdata/
+!scripts/verification/testdata/**
 
 # frontend
 frontend/node_modules/

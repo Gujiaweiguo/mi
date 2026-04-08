@@ -92,6 +92,7 @@ validate_evidence() {
   if ! output=$(python3 - "$evidence_file" "$evidence_type" "$COMMIT_SHA" <<'PY'
 import json
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 path, expected_type, expected_sha = sys.argv[1:4]
@@ -119,13 +120,59 @@ if missing:
     print(f"malformed evidence: {path}: missing fields {', '.join(missing)}")
     sys.exit(1)
 
+if data["schema_version"] != "1":
+    print(f"malformed evidence: {path}: schema_version must be '1'")
+    sys.exit(1)
+
 if not isinstance(data["source"], dict):
     print(f"malformed evidence: {path}: source must be an object")
     sys.exit(1)
 
+for field in ("kind", "workflow", "run_id"):
+    value = data["source"].get(field)
+    if not isinstance(value, str) or not value.strip():
+        print(f"malformed evidence: {path}: source.{field} must be a non-empty string")
+        sys.exit(1)
+
 if not isinstance(data["stats"], dict):
     print(f"malformed evidence: {path}: stats must be an object")
     sys.exit(1)
+
+for field in ("total", "passed", "failed", "skipped"):
+    value = data["stats"].get(field)
+    if not isinstance(value, int) or value < 0:
+        print(f"malformed evidence: {path}: stats.{field} must be a non-negative integer")
+        sys.exit(1)
+
+if data["stats"]["passed"] + data["stats"]["failed"] + data["stats"]["skipped"] > data["stats"]["total"]:
+    print(f"malformed evidence: {path}: stats are inconsistent")
+    sys.exit(1)
+
+def parse_utc_timestamp(value):
+    try:
+        return datetime.strptime(value, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+    except Exception:
+        return None
+
+started_at = parse_utc_timestamp(data["started_at"])
+finished_at = parse_utc_timestamp(data["finished_at"])
+if started_at is None or finished_at is None:
+    print(f"malformed evidence: {path}: timestamps must be UTC ISO 8601 (YYYY-MM-DDTHH:MM:SSZ)")
+    sys.exit(1)
+
+if started_at > finished_at:
+    print(f"malformed evidence: {path}: started_at must be <= finished_at")
+    sys.exit(1)
+
+if expected_type == "e2e":
+    artifacts = data.get("artifacts")
+    if not isinstance(artifacts, list) or not artifacts:
+        print(f"malformed evidence: {path}: artifacts must be a non-empty array for e2e evidence")
+        sys.exit(1)
+    for artifact in artifacts:
+        if not isinstance(artifact, str) or not artifact.strip():
+            print(f"malformed evidence: {path}: artifacts entries must be non-empty strings")
+            sys.exit(1)
 
 if data["commit_sha"] != expected_sha:
     print(f"stale evidence: {path}: commit_sha {data['commit_sha']} does not match {expected_sha}")

@@ -16,6 +16,10 @@ def timestamp(value: str | None) -> str:
     )
 
 
+def parse_utc_timestamp(value: str) -> datetime:
+    return datetime.strptime(value, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", required=True)
@@ -36,6 +40,20 @@ def main() -> int:
     parser.add_argument("--artifact", action="append", default=[])
     args = parser.parse_args()
 
+    if any(count < 0 for count in (args.total, args.passed, args.failed, args.skipped)):
+        raise ValueError("stats values must be non-negative integers")
+
+    if args.passed + args.failed + args.skipped > args.total:
+        raise ValueError("stats must satisfy passed + failed + skipped <= total")
+
+    started_at = timestamp(args.started_at)
+    finished_at = timestamp(args.finished_at)
+    if parse_utc_timestamp(started_at) > parse_utc_timestamp(finished_at):
+        raise ValueError("started_at must be less than or equal to finished_at")
+
+    if args.test_type == "e2e" and not args.artifact:
+        raise ValueError("e2e evidence requires at least one artifact path")
+
     evidence_dir = Path(args.root) / "artifacts" / "verification" / args.commit_sha
     evidence_dir.mkdir(parents=True, exist_ok=True)
     evidence_file = evidence_dir / f"{args.test_type}.json"
@@ -47,8 +65,8 @@ def main() -> int:
         "commit_sha": args.commit_sha,
         "test_type": args.test_type,
         "status": args.status,
-        "started_at": timestamp(args.started_at),
-        "finished_at": timestamp(args.finished_at),
+        "started_at": started_at,
+        "finished_at": finished_at,
         "source": {
             "kind": args.source_kind,
             "workflow": args.workflow,
