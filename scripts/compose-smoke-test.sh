@@ -40,11 +40,14 @@ esac
 
 ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 COMPOSE_FILE="$ROOT_DIR/deploy/compose/docker-compose.$ENVIRONMENT.yml"
+ENV_FILE="$ROOT_DIR/deploy/env/$ENVIRONMENT.env"
 
 if [[ ! -f "$COMPOSE_FILE" ]]; then
   printf 'Compose file missing: %s\n' "$COMPOSE_FILE" >&2
   exit 1
 fi
+
+"$ROOT_DIR/scripts/compose-preflight.sh" "$ENVIRONMENT"
 
 BUILD_ARG=()
 if [[ "$BUILD_FLAG" == "--build" || "$KEEP_RUNNING_FLAG" == "--build" ]]; then
@@ -58,12 +61,12 @@ fi
 
 teardown() {
   if [[ "$KEEP_RUNNING" == false ]]; then
-    docker compose -f "$COMPOSE_FILE" down --remove-orphans >/dev/null 2>&1 || true
+    docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" down --remove-orphans >/dev/null 2>&1 || true
   fi
 }
 trap teardown EXIT
 
-docker compose -f "$COMPOSE_FILE" up -d "${BUILD_ARG[@]}"
+docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" up -d "${BUILD_ARG[@]}"
 
 wait_for_health() {
   local service=$1
@@ -72,7 +75,7 @@ wait_for_health() {
 
   while (( attempts < max_attempts )); do
     local container_id
-    container_id=$(docker compose -f "$COMPOSE_FILE" ps -q "$service")
+    container_id=$(docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" ps -q "$service")
     if [[ -n "$container_id" ]]; then
       local status
       status=$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}{{.State.Status}}{{end}}' "$container_id")
@@ -93,9 +96,9 @@ for service in mysql backend frontend nginx; do
   wait_for_health "$service"
 done
 
-docker compose -f "$COMPOSE_FILE" exec -T backend sh -lc 'wget -q -O /dev/null http://localhost:8080/healthz'
-docker compose -f "$COMPOSE_FILE" exec -T frontend sh -lc 'wget -q -O /dev/null http://localhost/'
-docker compose -f "$COMPOSE_FILE" exec -T nginx sh -lc 'wget -q -O /dev/null http://127.0.0.1/'
-docker compose -f "$COMPOSE_FILE" exec -T nginx sh -lc 'wget -q -O /dev/null http://127.0.0.1/api/healthz'
+docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" exec -T backend sh -lc 'test -w /app/logs && test -w /app/generated-documents && test -w /app/uploads && wget -q -O /dev/null http://localhost:8080/healthz'
+docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" exec -T frontend sh -lc 'wget -q -O /dev/null http://localhost/'
+docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" exec -T nginx sh -lc 'wget -q -O /dev/null http://127.0.0.1/'
+docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" exec -T nginx sh -lc 'wget -q -O /dev/null http://127.0.0.1/api/healthz'
 
 printf 'Compose smoke test passed for %s\n' "$ENVIRONMENT"
