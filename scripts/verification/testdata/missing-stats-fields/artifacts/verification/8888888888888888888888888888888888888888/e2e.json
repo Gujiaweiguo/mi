@@ -1,0 +1,23 @@
+{
+  "schema_version": "1",
+  "project": "mi",
+  "change": "legacy-system-migration",
+  "commit_sha": "8888888888888888888888888888888888888888",
+  "test_type": "e2e",
+  "status": "passed",
+  "started_at": "2026-03-30T10:04:00Z",
+  "finished_at": "2026-03-30T10:05:00Z",
+  "source": {
+    "kind": "self-test",
+    "workflow": "fixture-missing-stats",
+    "run_id": "fixture-15"
+  },
+  "stats": {
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0
+  },
+  "artifacts": [
+    "frontend/test-results/e2e-results.json"
+  ]
+}

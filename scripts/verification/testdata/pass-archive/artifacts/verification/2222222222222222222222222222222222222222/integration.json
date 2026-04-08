@@ -1,0 +1,21 @@
+{
+  "schema_version": "1",
+  "project": "mi",
+  "change": "legacy-system-migration",
+  "commit_sha": "2222222222222222222222222222222222222222",
+  "test_type": "integration",
+  "status": "passed",
+  "started_at": "2026-03-30T10:02:00Z",
+  "finished_at": "2026-03-30T10:04:00Z",
+  "source": {
+    "kind": "self-test",
+    "workflow": "fixture-archive",
+    "run_id": "fixture-4"
+  },
+  "stats": {
+    "total": 5,
+    "passed": 5,
+    "failed": 0,
+    "skipped": 0
+  }
+}
