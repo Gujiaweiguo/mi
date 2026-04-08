@@ -44,6 +44,14 @@ scripts/compose-test-config.sh
 scripts/compose-production-config.sh
 ```
 
+Both commands now run the same preflight contract before rendering:
+
+- validate the target compose file exists
+- validate the target deploy env file exists
+- validate the matching backend config file exists
+- validate `deploy/runtime/<env>/{logs,documents,uploads,mysql}` exists and is writable
+- fail before startup if `docker compose config` cannot render with the selected env file
+
 Smoke-test the full stack:
 
 ```bash
@@ -80,6 +88,7 @@ Restore a backup bundle:
 ```bash
 scripts/db-restore.sh test <backup-archive>
 scripts/db-restore.sh production <backup-archive>
+scripts/db-restore.sh test <backup-archive> --restore-runtime-files
 ```
 
 By default the restore script imports the MySQL dump only. Pass `--restore-runtime-files` to also replace the on-disk runtime directories plus the backed-up config/env snapshots.

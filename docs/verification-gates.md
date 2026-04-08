@@ -48,6 +48,13 @@ Run validator self-tests against fixture data:
 ```bash
 scripts/verification/self-test.sh
 scripts/verification/self-test-artifacts.sh
+scripts/verification/self-test-rehearsal.sh
+```
+
+Validate a cutover rehearsal result artifact:
+
+```bash
+scripts/verification/validate-rehearsal-result.sh artifacts/rehearsal/<commit-sha>/<result-file>.json --commit-sha <commit-sha>
 ```
 
 Generate current-commit unit evidence:

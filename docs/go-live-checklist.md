@@ -37,6 +37,7 @@ artifacts/rehearsal/<commit-sha>/cutover-rehearsal-test-<timestamp>.json
 - [ ] Test stack smoke validation passed.
 - [ ] Backup rehearsal completed.
 - [ ] Restore rehearsal completed.
+- [ ] Restore rehearsal included runtime-file restoration and post-restore smoke validation.
 - [ ] Mandatory outputs remain validated against `docs/output-catalog.md` through current-commit archive evidence.
 - [ ] Report scope `R01-R19` remains validated against `report-acceptance-matrix.md` through current-commit archive evidence.
 

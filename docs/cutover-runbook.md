@@ -147,6 +147,18 @@ Rehearsal command:
 scripts/cutover-rehearsal.sh test --build
 ```
 
+The rehearsal now executes its operational checks in this order:
+
+1. compose preflight for the target environment
+2. archive-ready evidence validation for the current HEAD commit
+3. clean runtime reset for the rehearsal environment
+4. bootstrap and fresh-start verification
+5. full stack smoke validation
+6. backup bundle creation
+7. restore rehearsal with `--restore-runtime-files`
+8. post-restore verification and post-restore smoke validation
+9. machine-readable GO/NO-GO result writeout
+
 Result artifacts are written to:
 
 ```text
@@ -155,6 +167,8 @@ artifacts/rehearsal/<commit-sha>/cutover-rehearsal-test-<timestamp>.log
 ```
 
 `status: "GO"` means the rehearsal passed all required checks. Any failed check produces `status: "NO-GO"`.
+
+The rehearsal result artifact also records per-gate status and `failing_gate` so the blocking step is machine-identifiable.
 
 ## Cutover Sequence
 
