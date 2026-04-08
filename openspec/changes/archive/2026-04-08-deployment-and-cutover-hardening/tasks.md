@@ -21,5 +21,5 @@
 
 - [x] 4.1 Update the operator-facing deployment and cutover documentation so commands, prerequisites, artifact paths, and decision rules match the hardened executable workflow.
 - [x] 4.2 Add or tighten automated verification for Compose validation, backup/restore rehearsal behavior, and cutover GO/NO-GO artifact generation at the closest executable level available in the repository.
-- [ ] 4.3 Run the verification suite for the current commit and record machine-readable evidence in `artifacts/verification/<commit-sha>/unit.json`, `artifacts/verification/<commit-sha>/integration.json`, and `artifacts/verification/<commit-sha>/e2e.json`.
-- [ ] 4.4 Confirm the current commit satisfies gate expectations for this change: CI requires passing `unit` and `integration` evidence, while archive requires passing `unit`, `integration`, and `e2e` evidence for the same commit SHA.
+- [x] 4.3 Run the verification suite for the current commit and record machine-readable evidence in `artifacts/verification/<commit-sha>/unit.json`, `artifacts/verification/<commit-sha>/integration.json`, and `artifacts/verification/<commit-sha>/e2e.json`.
+- [x] 4.4 Confirm the current commit satisfies gate expectations for this change: CI requires passing `unit` and `integration` evidence, while archive requires passing `unit`, `integration`, and `e2e` evidence for the same commit SHA.
