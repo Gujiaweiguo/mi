@@ -27,5 +27,5 @@
 - [x] 5.1 Update backend integration coverage for approval-driven receivable booking, duplicate replay safety, payment application, over-application rejection, and settlement behavior.
 - [x] 5.2 Update report-oriented verification so receivable-dependent outputs continue to align with workflow-driven `ar_open_items` data and payment-backed received metrics where applicable.
 - [x] 5.3 Add frontend automated coverage for receivable review and payment entry flows, including invalid payment attempts and post-payment UI state updates.
-- [ ] 5.4 Run the verification suite for the current commit and record machine-readable evidence in `artifacts/verification/<commit-sha>/unit.json`, `artifacts/verification/<commit-sha>/integration.json`, and `artifacts/verification/<commit-sha>/e2e.json`.
-- [ ] 5.5 Confirm the current commit satisfies gate expectations: CI requires passing `unit` and `integration` evidence, while archive requires passing `unit`, `integration`, and `e2e` evidence for the same commit SHA.
+- [x] 5.4 Run the verification suite for the current commit and record machine-readable evidence in `artifacts/verification/<commit-sha>/unit.json`, `artifacts/verification/<commit-sha>/integration.json`, and `artifacts/verification/<commit-sha>/e2e.json`.
+- [x] 5.5 Confirm the current commit satisfies gate expectations: CI requires passing `unit` and `integration` evidence, while archive requires passing `unit`, `integration`, and `e2e` evidence for the same commit SHA.
