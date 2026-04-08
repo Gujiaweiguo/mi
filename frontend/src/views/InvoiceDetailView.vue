@@ -4,10 +4,13 @@ import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 
 import {
+  getInvoiceReceivable,
   getInvoice,
+  recordInvoicePayment,
   submitInvoice,
   cancelInvoice,
   type InvoiceDocument,
+  type InvoiceReceivable,
 } from '../api/invoice'
 import PageSection from '../components/platform/PageSection.vue'
 import { useAppStore } from '../stores/app'
@@ -23,6 +26,13 @@ const successMessage = ref('')
 const isLoading = ref(false)
 const isSubmitting = ref(false)
 const isCancelling = ref(false)
+const receivable = ref<InvoiceReceivable | null>(null)
+const receivableErrorMessage = ref('')
+const isReceivableLoading = ref(false)
+const isRecordingPayment = ref(false)
+const paymentAmount = ref<number | null>(null)
+const paymentDate = ref('')
+const paymentNote = ref('')
 
 const invoiceId = computed(() => {
   const rawId = route.params.id
@@ -87,7 +97,26 @@ const documentTypeTag = (type: string) => (type === 'bill' ? 'warning' : 'primar
 
 const submitDisabled = computed(() => !invoice.value || isSubmitting.value || invoice.value.status !== 'draft')
 
-const cancelDisabled = computed(() => !invoice.value || isCancelling.value || invoice.value.status !== 'approved')
+const cancelDisabled = computed(
+  () =>
+    !invoice.value ||
+    isCancelling.value ||
+    invoice.value.status !== 'approved' ||
+    isReceivableLoading.value ||
+    (receivable.value?.payment_history.length ?? 0) > 0,
+)
+
+const hasReceivableAccess = computed(() => invoice.value?.status === 'approved')
+
+const recordPaymentDisabled = computed(
+  () =>
+    !hasReceivableAccess.value ||
+    !receivable.value ||
+    receivable.value.outstanding_amount <= 0 ||
+    paymentAmount.value === null ||
+    paymentAmount.value <= 0 ||
+    isRecordingPayment.value,
+)
 
 const statusTag = (status: string) => {
   switch (status) {
@@ -104,6 +133,47 @@ const statusTag = (status: string) => {
   }
 }
 
+const settlementTag = (status: string) => (status === 'settled' ? 'success' : 'warning')
+
+const resolveSettlementLabel = (status: string) => {
+  switch (status) {
+    case 'outstanding':
+      return t('receivables.settlement.outstanding')
+    case 'settled':
+      return t('receivables.settlement.settled')
+    default:
+      return status
+  }
+}
+
+const resetPaymentForm = () => {
+  paymentAmount.value = null
+  paymentDate.value = ''
+  paymentNote.value = ''
+}
+
+const loadReceivable = async () => {
+  if (!invoiceId.value || !hasReceivableAccess.value) {
+    receivable.value = null
+    receivableErrorMessage.value = ''
+    resetPaymentForm()
+    return
+  }
+
+  isReceivableLoading.value = true
+  receivableErrorMessage.value = ''
+
+  try {
+    const response = await getInvoiceReceivable(invoiceId.value)
+    receivable.value = response.data.receivable
+  } catch (error) {
+    receivable.value = null
+    receivableErrorMessage.value = error instanceof Error ? error.message : t('invoiceDetail.errors.unableToLoadReceivable')
+  } finally {
+    isReceivableLoading.value = false
+  }
+}
+
 const loadInvoice = async () => {
   if (!invoiceId.value) {
     errorMessage.value = t('invoiceDetail.errors.invalidId')
@@ -117,8 +187,11 @@ const loadInvoice = async () => {
   try {
     const response = await getInvoice(invoiceId.value)
     invoice.value = response.data.document
+    await loadReceivable()
   } catch (error) {
     invoice.value = null
+    receivable.value = null
+    receivableErrorMessage.value = ''
     errorMessage.value = error instanceof Error ? error.message : t('invoiceDetail.errors.unableToLoad')
   } finally {
     isLoading.value = false
@@ -169,6 +242,34 @@ const handleCancel = async () => {
     errorMessage.value = error instanceof Error ? error.message : t('invoiceDetail.errors.unableToCancel')
   } finally {
     isCancelling.value = false
+  }
+}
+
+const handleRecordPayment = async () => {
+  if (!invoice.value || !receivable.value || paymentAmount.value === null || paymentAmount.value <= 0) {
+    return
+  }
+
+  isRecordingPayment.value = true
+  errorMessage.value = ''
+  successMessage.value = ''
+  receivableErrorMessage.value = ''
+
+  try {
+    const response = await recordInvoicePayment(invoice.value.id, {
+      amount: paymentAmount.value,
+      payment_date: paymentDate.value || undefined,
+      note: paymentNote.value.trim() || undefined,
+      idempotency_key: crypto.randomUUID(),
+    })
+
+    receivable.value = response.data.receivable
+    successMessage.value = t('invoiceDetail.feedback.paymentRecorded')
+    resetPaymentForm()
+  } catch (error) {
+    errorMessage.value = error instanceof Error ? error.message : t('invoiceDetail.errors.unableToRecordPayment')
+  } finally {
+    isRecordingPayment.value = false
   }
 }
 
@@ -340,6 +441,151 @@ watch(
           </el-table-column>
         </el-table>
       </el-card>
+
+      <el-card class="invoice-detail-view__card" shadow="never" data-testid="invoice-receivable-card">
+        <template #header>
+          <div class="invoice-detail-view__card-header">
+            <span>{{ t('invoiceDetail.cards.receivable') }}</span>
+            <el-tag v-if="receivable" effect="plain" :type="settlementTag(receivable.settlement_status)">
+              {{ resolveSettlementLabel(receivable.settlement_status) }}
+            </el-tag>
+          </div>
+        </template>
+
+        <el-alert
+          v-if="!hasReceivableAccess"
+          :closable="false"
+          type="info"
+          show-icon
+          :title="t('invoiceDetail.receivable.approvedOnlyTitle')"
+          :description="t('invoiceDetail.receivable.approvedOnlyDescription')"
+          data-testid="invoice-receivable-awaiting-approval"
+        />
+
+        <el-skeleton v-else-if="isReceivableLoading" :rows="4" animated />
+
+        <el-alert
+          v-else-if="receivableErrorMessage"
+          :closable="false"
+          type="error"
+          show-icon
+          :title="t('invoiceDetail.errors.receivableUnavailable')"
+          :description="receivableErrorMessage"
+          data-testid="invoice-receivable-error-alert"
+        />
+
+        <template v-else-if="receivable">
+          <el-descriptions :column="2" border class="invoice-detail-view__receivable-descriptions" data-testid="invoice-receivable-summary">
+            <el-descriptions-item :label="t('invoiceDetail.fields.receivableOutstanding')">
+              {{ formatAmount(receivable.outstanding_amount) }}
+            </el-descriptions-item>
+            <el-descriptions-item :label="t('invoiceDetail.fields.receivableSettlementStatus')">
+              {{ resolveSettlementLabel(receivable.settlement_status) }}
+            </el-descriptions-item>
+            <el-descriptions-item :label="t('invoiceDetail.fields.receivableItemCount')">
+              {{ receivable.items.length }}
+            </el-descriptions-item>
+            <el-descriptions-item :label="t('invoiceDetail.fields.receivablePaymentCount')">
+              {{ receivable.payment_history.length }}
+            </el-descriptions-item>
+          </el-descriptions>
+
+          <el-table
+            :data="receivable.items"
+            row-key="id"
+            class="invoice-detail-view__table"
+            :empty-text="t('invoiceDetail.table.receivableItemsEmpty')"
+            data-testid="invoice-open-items-table"
+          >
+            <el-table-column prop="charge_type" :label="t('invoiceDetail.fields.chargeType')" min-width="140" />
+            <el-table-column prop="due_date" :label="t('invoiceDetail.fields.dueDate')" min-width="140" />
+            <el-table-column :label="t('invoiceDetail.fields.outstandingAmount')" min-width="160" align="right" header-align="right">
+              <template #default="scope">
+                {{ formatAmount(scope.row.outstanding_amount) }}
+              </template>
+            </el-table-column>
+          </el-table>
+
+          <div class="invoice-detail-view__payment-entry">
+            <h3 class="invoice-detail-view__payment-title">{{ t('invoiceDetail.cards.paymentEntry') }}</h3>
+
+            <el-form label-position="top">
+              <div class="invoice-detail-view__payment-grid">
+                <el-form-item :label="t('invoiceDetail.fields.paymentAmount')">
+                  <el-input-number
+                    v-model="paymentAmount"
+                    :min="0.01"
+                    :precision="2"
+                    :step="100"
+                    :controls="false"
+                    class="invoice-detail-view__payment-input"
+                    data-testid="invoice-payment-amount-input"
+                  />
+                </el-form-item>
+
+                <el-form-item :label="t('invoiceDetail.fields.paymentDate')">
+                  <el-date-picker
+                    v-model="paymentDate"
+                    type="date"
+                    value-format="YYYY-MM-DD"
+                    format="YYYY-MM-DD"
+                    :placeholder="t('invoiceDetail.placeholders.selectPaymentDate')"
+                    class="invoice-detail-view__payment-input"
+                    data-testid="invoice-payment-date-input"
+                  />
+                </el-form-item>
+
+                <el-form-item :label="t('invoiceDetail.fields.paymentNote')">
+                  <el-input
+                    v-model="paymentNote"
+                    maxlength="120"
+                    show-word-limit
+                    :placeholder="t('invoiceDetail.placeholders.enterPaymentNote')"
+                    data-testid="invoice-payment-note-input"
+                  />
+                </el-form-item>
+              </div>
+
+              <div class="invoice-detail-view__payment-actions">
+                <el-button
+                  type="primary"
+                  :loading="isRecordingPayment"
+                  :disabled="recordPaymentDisabled"
+                  data-testid="invoice-payment-submit-button"
+                  @click="handleRecordPayment"
+                >
+                  {{ t('invoiceDetail.actions.recordPayment') }}
+                </el-button>
+
+                <el-tag v-if="receivable.outstanding_amount <= 0" effect="plain" type="success" data-testid="invoice-receivable-settled-tag">
+                  {{ t('invoiceDetail.feedback.fullySettled') }}
+                </el-tag>
+              </div>
+            </el-form>
+          </div>
+
+          <el-table
+            :data="receivable.payment_history"
+            row-key="id"
+            class="invoice-detail-view__table"
+            :empty-text="t('invoiceDetail.table.paymentHistoryEmpty')"
+            data-testid="invoice-payment-history-table"
+          >
+            <el-table-column prop="payment_date" :label="t('invoiceDetail.fields.paymentDate')" min-width="140" />
+            <el-table-column :label="t('invoiceDetail.fields.paymentAmount')" min-width="160" align="right" header-align="right">
+              <template #default="scope">
+                {{ formatAmount(scope.row.amount) }}
+              </template>
+            </el-table-column>
+            <el-table-column prop="note" :label="t('invoiceDetail.fields.paymentNote')" min-width="220" />
+            <el-table-column :label="t('common.columns.createdAt')" min-width="180">
+              <template #default="scope">
+                {{ formatTimestamp(scope.row.created_at) }}
+              </template>
+            </el-table-column>
+          </el-table>
+        </template>
+      </el-card>
     </template>
   </div>
 </template>
@@ -378,6 +624,40 @@ watch(
   gap: var(--mi-space-4);
 }
 
+.invoice-detail-view__receivable-descriptions {
+  margin-bottom: var(--mi-space-4);
+}
+
+.invoice-detail-view__payment-entry {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mi-space-4);
+  margin: var(--mi-space-5) 0;
+}
+
+.invoice-detail-view__payment-title {
+  margin: 0;
+  font-size: var(--mi-font-size-300);
+  font-weight: var(--mi-font-weight-semibold);
+  color: var(--mi-color-text);
+}
+
+.invoice-detail-view__payment-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--mi-space-4);
+}
+
+.invoice-detail-view__payment-input {
+  width: 100%;
+}
+
+.invoice-detail-view__payment-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--mi-space-3);
+}
+
 .invoice-detail-view__table {
   width: 100%;
 }
@@ -385,6 +665,15 @@ watch(
 @media (max-width: 52rem) {
   .invoice-detail-view__grid {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .invoice-detail-view__payment-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .invoice-detail-view__payment-actions {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }
 </style>

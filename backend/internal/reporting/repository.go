@@ -371,25 +371,36 @@ func (r *Repository) QueryR06(ctx context.Context, input QueryInput) ([]R06Row, 
 			COALESCE(ytd_paid.ytd_received, 0) AS ytd_cumulative
 		FROM stores s
 		LEFT JOIN (
-			SELECT lc.store_id, SUM(bcl.amount) AS receivable
-			FROM billing_charge_lines bcl
-			INNER JOIN lease_contracts lc ON lc.id = bcl.lease_contract_id
-			WHERE bcl.charge_type = 'rent'
-			  AND bcl.period_start >= ?
-			  AND bcl.period_end <= ?
-			GROUP BY lc.store_id
-		) period_recv ON period_recv.store_id = s.id
-		LEFT JOIN (
-			SELECT lc.store_id, SUM(bdl.amount) AS received
+			SELECT ls.store_id, SUM(bdl.amount) AS receivable
 			FROM billing_document_lines bdl
 			INNER JOIN billing_documents bd ON bd.id = bdl.billing_document_id
-			INNER JOIN lease_contracts lc ON lc.id = bd.lease_contract_id
-			WHERE bdl.charge_type = 'rent'
-			  AND bd.document_type = 'invoice'
-			  AND bd.status = 'approved'
-			  AND bd.period_start >= ?
-			  AND bd.period_end <= ?
-			GROUP BY lc.store_id
+			INNER JOIN (
+				SELECT lcu.lease_contract_id, MIN(a.store_id) AS store_id
+				FROM lease_contract_units lcu
+				INNER JOIN units u ON u.id = lcu.unit_id
+				INNER JOIN areas a ON a.id = u.area_id
+				GROUP BY lcu.lease_contract_id
+			) ls ON ls.lease_contract_id = bd.lease_contract_id
+			WHERE bd.status = 'approved'
+			  AND bdl.charge_type = 'rent'
+			  AND DATE_FORMAT(bdl.period_start, '%Y-%m') = ?
+			GROUP BY ls.store_id
+		) period_recv ON period_recv.store_id = s.id
+		LEFT JOIN (
+			SELECT ls.store_id, SUM(ape.amount) AS received
+			FROM ar_payment_entries ape
+			INNER JOIN billing_documents bd ON bd.id = ape.billing_document_id
+			INNER JOIN (
+				SELECT lcu.lease_contract_id, MIN(a.store_id) AS store_id
+				FROM lease_contract_units lcu
+				INNER JOIN units u ON u.id = lcu.unit_id
+				INNER JOIN areas a ON a.id = u.area_id
+				GROUP BY lcu.lease_contract_id
+			) ls ON ls.lease_contract_id = ape.lease_contract_id
+			WHERE bd.document_type = 'invoice'
+			  AND ape.payment_date >= ?
+			  AND ape.payment_date <= ?
+			GROUP BY ls.store_id
 		) period_paid ON period_paid.store_id = s.id
 		LEFT JOIN (
 			SELECT store_id, monthly_budget
@@ -404,20 +415,24 @@ func (r *Repository) QueryR06(ctx context.Context, input QueryInput) ([]R06Row, 
 			GROUP BY store_id
 		) annual_budget ON annual_budget.store_id = s.id
 		LEFT JOIN (
-			SELECT lc.store_id, SUM(bdl.amount) AS ytd_received
-			FROM billing_document_lines bdl
-			INNER JOIN billing_documents bd ON bd.id = bdl.billing_document_id
-			INNER JOIN lease_contracts lc ON lc.id = bd.lease_contract_id
-			WHERE bdl.charge_type = 'rent'
-			  AND bd.document_type = 'invoice'
-			  AND bd.status = 'approved'
-			  AND bd.period_start >= ?
-			  AND bd.period_end <= ?
-			GROUP BY lc.store_id
+			SELECT ls.store_id, SUM(ape.amount) AS ytd_received
+			FROM ar_payment_entries ape
+			INNER JOIN billing_documents bd ON bd.id = ape.billing_document_id
+			INNER JOIN (
+				SELECT lcu.lease_contract_id, MIN(a.store_id) AS store_id
+				FROM lease_contract_units lcu
+				INNER JOIN units u ON u.id = lcu.unit_id
+				INNER JOIN areas a ON a.id = u.area_id
+				GROUP BY lcu.lease_contract_id
+			) ls ON ls.lease_contract_id = ape.lease_contract_id
+			WHERE bd.document_type = 'invoice'
+			  AND ape.payment_date >= ?
+			  AND ape.payment_date <= ?
+			GROUP BY ls.store_id
 		) ytd_paid ON ytd_paid.store_id = s.id
 		WHERE (? IS NULL OR s.id = ?)
 		ORDER BY s.name
-	`, input.PeriodLabel, input.PeriodStart, input.PeriodEnd, input.PeriodStart, input.PeriodEnd, input.PeriodStart, input.PeriodStart, input.PeriodStart, yearStart, input.PeriodEnd, input.StoreID, input.StoreID)
+	`, input.PeriodLabel, input.PeriodLabel, input.PeriodStart, input.PeriodEnd, input.PeriodStart, input.PeriodStart, input.PeriodStart, yearStart, input.PeriodEnd, input.StoreID, input.StoreID)
 	if err != nil {
 		return nil, fmt.Errorf("query R06 rows: %w", err)
 	}
@@ -743,25 +758,28 @@ func (r *Repository) QueryR18(ctx context.Context, input QueryInput) ([]R18Row, 
 			GROUP BY unit_id
 		),
 		period_receivable AS (
-			SELECT lease_contract_id, SUM(amount) AS amount
-			FROM billing_charge_lines
-			WHERE period_start >= ? AND period_end <= ?
-			GROUP BY lease_contract_id
-		),
-		period_received AS (
 			SELECT bd.lease_contract_id, SUM(bdl.amount) AS amount
 			FROM billing_document_lines bdl
 			INNER JOIN billing_documents bd ON bd.id = bdl.billing_document_id
-			WHERE bd.document_type = 'invoice'
-			  AND bd.status = 'approved'
-			  AND bd.period_start >= ? AND bd.period_end <= ?
+			WHERE bd.status = 'approved'
+			  AND DATE_FORMAT(bdl.period_start, '%Y-%m') = ?
 			GROUP BY bd.lease_contract_id
 		),
+		period_received AS (
+			SELECT ape.lease_contract_id, SUM(ape.amount) AS amount
+			FROM ar_payment_entries ape
+			INNER JOIN billing_documents bd ON bd.id = ape.billing_document_id
+			WHERE bd.document_type = 'invoice'
+			  AND ape.payment_date >= ? AND ape.payment_date <= ?
+			GROUP BY ape.lease_contract_id
+		),
 		cumulative_receivable AS (
-			SELECT lease_contract_id, SUM(amount) AS amount
-			FROM billing_charge_lines
-			WHERE period_end <= ?
-			GROUP BY lease_contract_id
+			SELECT bd.lease_contract_id, SUM(bdl.amount) AS amount
+			FROM billing_document_lines bdl
+			INNER JOIN billing_documents bd ON bd.id = bdl.billing_document_id
+			WHERE bd.status = 'approved'
+			  AND bdl.period_end <= ?
+			GROUP BY bd.lease_contract_id
 		),
 		cumulative_arrears AS (
 			SELECT lease_contract_id, SUM(outstanding_amount) AS amount
@@ -804,7 +822,7 @@ func (r *Repository) QueryR18(ctx context.Context, input QueryInput) ([]R18Row, 
 		  AND (? IS NULL OR tau.brand_id = ?)
 		  AND (? IS NULL OR tau.unit_id = ?)
 		ORDER BY c.name, s.name, u.name
-	`, input.PeriodEnd, input.PeriodStart, input.PeriodStart, input.PeriodEnd, priorStart, priorEnd, lyStart, lyEnd, input.PeriodStart, input.PeriodEnd, input.PeriodStart, input.PeriodEnd, input.PeriodEnd, input.PeriodEnd, input.PeriodLabel, days, days, input.StoreID, input.StoreID, input.CustomerID, input.CustomerID, input.BrandID, input.BrandID, input.UnitID, input.UnitID)
+	`, input.PeriodEnd, input.PeriodStart, input.PeriodStart, input.PeriodEnd, priorStart, priorEnd, lyStart, lyEnd, input.PeriodLabel, input.PeriodStart, input.PeriodEnd, input.PeriodEnd, input.PeriodEnd, input.PeriodLabel, days, days, input.StoreID, input.StoreID, input.CustomerID, input.CustomerID, input.BrandID, input.BrandID, input.UnitID, input.UnitID)
 	if err != nil {
 		return nil, fmt.Errorf("query R18 rows: %w", err)
 	}

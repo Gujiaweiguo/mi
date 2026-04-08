@@ -78,6 +78,11 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
     functionCode: FUNCTION_CODES.billingInvoice,
   },
   {
+    path: '/billing/receivables',
+    labelKey: 'app.navigation.receivables',
+    functionCode: FUNCTION_CODES.billingInvoice,
+  },
+  {
     path: '/tax/exports',
     labelKey: 'app.navigation.taxExports',
     functionCode: FUNCTION_CODES.taxExport,

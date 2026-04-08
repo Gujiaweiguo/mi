@@ -1291,7 +1291,7 @@ func TestIntegrationAuthAndOrgRoutes(t *testing.T) {
 	}
 
 	leaseAmendRecorder := httptest.NewRecorder()
-	leaseAmendRequest := httptest.NewRequest(http.MethodPost, "/api/leases/"+strconv.FormatInt(leaseCreateBody.Lease.ID, 10)+"/amend", bytes.NewBufferString(`{"lease_no":"CON-201A","department_id":101,"store_id":101,"building_id":101,"tenant_name":"ACME Retail","start_date":"2026-05-01","end_date":"2027-03-31","units":[{"unit_id":101,"rent_area":118}],"terms":[{"term_type":"rent","billing_cycle":"monthly","currency_type_id":101,"amount":15000,"effective_from":"2026-05-01","effective_to":"2027-03-31"}]}`))
+	leaseAmendRequest := httptest.NewRequest(http.MethodPost, "/api/leases/"+strconv.FormatInt(leaseCreateBody.Lease.ID, 10)+"/amend", bytes.NewBufferString(`{"lease_no":"CON-201A","department_id":101,"store_id":101,"building_id":101,"customer_id":101,"brand_id":101,"trade_id":102,"management_type_id":101,"tenant_name":"ACME Retail","start_date":"2026-05-01","end_date":"2027-03-31","units":[{"unit_id":101,"rent_area":118}],"terms":[{"term_type":"rent","billing_cycle":"monthly","currency_type_id":101,"amount":15000,"effective_from":"2026-05-01","effective_to":"2027-03-31"}]}`))
 	leaseAmendRequest.Header.Set("Content-Type", "application/json")
 	leaseAmendRequest.Header.Set("Authorization", "Bearer "+loginBody.Token)
 	router.ServeHTTP(leaseAmendRecorder, leaseAmendRequest)

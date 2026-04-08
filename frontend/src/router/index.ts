@@ -5,6 +5,7 @@ import LoginView from '../views/LoginView.vue'
 import ForbiddenView from '../views/ForbiddenView.vue'
 import BillingChargesView from '../views/BillingChargesView.vue'
 import BillingInvoicesView from '../views/BillingInvoicesView.vue'
+import ReceivablesView from '../views/ReceivablesView.vue'
 import HealthView from '../views/HealthView.vue'
 import InvoiceDetailView from '../views/InvoiceDetailView.vue'
 import LeaseCreateView from '../views/LeaseCreateView.vue'
@@ -157,6 +158,15 @@ const router = createRouter({
       path: '/billing/invoices',
       name: 'billing-invoices',
       component: BillingInvoicesView,
+      meta: {
+        requiresAuth: true,
+        permissionCode: FUNCTION_CODES.billingInvoice,
+      },
+    },
+    {
+      path: '/billing/receivables',
+      name: 'billing-receivables',
+      component: ReceivablesView,
       meta: {
         requiresAuth: true,
         permissionCode: FUNCTION_CODES.billingInvoice,

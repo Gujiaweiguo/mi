@@ -147,6 +147,12 @@ func NewRouter(cfg *config.Config, db *sql.DB) *gin.Engine {
 	invoiceGroup.POST("/:id/submit", middleware.RequirePermission("billing.invoice", "edit", authService), invoiceHandler.Submit)
 	invoiceGroup.POST("/:id/cancel", middleware.RequirePermission("billing.invoice", "edit", authService), invoiceHandler.Cancel)
 	invoiceGroup.POST("/:id/adjust", middleware.RequirePermission("billing.invoice", "edit", authService), invoiceHandler.Adjust)
+	invoiceGroup.GET("/:id/receivable", middleware.RequirePermission("billing.invoice", "view", authService), invoiceHandler.GetReceivable)
+	invoiceGroup.POST("/:id/payments", middleware.RequirePermission("billing.invoice", "edit", authService), invoiceHandler.RecordPayment)
+
+	receivableGroup := api.Group("/receivables")
+	receivableGroup.Use(middleware.RequireAuth(authService, authRepository))
+	receivableGroup.GET("", middleware.RequirePermission("billing.invoice", "view", authService), invoiceHandler.ListReceivables)
 
 	printGroup := api.Group("/print")
 	printGroup.Use(middleware.RequireAuth(authService, authRepository))

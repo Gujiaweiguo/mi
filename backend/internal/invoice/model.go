@@ -25,6 +25,13 @@ const (
 	StatusAdjusted        Status = "adjusted"
 )
 
+type SettlementStatus string
+
+const (
+	SettlementStatusOutstanding SettlementStatus = "outstanding"
+	SettlementStatusSettled     SettlementStatus = "settled"
+)
+
 type Document struct {
 	ID                 int64        `json:"id"`
 	DocumentType       DocumentType `json:"document_type"`
@@ -47,6 +54,63 @@ type Document struct {
 	CreatedAt          time.Time    `json:"created_at"`
 	UpdatedAt          time.Time    `json:"updated_at"`
 	Lines              []Line       `json:"lines"`
+}
+
+type OpenItem struct {
+	ID                    int64      `json:"id"`
+	LeaseContractID       int64      `json:"lease_contract_id"`
+	BillingDocumentID     int64      `json:"billing_document_id"`
+	BillingDocumentLineID *int64     `json:"billing_document_line_id,omitempty"`
+	CustomerID            int64      `json:"customer_id"`
+	DepartmentID          int64      `json:"department_id"`
+	TradeID               *int64     `json:"trade_id,omitempty"`
+	ChargeType            string     `json:"charge_type"`
+	DueDate               time.Time  `json:"due_date"`
+	OutstandingAmount     float64    `json:"outstanding_amount"`
+	SettledAt             *time.Time `json:"settled_at,omitempty"`
+	IsDeposit             bool       `json:"is_deposit"`
+	CreatedAt             time.Time  `json:"created_at"`
+	UpdatedAt             time.Time  `json:"updated_at"`
+}
+
+type PaymentEntry struct {
+	ID                int64     `json:"id"`
+	BillingDocumentID int64     `json:"billing_document_id"`
+	LeaseContractID   int64     `json:"lease_contract_id"`
+	PaymentDate       time.Time `json:"payment_date"`
+	Amount            float64   `json:"amount"`
+	Note              *string   `json:"note,omitempty"`
+	RecordedBy        int64     `json:"recorded_by"`
+	IdempotencyKey    string    `json:"idempotency_key"`
+	CreatedAt         time.Time `json:"created_at"`
+}
+
+type ReceivableSummary struct {
+	BillingDocumentID int64            `json:"billing_document_id"`
+	DocumentNo        *string          `json:"document_no,omitempty"`
+	DocumentType      DocumentType     `json:"document_type"`
+	TenantName        string           `json:"tenant_name"`
+	LeaseContractID   int64            `json:"lease_contract_id"`
+	OutstandingAmount float64          `json:"outstanding_amount"`
+	SettlementStatus  SettlementStatus `json:"settlement_status"`
+	Items             []OpenItem       `json:"items"`
+	PaymentHistory    []PaymentEntry   `json:"payment_history"`
+}
+
+type ReceivableListItem struct {
+	BillingDocumentID int64            `json:"billing_document_id"`
+	DocumentType      DocumentType     `json:"document_type"`
+	DocumentNo        *string          `json:"document_no,omitempty"`
+	TenantName        string           `json:"tenant_name"`
+	DocumentStatus    Status           `json:"document_status"`
+	LeaseContractID   int64            `json:"lease_contract_id"`
+	CustomerID        int64            `json:"customer_id"`
+	DepartmentID      int64            `json:"department_id"`
+	TradeID           *int64           `json:"trade_id,omitempty"`
+	EarliestDueDate   time.Time        `json:"earliest_due_date"`
+	LatestDueDate     time.Time        `json:"latest_due_date"`
+	OutstandingAmount float64          `json:"outstanding_amount"`
+	SettlementStatus  SettlementStatus `json:"settlement_status"`
 }
 
 type Line struct {
@@ -90,6 +154,31 @@ type AdjustInput struct {
 	DocumentID  int64
 	ActorUserID int64
 	Lines       []AdjustLineInput
+}
+
+type RecordPaymentInput struct {
+	DocumentID     int64
+	ActorUserID    int64
+	Amount         float64
+	PaymentDate    time.Time
+	IdempotencyKey string
+	Note           string
+}
+
+type ReceivableFilter struct {
+	CustomerID   *int64
+	DepartmentID *int64
+	DueDateStart *time.Time
+	DueDateEnd   *time.Time
+	Page         int
+	PageSize     int
+}
+
+type ReceivableListResult struct {
+	Items    []ReceivableListItem `json:"items"`
+	Total    int64                `json:"total"`
+	Page     int                  `json:"page"`
+	PageSize int                  `json:"page_size"`
 }
 
 type ListFilter struct {

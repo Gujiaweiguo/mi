@@ -73,6 +73,16 @@ func TestInvoiceServiceCreateApproveAndAudit(t *testing.T) {
 	if approved.Status != invoice.StatusApproved || approved.DocumentNo == nil || *approved.DocumentNo != "INV-101" || approved.ApprovedAt == nil {
 		t.Fatalf("expected approved invoice with INV-101, got %#v", approved)
 	}
+	receivable, err := invoiceService.GetReceivable(ctx, document.ID)
+	if err != nil {
+		t.Fatalf("get invoice receivable: %v", err)
+	}
+	if receivable.OutstandingAmount != 12000 || receivable.SettlementStatus != invoice.SettlementStatusOutstanding || len(receivable.Items) != 1 {
+		t.Fatalf("expected receivable to be booked from approved invoice, got %#v", receivable)
+	}
+	if receivable.Items[0].DueDate.Format(invoice.DateLayout) != "2026-04-30" {
+		t.Fatalf("expected due date to follow document line period end, got %#v", receivable.Items[0])
+	}
 	history, err := workflowService.AuditHistory(ctx, *submitted.WorkflowInstanceID)
 	if err != nil {
 		t.Fatalf("load invoice workflow audit: %v", err)
@@ -125,6 +135,13 @@ func TestInvoiceServiceBillNumberingAndCancel(t *testing.T) {
 	}
 	if cancelled.Status != invoice.StatusCancelled || cancelled.CancelledAt == nil {
 		t.Fatalf("expected cancelled bill document, got %#v", cancelled)
+	}
+	receivable, err := invoiceService.GetReceivable(ctx, document.ID)
+	if err != nil {
+		t.Fatalf("get cancelled bill receivable: %v", err)
+	}
+	if receivable.OutstandingAmount != 0 || receivable.SettlementStatus != invoice.SettlementStatusSettled {
+		t.Fatalf("expected cancelled bill receivable to be settled, got %#v", receivable)
 	}
 	replayedCancel, err := invoiceService.Cancel(ctx, invoice.CancelInput{DocumentID: document.ID, ActorUserID: 101})
 	if err != nil {
@@ -180,6 +197,13 @@ func TestInvoiceServiceAdjustmentCreatesNewDraft(t *testing.T) {
 	if original.Status != invoice.StatusAdjusted {
 		t.Fatalf("expected original invoice adjusted, got %#v", original)
 	}
+	originalReceivable, err := invoiceService.GetReceivable(ctx, document.ID)
+	if err != nil {
+		t.Fatalf("get original adjusted receivable: %v", err)
+	}
+	if originalReceivable.OutstandingAmount != 0 {
+		t.Fatalf("expected original adjusted receivable to be cleared, got %#v", originalReceivable)
+	}
 	resubmitted, err := invoiceService.SubmitForApproval(ctx, invoice.SubmitInput{DocumentID: adjusted.ID, ActorUserID: 101, DepartmentID: 101, IdempotencyKey: "submit-invoice-301-adjusted", Comment: "submit adjusted invoice"})
 	if err != nil {
 		t.Fatalf("submit adjusted invoice: %v", err)
@@ -197,6 +221,13 @@ func TestInvoiceServiceAdjustmentCreatesNewDraft(t *testing.T) {
 	}
 	if approvedAdjusted.Status != invoice.StatusApproved || approvedAdjusted.DocumentNo == nil || *approvedAdjusted.DocumentNo != "INV-102" {
 		t.Fatalf("expected approved adjusted invoice with new number, got %#v", approvedAdjusted)
+	}
+	adjustedReceivable, err := invoiceService.GetReceivable(ctx, adjusted.ID)
+	if err != nil {
+		t.Fatalf("get adjusted receivable: %v", err)
+	}
+	if adjustedReceivable.OutstandingAmount != 11000 {
+		t.Fatalf("expected adjusted receivable amount 11000, got %#v", adjustedReceivable)
 	}
 }
 
@@ -271,6 +302,76 @@ func TestInvoiceServiceRejectResubmitAndPreventChargeReuse(t *testing.T) {
 	if approved.Status != invoice.StatusApproved || approved.DocumentNo == nil || *approved.DocumentNo != "INV-101" {
 		t.Fatalf("expected approved invoice with first number after resubmit, got %#v", approved)
 	}
+	replayedSubmit, err := invoiceService.SubmitForApproval(ctx, invoice.SubmitInput{DocumentID: document.ID, ActorUserID: 101, DepartmentID: 101, IdempotencyKey: "submit-invoice-401-replay", Comment: "replay submit invoice"})
+	if err != nil {
+		t.Fatalf("expected replayed submit to preserve current state, got %v", err)
+	}
+	if replayedSubmit.Status != invoice.StatusApproved || replayedSubmit.WorkflowInstanceID == nil || replayedSubmit.DocumentNo == nil || *replayedSubmit.DocumentNo != "INV-101" {
+		t.Fatalf("expected replayed submit to preserve approved invoice state, got %#v", replayedSubmit)
+	}
+}
+
+func TestInvoiceServicePaymentApplicationAndReceivableGuards(t *testing.T) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+	defer cancel()
+	db := newInvoiceTestDB(t, ctx)
+	workflowService := workflow.NewService(db, workflow.NewRepositoryWithNowFunc(db, invoiceWorkflowNow))
+	leaseService := lease.NewService(db, lease.NewRepository(db), workflowService)
+	billingRepo := billing.NewRepository(db)
+	billingService := billing.NewService(db, billingRepo)
+	invoiceService := invoice.NewService(db, invoice.NewRepository(db), billingRepo, workflowService)
+
+	activateLease(t, ctx, leaseService, workflowService, newLeaseCreateInput("CON-I501", 12000), "submit-i501")
+	charges, err := billingService.GenerateCharges(ctx, billing.GenerateInput{PeriodStart: time.Date(2026, 4, 1, 0, 0, 0, 0, time.UTC), PeriodEnd: time.Date(2026, 4, 30, 0, 0, 0, 0, time.UTC), ActorUserID: 101})
+	if err != nil {
+		t.Fatalf("generate charges: %v", err)
+	}
+	document, err := invoiceService.CreateFromCharges(ctx, invoice.CreateInput{DocumentType: invoice.DocumentTypeInvoice, BillingChargeLineIDs: []int64{charges.Lines[0].ID}, ActorUserID: 101})
+	if err != nil {
+		t.Fatalf("create invoice document: %v", err)
+	}
+	submitted, err := invoiceService.SubmitForApproval(ctx, invoice.SubmitInput{DocumentID: document.ID, ActorUserID: 101, DepartmentID: 101, IdempotencyKey: "submit-invoice-501", Comment: "submit invoice"})
+	if err != nil {
+		t.Fatalf("submit invoice document: %v", err)
+	}
+	instance, err := workflowService.Approve(ctx, workflow.TransitionInput{InstanceID: *submitted.WorkflowInstanceID, ActorUserID: 101, DepartmentID: 101, IdempotencyKey: "approve-invoice-501", Comment: "finance approved invoice"})
+	if err != nil {
+		t.Fatalf("approve invoice workflow: %v", err)
+	}
+	if err := invoiceService.SyncWorkflowState(ctx, instance, 101); err != nil {
+		t.Fatalf("sync invoice workflow state: %v", err)
+	}
+
+	if _, err := invoiceService.RecordPayment(ctx, invoice.RecordPaymentInput{DocumentID: document.ID, ActorUserID: 101, Amount: 13000, PaymentDate: time.Date(2026, 4, 20, 0, 0, 0, 0, time.UTC), IdempotencyKey: "payment-501-over", Note: "too much"}); !errors.Is(err, invoice.ErrPaymentOverApplication) {
+		t.Fatalf("expected over-application rejection, got %v", err)
+	}
+	receivable, err := invoiceService.RecordPayment(ctx, invoice.RecordPaymentInput{DocumentID: document.ID, ActorUserID: 101, Amount: 7000, PaymentDate: time.Date(2026, 4, 20, 0, 0, 0, 0, time.UTC), IdempotencyKey: "payment-501-a", Note: "partial payment"})
+	if err != nil {
+		t.Fatalf("record partial payment: %v", err)
+	}
+	if receivable.OutstandingAmount != 5000 || len(receivable.PaymentHistory) != 1 {
+		t.Fatalf("expected outstanding amount 5000 after partial payment, got %#v", receivable)
+	}
+	replayed, err := invoiceService.RecordPayment(ctx, invoice.RecordPaymentInput{DocumentID: document.ID, ActorUserID: 101, Amount: 7000, PaymentDate: time.Date(2026, 4, 20, 0, 0, 0, 0, time.UTC), IdempotencyKey: "payment-501-a", Note: "partial payment"})
+	if err != nil {
+		t.Fatalf("replay partial payment: %v", err)
+	}
+	if replayed.OutstandingAmount != 5000 || len(replayed.PaymentHistory) != 1 {
+		t.Fatalf("expected replayed payment to be a no-op, got %#v", replayed)
+	}
+	settled, err := invoiceService.RecordPayment(ctx, invoice.RecordPaymentInput{DocumentID: document.ID, ActorUserID: 101, Amount: 5000, PaymentDate: time.Date(2026, 4, 25, 0, 0, 0, 0, time.UTC), IdempotencyKey: "payment-501-b", Note: "final payment"})
+	if err != nil {
+		t.Fatalf("record final payment: %v", err)
+	}
+	if settled.OutstandingAmount != 0 || settled.SettlementStatus != invoice.SettlementStatusSettled || len(settled.PaymentHistory) != 2 {
+		t.Fatalf("expected settled receivable after cumulative payments, got %#v", settled)
+	}
+	if _, err := invoiceService.Cancel(ctx, invoice.CancelInput{DocumentID: document.ID, ActorUserID: 101}); !errors.Is(err, invoice.ErrDocumentHasRecordedPayments) {
+		t.Fatalf("expected cancel with payments to be rejected, got %v", err)
+	}
+	if _, err := invoiceService.Adjust(ctx, invoice.AdjustInput{DocumentID: document.ID, ActorUserID: 101, Lines: []invoice.AdjustLineInput{{BillingChargeLineID: charges.Lines[0].ID, Amount: 11000}}}); !errors.Is(err, invoice.ErrDocumentHasRecordedPayments) {
+		t.Fatalf("expected adjust with payments to be rejected, got %v", err)
+	}
 }
 
 func newInvoiceTestDB(t *testing.T, ctx context.Context) *sql.DB {
@@ -326,7 +427,11 @@ func newLeaseCreateInput(leaseNo string, amount float64) lease.CreateDraftInput 
 	start := time.Date(2026, 4, 1, 0, 0, 0, 0, time.UTC)
 	end := time.Date(2027, 3, 31, 0, 0, 0, 0, time.UTC)
 	buildingID := int64(101)
-	return lease.CreateDraftInput{LeaseNo: leaseNo, DepartmentID: 101, StoreID: 101, BuildingID: &buildingID, TenantName: "ACME Retail", StartDate: start, EndDate: end, Units: []lease.UnitInput{{UnitID: 101, RentArea: 118}}, Terms: []lease.TermInput{{TermType: lease.TermTypeRent, BillingCycle: lease.BillingCycleMonthly, CurrencyTypeID: 101, Amount: amount, EffectiveFrom: start, EffectiveTo: end}}, ActorUserID: 101}
+	customerID := int64(101)
+	brandID := int64(101)
+	tradeID := int64(102)
+	managementTypeID := int64(101)
+	return lease.CreateDraftInput{LeaseNo: leaseNo, DepartmentID: 101, StoreID: 101, BuildingID: &buildingID, CustomerID: &customerID, BrandID: &brandID, TradeID: &tradeID, ManagementTypeID: &managementTypeID, TenantName: "ACME Retail", StartDate: start, EndDate: end, Units: []lease.UnitInput{{UnitID: 101, RentArea: 118}}, Terms: []lease.TermInput{{TermType: lease.TermTypeRent, BillingCycle: lease.BillingCycleMonthly, CurrencyTypeID: 101, Amount: amount, EffectiveFrom: start, EffectiveTo: end}}, ActorUserID: 101}
 }
 
 func activateLease(t *testing.T, ctx context.Context, leaseService *lease.Service, workflowService *workflow.Service, input lease.CreateDraftInput, submitKey string) *lease.Contract {

@@ -56,6 +56,80 @@ export interface AdjustInvoiceRequest {
   lines: Array<{ billing_charge_line_id: number; amount: number }>
 }
 
+export type ReceivableSettlementStatus = 'outstanding' | 'settled'
+
+export interface ReceivableOpenItem {
+  id: number
+  lease_contract_id: number
+  billing_document_id: number
+  billing_document_line_id: number | null
+  customer_id: number
+  department_id: number
+  trade_id: number | null
+  charge_type: string
+  due_date: string
+  outstanding_amount: number
+  settled_at: string | null
+  is_deposit: boolean
+  created_at: string
+  updated_at: string
+}
+
+export interface ReceivablePaymentEntry {
+  id: number
+  billing_document_id: number
+  lease_contract_id: number
+  payment_date: string
+  amount: number
+  note: string | null
+  recorded_by: number
+  idempotency_key: string
+  created_at: string
+}
+
+export interface InvoiceReceivable {
+  billing_document_id: number
+  document_no: string | null
+  document_type: string
+  tenant_name: string
+  lease_contract_id: number
+  outstanding_amount: number
+  settlement_status: ReceivableSettlementStatus
+  items: ReceivableOpenItem[]
+  payment_history: ReceivablePaymentEntry[]
+}
+
+export interface ReceivableListItem {
+  billing_document_id: number
+  document_type: string
+  document_no: string | null
+  tenant_name: string
+  document_status: string
+  lease_contract_id: number
+  customer_id: number
+  department_id: number
+  trade_id: number | null
+  earliest_due_date: string
+  latest_due_date: string
+  outstanding_amount: number
+  settlement_status: ReceivableSettlementStatus
+}
+
+export interface ListReceivablesParams {
+  customer_id?: number
+  department_id?: number
+  due_date_start?: string
+  due_date_end?: string
+  page?: number
+  page_size?: number
+}
+
+export interface RecordInvoicePaymentRequest extends IdempotencyRequest {
+  amount: number
+  payment_date?: string
+  note?: string
+}
+
 export const createInvoice = (data: CreateInvoiceRequest) =>
   http.post<{ document: InvoiceDocument }>('/invoices', data)
 export const listInvoices = (params?: ListInvoicesParams) =>
@@ -66,3 +140,8 @@ export const submitInvoice = (id: number, data: IdempotencyRequest) =>
 export const cancelInvoice = (id: number) => http.post<{ document: InvoiceDocument }>(`/invoices/${id}/cancel`)
 export const adjustInvoice = (id: number, data: AdjustInvoiceRequest) =>
   http.post<{ document: InvoiceDocument }>(`/invoices/${id}/adjust`, data)
+export const getInvoiceReceivable = (id: number) => http.get<{ receivable: InvoiceReceivable }>(`/invoices/${id}/receivable`)
+export const recordInvoicePayment = (id: number, data: RecordInvoicePaymentRequest) =>
+  http.post<{ receivable: InvoiceReceivable }>(`/invoices/${id}/payments`, data)
+export const listReceivables = (params?: ListReceivablesParams) =>
+  http.get<PaginatedResponse<ReceivableListItem>>('/receivables', { params })

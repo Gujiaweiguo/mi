@@ -179,6 +179,44 @@ func TestReportingServiceQueryAndExportCoreReports(t *testing.T) {
 		}
 	})
 
+	t.Run("R06 and R18 use approved invoice amounts for receivable semantics", func(t *testing.T) {
+		r06 := mustQueryReport(t, ctx, service, withReportID(baseInput, reporting.ReportR06))
+		if len(r06.Rows) != 1 {
+			t.Fatalf("expected one store rent budget row, got %d", len(r06.Rows))
+		}
+		r06Row := r06.Rows[0]
+		if got := rowFloat64(t, r06Row, "period_receivable"); got != 9000 {
+			t.Fatalf("expected R06 period receivable 9000 from approved invoice amount, got %v", got)
+		}
+		if got := rowFloat64(t, r06Row, "period_received"); got != 9000 {
+			t.Fatalf("expected R06 period received 9000 from payment ledger, got %v", got)
+		}
+		if got := rowFloat64(t, r06Row, "ytd_cumulative"); got != 17000 {
+			t.Fatalf("expected R06 ytd cumulative 17000 from invoice payments, got %v", got)
+		}
+
+		r18 := mustQueryReport(t, ctx, service, withReportID(baseInput, reporting.ReportR18))
+		if len(r18.Rows) != 1 {
+			t.Fatalf("expected one composite receivable row, got %d", len(r18.Rows))
+		}
+		r18Row := r18.Rows[0]
+		if got := rowFloat64(t, r18Row, "period_receivable"); got != 9000 {
+			t.Fatalf("expected R18 period receivable 9000 from approved invoice amount, got %v", got)
+		}
+		if got := rowFloat64(t, r18Row, "period_received"); got != 9000 {
+			t.Fatalf("expected R18 period received 9000 from payment ledger, got %v", got)
+		}
+		if got := rowFloat64(t, r18Row, "period_arrears"); got != 0 {
+			t.Fatalf("expected R18 period arrears 0 after full payment, got %v", got)
+		}
+		if got := rowFloat64(t, r18Row, "cumulative_receivable"); got != 17000 {
+			t.Fatalf("expected R18 cumulative receivable 17000 from approved invoice amounts, got %v", got)
+		}
+		if got := rowFloat64(t, r18Row, "cumulative_arrears"); got != 3500 {
+			t.Fatalf("expected R18 cumulative arrears 3500 from open items, got %v", got)
+		}
+	})
+
 	t.Run("R08 reconciles with R16 and R17 aging outputs", func(t *testing.T) {
 		r08 := mustQueryReport(t, ctx, service, withReportID(baseInput, reporting.ReportR08))
 		if len(r08.Rows) != 1 {
@@ -376,8 +414,19 @@ func seedBudgetFacts(t *testing.T, ctx context.Context, db *sql.DB, leaseID int6
 	if err != nil {
 		t.Fatalf("billing document id: %v", err)
 	}
-	if _, err := db.ExecContext(ctx, `INSERT INTO billing_document_lines (billing_document_id, billing_charge_line_id, charge_type, period_start, period_end, quantity_days, unit_amount, amount) VALUES (?, ?, 'rent', '2026-04-01', '2026-04-30', 30, 12000.00, 9000.00)`, documentID, chargeLineID); err != nil {
+	documentLineResult, err := db.ExecContext(ctx, `INSERT INTO billing_document_lines (billing_document_id, billing_charge_line_id, charge_type, period_start, period_end, quantity_days, unit_amount, amount) VALUES (?, ?, 'rent', '2026-04-01', '2026-04-30', 30, 12000.00, 9000.00)`, documentID, chargeLineID)
+	if err != nil {
 		t.Fatalf("seed billing document line: %v", err)
+	}
+	documentLineID, err := documentLineResult.LastInsertId()
+	if err != nil {
+		t.Fatalf("billing document line id: %v", err)
+	}
+	if _, err := db.ExecContext(ctx, `INSERT INTO ar_open_items (lease_contract_id, billing_document_id, billing_document_line_id, customer_id, department_id, trade_id, charge_type, due_date, outstanding_amount, settled_at, is_deposit) VALUES (?, ?, ?, 101, 101, 102, 'rent', '2026-04-30', 0.00, NOW(), FALSE)`, leaseID, documentID, documentLineID); err != nil {
+		t.Fatalf("seed april receivable open item: %v", err)
+	}
+	if _, err := db.ExecContext(ctx, `INSERT INTO ar_payment_entries (billing_document_id, lease_contract_id, payment_date, amount, note, recorded_by, idempotency_key) VALUES (?, ?, '2026-04-25', 9000.00, 'seed payment april', 101, 'seed-payment-april')`, documentID, leaseID); err != nil {
+		t.Fatalf("seed april payment entry: %v", err)
 	}
 	priorChargeResult, err := db.ExecContext(ctx, `INSERT INTO billing_charge_lines (billing_run_id, lease_contract_id, lease_term_id, charge_type, period_start, period_end, quantity_days, unit_amount, amount, currency_type_id, source_effective_version) VALUES (?, ?, ?, 'rent', '2026-03-01', '2026-03-31', 31, 12000.00, 8000.00, 101, 1)`, billingRunID, leaseID, leaseTermID)
 	if err != nil {
@@ -395,8 +444,19 @@ func seedBudgetFacts(t *testing.T, ctx context.Context, db *sql.DB, leaseID int6
 	if err != nil {
 		t.Fatalf("prior billing document id: %v", err)
 	}
-	if _, err := db.ExecContext(ctx, `INSERT INTO billing_document_lines (billing_document_id, billing_charge_line_id, charge_type, period_start, period_end, quantity_days, unit_amount, amount) VALUES (?, ?, 'rent', '2026-03-01', '2026-03-31', 31, 12000.00, 8000.00)`, priorDocumentID, priorChargeLineID); err != nil {
+	priorDocumentLineResult, err := db.ExecContext(ctx, `INSERT INTO billing_document_lines (billing_document_id, billing_charge_line_id, charge_type, period_start, period_end, quantity_days, unit_amount, amount) VALUES (?, ?, 'rent', '2026-03-01', '2026-03-31', 31, 12000.00, 8000.00)`, priorDocumentID, priorChargeLineID)
+	if err != nil {
 		t.Fatalf("seed prior billing document line: %v", err)
+	}
+	priorDocumentLineID, err := priorDocumentLineResult.LastInsertId()
+	if err != nil {
+		t.Fatalf("prior billing document line id: %v", err)
+	}
+	if _, err := db.ExecContext(ctx, `INSERT INTO ar_open_items (lease_contract_id, billing_document_id, billing_document_line_id, customer_id, department_id, trade_id, charge_type, due_date, outstanding_amount, settled_at, is_deposit) VALUES (?, ?, ?, 101, 101, 102, 'rent', '2026-03-31', 0.00, NOW(), FALSE)`, leaseID, priorDocumentID, priorDocumentLineID); err != nil {
+		t.Fatalf("seed march receivable open item: %v", err)
+	}
+	if _, err := db.ExecContext(ctx, `INSERT INTO ar_payment_entries (billing_document_id, lease_contract_id, payment_date, amount, note, recorded_by, idempotency_key) VALUES (?, ?, '2026-03-20', 8000.00, 'seed payment march', 101, 'seed-payment-march')`, priorDocumentID, leaseID); err != nil {
+		t.Fatalf("seed march payment entry: %v", err)
 	}
 }
 
