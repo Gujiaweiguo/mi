@@ -12,5 +12,5 @@
 ## 3. Verification and evidence regeneration
 
 - [x] 3.1 Add or tighten automated checks covering E2E reproducibility assumptions and archive-gate evidence validity behavior.
-- [ ] 3.2 Run verification suite for the implementation commit and record machine-readable evidence in `artifacts/verification/<commit-sha>/unit.json`, `artifacts/verification/<commit-sha>/integration.json`, and `artifacts/verification/<commit-sha>/e2e.json`.
-- [ ] 3.3 Confirm the implementation commit satisfies change gate expectations: CI requires passing `unit` and `integration`; archive requires passing `unit`, `integration`, and `e2e` for the same commit SHA.
+- [x] 3.2 Run verification suite for the implementation commit and record machine-readable evidence in `artifacts/verification/<commit-sha>/unit.json`, `artifacts/verification/<commit-sha>/integration.json`, and `artifacts/verification/<commit-sha>/e2e.json`.
+- [x] 3.3 Confirm the implementation commit satisfies change gate expectations: CI requires passing `unit` and `integration`; archive requires passing `unit`, `integration`, and `e2e` for the same commit SHA.
