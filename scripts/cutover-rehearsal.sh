@@ -40,12 +40,14 @@ esac
 
 ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 COMPOSE_FILE="$ROOT_DIR/deploy/compose/docker-compose.$ENVIRONMENT.yml"
+ENV_FILE="$ROOT_DIR/deploy/env/$ENVIRONMENT.env"
 COMMIT_SHA=$(git -C "$ROOT_DIR" rev-parse HEAD)
 STARTED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 STAMP=$(date -u +"%Y%m%dT%H%M%SZ")
 RESULT_DIR="$ROOT_DIR/artifacts/rehearsal/$COMMIT_SHA"
 RESULT_FILE="$RESULT_DIR/cutover-rehearsal-$ENVIRONMENT-$STAMP.json"
 LOG_FILE="$RESULT_DIR/cutover-rehearsal-$ENVIRONMENT-$STAMP.log"
+PREFLIGHT_SCRIPT="$ROOT_DIR/scripts/compose-preflight.sh"
 EVIDENCE_DIR="artifacts/verification/$COMMIT_SHA"
 BACKUP_DIR="$ROOT_DIR/artifacts/backups/$ENVIRONMENT"
 UNIT_EVIDENCE="$EVIDENCE_DIR/unit.json"
@@ -60,24 +62,27 @@ fi
 
 mkdir -p "$RESULT_DIR"
 
+preflight=not_run
 archive_ready=not_run
 bootstrap=not_run
 fresh_start=not_run
 smoke=not_run
 backup=not_run
 restore=not_run
+restore_smoke=not_run
 status=NO-GO
+failing_gate=
 backup_archive=
 
 cleanup_stack() {
-  docker compose -f "$COMPOSE_FILE" down --remove-orphans >/dev/null 2>&1 || true
+  docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" down --remove-orphans >/dev/null 2>&1 || true
 }
 
 write_result() {
   local finished_at
   finished_at=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
-  python3 - "$RESULT_FILE" "$COMMIT_SHA" "$ENVIRONMENT" "$STARTED_AT" "$finished_at" "$status" "$archive_ready" "$bootstrap" "$fresh_start" "$smoke" "$backup" "$restore" "$LOG_FILE" "$backup_archive" "$UNIT_EVIDENCE" "$INTEGRATION_EVIDENCE" "$E2E_EVIDENCE" "$CHECKLIST_PATH" <<'PY'
+  python3 - "$RESULT_FILE" "$COMMIT_SHA" "$ENVIRONMENT" "$STARTED_AT" "$finished_at" "$status" "$preflight" "$archive_ready" "$bootstrap" "$fresh_start" "$smoke" "$backup" "$restore" "$restore_smoke" "$failing_gate" "$LOG_FILE" "$backup_archive" "$UNIT_EVIDENCE" "$INTEGRATION_EVIDENCE" "$E2E_EVIDENCE" "$CHECKLIST_PATH" <<'PY'
 import json
 import sys
 from pathlib import Path
@@ -89,35 +94,41 @@ from pathlib import Path
     started_at,
     finished_at,
     status,
+    preflight,
     archive_ready,
     bootstrap,
     fresh_start,
     smoke,
     backup,
     restore,
+    restore_smoke,
+    failing_gate,
     log_file,
     backup_archive,
     unit_evidence,
     integration_evidence,
     e2e_evidence,
     checklist_path,
-) = sys.argv[1:19]
+) = sys.argv[1:22]
 
 result = {
-    "schema_version": "1",
-    "change": "legacy-system-migration",
+    "schema_version": 1,
+    "change": "deployment-and-cutover-hardening",
     "commit_sha": commit_sha,
     "environment": environment,
     "started_at": started_at,
     "finished_at": finished_at,
     "status": status,
+    "failing_gate": failing_gate or None,
     "checks": {
+        "preflight": preflight,
         "archive_ready": archive_ready,
         "bootstrap": bootstrap,
         "fresh_start": fresh_start,
         "smoke": smoke,
         "backup": backup,
         "restore": restore,
+        "restore_smoke": restore_smoke,
     },
     "artifacts": {
         "log": log_file,
@@ -150,8 +161,13 @@ run_step() {
 
   printf '%s: failed\n' "$name" >&2
   printf -v "$name" '%s' failed
+  failing_gate=$name
   return 1
 }
+
+if ! run_step preflight "$PREFLIGHT_SCRIPT" "$ENVIRONMENT"; then
+  exit 1
+fi
 
 if ! run_step archive_ready "$ROOT_DIR/scripts/archive-ready.sh"; then
   exit 1
@@ -195,11 +211,15 @@ if [[ -z "$backup_archive" ]]; then
   exit 1
 fi
 
-if ! run_step restore "$ROOT_DIR/scripts/db-restore.sh" "$ENVIRONMENT" "$backup_archive"; then
+if ! run_step restore "$ROOT_DIR/scripts/db-restore.sh" "$ENVIRONMENT" "$backup_archive" --restore-runtime-files; then
   exit 1
 fi
 
 if ! run_step fresh_start "$ROOT_DIR/scripts/db-verify.sh" "$ENVIRONMENT" all; then
+  exit 1
+fi
+
+if ! run_step restore_smoke "$ROOT_DIR/scripts/compose-smoke-test.sh" "$ENVIRONMENT" --keep-running; then
   exit 1
 fi
 

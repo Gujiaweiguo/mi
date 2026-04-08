@@ -63,10 +63,59 @@ trap cleanup EXIT
 
 tar -C "$EXTRACT_DIR" -xzf "$ARCHIVE_PATH"
 
+if [[ ! -f "$EXTRACT_DIR/metadata.json" ]]; then
+  printf 'Backup archive does not contain metadata.json: %s\n' "$ARCHIVE_PATH" >&2
+  exit 1
+fi
+
 if [[ ! -f "$EXTRACT_DIR/database.sql" ]]; then
   printf 'Backup archive does not contain database.sql: %s\n' "$ARCHIVE_PATH" >&2
   exit 1
 fi
+
+python3 - "$EXTRACT_DIR/metadata.json" "$ENVIRONMENT" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+metadata_path = Path(sys.argv[1])
+target_environment = sys.argv[2]
+metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+
+required_keys = {
+    "schema_version",
+    "environment",
+    "generated_at",
+    "compose_file",
+    "env_file",
+    "config_file",
+    "database",
+    "artifacts",
+    "restore_runtime_files_supported",
+}
+missing = sorted(required_keys - metadata.keys())
+if missing:
+    raise SystemExit(f"Backup metadata missing keys: {', '.join(missing)}")
+
+if metadata["environment"] != target_environment:
+    raise SystemExit(
+        f"Backup archive environment mismatch: expected {target_environment}, got {metadata['environment']}"
+    )
+
+artifacts = metadata["artifacts"]
+for key in ("database_dump", "runtime_directories", "config_snapshots"):
+    if key not in artifacts:
+        raise SystemExit(f"Backup metadata artifacts missing key: {key}")
+PY
+
+for required in \
+  "$EXTRACT_DIR/config/backend/$ENVIRONMENT.yaml" \
+  "$EXTRACT_DIR/config/deploy-env/$ENVIRONMENT.env"; do
+  if [[ ! -f "$required" ]]; then
+    printf 'Backup archive missing required config snapshot: %s\n' "$required" >&2
+    exit 1
+  fi
+done
 
 docker compose -f "$COMPOSE_FILE" exec -T mysql sh -lc \
   'exec mysql -uroot -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_DATABASE"' \

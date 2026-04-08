@@ -71,10 +71,28 @@ mkdir -p \
   "$STAGING_DIR/config/backend" \
   "$STAGING_DIR/config/deploy-env"
 
-printf 'environment=%s\n' "$ENVIRONMENT" > "$STAGING_DIR/metadata.txt"
-printf 'generated_at=%s\n' "$TIMESTAMP" >> "$STAGING_DIR/metadata.txt"
-printf 'compose_file=%s\n' "$COMPOSE_FILE" >> "$STAGING_DIR/metadata.txt"
-printf 'database=%s\n' "$MYSQL_DATABASE" >> "$STAGING_DIR/metadata.txt"
+python3 - <<PY > "$STAGING_DIR/metadata.json"
+import json
+
+print(json.dumps({
+    "schema_version": 1,
+    "environment": ${ENVIRONMENT@Q},
+    "generated_at": ${TIMESTAMP@Q},
+    "compose_file": ${COMPOSE_FILE@Q},
+    "env_file": ${ENV_FILE@Q},
+    "config_file": ${CONFIG_FILE@Q},
+    "database": ${MYSQL_DATABASE@Q},
+    "artifacts": {
+        "database_dump": "database.sql",
+        "runtime_directories": ["logs", "documents", "uploads"],
+        "config_snapshots": [
+            "config/backend/${ENVIRONMENT}.yaml",
+            "config/deploy-env/${ENVIRONMENT}.env",
+        ],
+    },
+    "restore_runtime_files_supported": True,
+}, indent=2))
+PY
 
 docker compose -f "$COMPOSE_FILE" exec -T mysql sh -lc \
   'exec mysqldump -uroot -p"$MYSQL_ROOT_PASSWORD" --single-transaction --routines --triggers --databases "$MYSQL_DATABASE"' \
