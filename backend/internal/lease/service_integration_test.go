@@ -239,6 +239,45 @@ func TestLeaseServiceTerminateActiveLease(t *testing.T) {
 	}
 }
 
+func TestLeaseServiceRejectsTerminateOnAlreadyTerminatedLease(t *testing.T) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+	defer cancel()
+
+	db := newLeaseTestDB(t, ctx)
+	workflowService := workflow.NewService(db, workflow.NewRepository(db))
+	leaseService := lease.NewService(db, lease.NewRepository(db), workflowService)
+
+	activeLease := activateLease(t, ctx, leaseService, workflowService, newLeaseCreateInput("CON-105A", 101), "submit-con-105a")
+	terminatedAt := time.Date(2026, 10, 1, 0, 0, 0, 0, time.UTC)
+	if _, err := leaseService.Terminate(ctx, lease.TerminateInput{LeaseID: activeLease.ID, ActorUserID: 101, TerminatedAt: terminatedAt}); err != nil {
+		t.Fatalf("terminate lease first time: %v", err)
+	}
+
+	if _, err := leaseService.Terminate(ctx, lease.TerminateInput{LeaseID: activeLease.ID, ActorUserID: 101, TerminatedAt: terminatedAt}); !errors.Is(err, lease.ErrInvalidLeaseState) {
+		t.Fatalf("expected second terminate to fail with ErrInvalidLeaseState, got %v", err)
+	}
+}
+
+func TestLeaseServiceRejectsAmendmentOnTerminatedLease(t *testing.T) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+	defer cancel()
+
+	db := newLeaseTestDB(t, ctx)
+	workflowService := workflow.NewService(db, workflow.NewRepository(db))
+	leaseService := lease.NewService(db, lease.NewRepository(db), workflowService)
+
+	activeLease := activateLease(t, ctx, leaseService, workflowService, newLeaseCreateInput("CON-105B", 101), "submit-con-105b")
+	if _, err := leaseService.Terminate(ctx, lease.TerminateInput{LeaseID: activeLease.ID, ActorUserID: 101, TerminatedAt: time.Date(2026, 10, 1, 0, 0, 0, 0, time.UTC)}); err != nil {
+		t.Fatalf("terminate lease: %v", err)
+	}
+
+	amendedInput := newLeaseCreateInput("CON-105B-A", 101)
+	amendedInput.Terms[0].Amount = 13000
+	if _, err := leaseService.CreateAmendment(ctx, lease.AmendInput{LeaseID: activeLease.ID, CreateDraftInput: amendedInput}); !errors.Is(err, lease.ErrInvalidLeaseState) {
+		t.Fatalf("expected amendment on terminated lease to fail with ErrInvalidLeaseState, got %v", err)
+	}
+}
+
 func TestLeaseServiceRejectsTerminateWhenBillingDocumentInFlight(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()

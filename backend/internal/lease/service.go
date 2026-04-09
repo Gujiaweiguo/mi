@@ -69,7 +69,13 @@ func (s *Service) GetLease(ctx context.Context, leaseID int64) (*Contract, error
 }
 
 func (s *Service) CreateAmendment(ctx context.Context, input AmendInput) (*Contract, error) {
-	baseContract, err := s.repository.FindByID(ctx, input.LeaseID)
+	tx, err := s.db.BeginTx(ctx, nil)
+	if err != nil {
+		return nil, fmt.Errorf("begin lease amendment create transaction: %w", err)
+	}
+	defer func() { _ = tx.Rollback() }()
+
+	baseContract, err := s.repository.FindByIDForUpdate(ctx, tx, input.LeaseID)
 	if err != nil {
 		return nil, err
 	}
@@ -86,12 +92,6 @@ func (s *Service) CreateAmendment(ctx context.Context, input AmendInput) (*Contr
 	}
 	contract.AmendedFromID = &baseContract.ID
 	contract.EffectiveVersion = baseContract.EffectiveVersion + 1
-
-	tx, err := s.db.BeginTx(ctx, nil)
-	if err != nil {
-		return nil, fmt.Errorf("begin lease amendment create transaction: %w", err)
-	}
-	defer func() { _ = tx.Rollback() }()
 
 	if err := s.repository.Create(ctx, tx, contract); err != nil {
 		if isDuplicateEntry(err) {
@@ -238,8 +238,14 @@ func (s *Service) SyncWorkflowState(ctx context.Context, instance *workflow.Inst
 		return err
 	}
 	if status == StatusActive && contract.AmendedFromID != nil && approvedAt != nil {
-		if err := s.repository.Terminate(ctx, tx, *contract.AmendedFromID, actorUserID, *approvedAt); err != nil {
+		baseContract, err := s.repository.FindByIDForUpdate(ctx, tx, *contract.AmendedFromID)
+		if err != nil {
 			return err
+		}
+		if baseContract != nil && baseContract.Status == StatusActive {
+			if err := s.repository.Terminate(ctx, tx, *contract.AmendedFromID, actorUserID, *approvedAt); err != nil {
+				return err
+			}
 		}
 	}
 
