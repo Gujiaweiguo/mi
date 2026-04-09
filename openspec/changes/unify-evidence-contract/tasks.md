@@ -13,5 +13,5 @@
 ## 3. Verification and regression coverage
 
 - [x] 3.1 Add or update automated self-tests for schema-drift rejection and canonical-schema pass cases.
-- [ ] 3.2 Run unit/integration/e2e verification for implementation commit and generate machine-readable evidence under `artifacts/verification/<commit-sha>/`.
-- [ ] 3.3 Confirm CI and archive gates both pass for the same implementation commit SHA under canonical schema.
+- [x] 3.2 Run unit/integration/e2e verification for implementation commit and generate machine-readable evidence under `artifacts/verification/<commit-sha>/`.
+- [x] 3.3 Confirm CI and archive gates both pass for the same implementation commit SHA under canonical schema.
