@@ -22,8 +22,11 @@ artifacts/verification/<commit-sha>/e2e.json
 The canonical evidence contract is documented in:
 
 - `docs/evidence-contract.md` — human-readable field, invariant, and example reference
+- `schemas/evidence-v1.json` — machine-readable JSON Schema for canonical evidence structure
 - `openspec/specs/platform-foundation/spec.md` — normative OpenSpec requirements
 - `scripts/verification/validate-gate.sh` — executable enforcement used by CI/archive gates
+
+The schema covers structural validation. Gate-context checks such as commit-SHA matching, file-type matching, pass/fail acceptance, and e2e-specific artifact requirements remain enforced by the validator script.
 
 On GitHub Actions:
 

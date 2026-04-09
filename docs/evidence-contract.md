@@ -3,10 +3,11 @@
 This document is the human-readable reference for verification evidence written under `artifacts/verification/<commit-sha>/`.
 
 - Normative behavior lives in `openspec/specs/platform-foundation/spec.md`.
+- Machine-readable structure lives in `schemas/evidence-v1.json`.
 - Executable enforcement lives in `scripts/verification/validate-gate.sh`.
 - Evidence generation lives in `scripts/verification/write-evidence.py`.
 
-If this document and the verification scripts disagree, treat the scripts as authoritative until the docs are updated.
+If this document and the verification scripts disagree, treat the scripts as authoritative until the docs are updated. The JSON Schema captures structural rules, while some gate-context checks remain validator-enforced.
 
 ## Gate Summary
 
@@ -72,6 +73,16 @@ passed + failed + skipped <= total
 - If present, it must be an array of non-empty strings.
 - For `e2e` evidence, `artifacts` is required and must be a non-empty array.
 
+## Validator-Context Rules
+
+The JSON Schema defines the structural contract, but these checks still depend on gate runtime context and remain enforced by `scripts/verification/validate-gate.sh`:
+
+- `commit_sha` must match the commit currently being evaluated.
+- `test_type` must match the evidence file being checked (`unit.json`, `integration.json`, or `e2e.json`).
+- `status` must be `"passed"` for the gate to accept the evidence.
+- `e2e` evidence must include a non-empty `artifacts` array.
+- `passed + failed + skipped <= total` must hold for `stats`.
+
 ## Canonical Examples
 
 ### CI-Passing `unit.json`
@@ -133,6 +144,7 @@ passed + failed + skipped <= total
 ## Relationship to OpenSpec and Scripts
 
 - `openspec/specs/platform-foundation/spec.md` defines the requirement-level contract for CI-ready and archive-ready evidence.
+- `schemas/evidence-v1.json` defines the machine-readable structural contract used by docs and future tooling.
 - `scripts/verification/write-evidence.py` is the producer-side helper that writes canonical evidence files.
 - `scripts/verification/validate-gate.sh` is the enforcement layer that accepts or rejects evidence during CI/archive checks.
 - `docs/verification-gates.md` is the operator entrypoint for commands and workflow usage.
