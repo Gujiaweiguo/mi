@@ -17,19 +17,15 @@ The change SHALL define environment-specific configuration with file-based defau
 - **THEN** explicit mounts SHALL exist for configuration, logs, generated documents/uploads, and MySQL data
 
 ### Requirement: The system SHALL establish automated test foundations before feature slices
-The change SHALL provide backend unit and integration test harnesses, frontend unit tests, Playwright end-to-end tests, and artifact comparison support for generated outputs before feature slices depend on them. End-to-end verification for first-release non-membership scope SHALL be reproducible under documented clean-checkout bootstrap assumptions so archive-evidence generation remains trustworthy.
+The change SHALL provide backend unit and integration test harnesses, frontend unit tests, Playwright end-to-end tests, and artifact comparison support for generated outputs before feature slices depend on them. End-to-end verification for first-release non-membership scope SHALL be reproducible under documented clean-checkout bootstrap assumptions so archive-evidence generation remains trustworthy. Unit and integration evidence emitted by the verification scripts SHALL derive reported test counts from actual test results rather than fixed placeholder values.
 
-#### Scenario: Clean checkout can run test foundations
-- **WHEN** the documented test bootstrap commands are run from a clean checkout
-- **THEN** backend, frontend, and end-to-end test commands SHALL execute successfully against seeded test fixtures
+#### Scenario: Unit evidence reports real aggregated counts
+- **WHEN** the unit verification workflow runs backend unit tests and frontend unit tests for a commit
+- **THEN** the resulting `unit` evidence SHALL report `total`, `passed`, `failed`, and `skipped` counts derived from the actual executed test results across the covered unit suites
 
-#### Scenario: Supported e2e flows are reproducible for archive evidence
-- **WHEN** operators run the supported E2E verification workflow for a commit within first-release non-membership scope
-- **THEN** the workflow SHALL produce reproducible pass/fail outcomes and SHALL be usable to generate valid `e2e` evidence for archive gate evaluation
-
-#### Scenario: E2E contract remains within first-release non-membership scope
-- **WHEN** E2E gate coverage is evaluated for archive readiness
-- **THEN** required E2E verification SHALL remain bounded to accepted first-release non-membership flows and SHALL NOT introduce implied scope for excluded membership capabilities
+#### Scenario: Integration evidence reports real command results
+- **WHEN** the integration verification workflow runs the integration-tagged backend tests for a commit
+- **THEN** the resulting `integration` evidence SHALL report `total`, `passed`, `failed`, and `skipped` counts derived from the actual executed integration test results
 
 ### Requirement: The system SHALL enforce commit-scoped CI evidence gates
 The project SHALL define a CI gate that requires passing `unit` and `integration` evidence for the current commit before a push/PR is considered CI-ready. Required CI evidence SHALL follow the canonical verification schema and SHALL be rejected when schema fields or invariants are violated. When a machine-readable schema artifact exists, CI evidence structural validation SHALL reuse that shared schema definition rather than duplicating the same structural rules independently in the validator.
