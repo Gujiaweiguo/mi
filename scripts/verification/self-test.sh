@@ -66,5 +66,29 @@ expect_failure \
   "archive gate fails when timestamps are reversed" \
   "$VALIDATOR" archive --root "$TESTDATA_DIR/timestamp-reversed" --commit-sha bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 
+expect_failure \
+  "ci gate fails when schema_version type drifts" \
+  "$VALIDATOR" ci --root "$TESTDATA_DIR/schema-version-type" --commit-sha cccccccccccccccccccccccccccccccccccccccc
+
+expect_failure \
+  "ci gate fails when source is not an object" \
+  "$VALIDATOR" ci --root "$TESTDATA_DIR/source-not-object" --commit-sha dddddddddddddddddddddddddddddddddddddddd
+
+expect_failure \
+  "archive gate fails when stats is not an object" \
+  "$VALIDATOR" archive --root "$TESTDATA_DIR/stats-not-object" --commit-sha eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+
+expect_failure \
+  "archive gate fails when e2e artifacts is empty array" \
+  "$VALIDATOR" archive --root "$TESTDATA_DIR/artifacts-empty-array" --commit-sha ffffffffffffffffffffffffffffffffffffffff
+
+expect_failure \
+  "ci gate fails when unit status is failed" \
+  "$VALIDATOR" ci --root "$TESTDATA_DIR/unit-failed-status" --commit-sha 1212121212121212121212121212121212121212
+
+expect_failure \
+  "archive gate fails on invalid timestamp format" \
+  "$VALIDATOR" archive --root "$TESTDATA_DIR/timestamp-bad-format" --commit-sha abababababababababababababababababababab
+
 echo
 echo "All verification self-tests passed."
