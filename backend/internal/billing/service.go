@@ -8,6 +8,7 @@ import (
 	"math"
 	"time"
 
+	"github.com/Gujiaweiguo/mi/backend/internal/lease"
 	mysql "github.com/go-sql-driver/mysql"
 )
 
@@ -49,6 +50,15 @@ func (s *Service) GenerateCharges(ctx context.Context, input GenerateInput) (*Ge
 	generatedCount := 0
 	skippedCount := 0
 	for _, candidate := range candidates {
+		status, effectiveVersion, billingEffective, err := s.repository.GetLeaseStateForUpdate(ctx, tx, candidate.LeaseContractID)
+		if err != nil {
+			return nil, err
+		}
+		if !billingEffective || (status != string(lease.StatusActive) && status != string(lease.StatusTerminated)) || effectiveVersion != candidate.EffectiveVersion {
+			skippedCount++
+			continue
+		}
+
 		line, ok := buildChargeLine(run.ID, input.PeriodStart, input.PeriodEnd, candidate)
 		if !ok {
 			continue

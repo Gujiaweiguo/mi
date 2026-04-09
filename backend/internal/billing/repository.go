@@ -62,6 +62,24 @@ func (r *Repository) InsertChargeLine(ctx context.Context, tx *sql.Tx, line *Cha
 	return nil
 }
 
+func (r *Repository) GetLeaseStateForUpdate(ctx context.Context, tx *sql.Tx, leaseContractID int64) (string, int, bool, error) {
+	var status string
+	var effectiveVersion int
+	var billingEffectiveAt sql.NullTime
+	if err := tx.QueryRowContext(ctx, `
+		SELECT status, effective_version, billing_effective_at
+		FROM lease_contracts
+		WHERE id = ?
+		FOR UPDATE
+	`, leaseContractID).Scan(&status, &effectiveVersion, &billingEffectiveAt); err != nil {
+		if err == sql.ErrNoRows {
+			return "", 0, false, nil
+		}
+		return "", 0, false, fmt.Errorf("load lease state for billing candidate: %w", err)
+	}
+	return status, effectiveVersion, billingEffectiveAt.Valid, nil
+}
+
 func (r *Repository) ListChargeCandidates(ctx context.Context, periodStart, periodEnd time.Time) ([]chargeCandidate, error) {
 	rows, err := r.db.QueryContext(ctx, `
 		SELECT lc.id, lc.lease_no, lc.tenant_name, lc.status, lc.start_date, lc.end_date,
