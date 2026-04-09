@@ -12,4 +12,4 @@
 ## 3. Verification
 
 - [x] 3.1 Add or update regression coverage for the unit/integration stats capture path.
-- [ ] 3.2 Regenerate unit/integration evidence for an implementation commit and confirm CI/archive gates still accept the current canonical schema.
+- [x] 3.2 Regenerate unit/integration evidence for an implementation commit and confirm CI/archive gates still accept the current canonical schema.
