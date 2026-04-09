@@ -102,5 +102,6 @@ These files are authoritative sample payloads for documentation and schema self-
 - `scripts/verification/validate-gate.sh` is the enforcement layer that accepts or rejects evidence during CI/archive checks.
 - `scripts/verification/self-test-schema.sh` runs a standalone schema parsing and representative-sample validation self-check.
 - `docs/verification-gates.md` is the operator entrypoint for commands and workflow usage.
+- `docs/verification-architecture.md` documents boundary ownership and end-to-end verification flow.
 
 This document exists so contributors do not need to read inline shell/Python code just to understand the expected JSON shape.

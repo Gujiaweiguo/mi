@@ -21,6 +21,7 @@ artifacts/verification/<commit-sha>/e2e.json
 
 The canonical evidence contract is documented in:
 
+- `docs/verification-architecture.md` — system-level flow and boundary ownership across producer/schema/validator/gate/entrypoints
 - `docs/evidence-contract.md` — human-readable field, invariant, and example reference
 - `schemas/evidence-v1.json` — machine-readable JSON Schema for canonical evidence structure
 - `openspec/specs/platform-foundation/spec.md` — normative OpenSpec requirements
