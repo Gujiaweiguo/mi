@@ -16,6 +16,8 @@ EOF
 
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 DEFAULT_ROOT=$(cd "${SCRIPT_DIR}/../.." && pwd)
+SCHEMA_PATH="$DEFAULT_ROOT/schemas/evidence-v1.json"
+STRUCTURE_VALIDATOR="$SCRIPT_DIR/validate-evidence-structure.py"
 
 if [[ $# -lt 1 ]]; then
   usage
@@ -89,6 +91,12 @@ validate_evidence() {
   fi
 
   local output
+  if ! output=$(python3 "$STRUCTURE_VALIDATOR" "$SCHEMA_PATH" "$evidence_file"); then
+    STATUS["$evidence_type"]="FAIL"
+    MESSAGE["$evidence_type"]="$output"
+    return 1
+  fi
+
   if ! output=$(python3 - "$evidence_file" "$evidence_type" "$COMMIT_SHA" <<'PY'
 import json
 import sys
@@ -96,53 +104,12 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 path, expected_type, expected_sha = sys.argv[1:4]
-required = [
-    "schema_version",
-    "project",
-    "change",
-    "commit_sha",
-    "test_type",
-    "status",
-    "started_at",
-    "finished_at",
-    "source",
-    "stats",
-]
 
 try:
     data = json.loads(Path(path).read_text(encoding="utf-8"))
 except Exception as exc:
     print(f"malformed evidence: {path}: {exc}")
     sys.exit(1)
-
-missing = [field for field in required if field not in data]
-if missing:
-    print(f"malformed evidence: {path}: missing fields {', '.join(missing)}")
-    sys.exit(1)
-
-if data["schema_version"] != "1":
-    print(f"malformed evidence: {path}: schema_version must be '1'")
-    sys.exit(1)
-
-if not isinstance(data["source"], dict):
-    print(f"malformed evidence: {path}: source must be an object")
-    sys.exit(1)
-
-for field in ("kind", "workflow", "run_id"):
-    value = data["source"].get(field)
-    if not isinstance(value, str) or not value.strip():
-        print(f"malformed evidence: {path}: source.{field} must be a non-empty string")
-        sys.exit(1)
-
-if not isinstance(data["stats"], dict):
-    print(f"malformed evidence: {path}: stats must be an object")
-    sys.exit(1)
-
-for field in ("total", "passed", "failed", "skipped"):
-    value = data["stats"].get(field)
-    if not isinstance(value, int) or value < 0:
-        print(f"malformed evidence: {path}: stats.{field} must be a non-negative integer")
-        sys.exit(1)
 
 if data["stats"]["passed"] + data["stats"]["failed"] + data["stats"]["skipped"] > data["stats"]["total"]:
     print(f"malformed evidence: {path}: stats are inconsistent")
@@ -157,7 +124,7 @@ def parse_utc_timestamp(value):
 started_at = parse_utc_timestamp(data["started_at"])
 finished_at = parse_utc_timestamp(data["finished_at"])
 if started_at is None or finished_at is None:
-    print(f"malformed evidence: {path}: timestamps must be UTC ISO 8601 (YYYY-MM-DDTHH:MM:SSZ)")
+    print(f"malformed evidence: {path}: timestamps must be valid UTC ISO 8601 (YYYY-MM-DDTHH:MM:SSZ)")
     sys.exit(1)
 
 if started_at > finished_at:

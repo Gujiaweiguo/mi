@@ -90,5 +90,9 @@ expect_failure \
   "archive gate fails on invalid timestamp format" \
   "$VALIDATOR" archive --root "$TESTDATA_DIR/timestamp-bad-format" --commit-sha abababababababababababababababababababab
 
+expect_failure \
+  "ci gate fails when project is not a string" \
+  "$VALIDATOR" ci --root "$TESTDATA_DIR/project-not-string" --commit-sha cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd
+
 echo
 echo "All verification self-tests passed."
