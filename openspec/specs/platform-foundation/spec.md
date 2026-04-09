@@ -32,30 +32,18 @@ The change SHALL provide backend unit and integration test harnesses, frontend u
 - **THEN** required E2E verification SHALL remain bounded to accepted first-release non-membership flows and SHALL NOT introduce implied scope for excluded membership capabilities
 
 ### Requirement: The system SHALL enforce commit-scoped CI evidence gates
-The project SHALL define a CI gate that requires passing `unit` and `integration` evidence for the current commit before a push/PR is considered CI-ready. Required CI evidence SHALL follow the canonical verification schema and SHALL be rejected when schema fields or invariants are violated.
+The project SHALL define a CI gate that requires passing `unit` and `integration` evidence for the current commit before a push/PR is considered CI-ready. Required CI evidence SHALL follow the canonical verification schema and SHALL be rejected when schema fields or invariants are violated. Contributor-facing documentation SHALL point to live canonical references for the CI evidence contract.
 
-#### Scenario: CI evidence must satisfy canonical schema
-- **WHEN** CI readiness is evaluated for the current commit
-- **THEN** required `unit` and `integration` evidence SHALL include canonical top-level fields, canonical `source` fields, canonical `stats` fields, and valid timestamp/stat invariants
-
-#### Scenario: Schema-drift CI evidence is invalid
-- **WHEN** `unit` or `integration` evidence for the evaluated commit uses non-canonical field names, incompatible value types, or inconsistent stat/timestamp values
-- **THEN** that evidence SHALL be treated as malformed and SHALL NOT satisfy CI readiness
+#### Scenario: CI evidence contract documentation points to current sources
+- **WHEN** contributors review repository documentation for CI-ready evidence requirements
+- **THEN** the documentation SHALL reference current OpenSpec requirements and current verification-contract documentation rather than removed legacy paths
 
 ### Requirement: The system SHALL enforce stricter archive evidence gates
-The project SHALL define an archive gate that requires passing `unit`, `integration`, and `e2e` evidence for the current commit before a change is considered archive-ready. All required archive evidence SHALL follow the same canonical verification schema used by CI evidence, with `e2e` additionally requiring non-empty artifact references.
+The project SHALL define an archive gate that requires passing `unit`, `integration`, and `e2e` evidence for the current commit before a change is considered archive-ready. All required archive evidence SHALL follow the same canonical verification schema used by CI evidence, with `e2e` additionally requiring non-empty artifact references. Contributor-facing documentation SHALL provide a standalone explanation of the canonical evidence contract and archive-specific requirements.
 
-#### Scenario: Archive evidence must satisfy canonical schema
-- **WHEN** archive readiness is evaluated for the current commit
-- **THEN** required `unit`, `integration`, and `e2e` evidence SHALL satisfy canonical field/type constraints and stat/timestamp invariants
-
-#### Scenario: E2E evidence requires artifact references
-- **WHEN** `e2e` evidence exists for the evaluated commit but omits artifact references or provides invalid artifact entries
-- **THEN** that `e2e` evidence SHALL be treated as malformed and SHALL NOT satisfy archive readiness
-
-#### Scenario: Schema-drift archive evidence is invalid
-- **WHEN** required archive evidence uses incompatible schema structure even if `status` is `passed`
-- **THEN** that evidence SHALL be rejected and the commit SHALL NOT be considered archive-ready
+#### Scenario: Archive evidence contract is documented in standalone form
+- **WHEN** contributors or release operators need to understand required evidence fields and invariants
+- **THEN** the repository SHALL provide a standalone evidence-contract document that explains canonical fields, invariants, and the CI vs archive gate distinction without relying on removed change-local documents
 
 ### Requirement: The system SHALL provide frontend locale infrastructure as part of the application foundation
 The frontend foundation SHALL include locale infrastructure that can be initialized during app startup, provide locale-managed application messages, and align shared framework locale behavior with the active application locale.
