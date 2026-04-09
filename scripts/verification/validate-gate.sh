@@ -164,15 +164,20 @@ if started_at > finished_at:
     print(f"malformed evidence: {path}: started_at must be <= finished_at")
     sys.exit(1)
 
-if expected_type == "e2e":
-    artifacts = data.get("artifacts")
-    if not isinstance(artifacts, list) or not artifacts:
-        print(f"malformed evidence: {path}: artifacts must be a non-empty array for e2e evidence")
+artifacts = data.get("artifacts")
+if artifacts is not None:
+    if not isinstance(artifacts, list):
+        print(f"malformed evidence: {path}: artifacts must be an array when present")
         sys.exit(1)
     for artifact in artifacts:
         if not isinstance(artifact, str) or not artifact.strip():
             print(f"malformed evidence: {path}: artifacts entries must be non-empty strings")
             sys.exit(1)
+
+if expected_type == "e2e":
+    if not isinstance(artifacts, list) or not artifacts:
+        print(f"malformed evidence: {path}: artifacts must be a non-empty array for e2e evidence")
+        sys.exit(1)
 
 if data["commit_sha"] != expected_sha:
     print(f"stale evidence: {path}: commit_sha {data['commit_sha']} does not match {expected_sha}")

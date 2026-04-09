@@ -54,6 +54,10 @@ def main() -> int:
     if args.test_type == "e2e" and not args.artifact:
         raise ValueError("e2e evidence requires at least one artifact path")
 
+    for artifact in args.artifact:
+        if not isinstance(artifact, str) or not artifact.strip():
+            raise ValueError("artifact paths must be non-empty strings")
+
     evidence_dir = Path(args.root) / "artifacts" / "verification" / args.commit_sha
     evidence_dir.mkdir(parents=True, exist_ok=True)
     evidence_file = evidence_dir / f"{args.test_type}.json"
