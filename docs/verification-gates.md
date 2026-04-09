@@ -42,6 +42,8 @@ Validate CI readiness for the current commit:
 scripts/ci-ready.sh
 ```
 
+`scripts/ci-ready.sh` now runs the schema self-check first, then evaluates the commit-scoped CI evidence gate.
+
 Validate archive readiness for the current commit:
 
 ```bash
