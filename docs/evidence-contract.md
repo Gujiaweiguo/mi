@@ -147,6 +147,7 @@ The JSON Schema defines the structural contract, but these checks still depend o
 - `schemas/evidence-v1.json` defines the machine-readable structural contract used by docs and future tooling.
 - `scripts/verification/write-evidence.py` is the producer-side helper that writes canonical evidence files.
 - `scripts/verification/validate-gate.sh` is the enforcement layer that accepts or rejects evidence during CI/archive checks.
+- `scripts/verification/self-test-schema.sh` runs a standalone schema parsing and representative-sample validation self-check.
 - `docs/verification-gates.md` is the operator entrypoint for commands and workflow usage.
 
 This document exists so contributors do not need to read inline shell/Python code just to understand the expected JSON shape.

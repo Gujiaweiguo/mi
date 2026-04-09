@@ -56,6 +56,12 @@ scripts/verification/self-test-artifacts.sh
 scripts/verification/self-test-rehearsal.sh
 ```
 
+Run schema self-check against the canonical evidence schema:
+
+```bash
+scripts/verification/self-test-schema.sh
+```
+
 Validate a cutover rehearsal result artifact:
 
 ```bash
