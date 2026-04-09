@@ -105,3 +105,11 @@ These files are authoritative sample payloads for documentation and schema self-
 - `docs/verification-architecture.md` documents boundary ownership and end-to-end verification flow.
 
 This document exists so contributors do not need to read inline shell/Python code just to understand the expected JSON shape.
+
+## Maintenance policy
+
+When modifying the evidence contract (schema fields, validator rules, or producer output), follow the maintenance policy and impact-check guidance in `docs/verification-architecture.md`. That document defines required revalidation and documentation sync steps for each change type. In particular:
+
+- Schema field changes require coordinated updates to producers, validators, fixtures, and all three verification docs.
+- Validator-context rule changes require updated self-test fixtures and a gate regression check.
+- The missing/stale evidence rejection semantics documented above must be preserved across all maintenance changes.

@@ -94,3 +94,13 @@ scripts/verification/run-e2e.sh
 This repository does not yet contain the target application or real test producers, so the real gate checks are expected to fail for the current HEAD until actual test jobs write evidence files.
 
 That is intentional: the gate should be **red** rather than silently permissive.
+
+## Maintenance expectations
+
+When modifying verification scripts, schema, or gate logic, follow the maintenance policy in `docs/verification-architecture.md`. That document defines required revalidation steps, impact checks, and documentation sync duties for each change type (schema, producer, validator/gate, entrypoint).
+
+Key points:
+
+- Missing or stale evidence must always be rejected, regardless of changes to other verification components.
+- After any verification-layer change, run `scripts/verification/self-test.sh` and `scripts/verification/self-test-schema.sh` to confirm regression-free behavior.
+- Keep this document, `docs/verification-architecture.md`, and `docs/evidence-contract.md` synchronized when commands or gate levels change.
