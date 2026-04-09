@@ -19,9 +19,11 @@ artifacts/verification/<commit-sha>/integration.json
 artifacts/verification/<commit-sha>/e2e.json
 ```
 
-The required JSON contract is defined in:
+The canonical evidence contract is documented in:
 
-- `openspec/changes/legacy-system-migration/test-evidence-contract.md`
+- `docs/evidence-contract.md` — human-readable field, invariant, and example reference
+- `openspec/specs/platform-foundation/spec.md` — normative OpenSpec requirements
+- `scripts/verification/validate-gate.sh` — executable enforcement used by CI/archive gates
 
 On GitHub Actions:
 
