@@ -1,0 +1,7 @@
+{"Time":"2026-04-09T00:00:00Z","Action":"run","Package":"example/backend","Test":"TestPass"}
+{"Time":"2026-04-09T00:00:00Z","Action":"pass","Package":"example/backend","Test":"TestPass","Elapsed":0}
+{"Time":"2026-04-09T00:00:01Z","Action":"run","Package":"example/backend","Test":"TestFail"}
+{"Time":"2026-04-09T00:00:01Z","Action":"fail","Package":"example/backend","Test":"TestFail","Elapsed":0}
+{"Time":"2026-04-09T00:00:02Z","Action":"run","Package":"example/backend","Test":"TestSkip"}
+{"Time":"2026-04-09T00:00:02Z","Action":"skip","Package":"example/backend","Test":"TestSkip","Elapsed":0}
+{"Time":"2026-04-09T00:00:03Z","Action":"skip","Package":"example/backend/no-tests","Elapsed":0}
