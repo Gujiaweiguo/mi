@@ -83,63 +83,16 @@ The JSON Schema defines the structural contract, but these checks still depend o
 - `e2e` evidence must include a non-empty `artifacts` array.
 - `passed + failed + skipped <= total` must hold for `stats`.
 
-## Canonical Examples
+## Canonical Sample Sources
 
-### CI-Passing `unit.json`
+The repository-owned canonical sample sources are fixture files used by schema/gate self-checks:
 
-```json
-{
-  "schema_version": "1",
-  "project": "mi",
-  "change": "example-change",
-  "commit_sha": "0123456789abcdef0123456789abcdef01234567",
-  "test_type": "unit",
-  "status": "passed",
-  "started_at": "2026-04-09T00:00:00Z",
-  "finished_at": "2026-04-09T00:01:00Z",
-  "source": {
-    "kind": "local",
-    "workflow": "run-unit",
-    "run_id": "local"
-  },
-  "stats": {
-    "total": 2,
-    "passed": 2,
-    "failed": 0,
-    "skipped": 0
-  },
-  "artifacts": []
-}
-```
+- CI-style sample (`unit.json`):
+  `scripts/verification/testdata/pass-ci/artifacts/verification/1111111111111111111111111111111111111111/unit.json`
+- Archive/e2e-style sample (`e2e.json`):
+  `scripts/verification/testdata/pass-archive/artifacts/verification/2222222222222222222222222222222222222222/e2e.json`
 
-### Archive-Passing `e2e.json`
-
-```json
-{
-  "schema_version": "1",
-  "project": "mi",
-  "change": "example-change",
-  "commit_sha": "0123456789abcdef0123456789abcdef01234567",
-  "test_type": "e2e",
-  "status": "passed",
-  "started_at": "2026-04-09T00:10:00Z",
-  "finished_at": "2026-04-09T00:15:00Z",
-  "source": {
-    "kind": "github-actions",
-    "workflow": "e2e",
-    "run_id": "123456789"
-  },
-  "stats": {
-    "total": 41,
-    "passed": 41,
-    "failed": 0,
-    "skipped": 0
-  },
-  "artifacts": [
-    "frontend/test-results/e2e-results.json"
-  ]
-}
-```
+These files are authoritative sample payloads for documentation and schema self-check references.
 
 ## Relationship to OpenSpec and Scripts
 

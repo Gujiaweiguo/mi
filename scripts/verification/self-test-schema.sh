@@ -6,6 +6,7 @@ ROOT_DIR=$(cd "${SCRIPT_DIR}/../.." && pwd)
 SCHEMA_PATH="$ROOT_DIR/schemas/evidence-v1.json"
 STRUCTURE_VALIDATOR="$SCRIPT_DIR/validate-evidence-structure.py"
 
+# Canonical sample sources (shared with docs/evidence-contract.md)
 CI_SAMPLE="$SCRIPT_DIR/testdata/pass-ci/artifacts/verification/1111111111111111111111111111111111111111/unit.json"
 ARCHIVE_SAMPLE="$SCRIPT_DIR/testdata/pass-archive/artifacts/verification/2222222222222222222222222222222222222222/e2e.json"
 
