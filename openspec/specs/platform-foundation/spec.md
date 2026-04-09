@@ -32,18 +32,18 @@ The change SHALL provide backend unit and integration test harnesses, frontend u
 - **THEN** required E2E verification SHALL remain bounded to accepted first-release non-membership flows and SHALL NOT introduce implied scope for excluded membership capabilities
 
 ### Requirement: The system SHALL enforce commit-scoped CI evidence gates
-The project SHALL define a CI gate that requires passing `unit` and `integration` evidence for the current commit before a push/PR is considered CI-ready. Required CI evidence SHALL follow the canonical verification schema and SHALL be rejected when schema fields or invariants are violated. Contributor-facing documentation SHALL point to live canonical references for the CI evidence contract.
+The project SHALL define a CI gate that requires passing `unit` and `integration` evidence for the current commit before a push/PR is considered CI-ready. Required CI evidence SHALL follow the canonical verification schema and SHALL be rejected when schema fields or invariants are violated. The repository SHALL provide a machine-readable schema artifact that describes the canonical evidence structure used by CI evidence documentation and tooling.
 
-#### Scenario: CI evidence contract documentation points to current sources
-- **WHEN** contributors review repository documentation for CI-ready evidence requirements
-- **THEN** the documentation SHALL reference current OpenSpec requirements and current verification-contract documentation rather than removed legacy paths
+#### Scenario: Canonical CI evidence structure is available as JSON Schema
+- **WHEN** contributors or tooling need the structural definition of canonical `unit` or `integration` evidence
+- **THEN** the repository SHALL provide a machine-readable JSON Schema artifact that describes required fields, nested objects, and basic type constraints for the canonical evidence contract
 
 ### Requirement: The system SHALL enforce stricter archive evidence gates
-The project SHALL define an archive gate that requires passing `unit`, `integration`, and `e2e` evidence for the current commit before a change is considered archive-ready. All required archive evidence SHALL follow the same canonical verification schema used by CI evidence, with `e2e` additionally requiring non-empty artifact references. Contributor-facing documentation SHALL provide a standalone explanation of the canonical evidence contract and archive-specific requirements.
+The project SHALL define an archive gate that requires passing `unit`, `integration`, and `e2e` evidence for the current commit before a change is considered archive-ready. All required archive evidence SHALL follow the same canonical verification schema used by CI evidence, with `e2e` additionally requiring non-empty artifact references. The repository SHALL explain which archive-evidence rules are structurally represented in schema form versus enforced by gate-context validation logic.
 
-#### Scenario: Archive evidence contract is documented in standalone form
-- **WHEN** contributors or release operators need to understand required evidence fields and invariants
-- **THEN** the repository SHALL provide a standalone evidence-contract document that explains canonical fields, invariants, and the CI vs archive gate distinction without relying on removed change-local documents
+#### Scenario: JSON Schema is linked from evidence contract references
+- **WHEN** contributors review canonical evidence contract references for archive readiness
+- **THEN** the standalone contract documentation SHALL point to the machine-readable schema artifact and explain that contextual gate checks still rely on executable validation logic
 
 ### Requirement: The system SHALL provide frontend locale infrastructure as part of the application foundation
 The frontend foundation SHALL include locale infrastructure that can be initialized during app startup, provide locale-managed application messages, and align shared framework locale behavior with the active application locale.
