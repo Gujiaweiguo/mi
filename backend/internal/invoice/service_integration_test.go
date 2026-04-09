@@ -359,6 +359,16 @@ func TestInvoiceServicePaymentApplicationAndReceivableGuards(t *testing.T) {
 	if replayed.OutstandingAmount != 5000 || len(replayed.PaymentHistory) != 1 {
 		t.Fatalf("expected replayed payment to be a no-op, got %#v", replayed)
 	}
+	if err := invoiceService.SyncWorkflowState(ctx, instance, 101); err != nil {
+		t.Fatalf("replay invoice workflow sync after payment: %v", err)
+	}
+	afterReplay, err := invoiceService.GetReceivable(ctx, document.ID)
+	if err != nil {
+		t.Fatalf("get receivable after replayed workflow sync: %v", err)
+	}
+	if afterReplay.OutstandingAmount != 5000 || len(afterReplay.PaymentHistory) != 1 {
+		t.Fatalf("expected replayed workflow sync to preserve payment-reduced balance, got %#v", afterReplay)
+	}
 	settled, err := invoiceService.RecordPayment(ctx, invoice.RecordPaymentInput{DocumentID: document.ID, ActorUserID: 101, Amount: 5000, PaymentDate: time.Date(2026, 4, 25, 0, 0, 0, 0, time.UTC), IdempotencyKey: "payment-501-b", Note: "final payment"})
 	if err != nil {
 		t.Fatalf("record final payment: %v", err)

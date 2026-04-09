@@ -60,16 +60,7 @@ func (r *Repository) UpsertReceivableOpenItem(ctx context.Context, tx *sql.Tx, l
 			department_id, trade_id, charge_type, due_date, outstanding_amount, settled_at, is_deposit
 		) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 		ON DUPLICATE KEY UPDATE
-			lease_contract_id = VALUES(lease_contract_id),
-			billing_document_id = VALUES(billing_document_id),
-			customer_id = VALUES(customer_id),
-			department_id = VALUES(department_id),
-			trade_id = VALUES(trade_id),
-			charge_type = VALUES(charge_type),
-			due_date = VALUES(due_date),
-			outstanding_amount = VALUES(outstanding_amount),
-			settled_at = VALUES(settled_at),
-			is_deposit = VALUES(is_deposit)
+			billing_document_line_id = billing_document_line_id
 	`, leaseCtx.LeaseContractID, documentID, row.BillingDocumentLineID, leaseCtx.CustomerID, leaseCtx.DepartmentID, int64PointerValue(leaseCtx.TradeID), row.ChargeType, row.DueDate, row.OutstandingAmount, nil, row.IsDeposit); err != nil {
 		return fmt.Errorf("upsert receivable open item: %w", err)
 	}
