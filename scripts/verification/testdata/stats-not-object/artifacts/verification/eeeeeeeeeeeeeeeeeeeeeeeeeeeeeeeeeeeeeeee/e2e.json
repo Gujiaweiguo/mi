@@ -1,0 +1,19 @@
+{
+  "schema_version": "1",
+  "project": "mi",
+  "change": "legacy-system-migration",
+  "commit_sha": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+  "test_type": "e2e",
+  "status": "passed",
+  "started_at": "2026-03-30T10:04:00Z",
+  "finished_at": "2026-03-30T10:05:00Z",
+  "source": {
+    "kind": "self-test",
+    "workflow": "fixture-stats-not-object",
+    "run_id": "fixture-30"
+  },
+  "stats": "all-good",
+  "artifacts": [
+    "frontend/test-results/e2e-results.json"
+  ]
+}
