@@ -218,6 +218,7 @@ func NewRouter(cfg *config.Config, db *sql.DB) *gin.Engine {
 	workflowGroup.GET("/instances/:id", middleware.RequirePermission("workflow.admin", "view", authService), workflowHandler.GetInstance)
 	workflowGroup.GET("/instances/:id/audit", middleware.RequirePermission("workflow.admin", "view", authService), workflowHandler.AuditHistory)
 	workflowGroup.GET("/instances/:id/reminders", middleware.RequirePermission("workflow.admin", "view", authService), workflowHandler.ReminderHistory)
+	workflowGroup.POST("/reminders/run", middleware.RequirePermission("workflow.admin", "approve", authService), workflowHandler.RunReminders)
 	workflowGroup.POST("/instances/:id/approve", middleware.RequirePermission("workflow.admin", "approve", authService), workflowHandler.Approve)
 	workflowGroup.POST("/instances/:id/reject", middleware.RequirePermission("workflow.admin", "approve", authService), workflowHandler.Reject)
 	workflowGroup.POST("/instances/:id/resubmit", middleware.RequirePermission("workflow.admin", "approve", authService), workflowHandler.Resubmit)

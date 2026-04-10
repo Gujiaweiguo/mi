@@ -3,6 +3,7 @@
 package http_test
 
 import (
+	"bytes"
 	"context"
 	"database/sql"
 	"encoding/json"
@@ -126,4 +127,159 @@ func TestIntegrationWorkflowReminderHistoryRoute(t *testing.T) {
 	if body.Reminders[0].WorkflowInstanceID != instance.ID || body.Reminders[0].ReminderType != "standard" || body.Reminders[0].Outcome != string(workflow.ReminderOutcomeEmitted) || body.Reminders[0].ReasonCode != nil {
 		t.Fatalf("expected emitted reminder payload, got body=%s", recorder.Body.String())
 	}
+}
+
+func TestIntegrationWorkflowReminderTriggerRoute(t *testing.T) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+	defer cancel()
+
+	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
+		ContainerRequest: testcontainers.ContainerRequest{
+			Image:        "mysql:8.0",
+			ExposedPorts: []string{"3306/tcp"},
+			Env: map[string]string{
+				"MYSQL_DATABASE":      "mi_integration",
+				"MYSQL_USER":          "mi_user",
+				"MYSQL_PASSWORD":      "mi_password",
+				"MYSQL_ROOT_PASSWORD": "mi_root_password",
+			},
+			WaitingFor: wait.ForListeningPort("3306/tcp").WithStartupTimeout(3 * time.Minute),
+		},
+		Started: true,
+	})
+	if err != nil {
+		t.Fatalf("start mysql container: %v", err)
+	}
+	defer func() { _ = container.Terminate(context.Background()) }()
+
+	host, err := container.Host(ctx)
+	if err != nil {
+		t.Fatalf("resolve mysql host: %v", err)
+	}
+	port, err := container.MappedPort(ctx, "3306/tcp")
+	if err != nil {
+		t.Fatalf("resolve mysql port: %v", err)
+	}
+
+	db, err := sql.Open("mysql", platformdb.Config{Host: host, Port: port.Int(), Name: "mi_integration", User: "mi_user", Password: "mi_password"}.DSN())
+	if err != nil {
+		t.Fatalf("open mysql: %v", err)
+	}
+	defer db.Close()
+
+	if err := waitForDatabase(ctx, db); err != nil {
+		t.Fatalf("ping mysql: %v", err)
+	}
+	migrator := platformdb.NewMigrator(db, os.DirFS("../platform/database"), "migrations")
+	if err := migrator.ApplyUpMigrations(); err != nil {
+		t.Fatalf("apply migrations: %v", err)
+	}
+	bootstrapRunner := platformdb.NewBootstrapRunner(db, bootstrap.All()...)
+	if err := bootstrapRunner.Run(ctx); err != nil {
+		t.Fatalf("run bootstrap seeds: %v", err)
+	}
+
+	// Create a pending workflow instance so the reminder sweep has something to process.
+	_, err = workflow.NewService(db, workflow.NewRepository(db)).Start(ctx, workflow.StartInput{
+		DefinitionCode: "lease-approval",
+		DocumentType:   "lease_contract",
+		DocumentID:     9501,
+		ActorUserID:    101,
+		DepartmentID:   101,
+		IdempotencyKey: "start-trigger-9501",
+		Comment:        "submit for trigger test",
+	})
+	if err != nil {
+		t.Fatalf("start workflow: %v", err)
+	}
+
+	_, err = db.ExecContext(ctx, `
+		INSERT INTO users (id, department_id, username, display_name, password_hash, status)
+		VALUES (201, 101, 'viewer', 'Test Viewer', '$2a$10$32RDlfSKfGJDcHhJWP3JoOBi8SyorV7r2lWcs8hixdhFA/AtOI1gC', 'active')
+		ON DUPLICATE KEY UPDATE username = VALUES(username)
+	`)
+	if err != nil {
+		t.Fatalf("insert viewer user: %v", err)
+	}
+	_, err = db.ExecContext(ctx, `
+		INSERT INTO user_roles (user_id, role_id, department_id)
+		VALUES (201, 102, 101)
+		ON DUPLICATE KEY UPDATE role_id = VALUES(role_id)
+	`)
+	if err != nil {
+		t.Fatalf("insert viewer role: %v", err)
+	}
+
+	router := httpapi.NewRouter(&config.Config{
+		App:  config.AppConfig{Name: "mi-backend", Environment: "test"},
+		Auth: config.AuthConfig{JWTSecret: "test-secret", TokenExpirySeconds: 3600},
+	}, db)
+	token := loginAsAdmin(t, router)
+
+	t.Run("returns_200_with_reminders", func(t *testing.T) {
+		recorder := httptest.NewRecorder()
+		request := httptest.NewRequest(http.MethodPost, "/api/workflow/reminders/run", bytes.NewBufferString(`{}`))
+		request.Header.Set("Content-Type", "application/json")
+		request.Header.Set("Authorization", "Bearer "+token)
+		router.ServeHTTP(recorder, request)
+
+		if recorder.Code != http.StatusOK {
+			t.Fatalf("expected 200, got %d body=%s", recorder.Code, recorder.Body.String())
+		}
+
+		var body struct {
+			Reminders []struct {
+				WorkflowInstanceID int64  `json:"workflow_instance_id"`
+				ReminderType       string `json:"reminder_type"`
+				Outcome            string `json:"outcome"`
+			} `json:"reminders"`
+		}
+		if err := json.Unmarshal(recorder.Body.Bytes(), &body); err != nil {
+			t.Fatalf("decode response: %v", err)
+		}
+		if len(body.Reminders) == 0 {
+			t.Fatalf("expected at least one reminder, got body=%s", recorder.Body.String())
+		}
+		if body.Reminders[0].Outcome != string(workflow.ReminderOutcomeEmitted) {
+			t.Fatalf("expected emitted outcome, got %s body=%s", body.Reminders[0].Outcome, recorder.Body.String())
+		}
+	})
+
+	t.Run("returns_400_on_bad_input", func(t *testing.T) {
+		recorder := httptest.NewRecorder()
+		request := httptest.NewRequest(http.MethodPost, "/api/workflow/reminders/run", bytes.NewBufferString(`{bad`))
+		request.Header.Set("Content-Type", "application/json")
+		request.Header.Set("Authorization", "Bearer "+token)
+		router.ServeHTTP(recorder, request)
+
+		if recorder.Code != http.StatusBadRequest {
+			t.Fatalf("expected 400, got %d body=%s", recorder.Code, recorder.Body.String())
+		}
+	})
+
+	t.Run("returns_403_without_permission", func(t *testing.T) {
+		loginRec := httptest.NewRecorder()
+		loginReq := httptest.NewRequest(http.MethodPost, "/api/auth/login", bytes.NewBufferString(`{"username":"viewer","password":"password"}`))
+		loginReq.Header.Set("Content-Type", "application/json")
+		router.ServeHTTP(loginRec, loginReq)
+		if loginRec.Code != http.StatusOK {
+			t.Fatalf("expected 200 from viewer login, got %d body=%s", loginRec.Code, loginRec.Body.String())
+		}
+		var loginBody struct {
+			Token string `json:"token"`
+		}
+		if err := json.Unmarshal(loginRec.Body.Bytes(), &loginBody); err != nil {
+			t.Fatalf("decode viewer login response: %v", err)
+		}
+
+		recorder := httptest.NewRecorder()
+		request := httptest.NewRequest(http.MethodPost, "/api/workflow/reminders/run", bytes.NewBufferString(`{}`))
+		request.Header.Set("Content-Type", "application/json")
+		request.Header.Set("Authorization", "Bearer "+loginBody.Token)
+		router.ServeHTTP(recorder, request)
+
+		if recorder.Code != http.StatusForbidden {
+			t.Fatalf("expected 403, got %d body=%s", recorder.Code, recorder.Body.String())
+		}
+	})
 }

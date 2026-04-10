@@ -4,14 +4,28 @@ import (
 	"context"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/Gujiaweiguo/mi/backend/internal/http/middleware"
 	"github.com/Gujiaweiguo/mi/backend/internal/workflow"
 	"github.com/gin-gonic/gin"
 )
 
+type workflowService interface {
+	ListDefinitions(ctx context.Context) ([]workflow.Definition, error)
+	ListInstances(ctx context.Context, filter workflow.InstanceFilter) ([]workflow.Instance, error)
+	Start(ctx context.Context, input workflow.StartInput) (*workflow.Instance, error)
+	Approve(ctx context.Context, input workflow.TransitionInput) (*workflow.Instance, error)
+	Reject(ctx context.Context, input workflow.TransitionInput) (*workflow.Instance, error)
+	Resubmit(ctx context.Context, input workflow.TransitionInput) (*workflow.Instance, error)
+	GetInstance(ctx context.Context, instanceID int64) (*workflow.Instance, error)
+	AuditHistory(ctx context.Context, instanceID int64) ([]workflow.AuditEntry, error)
+	ReminderHistory(ctx context.Context, instanceID int64) ([]workflow.ReminderAuditRecord, error)
+	RunReminders(ctx context.Context, now time.Time, config workflow.ReminderConfig) ([]workflow.ReminderAuditRecord, error)
+}
+
 type WorkflowHandler struct {
-	service *workflow.Service
+	service workflowService
 	syncer  WorkflowStateSyncer
 }
 
@@ -19,7 +33,7 @@ type WorkflowStateSyncer interface {
 	SyncWorkflowState(ctx context.Context, instance *workflow.Instance, actorUserID int64) error
 }
 
-func NewWorkflowHandler(service *workflow.Service, syncer WorkflowStateSyncer) *WorkflowHandler {
+func NewWorkflowHandler(service workflowService, syncer WorkflowStateSyncer) *WorkflowHandler {
 	return &WorkflowHandler{service: service, syncer: syncer}
 }
 
@@ -209,4 +223,46 @@ func (h *WorkflowHandler) ReminderHistory(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"reminders": reminders})
+}
+
+type runRemindersRequest struct {
+	ReminderType     *string `json:"reminder_type"`
+	MinPendingAgeSec *int    `json:"min_pending_age_sec"`
+	WindowTruncSec   *int    `json:"window_truncation_sec"`
+}
+
+func (h *WorkflowHandler) RunReminders(c *gin.Context) {
+	var req runRemindersRequest
+	if c.Request.ContentLength > 0 {
+		if err := c.ShouldBindJSON(&req); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"message": "invalid request body"})
+			return
+		}
+	}
+
+	config := workflow.ReminderConfig{}
+	if req.ReminderType != nil {
+		config.ReminderType = *req.ReminderType
+	}
+	if req.MinPendingAgeSec != nil {
+		if *req.MinPendingAgeSec < 0 {
+			c.JSON(http.StatusBadRequest, gin.H{"message": "min_pending_age_sec must be non-negative"})
+			return
+		}
+		config.MinPendingAge = time.Duration(*req.MinPendingAgeSec) * time.Second
+	}
+	if req.WindowTruncSec != nil {
+		if *req.WindowTruncSec < 0 {
+			c.JSON(http.StatusBadRequest, gin.H{"message": "window_truncation_sec must be non-negative"})
+			return
+		}
+		config.WindowTruncation = time.Duration(*req.WindowTruncSec) * time.Second
+	}
+
+	records, err := h.service.RunReminders(c.Request.Context(), time.Now().UTC(), config)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to run workflow reminders"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"reminders": records})
 }
