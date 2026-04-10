@@ -31,6 +31,8 @@ storage:
 workflow_reminder_scheduler:
   enabled: false
   interval_seconds: 3600
+  lock_name: workflow:reminder:scheduler
+  lock_wait_seconds: 0
   reminder_type: standard
   min_pending_age_seconds: 86400
   window_truncation_seconds: 86400

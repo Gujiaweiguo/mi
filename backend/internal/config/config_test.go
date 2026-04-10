@@ -28,12 +28,19 @@ func TestLoadReadsConfigFile(t *testing.T) {
 	if cfg.WorkflowReminderScheduler.IntervalSeconds != 3600 {
 		t.Fatalf("expected reminder scheduler interval 3600, got %d", cfg.WorkflowReminderScheduler.IntervalSeconds)
 	}
+	if cfg.WorkflowReminderScheduler.LockName != "workflow:reminder:scheduler" {
+		t.Fatalf("expected default scheduler lock name, got %q", cfg.WorkflowReminderScheduler.LockName)
+	}
+	if cfg.WorkflowReminderScheduler.LockWaitSeconds != 0 {
+		t.Fatalf("expected scheduler lock wait seconds 0, got %d", cfg.WorkflowReminderScheduler.LockWaitSeconds)
+	}
 }
 
 func TestLoadAppliesEnvironmentOverrides(t *testing.T) {
 	t.Setenv(envPrefix+"_CONFIG_FILE", filepath.Join("..", "..", "config", "test.yaml"))
 	t.Setenv(envPrefix+"_DATABASE_HOST", "override-db")
 	t.Setenv(envPrefix+"_WORKFLOW_REMINDER_SCHEDULER_ENABLED", "true")
+	t.Setenv(envPrefix+"_WORKFLOW_REMINDER_SCHEDULER_LOCK_NAME", "workflow:reminder:scheduler:test")
 
 	cfg, err := Load()
 	if err != nil {
@@ -45,6 +52,9 @@ func TestLoadAppliesEnvironmentOverrides(t *testing.T) {
 	}
 	if !cfg.WorkflowReminderScheduler.Enabled {
 		t.Fatal("expected scheduler enabled override from environment")
+	}
+	if cfg.WorkflowReminderScheduler.LockName != "workflow:reminder:scheduler:test" {
+		t.Fatalf("expected scheduler lock name override, got %q", cfg.WorkflowReminderScheduler.LockName)
 	}
 }
 

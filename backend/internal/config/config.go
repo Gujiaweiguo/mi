@@ -60,6 +60,8 @@ type StorageConfig struct {
 type WorkflowReminderSchedulerConfig struct {
 	Enabled                 bool   `mapstructure:"enabled"`
 	IntervalSeconds         int    `mapstructure:"interval_seconds"`
+	LockName                string `mapstructure:"lock_name"`
+	LockWaitSeconds         int    `mapstructure:"lock_wait_seconds"`
 	ReminderType            string `mapstructure:"reminder_type"`
 	MinPendingAgeSeconds    int    `mapstructure:"min_pending_age_seconds"`
 	WindowTruncationSeconds int    `mapstructure:"window_truncation_seconds"`
