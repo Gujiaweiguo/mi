@@ -1,15 +1,19 @@
 package app
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"net/http"
+	"strings"
+	"sync"
 	"time"
 
 	"github.com/Gujiaweiguo/mi/backend/internal/config"
 	api "github.com/Gujiaweiguo/mi/backend/internal/http"
 	"github.com/Gujiaweiguo/mi/backend/internal/logging"
 	platformdb "github.com/Gujiaweiguo/mi/backend/internal/platform/database"
+	"github.com/Gujiaweiguo/mi/backend/internal/workflow"
 	_ "github.com/go-sql-driver/mysql"
 	"go.uber.org/zap"
 )
@@ -19,6 +23,10 @@ type App struct {
 	logger *zap.Logger
 	db     *sql.DB
 	server *http.Server
+}
+
+type workflowReminderSchedulerService interface {
+	RunReminders(ctx context.Context, now time.Time, config workflow.ReminderConfig) ([]workflow.ReminderAuditRecord, error)
 }
 
 func New() (*App, error) {
@@ -58,6 +66,9 @@ func New() (*App, error) {
 }
 
 func (a *App) Run() error {
+	stopReminderScheduler := a.startWorkflowReminderScheduler()
+	defer stopReminderScheduler()
+
 	a.logger.Sugar().Infow(
 		"starting backend service",
 		"environment", a.config.App.Environment,
@@ -69,4 +80,114 @@ func (a *App) Run() error {
 
 func (a *App) Logger() *zap.Logger {
 	return a.logger
+}
+
+func (a *App) startWorkflowReminderScheduler() func() {
+	schedulerConfig := normalizeWorkflowReminderSchedulerConfig(a.config.WorkflowReminderScheduler)
+	if !schedulerConfig.Enabled {
+		a.logger.Sugar().Infow("workflow reminder scheduler disabled")
+		return func() {}
+	}
+
+	workflowService := workflow.NewService(a.db, workflow.NewRepository(a.db))
+	interval := time.Duration(schedulerConfig.IntervalSeconds) * time.Second
+	ticker := time.NewTicker(interval)
+	stopCh := make(chan struct{})
+	var stopOnce sync.Once
+	var runMutex sync.Mutex
+
+	a.logger.Sugar().Infow("workflow reminder scheduler enabled",
+		"interval_seconds", schedulerConfig.IntervalSeconds,
+		"reminder_type", schedulerConfig.ReminderType,
+		"min_pending_age_seconds", schedulerConfig.MinPendingAgeSeconds,
+		"window_truncation_seconds", schedulerConfig.WindowTruncationSeconds,
+	)
+
+	go func() {
+		for {
+			select {
+			case <-ticker.C:
+				if !tryLockMutex(&runMutex) {
+					a.logger.Sugar().Warnw("skip workflow reminder schedule tick because previous run is still in progress")
+					continue
+				}
+
+				runAt := time.Now().UTC()
+				runContext, cancel := context.WithTimeout(context.Background(), interval)
+				err := runWorkflowReminderSchedulerOnce(runContext, a.logger, workflowService, runAt, schedulerConfig)
+				cancel()
+				runMutex.Unlock()
+				if err != nil {
+					a.logger.Sugar().Errorw("workflow reminder scheduled run failed", "error", err)
+				}
+			case <-stopCh:
+				ticker.Stop()
+				return
+			}
+		}
+	}()
+
+	return func() {
+		stopOnce.Do(func() { close(stopCh) })
+	}
+}
+
+func runWorkflowReminderSchedulerOnce(ctx context.Context, logger *zap.Logger, service workflowReminderSchedulerService, now time.Time, schedulerConfig config.WorkflowReminderSchedulerConfig) error {
+	reminderConfig := workflow.ReminderConfig{
+		ReminderType:     schedulerConfig.ReminderType,
+		MinPendingAge:    time.Duration(schedulerConfig.MinPendingAgeSeconds) * time.Second,
+		WindowTruncation: time.Duration(schedulerConfig.WindowTruncationSeconds) * time.Second,
+	}
+
+	records, err := service.RunReminders(ctx, now, reminderConfig)
+	if err != nil {
+		return err
+	}
+
+	emitted, skipped := summarizeReminderOutcomes(records)
+	logger.Sugar().Infow("workflow reminder scheduled run completed",
+		"run_at", now,
+		"records", len(records),
+		"emitted", emitted,
+		"skipped", skipped,
+	)
+	return nil
+}
+
+func normalizeWorkflowReminderSchedulerConfig(schedulerConfig config.WorkflowReminderSchedulerConfig) config.WorkflowReminderSchedulerConfig {
+	if schedulerConfig.IntervalSeconds <= 0 {
+		schedulerConfig.IntervalSeconds = 3600
+	}
+	if strings.TrimSpace(schedulerConfig.ReminderType) == "" {
+		schedulerConfig.ReminderType = "standard"
+	}
+	if schedulerConfig.MinPendingAgeSeconds < 0 {
+		schedulerConfig.MinPendingAgeSeconds = 0
+	}
+	if schedulerConfig.WindowTruncationSeconds <= 0 {
+		schedulerConfig.WindowTruncationSeconds = 86400
+	}
+	return schedulerConfig
+}
+
+func summarizeReminderOutcomes(records []workflow.ReminderAuditRecord) (int, int) {
+	emitted := 0
+	skipped := 0
+	for _, record := range records {
+		if record.Outcome == workflow.ReminderOutcomeEmitted {
+			emitted++
+			continue
+		}
+		if record.Outcome == workflow.ReminderOutcomeSkipped {
+			skipped++
+		}
+	}
+	return emitted, skipped
+}
+
+func tryLockMutex(mu *sync.Mutex) bool {
+	if !mu.TryLock() {
+		return false
+	}
+	return true
 }
