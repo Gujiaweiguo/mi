@@ -144,3 +144,35 @@ type TransitionInput struct {
 	IdempotencyKey string
 	Comment        string
 }
+
+type ReminderOutcome string
+
+const (
+	ReminderOutcomeEmitted ReminderOutcome = "emitted"
+	ReminderOutcomeSkipped ReminderOutcome = "skipped"
+)
+
+type ReminderReasonCode string
+
+const (
+	ReminderReasonNotDue         ReminderReasonCode = "not_due"
+	ReminderReasonAlreadyEmitted ReminderReasonCode = "already_emitted"
+	ReminderReasonNotPending     ReminderReasonCode = "not_pending"
+)
+
+type ReminderAuditRecord struct {
+	ID                  int64           `json:"id"`
+	WorkflowInstanceID  int64           `json:"workflow_instance_id"`
+	ReminderType        string          `json:"reminder_type"`
+	ReminderKey         string          `json:"reminder_key"`
+	ReminderWindowStart time.Time       `json:"reminder_window_start"`
+	Outcome             ReminderOutcome `json:"outcome"`
+	ReasonCode          *string         `json:"reason_code,omitempty"`
+	CreatedAt           time.Time       `json:"created_at"`
+}
+
+type ReminderConfig struct {
+	ReminderType     string
+	MinPendingAge    time.Duration
+	WindowTruncation time.Duration
+}
