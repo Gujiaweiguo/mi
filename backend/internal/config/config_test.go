@@ -21,11 +21,19 @@ func TestLoadReadsConfigFile(t *testing.T) {
 	if cfg.Database.Host != "mysql" {
 		t.Fatalf("expected mysql host, got %q", cfg.Database.Host)
 	}
+
+	if cfg.WorkflowReminderScheduler.Enabled {
+		t.Fatal("expected reminder scheduler disabled by default in test config")
+	}
+	if cfg.WorkflowReminderScheduler.IntervalSeconds != 3600 {
+		t.Fatalf("expected reminder scheduler interval 3600, got %d", cfg.WorkflowReminderScheduler.IntervalSeconds)
+	}
 }
 
 func TestLoadAppliesEnvironmentOverrides(t *testing.T) {
 	t.Setenv(envPrefix+"_CONFIG_FILE", filepath.Join("..", "..", "config", "test.yaml"))
 	t.Setenv(envPrefix+"_DATABASE_HOST", "override-db")
+	t.Setenv(envPrefix+"_WORKFLOW_REMINDER_SCHEDULER_ENABLED", "true")
 
 	cfg, err := Load()
 	if err != nil {
@@ -34,6 +42,9 @@ func TestLoadAppliesEnvironmentOverrides(t *testing.T) {
 
 	if cfg.Database.Host != "override-db" {
 		t.Fatalf("expected env override, got %q", cfg.Database.Host)
+	}
+	if !cfg.WorkflowReminderScheduler.Enabled {
+		t.Fatal("expected scheduler enabled override from environment")
 	}
 }
 

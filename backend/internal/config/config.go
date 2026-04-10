@@ -12,12 +12,13 @@ import (
 const envPrefix = "MI"
 
 type Config struct {
-	App      AppConfig      `mapstructure:"app"`
-	Server   ServerConfig   `mapstructure:"server"`
-	Database DatabaseConfig `mapstructure:"database"`
-	Auth     AuthConfig     `mapstructure:"auth"`
-	Log      LogConfig      `mapstructure:"log"`
-	Storage  StorageConfig  `mapstructure:"storage"`
+	App                       AppConfig                       `mapstructure:"app"`
+	Server                    ServerConfig                    `mapstructure:"server"`
+	Database                  DatabaseConfig                  `mapstructure:"database"`
+	Auth                      AuthConfig                      `mapstructure:"auth"`
+	Log                       LogConfig                       `mapstructure:"log"`
+	Storage                   StorageConfig                   `mapstructure:"storage"`
+	WorkflowReminderScheduler WorkflowReminderSchedulerConfig `mapstructure:"workflow_reminder_scheduler"`
 }
 
 type AppConfig struct {
@@ -54,6 +55,14 @@ type StorageConfig struct {
 	GeneratedDocumentsPath string `mapstructure:"generated_documents_path"`
 	UploadsPath            string `mapstructure:"uploads_path"`
 	LogsPath               string `mapstructure:"logs_path"`
+}
+
+type WorkflowReminderSchedulerConfig struct {
+	Enabled                 bool   `mapstructure:"enabled"`
+	IntervalSeconds         int    `mapstructure:"interval_seconds"`
+	ReminderType            string `mapstructure:"reminder_type"`
+	MinPendingAgeSeconds    int    `mapstructure:"min_pending_age_seconds"`
+	WindowTruncationSeconds int    `mapstructure:"window_truncation_seconds"`
 }
 
 func Load() (*Config, error) {
