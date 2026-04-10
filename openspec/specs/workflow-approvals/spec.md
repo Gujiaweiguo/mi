@@ -51,7 +51,7 @@ Before timeout or escalation automation is enabled in any future release, the wo
 - **THEN** the proposed design SHALL include auditable automated action records and explicit operator override or recovery paths
 
 ### Requirement: The system SHALL support reminder-only automation without decision mutation
-The workflow subsystem MAY emit reminder records or notifications for pending approval instances based on configured reminder criteria. Reminder automation SHALL be informational only and SHALL NOT auto-approve, auto-reject, or escalate workflow decisions in first release behavior. Reminder eligibility and deduplication SHALL be deterministic for a given reminder key and reminder window.
+The workflow subsystem MAY emit reminder records or notifications for pending approval instances based on configured reminder criteria. Reminder automation SHALL be informational only and SHALL NOT auto-approve, auto-reject, or escalate workflow decisions in first release behavior. Reminder eligibility and deduplication SHALL be deterministic for a given reminder key and reminder window. The implementation SHALL persist auditable emitted/skip outcomes and SHALL provide a query path for reminder history diagnostics.
 
 #### Scenario: Reminder emission for pending instance
 - **WHEN** a workflow instance remains pending and satisfies configured reminder criteria
@@ -65,3 +65,10 @@ The workflow subsystem MAY emit reminder records or notifications for pending ap
 - **WHEN** reminder automation runs for a pending instance
 - **THEN** the workflow decision state SHALL remain unchanged unless an explicit user action is submitted through normal approval transitions
 
+#### Scenario: Reminder replay does not duplicate side effects
+- **WHEN** the reminder runner is retried for the same instance and reminder key/window
+- **THEN** the system SHALL preserve a single emitted reminder side effect and SHALL record replay-safe audit outcome without duplication
+
+#### Scenario: Operator can query reminder history
+- **WHEN** an operator requests reminder diagnostics for a workflow instance
+- **THEN** the system SHALL return reminder history entries including outcome, reason code, and timestamps
