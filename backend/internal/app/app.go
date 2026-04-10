@@ -38,6 +38,35 @@ type mysqlWorkflowReminderDistributedLocker struct {
 	db *sql.DB
 }
 
+const reminderSchedulerFailureWarnThreshold = 3
+
+type workflowReminderSchedulerRunOutcome struct {
+	LockAcquired bool
+	Emitted      int
+	Skipped      int
+}
+
+type workflowReminderSchedulerSnapshot struct {
+	TotalRuns           int64
+	SuccessfulRuns      int64
+	FailedRuns          int64
+	LockSkippedRuns     int64
+	ConsecutiveFailures int64
+	LastRunAt           time.Time
+	LastSuccessAt       time.Time
+	LastFailureAt       time.Time
+	LastLockSkipAt      time.Time
+	LastRunDurationMs   int64
+	LastEmitted         int
+	LastSkipped         int
+	LastError           string
+}
+
+type workflowReminderSchedulerObservability struct {
+	mu       sync.Mutex
+	snapshot workflowReminderSchedulerSnapshot
+}
+
 func New() (*App, error) {
 	cfg, err := config.Load()
 	if err != nil {
@@ -105,6 +134,7 @@ func (a *App) startWorkflowReminderScheduler() func() {
 	stopCh := make(chan struct{})
 	var stopOnce sync.Once
 	var runMutex sync.Mutex
+	observability := newWorkflowReminderSchedulerObservability()
 
 	a.logger.Sugar().Infow("workflow reminder scheduler enabled",
 		"interval_seconds", schedulerConfig.IntervalSeconds,
@@ -126,12 +156,59 @@ func (a *App) startWorkflowReminderScheduler() func() {
 
 				runAt := time.Now().UTC()
 				runContext, cancel := context.WithTimeout(context.Background(), interval)
-				err := runWorkflowReminderSchedulerTick(runContext, a.logger, locker, workflowService, runAt, schedulerConfig)
+				outcome, err := runWorkflowReminderSchedulerTick(runContext, locker, workflowService, runAt, schedulerConfig)
+				duration := time.Since(runAt)
 				cancel()
 				runMutex.Unlock()
 				if err != nil {
-					a.logger.Sugar().Errorw("workflow reminder scheduled run failed", "error", err)
+					snapshot := observability.recordFailure(runAt, duration, err)
+					a.logger.Sugar().Errorw("workflow reminder scheduled run failed",
+						"error", err,
+						"run_at", snapshot.LastRunAt,
+						"duration_ms", snapshot.LastRunDurationMs,
+						"total_runs", snapshot.TotalRuns,
+						"successful_runs", snapshot.SuccessfulRuns,
+						"failed_runs", snapshot.FailedRuns,
+						"lock_skipped_runs", snapshot.LockSkippedRuns,
+						"consecutive_failures", snapshot.ConsecutiveFailures,
+					)
+					if snapshot.ConsecutiveFailures >= reminderSchedulerFailureWarnThreshold {
+						a.logger.Sugar().Warnw("workflow reminder scheduler consecutive failures threshold reached",
+							"threshold", reminderSchedulerFailureWarnThreshold,
+							"consecutive_failures", snapshot.ConsecutiveFailures,
+							"last_error", snapshot.LastError,
+						)
+					}
+					continue
 				}
+
+				if !outcome.LockAcquired {
+					snapshot := observability.recordLockSkip(runAt, duration)
+					a.logger.Sugar().Infow("workflow reminder scheduled run skipped by distributed lock",
+						"lock_name", schedulerConfig.LockName,
+						"run_at", snapshot.LastRunAt,
+						"duration_ms", snapshot.LastRunDurationMs,
+						"total_runs", snapshot.TotalRuns,
+						"successful_runs", snapshot.SuccessfulRuns,
+						"failed_runs", snapshot.FailedRuns,
+						"lock_skipped_runs", snapshot.LockSkippedRuns,
+						"consecutive_failures", snapshot.ConsecutiveFailures,
+					)
+					continue
+				}
+
+				snapshot := observability.recordSuccess(runAt, duration, outcome.Emitted, outcome.Skipped)
+				a.logger.Sugar().Infow("workflow reminder scheduled run completed",
+					"run_at", snapshot.LastRunAt,
+					"duration_ms", snapshot.LastRunDurationMs,
+					"emitted", snapshot.LastEmitted,
+					"skipped", snapshot.LastSkipped,
+					"total_runs", snapshot.TotalRuns,
+					"successful_runs", snapshot.SuccessfulRuns,
+					"failed_runs", snapshot.FailedRuns,
+					"lock_skipped_runs", snapshot.LockSkippedRuns,
+					"consecutive_failures", snapshot.ConsecutiveFailures,
+				)
 			case <-stopCh:
 				ticker.Stop()
 				return
@@ -144,7 +221,7 @@ func (a *App) startWorkflowReminderScheduler() func() {
 	}
 }
 
-func runWorkflowReminderSchedulerOnce(ctx context.Context, logger *zap.Logger, service workflowReminderSchedulerService, now time.Time, schedulerConfig config.WorkflowReminderSchedulerConfig) error {
+func runWorkflowReminderSchedulerOnce(ctx context.Context, service workflowReminderSchedulerService, now time.Time, schedulerConfig config.WorkflowReminderSchedulerConfig) (int, int, error) {
 	reminderConfig := workflow.ReminderConfig{
 		ReminderType:     schedulerConfig.ReminderType,
 		MinPendingAge:    time.Duration(schedulerConfig.MinPendingAgeSeconds) * time.Second,
@@ -153,32 +230,33 @@ func runWorkflowReminderSchedulerOnce(ctx context.Context, logger *zap.Logger, s
 
 	records, err := service.RunReminders(ctx, now, reminderConfig)
 	if err != nil {
-		return err
+		return 0, 0, err
 	}
 
 	emitted, skipped := summarizeReminderOutcomes(records)
-	logger.Sugar().Infow("workflow reminder scheduled run completed",
-		"run_at", now,
-		"records", len(records),
-		"emitted", emitted,
-		"skipped", skipped,
-	)
-	return nil
+	return emitted, skipped, nil
 }
 
-func runWorkflowReminderSchedulerTick(ctx context.Context, logger *zap.Logger, locker workflowReminderDistributedLocker, service workflowReminderSchedulerService, now time.Time, schedulerConfig config.WorkflowReminderSchedulerConfig) error {
+func runWorkflowReminderSchedulerTick(ctx context.Context, locker workflowReminderDistributedLocker, service workflowReminderSchedulerService, now time.Time, schedulerConfig config.WorkflowReminderSchedulerConfig) (workflowReminderSchedulerRunOutcome, error) {
+	outcome := workflowReminderSchedulerRunOutcome{LockAcquired: false}
 	acquired, err := locker.WithLock(ctx, schedulerConfig.LockName, schedulerConfig.LockWaitSeconds, func(lockContext context.Context) error {
-		return runWorkflowReminderSchedulerOnce(lockContext, logger, service, now, schedulerConfig)
+		emitted, skipped, runErr := runWorkflowReminderSchedulerOnce(lockContext, service, now, schedulerConfig)
+		if runErr != nil {
+			return runErr
+		}
+		outcome.LockAcquired = true
+		outcome.Emitted = emitted
+		outcome.Skipped = skipped
+		return nil
 	})
 	if err != nil {
-		return err
+		return workflowReminderSchedulerRunOutcome{}, err
 	}
 	if !acquired {
-		logger.Sugar().Infow("skip workflow reminder schedule tick because distributed lock not acquired",
-			"lock_name", schedulerConfig.LockName,
-		)
+		return outcome, nil
 	}
-	return nil
+	outcome.LockAcquired = true
+	return outcome, nil
 }
 
 func normalizeWorkflowReminderSchedulerConfig(schedulerConfig config.WorkflowReminderSchedulerConfig) config.WorkflowReminderSchedulerConfig {
@@ -223,6 +301,61 @@ func tryLockMutex(mu *sync.Mutex) bool {
 		return false
 	}
 	return true
+}
+
+func newWorkflowReminderSchedulerObservability() *workflowReminderSchedulerObservability {
+	return &workflowReminderSchedulerObservability{}
+}
+
+func (o *workflowReminderSchedulerObservability) recordSuccess(runAt time.Time, duration time.Duration, emitted int, skipped int) workflowReminderSchedulerSnapshot {
+	o.mu.Lock()
+	defer o.mu.Unlock()
+
+	o.snapshot.TotalRuns++
+	o.snapshot.SuccessfulRuns++
+	o.snapshot.ConsecutiveFailures = 0
+	o.snapshot.LastRunAt = runAt
+	o.snapshot.LastSuccessAt = runAt
+	o.snapshot.LastRunDurationMs = durationToMilliseconds(duration)
+	o.snapshot.LastEmitted = emitted
+	o.snapshot.LastSkipped = skipped
+	o.snapshot.LastError = ""
+	return o.snapshot
+}
+
+func (o *workflowReminderSchedulerObservability) recordFailure(runAt time.Time, duration time.Duration, err error) workflowReminderSchedulerSnapshot {
+	o.mu.Lock()
+	defer o.mu.Unlock()
+
+	o.snapshot.TotalRuns++
+	o.snapshot.FailedRuns++
+	o.snapshot.ConsecutiveFailures++
+	o.snapshot.LastRunAt = runAt
+	o.snapshot.LastFailureAt = runAt
+	o.snapshot.LastRunDurationMs = durationToMilliseconds(duration)
+	o.snapshot.LastError = err.Error()
+	o.snapshot.LastEmitted = 0
+	o.snapshot.LastSkipped = 0
+	return o.snapshot
+}
+
+func (o *workflowReminderSchedulerObservability) recordLockSkip(runAt time.Time, duration time.Duration) workflowReminderSchedulerSnapshot {
+	o.mu.Lock()
+	defer o.mu.Unlock()
+
+	o.snapshot.TotalRuns++
+	o.snapshot.LockSkippedRuns++
+	o.snapshot.LastRunAt = runAt
+	o.snapshot.LastLockSkipAt = runAt
+	o.snapshot.LastRunDurationMs = durationToMilliseconds(duration)
+	o.snapshot.LastEmitted = 0
+	o.snapshot.LastSkipped = 0
+	o.snapshot.LastError = ""
+	return o.snapshot
+}
+
+func durationToMilliseconds(duration time.Duration) int64 {
+	return duration.Milliseconds()
 }
 
 func newMySQLWorkflowReminderDistributedLocker(db *sql.DB) workflowReminderDistributedLocker {

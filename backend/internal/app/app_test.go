@@ -85,13 +85,16 @@ func TestRunWorkflowReminderSchedulerOncePassesConfig(t *testing.T) {
 		},
 	}
 
-	err := runWorkflowReminderSchedulerOnce(context.Background(), zap.NewNop(), mock, now, config.WorkflowReminderSchedulerConfig{
+	emitted, skipped, err := runWorkflowReminderSchedulerOnce(context.Background(), mock, now, config.WorkflowReminderSchedulerConfig{
 		ReminderType:            "standard",
 		MinPendingAgeSeconds:    86400,
 		WindowTruncationSeconds: 86400,
 	})
 	if err != nil {
 		t.Fatalf("expected nil error, got %v", err)
+	}
+	if emitted != 1 || skipped != 0 {
+		t.Fatalf("expected emitted=1 skipped=0, got emitted=%d skipped=%d", emitted, skipped)
 	}
 	if !called {
 		t.Fatal("expected RunReminders to be called")
@@ -106,7 +109,7 @@ func TestRunWorkflowReminderSchedulerOnceReturnsServiceError(t *testing.T) {
 		},
 	}
 
-	err := runWorkflowReminderSchedulerOnce(context.Background(), zap.NewNop(), mock, time.Now().UTC(), config.WorkflowReminderSchedulerConfig{})
+	_, _, err := runWorkflowReminderSchedulerOnce(context.Background(), mock, time.Now().UTC(), config.WorkflowReminderSchedulerConfig{})
 	if !errors.Is(err, expectedErr) {
 		t.Fatalf("expected %v, got %v", expectedErr, err)
 	}
@@ -132,9 +135,12 @@ func TestRunWorkflowReminderSchedulerTickSkipsWhenLockNotAcquired(t *testing.T) 
 		},
 	}
 
-	err := runWorkflowReminderSchedulerTick(context.Background(), zap.NewNop(), locker, service, time.Now().UTC(), config.WorkflowReminderSchedulerConfig{LockName: "workflow:reminder:scheduler"})
+	outcome, err := runWorkflowReminderSchedulerTick(context.Background(), locker, service, time.Now().UTC(), config.WorkflowReminderSchedulerConfig{LockName: "workflow:reminder:scheduler"})
 	if err != nil {
 		t.Fatalf("expected nil error, got %v", err)
+	}
+	if outcome.LockAcquired {
+		t.Fatal("expected lock not acquired outcome")
 	}
 	if called {
 		t.Fatal("expected scheduler run to be skipped when lock is not acquired")
@@ -158,12 +164,38 @@ func TestRunWorkflowReminderSchedulerTickRunsWhenLockAcquired(t *testing.T) {
 		},
 	}
 
-	err := runWorkflowReminderSchedulerTick(context.Background(), zap.NewNop(), locker, service, time.Now().UTC(), config.WorkflowReminderSchedulerConfig{LockName: "workflow:reminder:scheduler"})
+	outcome, err := runWorkflowReminderSchedulerTick(context.Background(), locker, service, time.Now().UTC(), config.WorkflowReminderSchedulerConfig{LockName: "workflow:reminder:scheduler"})
 	if err != nil {
 		t.Fatalf("expected nil error, got %v", err)
 	}
+	if !outcome.LockAcquired {
+		t.Fatal("expected lock acquired outcome")
+	}
 	if !called {
 		t.Fatal("expected scheduler run when lock is acquired")
+	}
+}
+
+func TestWorkflowReminderSchedulerObservabilityTransitions(t *testing.T) {
+	obs := newWorkflowReminderSchedulerObservability()
+	now := time.Date(2026, 4, 10, 21, 0, 0, 0, time.UTC)
+
+	snap := obs.recordFailure(now, 250*time.Millisecond, errors.New("db timeout"))
+	if snap.TotalRuns != 1 || snap.FailedRuns != 1 || snap.ConsecutiveFailures != 1 {
+		t.Fatalf("unexpected failure snapshot %#v", snap)
+	}
+
+	snap = obs.recordLockSkip(now.Add(time.Minute), 100*time.Millisecond)
+	if snap.TotalRuns != 2 || snap.LockSkippedRuns != 1 || snap.ConsecutiveFailures != 1 {
+		t.Fatalf("unexpected lock-skip snapshot %#v", snap)
+	}
+
+	snap = obs.recordSuccess(now.Add(2*time.Minute), 300*time.Millisecond, 2, 3)
+	if snap.TotalRuns != 3 || snap.SuccessfulRuns != 1 || snap.ConsecutiveFailures != 0 {
+		t.Fatalf("unexpected success snapshot %#v", snap)
+	}
+	if snap.LastEmitted != 2 || snap.LastSkipped != 3 || snap.LastRunDurationMs != 300 {
+		t.Fatalf("unexpected success counters %#v", snap)
 	}
 }
 
