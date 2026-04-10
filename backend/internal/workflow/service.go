@@ -264,6 +264,78 @@ func (s *Service) OutboxMessages(ctx context.Context, instanceID int64) ([]Outbo
 	return s.repository.ListOutboxMessages(ctx, "workflow_instance", instanceID)
 }
 
+func (s *Service) RunReminders(ctx context.Context, now time.Time, config ReminderConfig) ([]ReminderAuditRecord, error) {
+	config = normalizeReminderConfig(config)
+	windowStart := now.UTC().Truncate(config.WindowTruncation)
+	pendingInstances, err := s.repository.FindPendingInstances(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	records := make([]ReminderAuditRecord, 0, len(pendingInstances))
+	for _, pendingInstance := range pendingInstances {
+		reminderKey := reminderAuditKey(pendingInstance.ID, config.ReminderType, windowStart)
+
+		tx, err := s.db.BeginTx(ctx, nil)
+		if err != nil {
+			return nil, fmt.Errorf("begin workflow reminder transaction: %w", err)
+		}
+
+		var record ReminderAuditRecord
+		func() {
+			defer func() { _ = tx.Rollback() }()
+
+			currentInstance, currentErr := s.repository.FindInstanceByIDForUpdate(ctx, tx, pendingInstance.ID)
+			if currentErr != nil {
+				err = currentErr
+				return
+			}
+
+			record = ReminderAuditRecord{
+				WorkflowInstanceID:  pendingInstance.ID,
+				ReminderType:        config.ReminderType,
+				ReminderKey:         reminderKey,
+				ReminderWindowStart: windowStart,
+			}
+
+			if currentInstance == nil || currentInstance.Status != InstanceStatusPending {
+				record.Outcome = ReminderOutcomeSkipped
+				record.ReasonCode = reminderReasonPointer(ReminderReasonNotPending)
+			} else if existing, currentErr := s.repository.FindReminderAuditByKey(ctx, tx, reminderKey); currentErr != nil {
+				err = currentErr
+				return
+			} else if existing != nil {
+				record.Outcome = ReminderOutcomeSkipped
+				record.ReasonCode = reminderReasonPointer(ReminderReasonAlreadyEmitted)
+			} else if now.UTC().Sub(currentInstance.SubmittedAt.UTC()) < config.MinPendingAge {
+				record.Outcome = ReminderOutcomeSkipped
+				record.ReasonCode = reminderReasonPointer(ReminderReasonNotDue)
+			} else {
+				record.Outcome = ReminderOutcomeEmitted
+			}
+
+			if currentErr := s.repository.InsertReminderAudit(ctx, tx, record); currentErr != nil {
+				err = currentErr
+				return
+			}
+			if currentErr := tx.Commit(); currentErr != nil {
+				err = fmt.Errorf("commit workflow reminder transaction: %w", currentErr)
+				return
+			}
+		}()
+		if err != nil {
+			return nil, err
+		}
+		records = append(records, record)
+	}
+
+	return records, nil
+}
+
+func (s *Service) ReminderHistory(ctx context.Context, instanceID int64) ([]ReminderAuditRecord, error) {
+	return s.repository.ListReminderHistory(ctx, instanceID)
+}
+
 func nextTransition(transitions []Transition, fromNodeID int64, action Action) *Transition {
 	for _, transition := range transitions {
 		if transition.Action == action && transition.FromNodeID != nil && *transition.FromNodeID == fromNodeID {
@@ -296,4 +368,26 @@ func stringPointer(value string) *string {
 
 func timeNowUTC() time.Time {
 	return time.Now().UTC()
+}
+
+func normalizeReminderConfig(config ReminderConfig) ReminderConfig {
+	if strings.TrimSpace(config.ReminderType) == "" {
+		config.ReminderType = "standard"
+	}
+	if config.WindowTruncation <= 0 {
+		config.WindowTruncation = 24 * time.Hour
+	}
+	if config.MinPendingAge < 0 {
+		config.MinPendingAge = 0
+	}
+	return config
+}
+
+func reminderAuditKey(instanceID int64, reminderType string, windowStart time.Time) string {
+	return fmt.Sprintf("reminder:%d:%s:%s", instanceID, reminderType, windowStart.UTC().Format(time.RFC3339))
+}
+
+func reminderReasonPointer(reason ReminderReasonCode) *string {
+	value := string(reason)
+	return &value
 }

@@ -4,10 +4,13 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"sort"
 	"strings"
 	"time"
+
+	mysql "github.com/go-sql-driver/mysql"
 )
 
 type Repository struct {
@@ -379,4 +382,81 @@ func sortNodes(nodes []Node) []Node {
 		return ordered[i].StepOrder < ordered[j].StepOrder
 	})
 	return ordered
+}
+
+func (r *Repository) FindPendingInstances(ctx context.Context) ([]Instance, error) {
+	const query = `SELECT id, workflow_definition_id, document_type, document_id, status, current_node_id, current_step_order, current_cycle, version, submitted_by, submitted_at, completed_at FROM workflow_instances WHERE status = ? ORDER BY id`
+	rows, err := r.db.QueryContext(ctx, query, InstanceStatusPending)
+	if err != nil {
+		return nil, fmt.Errorf("query pending workflow instances: %w", err)
+	}
+	defer rows.Close()
+
+	instances := make([]Instance, 0)
+	for rows.Next() {
+		var instance Instance
+		if err := rows.Scan(&instance.ID, &instance.WorkflowDefinitionID, &instance.DocumentType, &instance.DocumentID, &instance.Status, &instance.CurrentNodeID, &instance.CurrentStepOrder, &instance.CurrentCycle, &instance.Version, &instance.SubmittedBy, &instance.SubmittedAt, &instance.CompletedAt); err != nil {
+			return nil, fmt.Errorf("scan pending workflow instance: %w", err)
+		}
+		instances = append(instances, instance)
+	}
+	return instances, rows.Err()
+}
+
+func (r *Repository) FindReminderAuditByKey(ctx context.Context, tx *sql.Tx, reminderKey string) (*ReminderAuditRecord, error) {
+	const query = `SELECT id, workflow_instance_id, reminder_type, reminder_key, reminder_window_start, outcome, reason_code, created_at FROM workflow_reminder_audit WHERE reminder_key = ?`
+	var record ReminderAuditRecord
+	var reasonCode string
+	if err := tx.QueryRowContext(ctx, query, reminderKey).Scan(&record.ID, &record.WorkflowInstanceID, &record.ReminderType, &record.ReminderKey, &record.ReminderWindowStart, &record.Outcome, &reasonCode, &record.CreatedAt); err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		return nil, fmt.Errorf("query reminder audit by key: %w", err)
+	}
+	if strings.TrimSpace(reasonCode) != "" {
+		record.ReasonCode = &reasonCode
+	}
+	return &record, nil
+}
+
+func (r *Repository) InsertReminderAudit(ctx context.Context, tx *sql.Tx, record ReminderAuditRecord) error {
+	reasonCode := ""
+	if record.ReasonCode != nil {
+		reasonCode = *record.ReasonCode
+	}
+	_, err := tx.ExecContext(ctx,
+		`INSERT INTO workflow_reminder_audit (workflow_instance_id, reminder_type, reminder_key, reminder_window_start, outcome, reason_code) VALUES (?, ?, ?, ?, ?, ?)`,
+		record.WorkflowInstanceID, record.ReminderType, record.ReminderKey, record.ReminderWindowStart, record.Outcome, reasonCode,
+	)
+	if err != nil {
+		var mysqlErr *mysql.MySQLError
+		if errors.As(err, &mysqlErr) && mysqlErr.Number == 1062 {
+			return nil
+		}
+		return fmt.Errorf("insert reminder audit: %w", err)
+	}
+	return nil
+}
+
+func (r *Repository) ListReminderHistory(ctx context.Context, instanceID int64) ([]ReminderAuditRecord, error) {
+	const query = `SELECT id, workflow_instance_id, reminder_type, reminder_key, reminder_window_start, outcome, reason_code, created_at FROM workflow_reminder_audit WHERE workflow_instance_id = ? ORDER BY id`
+	rows, err := r.db.QueryContext(ctx, query, instanceID)
+	if err != nil {
+		return nil, fmt.Errorf("query reminder history: %w", err)
+	}
+	defer rows.Close()
+
+	records := make([]ReminderAuditRecord, 0)
+	for rows.Next() {
+		var record ReminderAuditRecord
+		var reasonCode string
+		if err := rows.Scan(&record.ID, &record.WorkflowInstanceID, &record.ReminderType, &record.ReminderKey, &record.ReminderWindowStart, &record.Outcome, &reasonCode, &record.CreatedAt); err != nil {
+			return nil, fmt.Errorf("scan reminder history: %w", err)
+		}
+		if strings.TrimSpace(reasonCode) != "" {
+			record.ReasonCode = &reasonCode
+		}
+		records = append(records, record)
+	}
+	return records, rows.Err()
 }

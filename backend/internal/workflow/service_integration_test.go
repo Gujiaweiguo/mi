@@ -221,6 +221,169 @@ func TestWorkflowServiceListInstancesFilters(t *testing.T) {
 	}
 }
 
+func TestWorkflowReminderRunEmitsAndStaysReadOnly(t *testing.T) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+	defer cancel()
+
+	db := newWorkflowTestDB(t, ctx)
+	baseTime := time.Date(2026, 4, 10, 9, 0, 0, 0, time.UTC)
+	repo := workflow.NewRepositoryWithNowFunc(db, func() time.Time { return baseTime })
+	service := workflow.NewService(db, repo)
+
+	instance, err := service.Start(ctx, workflow.StartInput{
+		DefinitionCode: "lease-approval",
+		DocumentType:   "lease_contract",
+		DocumentID:     9301,
+		ActorUserID:    101,
+		DepartmentID:   101,
+		IdempotencyKey: "start-9301",
+		Comment:        "submit lease approval",
+	})
+	if err != nil {
+		t.Fatalf("start workflow: %v", err)
+	}
+	beforeVersion := instance.Version
+
+	auditBefore, err := service.AuditHistory(ctx, instance.ID)
+	if err != nil {
+		t.Fatalf("audit history before reminders: %v", err)
+	}
+	outboxBefore, err := service.OutboxMessages(ctx, instance.ID)
+	if err != nil {
+		t.Fatalf("outbox before reminders: %v", err)
+	}
+
+	runAt := baseTime.Add(25 * time.Hour)
+	records, err := service.RunReminders(ctx, runAt, workflow.ReminderConfig{
+		ReminderType:     "standard",
+		MinPendingAge:    24 * time.Hour,
+		WindowTruncation: 24 * time.Hour,
+	})
+	if err != nil {
+		t.Fatalf("run reminders: %v", err)
+	}
+	if len(records) != 1 {
+		t.Fatalf("expected 1 reminder record, got %d", len(records))
+	}
+	if records[0].Outcome != workflow.ReminderOutcomeEmitted || records[0].ReasonCode != nil {
+		t.Fatalf("expected emitted reminder record, got %#v", records[0])
+	}
+
+	instanceAfter, err := service.GetInstance(ctx, instance.ID)
+	if err != nil {
+		t.Fatalf("load instance after reminders: %v", err)
+	}
+	if instanceAfter.Status != workflow.InstanceStatusPending || instanceAfter.Version != beforeVersion || instanceAfter.CurrentStepOrder == nil || *instanceAfter.CurrentStepOrder != 1 {
+		t.Fatalf("expected reminder run to preserve workflow state, got %#v", instanceAfter)
+	}
+
+	auditAfter, err := service.AuditHistory(ctx, instance.ID)
+	if err != nil {
+		t.Fatalf("audit history after reminders: %v", err)
+	}
+	outboxAfter, err := service.OutboxMessages(ctx, instance.ID)
+	if err != nil {
+		t.Fatalf("outbox after reminders: %v", err)
+	}
+	if len(auditAfter) != len(auditBefore) || len(outboxAfter) != len(outboxBefore) {
+		t.Fatalf("expected reminder run to avoid workflow audit/outbox mutation, audit %d->%d outbox %d->%d", len(auditBefore), len(auditAfter), len(outboxBefore), len(outboxAfter))
+	}
+
+	history, err := service.ReminderHistory(ctx, instance.ID)
+	if err != nil {
+		t.Fatalf("reminder history after first run: %v", err)
+	}
+	if len(history) != 1 || history[0].Outcome != workflow.ReminderOutcomeEmitted {
+		t.Fatalf("expected single emitted reminder history record, got %#v", history)
+	}
+
+	replayRecords, err := service.RunReminders(ctx, runAt, workflow.ReminderConfig{
+		ReminderType:     "standard",
+		MinPendingAge:    24 * time.Hour,
+		WindowTruncation: 24 * time.Hour,
+	})
+	if err != nil {
+		t.Fatalf("replay reminders: %v", err)
+	}
+	if len(replayRecords) != 1 || replayRecords[0].Outcome != workflow.ReminderOutcomeSkipped || replayRecords[0].ReasonCode == nil || *replayRecords[0].ReasonCode != string(workflow.ReminderReasonAlreadyEmitted) {
+		t.Fatalf("expected already_emitted replay record, got %#v", replayRecords)
+	}
+
+	thirdRecords, err := service.RunReminders(ctx, runAt, workflow.ReminderConfig{
+		ReminderType:     "standard",
+		MinPendingAge:    24 * time.Hour,
+		WindowTruncation: 24 * time.Hour,
+	})
+	if err != nil {
+		t.Fatalf("third reminder replay: %v", err)
+	}
+	if len(thirdRecords) != 1 || thirdRecords[0].Outcome != workflow.ReminderOutcomeSkipped {
+		t.Fatalf("expected skipped replay on third run, got %#v", thirdRecords)
+	}
+
+	history, err = service.ReminderHistory(ctx, instance.ID)
+	if err != nil {
+		t.Fatalf("reminder history after replays: %v", err)
+	}
+	if len(history) != 2 {
+		t.Fatalf("expected emitted + single replay skip records, got %#v", history)
+	}
+	if history[1].ReasonCode == nil || *history[1].ReasonCode != string(workflow.ReminderReasonAlreadyEmitted) {
+		t.Fatalf("expected second reminder history row to be already_emitted, got %#v", history[1])
+	}
+}
+
+func TestWorkflowReminderRunSkipsWhenNotDue(t *testing.T) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+	defer cancel()
+
+	db := newWorkflowTestDB(t, ctx)
+	baseTime := time.Date(2026, 4, 10, 9, 0, 0, 0, time.UTC)
+	repo := workflow.NewRepositoryWithNowFunc(db, func() time.Time { return baseTime })
+	service := workflow.NewService(db, repo)
+
+	instance, err := service.Start(ctx, workflow.StartInput{
+		DefinitionCode: "invoice-approval",
+		DocumentType:   "invoice",
+		DocumentID:     9302,
+		ActorUserID:    101,
+		DepartmentID:   101,
+		IdempotencyKey: "start-9302",
+		Comment:        "submit invoice approval",
+	})
+	if err != nil {
+		t.Fatalf("start workflow: %v", err)
+	}
+
+	records, err := service.RunReminders(ctx, baseTime.Add(2*time.Hour), workflow.ReminderConfig{
+		ReminderType:     "standard",
+		MinPendingAge:    24 * time.Hour,
+		WindowTruncation: 24 * time.Hour,
+	})
+	if err != nil {
+		t.Fatalf("run reminders before due: %v", err)
+	}
+	if len(records) != 1 || records[0].Outcome != workflow.ReminderOutcomeSkipped || records[0].ReasonCode == nil || *records[0].ReasonCode != string(workflow.ReminderReasonNotDue) {
+		t.Fatalf("expected not_due reminder record, got %#v", records)
+	}
+
+	history, err := service.ReminderHistory(ctx, instance.ID)
+	if err != nil {
+		t.Fatalf("reminder history: %v", err)
+	}
+	if len(history) != 1 || history[0].ReasonCode == nil || *history[0].ReasonCode != string(workflow.ReminderReasonNotDue) {
+		t.Fatalf("expected single not_due reminder history row, got %#v", history)
+	}
+
+	instanceAfter, err := service.GetInstance(ctx, instance.ID)
+	if err != nil {
+		t.Fatalf("load instance after not_due run: %v", err)
+	}
+	if instanceAfter.Status != workflow.InstanceStatusPending || instanceAfter.CurrentStepOrder == nil || *instanceAfter.CurrentStepOrder != 1 {
+		t.Fatalf("expected workflow state to remain pending after not_due run, got %#v", instanceAfter)
+	}
+}
+
 func newWorkflowTestDB(t *testing.T, ctx context.Context) *sql.DB {
 	t.Helper()
 
