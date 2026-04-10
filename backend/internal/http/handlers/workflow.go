@@ -196,3 +196,17 @@ func (h *WorkflowHandler) AuditHistory(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"history": history})
 }
+
+func (h *WorkflowHandler) ReminderHistory(c *gin.Context) {
+	instanceID, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "invalid workflow instance id"})
+		return
+	}
+	reminders, err := h.service.ReminderHistory(c.Request.Context(), instanceID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to load workflow reminder history"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"reminders": reminders})
+}
