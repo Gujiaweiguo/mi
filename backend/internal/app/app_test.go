@@ -19,10 +19,24 @@ func (m *mockReminderSchedulerService) RunReminders(ctx context.Context, now tim
 	return m.runRemindersFunc(ctx, now, cfg)
 }
 
+type mockWorkflowReminderDistributedLocker struct {
+	withLockFunc func(ctx context.Context, lockName string, waitSeconds int, fn func(ctx context.Context) error) (bool, error)
+}
+
+func (m *mockWorkflowReminderDistributedLocker) WithLock(ctx context.Context, lockName string, waitSeconds int, fn func(ctx context.Context) error) (bool, error) {
+	return m.withLockFunc(ctx, lockName, waitSeconds, fn)
+}
+
 func TestNormalizeWorkflowReminderSchedulerConfig(t *testing.T) {
 	normalized := normalizeWorkflowReminderSchedulerConfig(config.WorkflowReminderSchedulerConfig{})
 	if normalized.IntervalSeconds != 3600 {
 		t.Fatalf("expected default interval 3600, got %d", normalized.IntervalSeconds)
+	}
+	if normalized.LockName != "workflow:reminder:scheduler" {
+		t.Fatalf("expected default lock name workflow:reminder:scheduler, got %q", normalized.LockName)
+	}
+	if normalized.LockWaitSeconds != 0 {
+		t.Fatalf("expected default lock wait 0, got %d", normalized.LockWaitSeconds)
 	}
 	if normalized.ReminderType != "standard" {
 		t.Fatalf("expected default reminder type standard, got %q", normalized.ReminderType)
@@ -37,11 +51,13 @@ func TestNormalizeWorkflowReminderSchedulerConfig(t *testing.T) {
 	custom := normalizeWorkflowReminderSchedulerConfig(config.WorkflowReminderSchedulerConfig{
 		Enabled:                 true,
 		IntervalSeconds:         120,
+		LockName:                "workflow:reminder:scheduler:test",
+		LockWaitSeconds:         5,
 		ReminderType:            "ops",
 		MinPendingAgeSeconds:    600,
 		WindowTruncationSeconds: 900,
 	})
-	if custom.IntervalSeconds != 120 || custom.ReminderType != "ops" || custom.MinPendingAgeSeconds != 600 || custom.WindowTruncationSeconds != 900 {
+	if custom.IntervalSeconds != 120 || custom.LockName != "workflow:reminder:scheduler:test" || custom.LockWaitSeconds != 5 || custom.ReminderType != "ops" || custom.MinPendingAgeSeconds != 600 || custom.WindowTruncationSeconds != 900 {
 		t.Fatalf("expected custom values preserved, got %#v", custom)
 	}
 }
@@ -93,6 +109,61 @@ func TestRunWorkflowReminderSchedulerOnceReturnsServiceError(t *testing.T) {
 	err := runWorkflowReminderSchedulerOnce(context.Background(), zap.NewNop(), mock, time.Now().UTC(), config.WorkflowReminderSchedulerConfig{})
 	if !errors.Is(err, expectedErr) {
 		t.Fatalf("expected %v, got %v", expectedErr, err)
+	}
+}
+
+func TestRunWorkflowReminderSchedulerTickSkipsWhenLockNotAcquired(t *testing.T) {
+	called := false
+	locker := &mockWorkflowReminderDistributedLocker{
+		withLockFunc: func(ctx context.Context, lockName string, waitSeconds int, fn func(ctx context.Context) error) (bool, error) {
+			if lockName != "workflow:reminder:scheduler" {
+				t.Fatalf("unexpected lock name %q", lockName)
+			}
+			if waitSeconds != 0 {
+				t.Fatalf("unexpected lock wait seconds %d", waitSeconds)
+			}
+			return false, nil
+		},
+	}
+	service := &mockReminderSchedulerService{
+		runRemindersFunc: func(ctx context.Context, now time.Time, cfg workflow.ReminderConfig) ([]workflow.ReminderAuditRecord, error) {
+			called = true
+			return nil, nil
+		},
+	}
+
+	err := runWorkflowReminderSchedulerTick(context.Background(), zap.NewNop(), locker, service, time.Now().UTC(), config.WorkflowReminderSchedulerConfig{LockName: "workflow:reminder:scheduler"})
+	if err != nil {
+		t.Fatalf("expected nil error, got %v", err)
+	}
+	if called {
+		t.Fatal("expected scheduler run to be skipped when lock is not acquired")
+	}
+}
+
+func TestRunWorkflowReminderSchedulerTickRunsWhenLockAcquired(t *testing.T) {
+	called := false
+	locker := &mockWorkflowReminderDistributedLocker{
+		withLockFunc: func(ctx context.Context, lockName string, waitSeconds int, fn func(ctx context.Context) error) (bool, error) {
+			if err := fn(ctx); err != nil {
+				return true, err
+			}
+			return true, nil
+		},
+	}
+	service := &mockReminderSchedulerService{
+		runRemindersFunc: func(ctx context.Context, now time.Time, cfg workflow.ReminderConfig) ([]workflow.ReminderAuditRecord, error) {
+			called = true
+			return []workflow.ReminderAuditRecord{}, nil
+		},
+	}
+
+	err := runWorkflowReminderSchedulerTick(context.Background(), zap.NewNop(), locker, service, time.Now().UTC(), config.WorkflowReminderSchedulerConfig{LockName: "workflow:reminder:scheduler"})
+	if err != nil {
+		t.Fatalf("expected nil error, got %v", err)
+	}
+	if !called {
+		t.Fatal("expected scheduler run when lock is acquired")
 	}
 }
 

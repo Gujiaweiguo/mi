@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"fmt"
 	"net/http"
 	"strings"
@@ -27,6 +28,14 @@ type App struct {
 
 type workflowReminderSchedulerService interface {
 	RunReminders(ctx context.Context, now time.Time, config workflow.ReminderConfig) ([]workflow.ReminderAuditRecord, error)
+}
+
+type workflowReminderDistributedLocker interface {
+	WithLock(ctx context.Context, lockName string, waitSeconds int, fn func(ctx context.Context) error) (bool, error)
+}
+
+type mysqlWorkflowReminderDistributedLocker struct {
+	db *sql.DB
 }
 
 func New() (*App, error) {
@@ -90,6 +99,7 @@ func (a *App) startWorkflowReminderScheduler() func() {
 	}
 
 	workflowService := workflow.NewService(a.db, workflow.NewRepository(a.db))
+	locker := newMySQLWorkflowReminderDistributedLocker(a.db)
 	interval := time.Duration(schedulerConfig.IntervalSeconds) * time.Second
 	ticker := time.NewTicker(interval)
 	stopCh := make(chan struct{})
@@ -98,6 +108,8 @@ func (a *App) startWorkflowReminderScheduler() func() {
 
 	a.logger.Sugar().Infow("workflow reminder scheduler enabled",
 		"interval_seconds", schedulerConfig.IntervalSeconds,
+		"lock_name", schedulerConfig.LockName,
+		"lock_wait_seconds", schedulerConfig.LockWaitSeconds,
 		"reminder_type", schedulerConfig.ReminderType,
 		"min_pending_age_seconds", schedulerConfig.MinPendingAgeSeconds,
 		"window_truncation_seconds", schedulerConfig.WindowTruncationSeconds,
@@ -114,7 +126,7 @@ func (a *App) startWorkflowReminderScheduler() func() {
 
 				runAt := time.Now().UTC()
 				runContext, cancel := context.WithTimeout(context.Background(), interval)
-				err := runWorkflowReminderSchedulerOnce(runContext, a.logger, workflowService, runAt, schedulerConfig)
+				err := runWorkflowReminderSchedulerTick(runContext, a.logger, locker, workflowService, runAt, schedulerConfig)
 				cancel()
 				runMutex.Unlock()
 				if err != nil {
@@ -154,9 +166,30 @@ func runWorkflowReminderSchedulerOnce(ctx context.Context, logger *zap.Logger, s
 	return nil
 }
 
+func runWorkflowReminderSchedulerTick(ctx context.Context, logger *zap.Logger, locker workflowReminderDistributedLocker, service workflowReminderSchedulerService, now time.Time, schedulerConfig config.WorkflowReminderSchedulerConfig) error {
+	acquired, err := locker.WithLock(ctx, schedulerConfig.LockName, schedulerConfig.LockWaitSeconds, func(lockContext context.Context) error {
+		return runWorkflowReminderSchedulerOnce(lockContext, logger, service, now, schedulerConfig)
+	})
+	if err != nil {
+		return err
+	}
+	if !acquired {
+		logger.Sugar().Infow("skip workflow reminder schedule tick because distributed lock not acquired",
+			"lock_name", schedulerConfig.LockName,
+		)
+	}
+	return nil
+}
+
 func normalizeWorkflowReminderSchedulerConfig(schedulerConfig config.WorkflowReminderSchedulerConfig) config.WorkflowReminderSchedulerConfig {
 	if schedulerConfig.IntervalSeconds <= 0 {
 		schedulerConfig.IntervalSeconds = 3600
+	}
+	if strings.TrimSpace(schedulerConfig.LockName) == "" {
+		schedulerConfig.LockName = "workflow:reminder:scheduler"
+	}
+	if schedulerConfig.LockWaitSeconds < 0 {
+		schedulerConfig.LockWaitSeconds = 0
 	}
 	if strings.TrimSpace(schedulerConfig.ReminderType) == "" {
 		schedulerConfig.ReminderType = "standard"
@@ -190,4 +223,49 @@ func tryLockMutex(mu *sync.Mutex) bool {
 		return false
 	}
 	return true
+}
+
+func newMySQLWorkflowReminderDistributedLocker(db *sql.DB) workflowReminderDistributedLocker {
+	return &mysqlWorkflowReminderDistributedLocker{db: db}
+}
+
+func (l *mysqlWorkflowReminderDistributedLocker) WithLock(ctx context.Context, lockName string, waitSeconds int, fn func(ctx context.Context) error) (bool, error) {
+	conn, err := l.db.Conn(ctx)
+	if err != nil {
+		return false, fmt.Errorf("open db connection for scheduler lock: %w", err)
+	}
+	defer conn.Close()
+
+	var acquired sql.NullInt64
+	if err := conn.QueryRowContext(ctx, "SELECT GET_LOCK(?, ?)", lockName, waitSeconds).Scan(&acquired); err != nil {
+		return false, fmt.Errorf("acquire scheduler lock %q: %w", lockName, err)
+	}
+	if !acquired.Valid || acquired.Int64 != 1 {
+		return false, nil
+	}
+
+	releaseErr := releaseMySQLSchedulerLock(ctx, conn, lockName)
+	if fn == nil {
+		return true, releaseErr
+	}
+
+	runErr := fn(ctx)
+	if runErr != nil || releaseErr != nil {
+		return true, errors.Join(runErr, releaseErr)
+	}
+	return true, nil
+}
+
+func releaseMySQLSchedulerLock(ctx context.Context, conn *sql.Conn, lockName string) error {
+	var released sql.NullInt64
+	if err := conn.QueryRowContext(ctx, "SELECT RELEASE_LOCK(?)", lockName).Scan(&released); err != nil {
+		return fmt.Errorf("release scheduler lock %q: %w", lockName, err)
+	}
+	if !released.Valid {
+		return fmt.Errorf("release scheduler lock %q returned NULL", lockName)
+	}
+	if released.Int64 != 1 {
+		return fmt.Errorf("release scheduler lock %q returned unexpected status %d", lockName, released.Int64)
+	}
+	return nil
 }
