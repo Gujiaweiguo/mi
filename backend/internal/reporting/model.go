@@ -68,6 +68,13 @@ type ExportArtifact struct {
 	Bytes       []byte
 }
 
+type ReportAuditAction string
+
+const (
+	ReportAuditActionQuery  ReportAuditAction = "query"
+	ReportAuditActionExport ReportAuditAction = "export"
+)
+
 type R01Row struct {
 	StoreName      string
 	DepartmentName string

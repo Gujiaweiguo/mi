@@ -719,6 +719,12 @@ func TestIntegrationAuthAndOrgRoutes(t *testing.T) {
 	if reportQueryRecorder.Code != http.StatusOK {
 		t.Fatalf("expected 200 from report query endpoint, got %d body=%s", reportQueryRecorder.Code, reportQueryRecorder.Body.String())
 	}
+	var reportQueryBody struct {
+		Rows []any `json:"rows"`
+	}
+	if err := json.Unmarshal(reportQueryRecorder.Body.Bytes(), &reportQueryBody); err != nil {
+		t.Fatalf("decode report query response: %v", err)
+	}
 
 	reportExportRecorder := httptest.NewRecorder()
 	reportExportRequest := httptest.NewRequest(http.MethodPost, "/api/reports/r12/export", bytes.NewBufferString(`{"period":"2026-04","store_id":101,"shop_type_id":101}`))
@@ -739,6 +745,66 @@ func TestIntegrationAuthAndOrgRoutes(t *testing.T) {
 	}
 	if len(rows) < 2 {
 		t.Fatalf("expected report export rows, got %v", rows)
+	}
+
+	var reportAuditCount int
+	if err := db.QueryRowContext(ctx, `SELECT COUNT(*) FROM report_audit_logs WHERE report_id IN ('r01', 'r12') AND action IN ('query', 'export')`).Scan(&reportAuditCount); err != nil {
+		t.Fatalf("count report audit rows: %v", err)
+	}
+	if reportAuditCount != 2 {
+		t.Fatalf("expected 2 report audit rows after first query/export pair, got %d", reportAuditCount)
+	}
+
+	var (
+		r01Action          string
+		r01AuditActor      int64
+		r01AuditPeriod     sql.NullString
+		r01AuditRowCount   int
+		r01AuditExportSize int
+	)
+	if err := db.QueryRowContext(ctx, `SELECT action, actor_user_id, JSON_UNQUOTE(JSON_EXTRACT(request_payload, '$.period')), row_count, export_size_bytes FROM report_audit_logs WHERE report_id = 'r01' ORDER BY id DESC LIMIT 1`).Scan(&r01Action, &r01AuditActor, &r01AuditPeriod, &r01AuditRowCount, &r01AuditExportSize); err != nil {
+		t.Fatalf("load report query audit row: %v", err)
+	}
+	if r01Action != "query" {
+		t.Fatalf("expected latest r01 audit action query, got %q", r01Action)
+	}
+	if r01AuditActor <= 0 {
+		t.Fatalf("expected positive report query audit actor id, got %d", r01AuditActor)
+	}
+	if !r01AuditPeriod.Valid || r01AuditPeriod.String != "2026-04" {
+		t.Fatalf("expected report query audit period 2026-04, got %#v", r01AuditPeriod)
+	}
+	if r01AuditRowCount != len(reportQueryBody.Rows) {
+		t.Fatalf("expected report query audit row_count %d, got %d", len(reportQueryBody.Rows), r01AuditRowCount)
+	}
+	if r01AuditExportSize != 0 {
+		t.Fatalf("expected report query audit export_size_bytes 0, got %d", r01AuditExportSize)
+	}
+
+	var (
+		r12Action          string
+		r12AuditActor      int64
+		r12AuditPeriod     sql.NullString
+		r12AuditRowCount   int
+		r12AuditExportSize int
+	)
+	if err := db.QueryRowContext(ctx, `SELECT action, actor_user_id, JSON_UNQUOTE(JSON_EXTRACT(request_payload, '$.period')), row_count, export_size_bytes FROM report_audit_logs WHERE report_id = 'r12' ORDER BY id DESC LIMIT 1`).Scan(&r12Action, &r12AuditActor, &r12AuditPeriod, &r12AuditRowCount, &r12AuditExportSize); err != nil {
+		t.Fatalf("load report export audit row: %v", err)
+	}
+	if r12Action != "export" {
+		t.Fatalf("expected latest r12 audit action export, got %q", r12Action)
+	}
+	if r12AuditActor <= 0 {
+		t.Fatalf("expected positive report export audit actor id, got %d", r12AuditActor)
+	}
+	if !r12AuditPeriod.Valid || r12AuditPeriod.String != "2026-04" {
+		t.Fatalf("expected report export audit period 2026-04, got %#v", r12AuditPeriod)
+	}
+	if r12AuditRowCount != len(rows)-1 {
+		t.Fatalf("expected report export audit row_count %d, got %d", len(rows)-1, r12AuditRowCount)
+	}
+	if r12AuditExportSize != len(reportExportRecorder.Body.Bytes()) {
+		t.Fatalf("expected report export audit export_size_bytes %d, got %d", len(reportExportRecorder.Body.Bytes()), r12AuditExportSize)
 	}
 
 	dailySaleCreateRecorder := httptest.NewRecorder()

@@ -3,6 +3,7 @@ package reporting
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"sort"
 	"strings"
@@ -12,6 +13,50 @@ import (
 type Repository struct{ db *sql.DB }
 
 func NewRepository(db *sql.DB) *Repository { return &Repository{db: db} }
+
+type reportAuditPayload struct {
+	Period           string  `json:"period,omitempty"`
+	StoreID          *int64  `json:"store_id,omitempty"`
+	FloorID          *int64  `json:"floor_id,omitempty"`
+	AreaID           *int64  `json:"area_id,omitempty"`
+	UnitID           *int64  `json:"unit_id,omitempty"`
+	DepartmentID     *int64  `json:"department_id,omitempty"`
+	ShopTypeID       *int64  `json:"shop_type_id,omitempty"`
+	CustomerID       *int64  `json:"customer_id,omitempty"`
+	BrandID          *int64  `json:"brand_id,omitempty"`
+	TradeID          *int64  `json:"trade_id,omitempty"`
+	ChargeType       *string `json:"charge_type,omitempty"`
+	ManagementTypeID *int64  `json:"management_type_id,omitempty"`
+	Status           *string `json:"status,omitempty"`
+}
+
+func (r *Repository) InsertReportAudit(ctx context.Context, action ReportAuditAction, input QueryInput, rowCount int, exportBytes int) error {
+	payload, err := json.Marshal(reportAuditPayload{
+		Period:           input.PeriodLabel,
+		StoreID:          input.StoreID,
+		FloorID:          input.FloorID,
+		AreaID:           input.AreaID,
+		UnitID:           input.UnitID,
+		DepartmentID:     input.DepartmentID,
+		ShopTypeID:       input.ShopTypeID,
+		CustomerID:       input.CustomerID,
+		BrandID:          input.BrandID,
+		TradeID:          input.TradeID,
+		ChargeType:       input.ChargeType,
+		ManagementTypeID: input.ManagementTypeID,
+		Status:           input.Status,
+	})
+	if err != nil {
+		return fmt.Errorf("marshal report audit payload: %w", err)
+	}
+	if _, err := r.db.ExecContext(ctx, `
+		INSERT INTO report_audit_logs (report_id, action, actor_user_id, row_count, export_size_bytes, request_payload)
+		VALUES (?, ?, ?, ?, ?, ?)
+	`, input.ReportID, action, input.RequestedByID, rowCount, exportBytes, payload); err != nil {
+		return fmt.Errorf("insert report audit: %w", err)
+	}
+	return nil
+}
 
 func (r *Repository) QueryR01(ctx context.Context, input QueryInput) ([]R01Row, error) {
 	rows, err := r.db.QueryContext(ctx, `

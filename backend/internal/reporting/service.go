@@ -39,24 +39,32 @@ func (s *Service) QueryReport(ctx context.Context, input QueryInput) (*Result, e
 			return nil, err
 		}
 		columns, rows := flattenR19Visual(visual)
-		return &Result{
+		result := &Result{
 			ReportID:    input.ReportID,
 			Columns:     columns,
 			Rows:        rows,
 			Visual:      visual,
 			GeneratedAt: time.Now().UTC(),
-		}, nil
+		}
+		if err := s.repository.InsertReportAudit(ctx, ReportAuditActionQuery, input, len(result.Rows), 0); err != nil {
+			return nil, err
+		}
+		return result, nil
 	}
 	columns, rows, err := s.runReport(ctx, input)
 	if err != nil {
 		return nil, err
 	}
-	return &Result{
+	result := &Result{
 		ReportID:    input.ReportID,
 		Columns:     columns,
 		Rows:        rows,
 		GeneratedAt: time.Now().UTC(),
-	}, nil
+	}
+	if err := s.repository.InsertReportAudit(ctx, ReportAuditActionQuery, input, len(result.Rows), 0); err != nil {
+		return nil, err
+	}
+	return result, nil
 }
 
 func (s *Service) ExportReport(ctx context.Context, input QueryInput) (*ExportArtifact, error) {
@@ -66,13 +74,27 @@ func (s *Service) ExportReport(ctx context.Context, input QueryInput) (*ExportAr
 			return nil, err
 		}
 		columns, rows := flattenR19Visual(visual)
-		return exportWorkbook(input, columns, rows)
+		artifact, err := exportWorkbook(input, columns, rows)
+		if err != nil {
+			return nil, err
+		}
+		if err := s.repository.InsertReportAudit(ctx, ReportAuditActionExport, input, len(rows), len(artifact.Bytes)); err != nil {
+			return nil, err
+		}
+		return artifact, nil
 	}
 	columns, rows, err := s.runReport(ctx, input)
 	if err != nil {
 		return nil, err
 	}
-	return exportWorkbook(input, columns, rows)
+	artifact, err := exportWorkbook(input, columns, rows)
+	if err != nil {
+		return nil, err
+	}
+	if err := s.repository.InsertReportAudit(ctx, ReportAuditActionExport, input, len(rows), len(artifact.Bytes)); err != nil {
+		return nil, err
+	}
+	return artifact, nil
 }
 
 func exportWorkbook(input QueryInput, columns []Column, rows []map[string]any) (*ExportArtifact, error) {
