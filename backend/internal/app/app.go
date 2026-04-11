@@ -377,12 +377,11 @@ func (l *mysqlWorkflowReminderDistributedLocker) WithLock(ctx context.Context, l
 		return false, nil
 	}
 
-	releaseErr := releaseMySQLSchedulerLock(ctx, conn, lockName)
-	if fn == nil {
-		return true, releaseErr
+	var runErr error
+	if fn != nil {
+		runErr = fn(ctx)
 	}
-
-	runErr := fn(ctx)
+	releaseErr := releaseMySQLSchedulerLock(ctx, conn, lockName)
 	if runErr != nil || releaseErr != nil {
 		return true, errors.Join(runErr, releaseErr)
 	}
