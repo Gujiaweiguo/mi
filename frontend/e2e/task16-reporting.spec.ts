@@ -1145,12 +1145,18 @@ test('covers acceptance-visible aging fields and reconciliation for R08, R16, an
   await expect.poll(() => r17ExportPayload).toEqual(r17QueryPayload)
 })
 
-test('queries and exports the generalize reporting slice', async ({ page }) => {
+test('covers acceptance-visible occupancy fields for R01 and R12', async ({ page }) => {
   await attachReportingMocks(page)
 
-  let exportRequested = false
+  let r01QueryPayload: unknown = null
+  let r01ExportPayload: unknown = null
+  let r01ExportRequested = false
+  let r12QueryPayload: unknown = null
+  let r12ExportPayload: unknown = null
+  let r12ExportRequested = false
 
   await page.route('**/api/reports/r01/query', async (route) => {
+    r01QueryPayload = route.request().postDataJSON()
     await route.fulfill({
       status: 200,
       contentType: 'application/json',
@@ -1169,13 +1175,30 @@ test('queries and exports the generalize reporting slice', async ({ page }) => {
             rent_status: 'leased',
             use_area_total: 118,
           },
+          {
+            store_name: 'MI Demo Mall',
+            department_name: 'Operations',
+            rent_status: 'vacant',
+            use_area_total: 64,
+          },
         ],
         generated_at: '2026-04-02T08:30:00Z',
       }),
     })
   })
 
+  await page.route('**/api/reports/r01/export', async (route) => {
+    r01ExportRequested = true
+    r01ExportPayload = route.request().postDataJSON()
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      body: Buffer.from('mock-r01-export'),
+    })
+  })
+
   await page.route('**/api/reports/r12/query', async (route) => {
+    r12QueryPayload = route.request().postDataJSON()
     await route.fulfill({
       status: 200,
       contentType: 'application/json',
@@ -1196,6 +1219,13 @@ test('queries and exports the generalize reporting slice', async ({ page }) => {
             occupancy_status: 'leased',
             area_total: 118,
           },
+          {
+            store_name: 'MI Demo Mall',
+            period: '2026-04',
+            shop_type_name: 'Fashion',
+            occupancy_status: 'vacant',
+            area_total: 64,
+          },
         ],
         generated_at: '2026-04-02T08:32:00Z',
       }),
@@ -1203,7 +1233,8 @@ test('queries and exports the generalize reporting slice', async ({ page }) => {
   })
 
   await page.route('**/api/reports/r12/export', async (route) => {
-    exportRequested = true
+    r12ExportRequested = true
+    r12ExportPayload = route.request().postDataJSON()
     await route.fulfill({
       status: 200,
       contentType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -1211,18 +1242,23 @@ test('queries and exports the generalize reporting slice', async ({ page }) => {
     })
   })
 
-  await page.goto('/login')
-  await page.getByTestId('login-username-input').fill('reporter')
-  await page.getByTestId('login-password-input').fill('password')
-  await page.getByTestId('login-submit-button').click()
-
-  await expect(page).toHaveURL(/\/health/)
-  await expect(page.getByTestId('nav--reports-generalize')).toBeVisible()
-
-  await page.getByTestId('nav--reports-generalize').click()
-  await expect(page).toHaveURL(/\/reports\/generalize/)
+  await loginAndOpenGeneralize(page)
   await expect(page.getByTestId('generalize-reports-view')).toBeVisible()
-  await expect(page.getByText('MI Demo Mall')).toBeVisible()
+
+  await selectGeneralizeReport(page, 'R01')
+  await page.getByTestId('generalize-period-input').fill('2026-04')
+  await page.getByTestId('generalize-query-button').click()
+  await expect(page.getByTestId('generalize-report-table')).toContainText('MI Demo Mall')
+  await expect(page.getByTestId('generalize-report-table')).toContainText('Operations')
+  await expect(page.getByTestId('generalize-report-table')).toContainText('leased')
+  await expect(page.getByTestId('generalize-report-table')).toContainText('vacant')
+  await expect(page.getByTestId('generalize-report-table')).toContainText('118')
+  await expect(page.getByTestId('generalize-report-table')).toContainText('64')
+  await expect.poll(() => r01QueryPayload).toEqual({ period: '2026-04' })
+
+  await page.getByTestId('generalize-export-button').click()
+  await expect.poll(() => r01ExportRequested).toBe(true)
+  await expect.poll(() => r01ExportPayload).toEqual(r01QueryPayload)
 
   await selectGeneralizeReport(page, 'R12')
   await page.getByTestId('generalize-store-input').fill('101')
@@ -1230,9 +1266,14 @@ test('queries and exports the generalize reporting slice', async ({ page }) => {
 
   await expect(page.getByTestId('generalize-report-table')).toContainText('Fashion')
   await expect(page.getByTestId('generalize-report-table')).toContainText('leased')
+  await expect(page.getByTestId('generalize-report-table')).toContainText('vacant')
+  await expect(page.getByTestId('generalize-report-table')).toContainText('118')
+  await expect(page.getByTestId('generalize-report-table')).toContainText('64')
+  await expect.poll(() => r12QueryPayload).toEqual({ period: '2026-04', store_id: 101 })
 
   await page.getByTestId('generalize-export-button').click()
-  await expect.poll(() => exportRequested).toBe(true)
+  await expect.poll(() => r12ExportRequested).toBe(true)
+  await expect.poll(() => r12ExportPayload).toEqual(r12QueryPayload)
 })
 
 test('queries and exports the traffic annual/monthly summary (R10)', async ({ page }) => {
