@@ -6,6 +6,44 @@ import (
 	"testing"
 )
 
+func TestWorkflowReminderSchedulerConfigPresentInAllBuiltInConfigs(t *testing.T) {
+	configFiles := []struct {
+		name string
+		path string
+	}{
+		{name: "test", path: filepath.Join("..", "..", "config", "test.yaml")},
+		{name: "development", path: filepath.Join("..", "..", "config", "development.yaml")},
+		{name: "production", path: filepath.Join("..", "..", "config", "production.yaml")},
+	}
+
+	for _, tc := range configFiles {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Setenv(envPrefix+"_CONFIG_FILE", tc.path)
+
+			cfg, err := Load()
+			if err != nil {
+				t.Fatalf("load config: %v", err)
+			}
+
+			if cfg.WorkflowReminderScheduler.IntervalSeconds != 3600 {
+				t.Fatalf("expected reminder scheduler interval 3600, got %d", cfg.WorkflowReminderScheduler.IntervalSeconds)
+			}
+			if cfg.WorkflowReminderScheduler.LockName != "workflow:reminder:scheduler" {
+				t.Fatalf("expected scheduler lock name workflow:reminder:scheduler, got %q", cfg.WorkflowReminderScheduler.LockName)
+			}
+			if cfg.WorkflowReminderScheduler.ReminderType != "standard" {
+				t.Fatalf("expected scheduler reminder type standard, got %q", cfg.WorkflowReminderScheduler.ReminderType)
+			}
+			if cfg.WorkflowReminderScheduler.MinPendingAgeSeconds != 86400 {
+				t.Fatalf("expected min pending age 86400, got %d", cfg.WorkflowReminderScheduler.MinPendingAgeSeconds)
+			}
+			if cfg.WorkflowReminderScheduler.WindowTruncationSeconds != 86400 {
+				t.Fatalf("expected window truncation 86400, got %d", cfg.WorkflowReminderScheduler.WindowTruncationSeconds)
+			}
+		})
+	}
+}
+
 func TestLoadReadsConfigFile(t *testing.T) {
 	t.Setenv(envPrefix+"_CONFIG_FILE", filepath.Join("..", "..", "config", "test.yaml"))
 
