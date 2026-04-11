@@ -2,7 +2,7 @@
 
 ## Scope
 
-This summary consolidates the completed acceptance work for the current migration release slice, combining reporting hardening, workflow reminder scheduler hardening, verification evidence status, and cutover rehearsal outcomes.
+This summary consolidates the completed acceptance work for the current migration release slice, combining all acceptance-closure lines: reporting hardening, workflow reminder scheduler hardening, workflow admin/approval, payment/accounts receivable, tax export/document output, verification evidence status, and cutover rehearsal outcomes.
 
 ## Covered acceptance slices
 
@@ -32,28 +32,72 @@ Covered outcomes:
 - Built-in scheduler config coverage verified across `test`, `development`, and `production`
 - Scheduler slice reached `CI Ready`, `Archive Ready`, and test-environment rehearsal `GO` on validated code head `e44432d349eb936b48e18e1301dbb8b5c7740125`
 
+### 3. Workflow admin / approval acceptance slice
+
+Reference summary:
+
+- `docs/workflow-acceptance-summary-2026-04-11.md`
+
+Covered outcomes:
+
+- Sequential retry idempotency for workflow start
+- Full approval lifecycle (submit, approve, reject, resubmit) with audit trail and outbox
+- Duplicate action deduplication for all transition operations
+- Reminder automation correctness: emit, skip, replay
+- Known boundary: concurrent start safety is documented for future hardening
+- Verified on HEAD `49e141e62d2f7400373edfe73f4f45043690a922`
+
+### 4. Payment / accounts receivable acceptance slice
+
+Reference summary:
+
+- `docs/payment-ar-acceptance-summary-2026-04-11.md`
+
+Covered outcomes:
+
+- Invoice-to-receivable booking with due date derivation
+- Payment application with over-application guards and cumulative settlement
+- Payment replay idempotency
+- Cancel and adjustment guards for documents with payments
+- Bill/invoice numbering and charge reuse prevention
+- Adjustment lifecycle with original-receivable clearing
+- Verified on HEAD `49e141e62d2f7400373edfe73f4f45043690a922`
+
+### 5. Tax export / document output acceptance slice
+
+Reference summary:
+
+- `docs/tax-print-acceptance-summary-2026-04-11.md`
+
+Covered outcomes:
+
+- Kingdee-format voucher workbook generation with configurable debit/credit entry pairs
+- Invalid tax setup fail-fast
+- HTML template rendering with golden comparison for three output modes (invoice-batch, invoice-detail, bill-state)
+- PDF generation via headless Chromium
+- Verified on HEAD `49e141e62d2f7400373edfe73f4f45043690a922`
+
 ## Validated code heads
 
 | Slice | Validated HEAD | Verification | Rehearsal |
 |---|---|---|---|
 | Reporting | `b5089530c8bd79c47670a6c7fdd1fcc9a2fa8264` | PASS | GO |
 | Scheduler | `e44432d349eb936b48e18e1301dbb8b5c7740125` | PASS | GO |
+| Workflow Admin/Approval | `49e141e62d2f7400373edfe73f4f45043690a922` | PASS | -- |
+| Payment / AR | `49e141e62d2f7400373edfe73f4f45043690a922` | PASS | -- |
+| Tax Export / Print | `49e141e62d2f7400373edfe73f4f45043690a922` | PASS | -- |
 
 ## Current repository head
 
 Current HEAD at time of this summary:
 
-- `8984275cc43237fc8adab63f11542ad82e9ca3a7`
-
-This HEAD adds the scheduler acceptance summary document:
-
-- `8984275` — `Add scheduler acceptance summary`
+- `49e141e62d2f7400373edfe73f4f45043690a922`
 
 ### Current-head status
 
-- Code-bearing acceptance slices have already been validated on the earlier heads listed above.
-- The current HEAD is a documentation-only follow-up on top of those validated changes.
-- Because verification evidence is commit-scoped, `8984275...` is **not yet CI-ready/archive-ready until fresh evidence is generated for this exact commit SHA**.
+- `CI Ready: YES` (unit 50/50, integration 84/84)
+- `Archive Ready: YES` (unit 50/50, integration 84/84, e2e 41/41)
+- All five acceptance slices verified against this HEAD
 
 ## Evidence and rehearsal references
 
@@ -67,24 +111,26 @@ This HEAD adds the scheduler acceptance summary document:
 - Verification root: `artifacts/verification/e44432d349eb936b48e18e1301dbb8b5c7740125/`
 - Rehearsal result: `artifacts/rehearsal/e44432d349eb936b48e18e1301dbb8b5c7740125/cutover-rehearsal-test-20260411T081806Z.json`
 
+### Current HEAD verification
+
+- Verification root: `artifacts/verification/49e141e62d2f7400373edfe73f4f45043690a922/`
+- Evidence: `unit.json` (PASS 50/50), `integration.json` (PASS 84/84), `e2e.json` (PASS 41/41)
+
 ## Top-line release posture
 
 - **Business-critical reporting acceptance**: complete
 - **Scheduler/reminder hardening acceptance**: complete
-- **Verification evidence for validated code heads**: complete
-- **Test-environment cutover rehearsal for validated code heads**: GO
-- **Current repository head (`8984275...`)**: documentation-only and pending fresh commit-scoped evidence refresh
+- **Workflow admin/approval acceptance**: complete
+- **Payment / accounts receivable acceptance**: complete
+- **Tax export / document output acceptance**: complete
+- **Verification evidence for current HEAD**: complete
+- **Test-environment cutover rehearsal**: GO (on earlier validated heads)
+- **Current repository head (`49e141e...`)**: `CI Ready: YES`, `Archive Ready: YES`
 
-## Recommended final action
+## Known boundaries for future hardening
 
-Before declaring the repository HEAD fully release-ready, run fresh commit-scoped verification for `8984275cc43237fc8adab63f11542ad82e9ca3a7`:
-
-1. `./scripts/verification/run-unit.sh 8984275cc43237fc8adab63f11542ad82e9ca3a7`
-2. `./scripts/verification/run-integration.sh 8984275cc43237fc8adab63f11542ad82e9ca3a7`
-3. `./scripts/verification/run-e2e.sh 8984275cc43237fc8adab63f11542ad82e9ca3a7`
-4. `./scripts/ci-ready.sh`
-5. `./scripts/archive-ready.sh`
+- Workflow start concurrent safety: sequential retry idempotency is verified; database unique constraint for `(workflow_definition_id, document_type, document_id)` on active instances would close the concurrent race gap.
 
 ## Conclusion
 
-The implemented release slices are accepted and operationally validated. The only remaining gap is administrative rather than functional: refresh commit-scoped verification evidence for the latest documentation-only HEAD `8984275cc43237fc8adab63f11542ad82e9ca3a7` to restore a fully current `CI Ready` / `Archive Ready` state at repository tip.
+All five acceptance slices for the current migration release are closed. The current HEAD `49e141e62d2f7400373edfe73f4f45043690a922` is fully verified with `CI Ready: YES` and `Archive Ready: YES`. The repository is in a release-ready state for the covered first-release scope.
