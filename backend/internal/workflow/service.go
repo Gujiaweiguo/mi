@@ -60,6 +60,15 @@ func (s *Service) Start(ctx context.Context, input StartInput) (*Instance, error
 		return duplicate, nil
 	}
 
+	if active, err := s.repository.FindActiveInstanceByDocument(ctx, tx, definition.ID, input.DocumentType, input.DocumentID); err != nil {
+		return nil, err
+	} else if active != nil {
+		if err := tx.Commit(); err != nil {
+			return nil, fmt.Errorf("commit concurrent workflow start transaction: %w", err)
+		}
+		return active, nil
+	}
+
 	instance, err := s.repository.CreateInstance(ctx, tx, definition, input, &firstNode)
 	if err != nil {
 		return nil, err

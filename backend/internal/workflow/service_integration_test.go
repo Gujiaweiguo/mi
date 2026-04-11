@@ -6,6 +6,7 @@ import (
 	"context"
 	"database/sql"
 	"os"
+	"sync"
 	"testing"
 	"time"
 
@@ -501,6 +502,77 @@ func newWorkflowTestDB(t *testing.T, ctx context.Context) *sql.DB {
 	}
 
 	return db
+}
+
+func TestWorkflowServiceStartPreventsConcurrentDuplicate(t *testing.T) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+	defer cancel()
+
+	db := newWorkflowTestDB(t, ctx)
+	service := workflow.NewService(db, workflow.NewRepository(db))
+
+	type startResult struct {
+		instance *workflow.Instance
+		err      error
+	}
+
+	barrier := make(chan struct{})
+	results := make(chan startResult, 2)
+
+	var wg sync.WaitGroup
+	wg.Add(2)
+
+	for _, idempotencyKey := range []string{"concurrent-start-a", "concurrent-start-b"} {
+		go func(key string) {
+			defer wg.Done()
+			<-barrier
+			instance, err := service.Start(ctx, workflow.StartInput{
+				DefinitionCode: "lease-approval",
+				DocumentType:   "lease_contract",
+				DocumentID:     9901,
+				ActorUserID:    101,
+				DepartmentID:   101,
+				IdempotencyKey: key,
+				Comment:        "concurrent start",
+			})
+			results <- startResult{instance: instance, err: err}
+		}(idempotencyKey)
+	}
+
+	close(barrier)
+	wg.Wait()
+	close(results)
+
+	var successes []*workflow.Instance
+	var failures []error
+	for res := range results {
+		if res.err != nil {
+			failures = append(failures, res.err)
+		} else {
+			successes = append(successes, res.instance)
+		}
+	}
+
+	if len(successes) == 0 {
+		t.Fatalf("expected at least one successful start, got %d failures: %v", len(failures), failures)
+	}
+
+	if len(successes) == 2 {
+		if successes[0].ID != successes[1].ID {
+			t.Fatalf("expected both concurrent starts to return same instance, got %d and %d", successes[0].ID, successes[1].ID)
+		}
+	}
+
+	instances, err := service.ListInstances(ctx, workflow.InstanceFilter{})
+	if err != nil {
+		t.Fatalf("list workflow instances: %v", err)
+	}
+	if len(instances) != 1 {
+		t.Fatalf("expected exactly 1 workflow instance after concurrent start, got %d", len(instances))
+	}
+	if instances[0].Status != workflow.InstanceStatusPending {
+		t.Fatalf("expected pending instance, got %s", instances[0].Status)
+	}
 }
 
 func waitForDatabase(ctx context.Context, db *sql.DB) error {

@@ -143,6 +143,28 @@ func (r *Repository) FindStartedInstanceByIdempotencyKey(ctx context.Context, tx
 	return &instance, nil
 }
 
+func (r *Repository) FindActiveInstanceByDocument(ctx context.Context, tx *sql.Tx, definitionID int64, documentType string, documentID int64) (*Instance, error) {
+	const query = `
+		SELECT id, workflow_definition_id, document_type, document_id, status, current_node_id, current_step_order, current_cycle, version, submitted_by, submitted_at, completed_at
+		FROM workflow_instances
+		WHERE workflow_definition_id = ?
+		  AND document_type = ?
+		  AND document_id = ?
+		  AND completed_at IS NULL
+		ORDER BY id DESC
+		LIMIT 1
+		FOR UPDATE
+	`
+	var instance Instance
+	if err := tx.QueryRowContext(ctx, query, definitionID, documentType, documentID).Scan(&instance.ID, &instance.WorkflowDefinitionID, &instance.DocumentType, &instance.DocumentID, &instance.Status, &instance.CurrentNodeID, &instance.CurrentStepOrder, &instance.CurrentCycle, &instance.Version, &instance.SubmittedBy, &instance.SubmittedAt, &instance.CompletedAt); err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		return nil, fmt.Errorf("query active workflow instance by document: %w", err)
+	}
+	return &instance, nil
+}
+
 func (r *Repository) InsertSteps(ctx context.Context, tx *sql.Tx, instance *Instance, nodes []Node, departmentID int64) error {
 	for _, node := range nodes {
 		status := StepStatusWaiting
