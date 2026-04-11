@@ -2,11 +2,12 @@
 
 ## Scope
 
-This acceptance summary covers the workflow admin/approval hardening slice for `legacy-system-migration`, with focus on sequential retry idempotency for workflow start, full approval lifecycle (submit → approve → reject → resubmit), duplicate action deduplication for all transition operations, reminder automation correctness, and current-head verification evidence.
+This acceptance summary covers the workflow admin/approval hardening slice for `legacy-system-migration`, with focus on sequential retry idempotency for workflow start, concurrent start safety via partial unique index, full approval lifecycle (submit → approve → reject → resubmit), duplicate action deduplication for all transition operations, reminder automation correctness, and current-head verification evidence.
 
 ## Included commits
 
 1. `49e141e` — `Deduplicate workflow start retries`
+2. `9d3bdfe` — `Add concurrent safety for workflow start via partial unique index`
 
 ## Spec baseline
 
@@ -16,13 +17,13 @@ This acceptance summary covers the workflow admin/approval hardening slice for `
 
 Current HEAD:
 
-- `49e141e62d2f7400373edfe73f4f45043690a922`
+- `9d3bdfe3e8de98d544abe9872a638f8f44c5b1fc`
 
 Verification evidence:
 
-- `artifacts/verification/49e141e62d2f7400373edfe73f4f45043690a922/unit.json` — PASS (50/50)
-- `artifacts/verification/49e141e62d2f7400373edfe73f4f45043690a922/integration.json` — PASS (84/84)
-- `artifacts/verification/49e141e62d2f7400373edfe73f4f45043690a922/e2e.json` — PASS (41/41)
+- `artifacts/verification/9d3bdfe3e8de98d544abe9872a638f8f44c5b1fc/unit.json` — PASS (50/50)
+- `artifacts/verification/9d3bdfe3e8de98d544abe9872a638f8f44c5b1fc/integration.json` — PASS (85/85)
+- `artifacts/verification/9d3bdfe3e8de98d544abe9872a638f8f44c5b1fc/e2e.json` — PASS (41/41)
 
 ## Executed checks
 
@@ -64,6 +65,12 @@ Verification evidence:
    - Result: PASS
    - start → run reminders before min pending age → verify not_due skip → verify workflow state preserved
 
+7. `TestWorkflowServiceStartPreventsConcurrentDuplicate`
+   - Command:
+     - `go test -tags=integration ./internal/workflow -run TestWorkflowServiceStartPreventsConcurrentDuplicate -count=1`
+   - Result: PASS
+   - two goroutines start workflow for same document with different idempotency keys simultaneously → exactly one instance survives → instance is pending
+
 ### Router integration test coverage
 
 7. Workflow definitions endpoint returns 200
@@ -96,17 +103,17 @@ Verification evidence:
 
 11. Unit verification
     - Command:
-      - `./scripts/verification/run-unit.sh 49e141e62d2f7400373edfe73f4f45043690a922`
+      - `./scripts/verification/run-unit.sh 9d3bdfe3e8de98d544abe9872a638f8f44c5b1fc`
     - Result: PASS
 
 12. Integration verification
     - Command:
-      - `./scripts/verification/run-integration.sh 49e141e62d2f7400373edfe73f4f45043690a922`
-    - Result: PASS (84/84)
+      - `./scripts/verification/run-integration.sh 9d3bdfe3e8de98d544abe9872a638f8f44c5b1fc`
+    - Result: PASS (85/85)
 
 13. E2E verification
     - Command:
-      - `./scripts/verification/run-e2e.sh 49e141e62d2f7400373edfe73f4f45043690a922`
+      - `./scripts/verification/run-e2e.sh 9d3bdfe3e8de98d544abe9872a638f8f44c5b1fc`
     - Result: PASS (41/41)
 
 14. CI gate
@@ -122,6 +129,7 @@ Verification evidence:
 ## Acceptance outcomes
 
 - Workflow start is idempotent for sequential retries: duplicate start requests with the same idempotency key return the existing instance without creating duplicates.
+- Workflow start is concurrently safe: two simultaneous start requests for the same `(definition, document_type, document_id)` produce exactly one instance, enforced by a partial unique index on active (non-completed) rows via MySQL generated column.
 - All transition operations (approve, reject, resubmit) enforce idempotency via idempotency key deduplication in the audit table within a transaction.
 - Full multi-step approval lifecycle works: submit → multi-step approve → completed, with correct audit trail and outbox messages at every transition.
 - Reject → resubmit cycle works: creates new cycle steps, resets to pending, and records all transitions in audit history.
@@ -143,13 +151,8 @@ Verification evidence:
 - Workflow frontend API client: `frontend/src/api/workflow.ts`
 - Workflow admin E2E: `frontend/e2e/task19-workflow-admin.spec.ts`
 - Lease-billing-workflow E2E: `frontend/e2e/task15-workflow.spec.ts`
-- Workflow schema migrations: `000003_workflow_code_schema`, `000004_workflow_runtime_schema`, `000017_workflow_reminder_audit_schema`
-
-## Known boundaries
-
-- The current start-idempotency implementation provides **sequential retry safety**: if the same caller retries a start request (e.g., due to network timeout), the duplicate request returns the existing instance rather than creating a new one.
-- **Concurrent safety is not yet guaranteed**: two truly simultaneous start requests with different idempotency keys for the same document could race. For production hardening, a database unique constraint on `(workflow_definition_id, document_type, document_id)` for active instances would close this gap. This is documented as a future enhancement, not a first-release blocker.
+- Workflow schema migrations: `000003_workflow_code_schema`, `000004_workflow_runtime_schema`, `000017_workflow_reminder_audit_schema`, `000019_workflow_active_instance_unique`
 
 ## Conclusion
 
-The workflow admin/approval acceptance slice is accepted for the covered first-release scope. Sequential retry idempotency for start, full lifecycle transitions with audit and outbox, reminder automation correctness, and current-head verification gates all pass on HEAD `49e141e62d2f7400373edfe73f4f45043690a922`. Concurrent start safety is documented as a known boundary for future hardening.
+The workflow admin/approval acceptance slice is accepted for the covered first-release scope. Sequential retry idempotency for start, concurrent start safety via partial unique index, full lifecycle transitions with audit and outbox, reminder automation correctness, and current-head verification gates all pass on HEAD `9d3bdfe3e8de98d544abe9872a638f8f44c5b1fc`.

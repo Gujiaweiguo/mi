@@ -41,11 +41,11 @@ Reference summary:
 Covered outcomes:
 
 - Sequential retry idempotency for workflow start
+- Concurrent start safety via partial unique index (MySQL generated column)
 - Full approval lifecycle (submit, approve, reject, resubmit) with audit trail and outbox
 - Duplicate action deduplication for all transition operations
 - Reminder automation correctness: emit, skip, replay
-- Known boundary: concurrent start safety is documented for future hardening
-- Verified on HEAD `49e141e62d2f7400373edfe73f4f45043690a922`
+- Verified on HEAD `9d3bdfe3e8de98d544abe9872a638f8f44c5b1fc`
 
 ### 4. Payment / accounts receivable acceptance slice
 
@@ -83,20 +83,20 @@ Covered outcomes:
 |---|---|---|---|
 | Reporting | `b5089530c8bd79c47670a6c7fdd1fcc9a2fa8264` | PASS | GO |
 | Scheduler | `e44432d349eb936b48e18e1301dbb8b5c7740125` | PASS | GO |
-| Workflow Admin/Approval | `49e141e62d2f7400373edfe73f4f45043690a922` | PASS | -- |
-| Payment / AR | `49e141e62d2f7400373edfe73f4f45043690a922` | PASS | -- |
-| Tax Export / Print | `49e141e62d2f7400373edfe73f4f45043690a922` | PASS | -- |
+| Workflow Admin/Approval | `9d3bdfe3e8de98d544abe9872a638f8f44c5b1fc` | PASS | -- |
+| Payment / AR | `9d3bdfe3e8de98d544abe9872a638f8f44c5b1fc` | PASS | -- |
+| Tax Export / Print | `9d3bdfe3e8de98d544abe9872a638f8f44c5b1fc` | PASS | -- |
 
 ## Current repository head
 
 Current HEAD at time of this summary:
 
-- `49e141e62d2f7400373edfe73f4f45043690a922`
+- `9d3bdfe3e8de98d544abe9872a638f8f44c5b1fc`
 
 ### Current-head status
 
-- `CI Ready: YES` (unit 50/50, integration 84/84)
-- `Archive Ready: YES` (unit 50/50, integration 84/84, e2e 41/41)
+- `CI Ready: YES` (unit 50/50, integration 85/85)
+- `Archive Ready: YES` (unit 50/50, integration 85/85, e2e 41/41)
 - All five acceptance slices verified against this HEAD
 
 ## Evidence and rehearsal references
@@ -113,8 +113,8 @@ Current HEAD at time of this summary:
 
 ### Current HEAD verification
 
-- Verification root: `artifacts/verification/49e141e62d2f7400373edfe73f4f45043690a922/`
-- Evidence: `unit.json` (PASS 50/50), `integration.json` (PASS 84/84), `e2e.json` (PASS 41/41)
+- Verification root: `artifacts/verification/9d3bdfe3e8de98d544abe9872a638f8f44c5b1fc/`
+- Evidence: `unit.json` (PASS 50/50), `integration.json` (PASS 85/85), `e2e.json` (PASS 41/41)
 
 ## Top-line release posture
 
@@ -127,10 +127,6 @@ Current HEAD at time of this summary:
 - **Test-environment cutover rehearsal**: GO (on earlier validated heads)
 - **Current repository head (`49e141e...`)**: `CI Ready: YES`, `Archive Ready: YES`
 
-## Known boundaries for future hardening
-
-- Workflow start concurrent safety: sequential retry idempotency is verified; database unique constraint for `(workflow_definition_id, document_type, document_id)` on active instances would close the concurrent race gap.
-
 ## Conclusion
 
-All five acceptance slices for the current migration release are closed. The current HEAD `49e141e62d2f7400373edfe73f4f45043690a922` is fully verified with `CI Ready: YES` and `Archive Ready: YES`. The repository is in a release-ready state for the covered first-release scope.
+All five acceptance slices for the current migration release are closed. The current HEAD `9d3bdfe3e8de98d544abe9872a638f8f44c5b1fc` is fully verified with `CI Ready: YES` and `Archive Ready: YES`. The repository is in a release-ready state for the covered first-release scope.
