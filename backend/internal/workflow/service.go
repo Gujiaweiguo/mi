@@ -51,6 +51,15 @@ func (s *Service) Start(ctx context.Context, input StartInput) (*Instance, error
 	}
 	defer func() { _ = tx.Rollback() }()
 
+	if duplicate, err := s.repository.FindStartedInstanceByIdempotencyKey(ctx, tx, definition.ID, input.DocumentType, input.DocumentID, input.IdempotencyKey); err != nil {
+		return nil, err
+	} else if duplicate != nil {
+		if err := tx.Commit(); err != nil {
+			return nil, fmt.Errorf("commit duplicate workflow start transaction: %w", err)
+		}
+		return duplicate, nil
+	}
+
 	instance, err := s.repository.CreateInstance(ctx, tx, definition, input, &firstNode)
 	if err != nil {
 		return nil, err

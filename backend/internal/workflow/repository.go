@@ -120,6 +120,29 @@ func (r *Repository) CreateInstance(ctx context.Context, tx *sql.Tx, definition 
 	return &Instance{ID: instanceID, WorkflowDefinitionID: definition.ID, DocumentType: input.DocumentType, DocumentID: input.DocumentID, Status: InstanceStatusPending, CurrentNodeID: &currentNodeID, CurrentStepOrder: &currentStepOrder, CurrentCycle: 1, Version: 1, SubmittedBy: input.ActorUserID, SubmittedAt: now}, nil
 }
 
+func (r *Repository) FindStartedInstanceByIdempotencyKey(ctx context.Context, tx *sql.Tx, definitionID int64, documentType string, documentID int64, idempotencyKey string) (*Instance, error) {
+	const query = `
+		SELECT wi.id, wi.workflow_definition_id, wi.document_type, wi.document_id, wi.status, wi.current_node_id, wi.current_step_order, wi.current_cycle, wi.version, wi.submitted_by, wi.submitted_at, wi.completed_at
+		FROM workflow_instances wi
+		INNER JOIN workflow_audit_history wah ON wah.workflow_instance_id = wi.id
+		WHERE wi.workflow_definition_id = ?
+		  AND wi.document_type = ?
+		  AND wi.document_id = ?
+		  AND wah.action = 'submit'
+		  AND wah.idempotency_key = ?
+		ORDER BY wi.id DESC
+		LIMIT 1
+	`
+	var instance Instance
+	if err := tx.QueryRowContext(ctx, query, definitionID, documentType, documentID, idempotencyKey).Scan(&instance.ID, &instance.WorkflowDefinitionID, &instance.DocumentType, &instance.DocumentID, &instance.Status, &instance.CurrentNodeID, &instance.CurrentStepOrder, &instance.CurrentCycle, &instance.Version, &instance.SubmittedBy, &instance.SubmittedAt, &instance.CompletedAt); err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		return nil, fmt.Errorf("query workflow start by idempotency key: %w", err)
+	}
+	return &instance, nil
+}
+
 func (r *Repository) InsertSteps(ctx context.Context, tx *sql.Tx, instance *Instance, nodes []Node, departmentID int64) error {
 	for _, node := range nodes {
 		status := StepStatusWaiting

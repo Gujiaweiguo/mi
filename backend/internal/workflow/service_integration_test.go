@@ -97,6 +97,70 @@ func TestWorkflowServiceApproveAndDeduplicate(t *testing.T) {
 	}
 }
 
+func TestWorkflowServiceStartDeduplicatesByIdempotencyKey(t *testing.T) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+	defer cancel()
+
+	db := newWorkflowTestDB(t, ctx)
+	service := workflow.NewService(db, workflow.NewRepository(db))
+
+	first, err := service.Start(ctx, workflow.StartInput{
+		DefinitionCode: "lease-approval",
+		DocumentType:   "lease_contract",
+		DocumentID:     9050,
+		ActorUserID:    101,
+		DepartmentID:   101,
+		IdempotencyKey: "start-9050",
+		Comment:        "submit lease approval",
+	})
+	if err != nil {
+		t.Fatalf("start workflow: %v", err)
+	}
+
+	duplicate, err := service.Start(ctx, workflow.StartInput{
+		DefinitionCode: "lease-approval",
+		DocumentType:   "lease_contract",
+		DocumentID:     9050,
+		ActorUserID:    101,
+		DepartmentID:   101,
+		IdempotencyKey: "start-9050",
+		Comment:        "submit lease approval duplicate",
+	})
+	if err != nil {
+		t.Fatalf("duplicate start should be safe: %v", err)
+	}
+	if duplicate.ID != first.ID {
+		t.Fatalf("expected duplicate start to return instance %d, got %d", first.ID, duplicate.ID)
+	}
+	if duplicate.Version != first.Version {
+		t.Fatalf("expected duplicate start to preserve version %d, got %d", first.Version, duplicate.Version)
+	}
+
+	instances, err := service.ListInstances(ctx, workflow.InstanceFilter{})
+	if err != nil {
+		t.Fatalf("list workflow instances: %v", err)
+	}
+	if len(instances) != 1 {
+		t.Fatalf("expected exactly 1 workflow instance after duplicate start, got %d", len(instances))
+	}
+
+	history, err := service.AuditHistory(ctx, first.ID)
+	if err != nil {
+		t.Fatalf("audit history: %v", err)
+	}
+	if len(history) != 1 {
+		t.Fatalf("expected 1 audit entry after duplicate start, got %d", len(history))
+	}
+
+	outbox, err := service.OutboxMessages(ctx, first.ID)
+	if err != nil {
+		t.Fatalf("outbox messages: %v", err)
+	}
+	if len(outbox) != 1 {
+		t.Fatalf("expected 1 outbox message after duplicate start, got %d", len(outbox))
+	}
+}
+
 func TestWorkflowServiceRejectAndResubmit(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
