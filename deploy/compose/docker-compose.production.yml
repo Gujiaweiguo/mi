@@ -32,14 +32,14 @@ services:
       dockerfile: deploy/docker/backend.Dockerfile
     user: "0:0"
     environment:
-      MI_CONFIG_FILE: /app/config/production.yaml
+      MI_CONFIG_FILE: ${MI_BACKEND_CONFIG_FILE:-/app/config/production.yaml}
     volumes:
-      - ../../backend/config:/app/config:ro
-      - ../runtime/production/logs:/app/logs
-      - ../runtime/production/documents:/app/generated-documents
-      - ../runtime/production/uploads:/app/uploads
+      - ${MI_RUNTIME_CONFIG:-../../backend/config}:/app/config:ro
+      - ${MI_RUNTIME_LOGS:-../runtime/production/logs}:/app/logs
+      - ${MI_RUNTIME_DOCUMENTS:-../runtime/production/documents}:/app/generated-documents
+      - ${MI_RUNTIME_UPLOADS:-../runtime/production/uploads}:/app/uploads
     healthcheck:
-      test: ["CMD-SHELL", "wget -q -O /dev/null http://localhost:8080/healthz || exit 1"]
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://localhost:${MI_SERVER_PORT:-8080}/healthz || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -50,14 +50,14 @@ services:
   mysql:
     image: mysql:8.0
     environment:
-      MYSQL_DATABASE: mi_prod
-      MYSQL_USER: mi_prod
-      MYSQL_PASSWORD: change-me
-      MYSQL_ROOT_PASSWORD: change-me-root
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-mi_prod}
+      MYSQL_USER: ${MYSQL_USER:-mi_prod}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-change-me}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-change-me-root}
     ports:
       - "${MI_MYSQL_PORT:-3306}:3306"
     volumes:
-      - ../runtime/production/mysql:/var/lib/mysql
+      - ${MI_RUNTIME_MYSQL:-../runtime/production/mysql}:/var/lib/mysql
     healthcheck:
       test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
       interval: 10s
