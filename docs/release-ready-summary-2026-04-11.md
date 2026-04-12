@@ -45,7 +45,7 @@ Covered outcomes:
 - Full approval lifecycle (submit, approve, reject, resubmit) with audit trail and outbox
 - Duplicate action deduplication for all transition operations
 - Reminder automation correctness: emit, skip, replay
-- Verified on HEAD `55af7816aebfbeb102a87db8dcddc26fc7f6b3e9`
+- Verified on HEAD `192537b1e1aaacf42b834f023ecd68f53d36ece7`
 
 ### 4. Payment / accounts receivable acceptance slice
 
@@ -61,7 +61,7 @@ Covered outcomes:
 - Cancel and adjustment guards for documents with payments
 - Bill/invoice numbering and charge reuse prevention
 - Adjustment lifecycle with original-receivable clearing
-- Verified on HEAD `55af7816aebfbeb102a87db8dcddc26fc7f6b3e9`
+- Verified on HEAD `192537b1e1aaacf42b834f023ecd68f53d36ece7`
 
 ### 5. Tax export / document output acceptance slice
 
@@ -75,7 +75,7 @@ Covered outcomes:
 - Invalid tax setup fail-fast
 - HTML template rendering with golden comparison for three output modes (invoice-batch, invoice-detail, bill-state)
 - PDF generation via headless Chromium
-- Verified on HEAD `55af7816aebfbeb102a87db8dcddc26fc7f6b3e9`
+- Verified on HEAD `192537b1e1aaacf42b834f023ecd68f53d36ece7`
 
 ## Validated code heads
 
@@ -83,15 +83,15 @@ Covered outcomes:
 |---|---|---|---|
 | Reporting | `b5089530c8bd79c47670a6c7fdd1fcc9a2fa8264` | PASS | GO |
 | Scheduler | `e44432d349eb936b48e18e1301dbb8b5c7740125` | PASS | GO |
-| Workflow Admin/Approval | `55af7816aebfbeb102a87db8dcddc26fc7f6b3e9` | PASS | -- |
-| Payment / AR | `55af7816aebfbeb102a87db8dcddc26fc7f6b3e9` | PASS | -- |
-| Tax Export / Print | `55af7816aebfbeb102a87db8dcddc26fc7f6b3e9` | PASS | -- |
+| Workflow Admin/Approval | `192537b1e1aaacf42b834f023ecd68f53d36ece7` | PASS | -- |
+| Payment / AR | `192537b1e1aaacf42b834f023ecd68f53d36ece7` | PASS | -- |
+| Tax Export / Print | `192537b1e1aaacf42b834f023ecd68f53d36ece7` | PASS | -- |
 
 ## Current repository head
 
 Current HEAD at time of this summary:
 
-- `55af7816aebfbeb102a87db8dcddc26fc7f6b3e9`
+- `192537b1e1aaacf42b834f023ecd68f53d36ece7`
 
 ### Current-head status
 
@@ -113,7 +113,7 @@ Current HEAD at time of this summary:
 
 ### Current HEAD verification
 
-- Verification root: `artifacts/verification/55af7816aebfbeb102a87db8dcddc26fc7f6b3e9/`
+- Verification root: `artifacts/verification/192537b1e1aaacf42b834f023ecd68f53d36ece7/`
 - Evidence: `unit.json` (PASS 50/50), `integration.json` (PASS 85/85), `e2e.json` (PASS 41/41)
 
 ## Top-line release posture
@@ -125,8 +125,8 @@ Current HEAD at time of this summary:
 - **Tax export / document output acceptance**: complete
 - **Verification evidence for current HEAD**: complete
 - **Test-environment cutover rehearsal**: GO (on earlier validated heads)
-- **Current repository head (`55af781...`)**: `CI Ready: YES`, `Archive Ready: YES`
+- **Current repository head (`192537b...`)**: `CI Ready: YES`, `Archive Ready: YES`
 
 ## Conclusion
 
-All five acceptance slices for the current migration release are closed. The current HEAD `55af7816aebfbeb102a87db8dcddc26fc7f6b3e9` is fully verified with `CI Ready: YES` and `Archive Ready: YES`. The repository is in a release-ready state for the covered first-release scope.
+All five acceptance slices for the current migration release are closed. The current HEAD `192537b1e1aaacf42b834f023ecd68f53d36ece7` is fully verified with `CI Ready: YES` and `Archive Ready: YES`. The repository is in a release-ready state for the covered first-release scope.
