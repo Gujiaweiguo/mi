@@ -10,16 +10,20 @@ This document defines responsibility boundaries for the verification system, and
 
 ## End-to-end data flow
 
-1. Test runners execute and collect result statistics.
+1. Prerequisite validation checks repository readiness before gate evaluation.
+   - `scripts/verification/run-prerequisites.sh`
+   - Checks: backend static analysis, frontend typecheck, frontend build validation
+2. Test runners execute and collect result statistics.
    - `scripts/verification/run-unit.sh`
    - `scripts/verification/run-integration.sh`
    - `scripts/verification/run-e2e.sh`
-2. Producers write canonical evidence JSON for the current commit.
+   - `scripts/verification/run-e2e-live.sh`
+3. Producers write canonical evidence JSON for the current commit.
    - `scripts/verification/write-evidence.py`
    - Output location: `artifacts/verification/<commit_sha>/<test_type>.json`
-3. Gate evaluation loads required evidence per gate level.
+4. Gate evaluation loads required evidence per gate level.
    - `scripts/verification/validate-gate.sh`
-4. Each evidence file is checked in two layers:
+5. Each evidence file is checked in two layers:
    - Structural check via schema validator:
      - `scripts/verification/validate-evidence-structure.py`
      - `schemas/evidence-v1.json`
@@ -27,7 +31,7 @@ This document defines responsibility boundaries for the verification system, and
      - commit/test-type alignment
      - status gating
      - stats/timestamp/e2e-artifact rules
-5. Entrypoints orchestrate gate invocation:
+6. Entrypoints orchestrate gate invocation:
    - CI path: `scripts/ci-ready.sh`
    - Archive path: `scripts/archive-ready.sh`
 
@@ -39,7 +43,7 @@ This document defines responsibility boundaries for the verification system, and
 | Schema | Define canonical evidence shape, required fields, enums/patterns, and structural constraints | `schemas/evidence-v1.json` |
 | Validator | Execute schema validation and contextual gate validation for each evidence file | `scripts/verification/validate-evidence-structure.py`, `scripts/verification/validate-gate.sh` |
 | Gate | Define required evidence set by gate level and aggregate pass/fail decision | `scripts/verification/validate-gate.sh` |
-| Entrypoints | Provide operator/CI commands that invoke gate checks in the correct sequence | `scripts/ci-ready.sh`, `scripts/archive-ready.sh` |
+| Entrypoints | Provide operator/CI commands that invoke prerequisite validation and gate checks in the correct sequence | `scripts/verification/run-prerequisites.sh`, `scripts/ci-ready.sh`, `scripts/archive-ready.sh` |
 
 ## Structural vs contextual validation split
 
@@ -74,8 +78,10 @@ Contextual validation answers: “Is this evidence valid for this gate decision 
 - Entrypoint: `scripts/ci-ready.sh`
 - Validation sequence:
   1. Schema self-check (`scripts/verification/self-test-schema.sh`)
-  2. CI gate evaluation (`scripts/verification/validate-gate.sh` with `ci` gate argument)
+  2. Prerequisite validation (`scripts/verification/run-prerequisites.sh`)
+  3. CI gate evaluation (`scripts/verification/validate-gate.sh` with `ci` gate argument)
 - Required evidence types: `unit`, `integration`
+- Prerequisite validation is fail-fast and does not emit additional evidence files
 
 ### Archive-ready path
 
@@ -84,7 +90,7 @@ Contextual validation answers: “Is this evidence valid for this gate decision 
   1. Archive gate evaluation (`scripts/verification/validate-gate.sh` with `archive` gate argument)
 - Required evidence types: `unit`, `integration`, `e2e`
 
-Both paths reuse the same schema and validator components; archive applies a stricter required evidence set and `e2e` artifact expectations.
+Both paths reuse the same schema and validator components; archive applies a stricter required evidence set and `e2e` artifact expectations. Archive workflows may additionally produce live-stack e2e evidence through `scripts/verification/run-e2e-live.sh`, but gate evaluation still consumes the canonical `e2e.json` artifact.
 
 ## Handoff contracts
 

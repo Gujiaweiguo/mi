@@ -4,16 +4,16 @@ This checklist is the Task 18 operator-facing acceptance surface for `legacy-sys
 
 ## Rehearsal Command
 
-Run the destructive rehearsal in the test environment:
+Run the destructive rehearsal against the production Compose topology:
 
 ```bash
-scripts/cutover-rehearsal.sh test --build
+scripts/cutover-rehearsal.sh production --build
 ```
 
 The binary result is written to:
 
 ```text
-artifacts/rehearsal/<commit-sha>/cutover-rehearsal-test-<timestamp>.json
+artifacts/rehearsal/<commit-sha>/cutover-rehearsal-production-<timestamp>.json
 ```
 
 ## Required Evidence
@@ -23,23 +23,24 @@ artifacts/rehearsal/<commit-sha>/cutover-rehearsal-test-<timestamp>.json
   - `artifacts/verification/<commit-sha>/integration.json`
   - `artifacts/verification/<commit-sha>/e2e.json`
 - Rehearsal result:
-  - `artifacts/rehearsal/<commit-sha>/cutover-rehearsal-test-<timestamp>.json`
+  - `artifacts/rehearsal/<commit-sha>/cutover-rehearsal-production-<timestamp>.json`
 - Rehearsal log:
-  - `artifacts/rehearsal/<commit-sha>/cutover-rehearsal-test-<timestamp>.log`
+  - `artifacts/rehearsal/<commit-sha>/cutover-rehearsal-production-<timestamp>.log`
 
 ## Checklist
 
 - [ ] Current commit is archive-ready.
-- [ ] Test rehearsal used a clean runtime directory and fresh-start bootstrap data only.
+- [ ] Production-topology rehearsal used a clean runtime directory and fresh-start bootstrap data only.
 - [ ] Migrations applied successfully.
 - [ ] Cutover bootstrap seeds loaded successfully.
 - [ ] Fresh-start verification passed with no imported operational business data.
-- [ ] Test stack smoke validation passed.
+- [ ] Production stack smoke validation passed.
 - [ ] Backup rehearsal completed.
 - [ ] Restore rehearsal completed.
 - [ ] Restore rehearsal included runtime-file restoration and post-restore smoke validation.
 - [ ] Mandatory outputs remain validated against `docs/output-catalog.md` through current-commit archive evidence.
 - [ ] Report scope `R01-R19` remains validated against `report-acceptance-matrix.md` through current-commit archive evidence.
+- [ ] Archive-ready e2e evidence includes a passing live-stack operator flow against the supported runtime topology rather than mock-only browser coverage.
 
 ## Blocking Decisions Resolved By Repository Artifacts
 

@@ -3,7 +3,7 @@ set -euo pipefail
 
 usage() {
   cat <<'EOF'
-Usage: scripts/compose-smoke-test.sh <test|production> [--build] [--keep-running]
+Usage: scripts/compose-smoke-test.sh <production> [--build] [--keep-running]
 
 Starts the selected compose stack, waits for nginx/frontend/backend/mysql to
 report healthy, and verifies:
@@ -30,7 +30,7 @@ if [[ -z "$ENVIRONMENT" ]]; then
 fi
 
 case "$ENVIRONMENT" in
-  test|production) ;;
+  production) ;;
   *)
     printf 'Unsupported environment: %s\n' "$ENVIRONMENT" >&2
     usage
@@ -40,7 +40,14 @@ esac
 
 ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 COMPOSE_FILE="$ROOT_DIR/deploy/compose/docker-compose.$ENVIRONMENT.yml"
-ENV_FILE="$ROOT_DIR/deploy/env/$ENVIRONMENT.env"
+ENV_FILE="${MI_COMPOSE_ENV_FILE:-$ROOT_DIR/deploy/env/$ENVIRONMENT.env}"
+OVERRIDE_MI_HTTP_PORT=${MI_HTTP_PORT:-}
+OVERRIDE_MI_MYSQL_PORT=${MI_MYSQL_PORT:-}
+OVERRIDE_MI_RUNTIME_BASE=${MI_RUNTIME_BASE:-}
+OVERRIDE_MI_RUNTIME_LOGS=${MI_RUNTIME_LOGS:-}
+OVERRIDE_MI_RUNTIME_DOCUMENTS=${MI_RUNTIME_DOCUMENTS:-}
+OVERRIDE_MI_RUNTIME_UPLOADS=${MI_RUNTIME_UPLOADS:-}
+OVERRIDE_MI_RUNTIME_MYSQL=${MI_RUNTIME_MYSQL:-}
 
 if [[ ! -f "$COMPOSE_FILE" ]]; then
   printf 'Compose file missing: %s\n' "$COMPOSE_FILE" >&2
@@ -48,6 +55,35 @@ if [[ ! -f "$COMPOSE_FILE" ]]; then
 fi
 
 "$ROOT_DIR/scripts/compose-preflight.sh" "$ENVIRONMENT"
+source "$ENV_FILE"
+
+if [[ -n "$OVERRIDE_MI_HTTP_PORT" ]]; then
+  export MI_HTTP_PORT="$OVERRIDE_MI_HTTP_PORT"
+fi
+
+if [[ -n "$OVERRIDE_MI_MYSQL_PORT" ]]; then
+  export MI_MYSQL_PORT="$OVERRIDE_MI_MYSQL_PORT"
+fi
+
+if [[ -n "$OVERRIDE_MI_RUNTIME_BASE" ]]; then
+  export MI_RUNTIME_BASE="$OVERRIDE_MI_RUNTIME_BASE"
+fi
+
+if [[ -n "$OVERRIDE_MI_RUNTIME_LOGS" ]]; then
+  export MI_RUNTIME_LOGS="$OVERRIDE_MI_RUNTIME_LOGS"
+fi
+
+if [[ -n "$OVERRIDE_MI_RUNTIME_DOCUMENTS" ]]; then
+  export MI_RUNTIME_DOCUMENTS="$OVERRIDE_MI_RUNTIME_DOCUMENTS"
+fi
+
+if [[ -n "$OVERRIDE_MI_RUNTIME_UPLOADS" ]]; then
+  export MI_RUNTIME_UPLOADS="$OVERRIDE_MI_RUNTIME_UPLOADS"
+fi
+
+if [[ -n "$OVERRIDE_MI_RUNTIME_MYSQL" ]]; then
+  export MI_RUNTIME_MYSQL="$OVERRIDE_MI_RUNTIME_MYSQL"
+fi
 
 BUILD_ARG=()
 if [[ "$BUILD_FLAG" == "--build" || "$KEEP_RUNNING_FLAG" == "--build" ]]; then
@@ -96,8 +132,8 @@ for service in mysql backend frontend nginx; do
   wait_for_health "$service"
 done
 
-docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" exec -T backend sh -lc 'test -w /app/logs && test -w /app/generated-documents && test -w /app/uploads && wget -q -O /dev/null http://localhost:8080/healthz'
-docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" exec -T frontend sh -lc 'wget -q -O /dev/null http://localhost/'
+docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" exec -T backend sh -lc "test -w /app/logs && test -w /app/generated-documents && test -w /app/uploads && wget -q -O /dev/null http://localhost:${MI_SERVER_PORT:-5180}/healthz"
+docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" exec -T frontend sh -lc 'wget -q -O /dev/null http://127.0.0.1/'
 docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" exec -T nginx sh -lc 'wget -q -O /dev/null http://127.0.0.1/'
 docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" exec -T nginx sh -lc 'wget -q -O /dev/null http://127.0.0.1/api/healthz'
 

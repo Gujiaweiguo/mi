@@ -43,7 +43,7 @@ Validate CI readiness for the current commit:
 scripts/ci-ready.sh
 ```
 
-`scripts/ci-ready.sh` now runs the schema self-check first, then evaluates the commit-scoped CI evidence gate.
+`scripts/ci-ready.sh` now runs the schema self-check first, then executes prerequisite validation (`go vet`, frontend typecheck, and frontend build), and only then evaluates the commit-scoped CI evidence gate.
 
 Validate archive readiness for the current commit:
 
@@ -89,6 +89,12 @@ Generate current-commit e2e evidence:
 scripts/verification/run-e2e.sh
 ```
 
+Generate current-commit live-stack e2e evidence for archive validation:
+
+```bash
+scripts/verification/run-e2e-live.sh
+```
+
 ## Current Repository State
 
 This repository does not yet contain the target application or real test producers, so the real gate checks are expected to fail for the current HEAD until actual test jobs write evidence files.
@@ -103,4 +109,5 @@ Key points:
 
 - Missing or stale evidence must always be rejected, regardless of changes to other verification components.
 - After any verification-layer change, run `scripts/verification/self-test.sh` and `scripts/verification/self-test-schema.sh` to confirm regression-free behavior.
+- CI-ready prerequisite validation is a fail-fast pre-gate stage; it does not create new evidence types and does not weaken the `unit` + `integration` evidence requirement.
 - Keep this document, `docs/verification-architecture.md`, and `docs/evidence-contract.md` synchronized when commands or gate levels change.
