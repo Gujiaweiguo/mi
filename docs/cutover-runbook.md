@@ -13,7 +13,6 @@ This runbook freezes the first-release cutover policy for `legacy-system-migrati
 ## What Must Exist Before Go-Live
 
 ### 1. Environment Readiness
-- Test environment Compose stack is healthy.
 - Production Compose stack is healthy.
 - Mounted paths for config, logs, generated documents/uploads, and MySQL data are validated.
 - Verification gate tooling is available:
@@ -144,7 +143,7 @@ In addition to archive-ready status, go-live requires:
 Rehearsal command:
 
 ```bash
-scripts/cutover-rehearsal.sh test --build
+scripts/cutover-rehearsal.sh production --build
 ```
 
 The rehearsal now executes its operational checks in this order:
@@ -162,8 +161,8 @@ The rehearsal now executes its operational checks in this order:
 Result artifacts are written to:
 
 ```text
-artifacts/rehearsal/<commit-sha>/cutover-rehearsal-test-<timestamp>.json
-artifacts/rehearsal/<commit-sha>/cutover-rehearsal-test-<timestamp>.log
+artifacts/rehearsal/<commit-sha>/cutover-rehearsal-production-<timestamp>.json
+artifacts/rehearsal/<commit-sha>/cutover-rehearsal-production-<timestamp>.log
 ```
 
 `status: "GO"` means the rehearsal passed all required checks. Any failed check produces `status: "NO-GO"`.
@@ -176,7 +175,7 @@ The rehearsal result artifact also records per-gate status and `failing_gate` so
 1. Confirm release scope still matches OpenSpec.
 2. Confirm no unresolved blocking decisions remain.
 3. Confirm mandatory outputs are complete.
-4. Confirm archive-ready test gate status.
+4. Confirm archive-ready release-gate status.
 5. Freeze bootstrap data pack.
 
 ### Phase B — Environment Preparation
@@ -204,7 +203,7 @@ The cutover is **NO-GO** if any of the following happens:
 - workflow templates are missing or invalid
 - numbering is undefined or broken
 - mandatory outputs fail
-- test evidence / release-gate evidence is missing for the release commit
+- release-gate evidence is missing for the release commit
 
 ## Rollback Rule
 

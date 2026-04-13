@@ -35,16 +35,10 @@ The frontend lives under `frontend/` and uses Vite env variables for runtime con
 Typical local API target:
 
 ```text
-http://localhost:8080
+http://localhost:5180
 ```
 
 ## Compose Render Checks
-
-Render test topology:
-
-```bash
-scripts/compose-test-config.sh
-```
 
 Render production topology:
 

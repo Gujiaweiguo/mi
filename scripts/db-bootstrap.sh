@@ -5,12 +5,17 @@ ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 
 usage() {
   cat <<'EOF'
-Usage: scripts/db-bootstrap.sh <test|production> [cutover|all]
+Usage: scripts/db-bootstrap.sh <production> [cutover|all]
 
 Applies migrations, loads deterministic seeds, and verifies the selected
 environment database using the backend dbops CLI.
 EOF
 }
+
+if [[ ${1:-} == "-h" || ${1:-} == "--help" ]]; then
+  usage
+  exit 0
+fi
 
 ENVIRONMENT=${1:-}
 SEED_SET=${2:-cutover}
@@ -21,7 +26,6 @@ if [[ -z "$ENVIRONMENT" ]]; then
 fi
 
 case "$ENVIRONMENT" in
-  test) DEFAULT_MYSQL_PORT=3307 ;;
   production) DEFAULT_MYSQL_PORT=3306 ;;
   *)
     printf 'Unsupported environment: %s\n' "$ENVIRONMENT" >&2
@@ -40,13 +44,14 @@ case "$SEED_SET" in
 esac
 
 COMPOSE_FILE="$ROOT_DIR/deploy/compose/docker-compose.$ENVIRONMENT.yml"
-CONFIG_FILE="$ROOT_DIR/backend/config/$ENVIRONMENT.yaml"
+ENV_FILE="${MI_COMPOSE_ENV_FILE:-$ROOT_DIR/deploy/env/$ENVIRONMENT.env}"
+CONFIG_FILE="${MI_DBOPS_CONFIG_FILE:-$ROOT_DIR/backend/config/$ENVIRONMENT.yaml}"
 MYSQL_PORT=${MI_MYSQL_PORT:-$DEFAULT_MYSQL_PORT}
 
-docker compose -f "$COMPOSE_FILE" up -d mysql >/dev/null
+docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" up -d mysql >/dev/null
 
 for _ in $(seq 1 60); do
-  CONTAINER_ID=$(docker compose -f "$COMPOSE_FILE" ps -q mysql)
+  CONTAINER_ID=$(docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" ps -q mysql)
   if [[ -n "$CONTAINER_ID" ]]; then
     STATUS=$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}{{.State.Status}}{{end}}' "$CONTAINER_ID")
     if [[ "$STATUS" == "healthy" ]]; then

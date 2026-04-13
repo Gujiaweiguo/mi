@@ -5,11 +5,16 @@ ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 
 usage() {
   cat <<'EOF'
-Usage: scripts/db-verify.sh <test|production> [migrate|bootstrap|fresh-start|all]
+Usage: scripts/db-verify.sh <production> [migrate|bootstrap|fresh-start|all]
 
 Runs the selected verification profile against the target environment database.
 EOF
 }
+
+if [[ ${1:-} == "-h" || ${1:-} == "--help" ]]; then
+  usage
+  exit 0
+fi
 
 ENVIRONMENT=${1:-}
 PROFILE=${2:-all}
@@ -20,7 +25,6 @@ if [[ -z "$ENVIRONMENT" ]]; then
 fi
 
 case "$ENVIRONMENT" in
-  test) DEFAULT_MYSQL_PORT=3307 ;;
   production) DEFAULT_MYSQL_PORT=3306 ;;
   *)
     printf 'Unsupported environment: %s\n' "$ENVIRONMENT" >&2

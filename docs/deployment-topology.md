@@ -1,17 +1,16 @@
 # Deployment Topology
 
-## Test and Production Services
+## Production Services
 
-Both test and production topologies use the same four-service shape:
+The production topology uses the same four-service shape:
 
 - nginx
 - frontend
 - backend
 - mysql
 
-Compose manifests:
+Compose manifest:
 
-- `deploy/compose/docker-compose.test.yml`
 - `deploy/compose/docker-compose.production.yml`
 
 ## Mounted Runtime Paths
@@ -24,9 +23,8 @@ The Compose stacks mount the runtime paths required by the platform and cutover 
 - uploads: `../runtime/<env>/uploads:/app/uploads`
 - mysql data: `../runtime/<env>/mysql:/var/lib/mysql`
 
-Runtime roots are kept under:
+Runtime root is kept under:
 
-- `deploy/runtime/test/`
 - `deploy/runtime/production/`
 
 ## Health Endpoints
@@ -37,14 +35,13 @@ Runtime roots are kept under:
 
 ## Bring-Up Procedure
 
-Render the Compose definitions before starting either environment:
+Render the production Compose definition before startup:
 
 ```bash
-scripts/compose-test-config.sh
 scripts/compose-production-config.sh
 ```
 
-Both commands now run the same preflight contract before rendering:
+The render command runs the same preflight contract before rendering:
 
 - validate the target compose file exists
 - validate the target deploy env file exists
@@ -52,10 +49,9 @@ Both commands now run the same preflight contract before rendering:
 - validate `deploy/runtime/<env>/{logs,documents,uploads,mysql}` exists and is writable
 - fail before startup if `docker compose config` cannot render with the selected env file
 
-Smoke-test the full stack:
+Smoke-test the production stack:
 
 ```bash
-scripts/compose-smoke-test.sh test --build
 scripts/compose-smoke-test.sh production --build
 ```
 
@@ -69,10 +65,9 @@ MI_HTTP_PORT=18080 MI_MYSQL_PORT=13306 scripts/compose-smoke-test.sh production 
 
 ## Backup and Restore
 
-Create an environment backup bundle:
+Create a production backup bundle:
 
 ```bash
-scripts/db-backup.sh test
 scripts/db-backup.sh production
 ```
 
@@ -83,19 +78,18 @@ Each bundle contains:
 - the selected backend config file
 - the selected deploy env file
 
-Restore a backup bundle:
+Restore a production backup bundle:
 
 ```bash
-scripts/db-restore.sh test <backup-archive>
 scripts/db-restore.sh production <backup-archive>
-scripts/db-restore.sh test <backup-archive> --restore-runtime-files
+scripts/db-restore.sh production <backup-archive> --restore-runtime-files
 ```
 
 By default the restore script imports the MySQL dump only. Pass `--restore-runtime-files` to also replace the on-disk runtime directories plus the backed-up config/env snapshots.
 
 ## Preflight Checks
 
-Before test or production bring-up:
+Before production bring-up:
 
 1. Confirm the runtime directories for the target environment exist and are writable.
 2. Confirm `backend/config/<env>.yaml` matches the target environment.
@@ -106,5 +100,5 @@ Before test or production bring-up:
 
 - If `mysql` never becomes healthy, verify the mounted MySQL data directory is writable and the configured credentials are correct.
 - If `backend` never becomes healthy, verify `MI_CONFIG_FILE` points at the expected config file and that `/app/config` is mounted read-only.
-- If `nginx` is healthy but `/api/healthz` fails, verify the backend container is healthy and the nginx config under `deploy/nginx/*.conf` still proxies `/api/` to `backend:8080`.
+- If `nginx` is healthy but `/api/healthz` fails, verify the backend container is healthy and the nginx config under `deploy/nginx/*.conf` still proxies `/api/` to `backend:5180`.
 - If document generation or uploads fail at runtime, verify the `documents` and `uploads` directories under `deploy/runtime/<env>/` are writable by the container runtime.

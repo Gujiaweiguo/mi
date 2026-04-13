@@ -33,7 +33,7 @@ If the repository scan suggests “old .NET app”, treat that as **legacy input
 - **Backend**: Go modular monolith
 - **Database**: MySQL 8
 - **Development**: local frontend + local backend + existing Docker MySQL 8
-- **Test / Production**: Docker Compose
+- **Production**: Docker Compose
 
 For detailed rules and constraints, read `AGENTS.md`.
 

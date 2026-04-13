@@ -3,7 +3,7 @@ set -uo pipefail
 
 usage() {
   cat <<'EOF'
-Usage: scripts/cutover-rehearsal.sh [test|production] [--build]
+Usage: scripts/cutover-rehearsal.sh [production] [--build]
 
 Runs a cutover rehearsal for the selected environment and writes a machine-
 readable GO/NO-GO result under artifacts/rehearsal/<commit-sha>/.
@@ -22,15 +22,11 @@ if [[ ${1:-} == "-h" || ${1:-} == "--help" ]]; then
   exit 0
 fi
 
-ENVIRONMENT=${1:-test}
+ENVIRONMENT=${1:-production}
 BUILD_FLAG=${2:-}
 
 case "$ENVIRONMENT" in
-  test) ;;
-  production)
-    printf 'Use the test environment for destructive cutover rehearsal work.\n' >&2
-    exit 1
-    ;;
+  production) ;;
   *)
     printf 'Unsupported environment: %s\n' "$ENVIRONMENT" >&2
     usage

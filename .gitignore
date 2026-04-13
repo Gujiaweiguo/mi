@@ -17,10 +17,10 @@ backend/.cache/
 backend/coverage/
 
 # runtime/deploy outputs
-deploy/runtime/**/logs/*
-deploy/runtime/**/documents/*
-deploy/runtime/**/uploads/*
-deploy/runtime/**/mysql/*
+deploy/runtime/**/logs/**
+deploy/runtime/**/documents/**
+deploy/runtime/**/uploads/**
+deploy/runtime/**/mysql/**
 !deploy/runtime/**/.gitkeep
 
 # env overrides

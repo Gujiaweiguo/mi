@@ -3,7 +3,7 @@ set -euo pipefail
 
 usage() {
   cat <<'EOF'
-Usage: scripts/compose-preflight.sh <test|production> [--print-config]
+Usage: scripts/compose-preflight.sh <production> [--print-config]
 
 Validates the selected Compose environment before startup by checking:
 - compose file presence
@@ -30,7 +30,7 @@ if [[ -z "$ENVIRONMENT" ]]; then
 fi
 
 case "$ENVIRONMENT" in
-  test|production) ;;
+  production) ;;
   *)
     printf 'Unsupported environment: %s\n' "$ENVIRONMENT" >&2
     usage
@@ -46,9 +46,14 @@ fi
 
 ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 COMPOSE_FILE="$ROOT_DIR/deploy/compose/docker-compose.$ENVIRONMENT.yml"
-ENV_FILE="$ROOT_DIR/deploy/env/$ENVIRONMENT.env"
+ENV_FILE="${MI_COMPOSE_ENV_FILE:-$ROOT_DIR/deploy/env/$ENVIRONMENT.env}"
 CONFIG_FILE="$ROOT_DIR/backend/config/$ENVIRONMENT.yaml"
-RUNTIME_DIR="$ROOT_DIR/deploy/runtime/$ENVIRONMENT"
+DEFAULT_RUNTIME_DIR="$ROOT_DIR/deploy/runtime/$ENVIRONMENT"
+RUNTIME_DIR="${MI_RUNTIME_BASE:-$DEFAULT_RUNTIME_DIR}"
+RUNTIME_LOGS="${MI_RUNTIME_LOGS:-$RUNTIME_DIR/logs}"
+RUNTIME_DOCUMENTS="${MI_RUNTIME_DOCUMENTS:-$RUNTIME_DIR/documents}"
+RUNTIME_UPLOADS="${MI_RUNTIME_UPLOADS:-$RUNTIME_DIR/uploads}"
+RUNTIME_MYSQL="${MI_RUNTIME_MYSQL:-$RUNTIME_DIR/mysql}"
 
 require_path() {
   local path=$1
@@ -79,9 +84,14 @@ require_path "$ENV_FILE" env-file
 require_path "$CONFIG_FILE" backend-config
 require_path "$RUNTIME_DIR" runtime-root
 
-for runtime_name in logs documents uploads mysql; do
-  require_writable_dir "$RUNTIME_DIR/$runtime_name"
-done
+require_writable_dir "$RUNTIME_LOGS"
+require_writable_dir "$RUNTIME_DOCUMENTS"
+require_writable_dir "$RUNTIME_UPLOADS"
+require_path "$RUNTIME_MYSQL" directory
+if [[ ! -d "$RUNTIME_MYSQL" ]]; then
+  printf 'Required runtime path is not a directory: %s\n' "$RUNTIME_MYSQL" >&2
+  exit 1
+fi
 
 COMPOSE_ARGS=(--env-file "$ENV_FILE" -f "$COMPOSE_FILE")
 if [[ "$PRINT_CONFIG" == "--print-config" ]]; then
