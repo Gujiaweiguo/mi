@@ -3,7 +3,7 @@ set -euo pipefail
 
 usage() {
   cat <<'EOF'
-Usage: scripts/db-restore.sh <test|production> <backup-archive> [--restore-runtime-files]
+Usage: scripts/db-restore.sh <production> <backup-archive> [--restore-runtime-files]
 
 Restores the MySQL logical dump from a backup created by scripts/db-backup.sh.
 Pass --restore-runtime-files to also replace the runtime logs/documents/uploads
@@ -26,7 +26,7 @@ if [[ -z "$ENVIRONMENT" || -z "$ARCHIVE_PATH" ]]; then
 fi
 
 case "$ENVIRONMENT" in
-  test|production) ;;
+  production) ;;
   *)
     printf 'Unsupported environment: %s\n' "$ENVIRONMENT" >&2
     usage
@@ -117,7 +117,7 @@ for required in \
   fi
 done
 
-docker compose -f "$COMPOSE_FILE" exec -T mysql sh -lc \
+docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" exec -T mysql sh -lc \
   'exec mysql -uroot -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_DATABASE"' \
   < "$EXTRACT_DIR/database.sql"
 

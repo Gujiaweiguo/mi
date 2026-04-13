@@ -3,7 +3,7 @@ set -euo pipefail
 
 usage() {
   cat <<'EOF'
-Usage: scripts/db-backup.sh <test|production> [output-dir]
+Usage: scripts/db-backup.sh <production> [output-dir]
 
 Creates a timestamped backup bundle containing:
 - a MySQL logical dump from the running compose stack
@@ -29,7 +29,7 @@ if [[ -z "$ENVIRONMENT" ]]; then
 fi
 
 case "$ENVIRONMENT" in
-  test|production) ;;
+  production) ;;
   *)
     printf 'Unsupported environment: %s\n' "$ENVIRONMENT" >&2
     usage
@@ -94,7 +94,7 @@ print(json.dumps({
 }, indent=2))
 PY
 
-docker compose -f "$COMPOSE_FILE" exec -T mysql sh -lc \
+docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" exec -T mysql sh -lc \
   'exec mysqldump -uroot -p"$MYSQL_ROOT_PASSWORD" --single-transaction --routines --triggers --databases "$MYSQL_DATABASE"' \
   > "$STAGING_DIR/database.sql"
 

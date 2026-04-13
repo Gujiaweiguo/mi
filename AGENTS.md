@@ -6,7 +6,7 @@ This workspace is a **replacement migration project**, not a maintenance project
 
 - **Legacy reference only**: `legacy_code/`, `legacy_docs/`
 - **Target architecture**: Vue 3 frontend + Go modular monolith backend + MySQL 8
-- **Deployment target**: local FE/BE + existing Docker MySQL 8 for development; Docker Compose for test and production
+- **Deployment target**: local FE/BE + existing Docker MySQL 8 for development; Docker Compose for production
 
 If repository scanning conflicts with these instructions, **prefer this file and the OpenSpec change artifacts over language/file-frequency heuristics**.
 
@@ -34,7 +34,7 @@ The legacy ASP.NET WebForms + SQL Server codebase is **not** the intended implem
 ### Architecture Rules
 - Use a **modular monolith**, not microservices.
 - Frontend and backend are separated.
-- Production/test topology is Docker Compose with nginx + frontend + backend + mysql.
+- Production topology is Docker Compose with nginx + frontend + backend + mysql.
 - Config must be externalized and environment-aware.
 
 ## Scope Boundaries

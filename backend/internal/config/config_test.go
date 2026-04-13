@@ -11,7 +11,6 @@ func TestWorkflowReminderSchedulerConfigPresentInAllBuiltInConfigs(t *testing.T)
 		name string
 		path string
 	}{
-		{name: "test", path: filepath.Join("..", "..", "config", "test.yaml")},
 		{name: "development", path: filepath.Join("..", "..", "config", "development.yaml")},
 		{name: "production", path: filepath.Join("..", "..", "config", "production.yaml")},
 	}
@@ -45,15 +44,15 @@ func TestWorkflowReminderSchedulerConfigPresentInAllBuiltInConfigs(t *testing.T)
 }
 
 func TestLoadReadsConfigFile(t *testing.T) {
-	t.Setenv(envPrefix+"_CONFIG_FILE", filepath.Join("..", "..", "config", "test.yaml"))
+	t.Setenv(envPrefix+"_CONFIG_FILE", filepath.Join("..", "..", "config", "production.yaml"))
 
 	cfg, err := Load()
 	if err != nil {
 		t.Fatalf("load config: %v", err)
 	}
 
-	if cfg.App.Environment != "test" {
-		t.Fatalf("expected test environment, got %q", cfg.App.Environment)
+	if cfg.App.Environment != "production" {
+		t.Fatalf("expected production environment, got %q", cfg.App.Environment)
 	}
 
 	if cfg.Database.Host != "mysql" {
@@ -75,7 +74,7 @@ func TestLoadReadsConfigFile(t *testing.T) {
 }
 
 func TestLoadAppliesEnvironmentOverrides(t *testing.T) {
-	t.Setenv(envPrefix+"_CONFIG_FILE", filepath.Join("..", "..", "config", "test.yaml"))
+	t.Setenv(envPrefix+"_CONFIG_FILE", filepath.Join("..", "..", "config", "production.yaml"))
 	t.Setenv(envPrefix+"_DATABASE_HOST", "override-db")
 	t.Setenv(envPrefix+"_WORKFLOW_REMINDER_SCHEDULER_ENABLED", "true")
 	t.Setenv(envPrefix+"_WORKFLOW_REMINDER_SCHEDULER_LOCK_NAME", "workflow:reminder:scheduler:test")
