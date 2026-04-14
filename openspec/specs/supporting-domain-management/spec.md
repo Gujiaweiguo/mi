@@ -5,7 +5,7 @@ TBD: Canonical supporting-domain management spec for the replacement MI system.
 ## Requirements
 
 ### Requirement: The system SHALL support first-release non-membership supporting domains
-The first release SHALL provide the supporting domain capabilities required for operations outside the membership module, including BaseInfo/admin master data, Shop, Sell, RentableArea, workflow administration, payment and receivable operations, budget/prospect administration, and any explicitly frozen Generalize outputs. The Sell-domain operating surface SHALL support both single-record maintenance and operator-facing batch ingestion for daily sales and customer traffic so downstream reports can be refreshed without direct database edits. Supporting master-data administration SHALL provide supported lifecycle maintenance for customer and brand records so operators can create, update, and manage those records at operational scale without direct database edits.
+The first release SHALL provide the supporting domain capabilities required for operations outside the membership module, including BaseInfo/admin master data, Shop, Sell, RentableArea, workflow administration, payment and receivable operations, budget/prospect administration, and any explicitly frozen Generalize outputs. The Sell-domain operating surface SHALL support both single-record maintenance and operator-facing batch ingestion for daily sales and customer traffic so downstream reports can be refreshed without direct database edits. Supporting master-data administration SHALL provide supported lifecycle maintenance for customer and brand records so operators can create, update, and manage those records at operational scale without direct database edits. Frontend refactors to the supporting-domain administration surface SHALL preserve these existing behaviors and SHALL NOT change the underlying business capabilities or API contracts merely to improve maintainability.
 
 #### Scenario: Supporting master data can be used in operations
 - **WHEN** an operator maintains required shop or rentable-area master data
@@ -38,6 +38,10 @@ The first release SHALL provide the supporting domain capabilities required for 
 #### Scenario: Supporting master-data administration remains usable at list scale
 - **WHEN** customer or brand records grow beyond a single-page manual review set
 - **THEN** the supported administration surface SHALL provide list navigation and retrieval behavior that allows operators to locate and maintain records without loading the entire dataset into one unbounded view
+
+#### Scenario: Frontend maintainability refactor preserves master-data behavior
+- **WHEN** the master-data administration UI is refactored for maintainability
+- **THEN** existing customer, brand, budget, and prospect workflows SHALL remain behaviorally equivalent for operators and SHALL continue using the same supported backend contracts
 
 ### Requirement: The system SHALL provide supported budget/prospect administration for first release
 The first release SHALL provide a supported administration workflow for budget/prospect records wherever those records are required by the frozen supporting-domain scope, reporting expectations, or operational planning workflows. Operators SHALL be able to create, review, and update budget/prospect records through supported application paths rather than through direct database edits or report-only side effects.
