@@ -41,8 +41,9 @@ fi
 
 ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 COMPOSE_FILE="$ROOT_DIR/deploy/compose/docker-compose.$ENVIRONMENT.yml"
-ENV_FILE="$ROOT_DIR/deploy/env/$ENVIRONMENT.env"
-RUNTIME_DIR="$ROOT_DIR/deploy/runtime/$ENVIRONMENT"
+ENV_FILE="${MI_COMPOSE_ENV_FILE:-$ROOT_DIR/deploy/env/$ENVIRONMENT.env}"
+DEFAULT_RUNTIME_DIR="$ROOT_DIR/deploy/runtime/$ENVIRONMENT"
+RUNTIME_DIR="${MI_RUNTIME_BASE:-$DEFAULT_RUNTIME_DIR}"
 CONFIG_FILE="$ROOT_DIR/backend/config/$ENVIRONMENT.yaml"
 
 for required in "$COMPOSE_FILE" "$ENV_FILE" "$RUNTIME_DIR"; do
@@ -127,6 +128,7 @@ if [[ "$RESTORE_RUNTIME_FILES" == "--restore-runtime-files" ]]; then
       rm -rf "$RUNTIME_DIR/$runtime_name"
       mkdir -p "$RUNTIME_DIR/$runtime_name"
       cp -a "$EXTRACT_DIR/runtime/$runtime_name/." "$RUNTIME_DIR/$runtime_name/"
+      chmod -R a+rwX "$RUNTIME_DIR/$runtime_name"
     fi
   done
 

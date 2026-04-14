@@ -132,7 +132,8 @@ for service in mysql backend frontend nginx; do
   wait_for_health "$service"
 done
 
-docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" exec -T backend sh -lc "test -w /app/logs && test -w /app/generated-documents && test -w /app/uploads && wget -q -O /dev/null http://localhost:${MI_SERVER_PORT:-5180}/healthz"
+docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" exec -T mysql sh -lc 'test -w /var/lib/mysql && mysqladmin ping -h localhost -uroot -p"$MYSQL_ROOT_PASSWORD" --silent'
+docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" exec -T backend sh -lc "test -w /app/logs && test -w /app/generated-documents && test -w /app/uploads && wget -q -O /dev/null http://127.0.0.1:${MI_SERVER_PORT:-5180}/healthz"
 docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" exec -T frontend sh -lc 'wget -q -O /dev/null http://127.0.0.1/'
 docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" exec -T nginx sh -lc 'wget -q -O /dev/null http://127.0.0.1/'
 docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" exec -T nginx sh -lc 'wget -q -O /dev/null http://127.0.0.1/api/healthz'

@@ -36,7 +36,40 @@ esac
 
 ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 COMPOSE_FILE="$ROOT_DIR/deploy/compose/docker-compose.$ENVIRONMENT.yml"
-ENV_FILE="$ROOT_DIR/deploy/env/$ENVIRONMENT.env"
+SOURCE_ENV_FILE="${MI_COMPOSE_ENV_FILE:-$ROOT_DIR/deploy/env/$ENVIRONMENT.env}"
+TEMP_ENV_FILE=$(mktemp)
+TEMP_RUNTIME_ROOT=$(mktemp -d)
+TEMP_CONFIG_ROOT=$(mktemp -d)
+chmod 0755 "$TEMP_CONFIG_ROOT"
+
+export MI_HTTP_PORT=${MI_HTTP_PORT:-18080}
+export MI_MYSQL_PORT=${MI_MYSQL_PORT:-33306}
+export MI_RUNTIME_BASE=${MI_RUNTIME_BASE:-$TEMP_RUNTIME_ROOT}
+export MI_RUNTIME_LOGS=${MI_RUNTIME_LOGS:-$MI_RUNTIME_BASE/logs}
+export MI_RUNTIME_DOCUMENTS=${MI_RUNTIME_DOCUMENTS:-$MI_RUNTIME_BASE/documents}
+export MI_RUNTIME_UPLOADS=${MI_RUNTIME_UPLOADS:-$MI_RUNTIME_BASE/uploads}
+export MI_RUNTIME_MYSQL=${MI_RUNTIME_MYSQL:-$MI_RUNTIME_BASE/mysql}
+export MI_RUNTIME_CONFIG=${MI_RUNTIME_CONFIG:-$TEMP_CONFIG_ROOT}
+export MI_COMPOSE_ENV_FILE="$TEMP_ENV_FILE"
+
+mkdir -p "$MI_RUNTIME_LOGS" "$MI_RUNTIME_DOCUMENTS" "$MI_RUNTIME_UPLOADS" "$MI_RUNTIME_MYSQL"
+chmod 0777 "$MI_RUNTIME_BASE" "$MI_RUNTIME_LOGS" "$MI_RUNTIME_DOCUMENTS" "$MI_RUNTIME_UPLOADS" "$MI_RUNTIME_MYSQL"
+cp "$ROOT_DIR/backend/config/$ENVIRONMENT.yaml" "$TEMP_CONFIG_ROOT/$ENVIRONMENT.yaml"
+chmod 0644 "$TEMP_CONFIG_ROOT/$ENVIRONMENT.yaml"
+
+cp "$SOURCE_ENV_FILE" "$TEMP_ENV_FILE"
+cat <<EOF >> "$TEMP_ENV_FILE"
+MI_HTTP_PORT=$MI_HTTP_PORT
+MI_MYSQL_PORT=$MI_MYSQL_PORT
+MI_RUNTIME_BASE=$MI_RUNTIME_BASE
+MI_RUNTIME_LOGS=$MI_RUNTIME_LOGS
+MI_RUNTIME_DOCUMENTS=$MI_RUNTIME_DOCUMENTS
+MI_RUNTIME_UPLOADS=$MI_RUNTIME_UPLOADS
+MI_RUNTIME_MYSQL=$MI_RUNTIME_MYSQL
+MI_RUNTIME_CONFIG=$MI_RUNTIME_CONFIG
+EOF
+
+ENV_FILE="$MI_COMPOSE_ENV_FILE"
 COMMIT_SHA=$(git -C "$ROOT_DIR" rev-parse HEAD)
 STARTED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 STAMP=$(date -u +"%Y%m%dT%H%M%SZ")
@@ -72,6 +105,12 @@ backup_archive=
 
 cleanup_stack() {
   docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" down --remove-orphans >/dev/null 2>&1 || true
+}
+
+cleanup_runtime() {
+  for runtime_path in "$MI_RUNTIME_MYSQL" "$MI_RUNTIME_DOCUMENTS" "$MI_RUNTIME_UPLOADS" "$MI_RUNTIME_LOGS"; do
+    docker run --rm -v "$runtime_path:/target" alpine:3.20 sh -lc 'rm -rf /target/* /target/.[!.]* /target/..?* 2>/dev/null || true' >/dev/null 2>&1 || true
+  done
 }
 
 write_result() {
@@ -142,7 +181,7 @@ Path(result_file).write_text(json.dumps(result, indent=2) + "\n", encoding="utf-
 PY
 }
 
-trap 'cleanup_stack; write_result' EXIT
+trap 'cleanup_stack; write_result; chmod -R 0777 "$TEMP_RUNTIME_ROOT" 2>/dev/null || true; rm -f "$TEMP_ENV_FILE"; rm -rf "$TEMP_RUNTIME_ROOT" 2>/dev/null || true; rm -rf "$TEMP_CONFIG_ROOT"' EXIT
 
 exec > >(tee "$LOG_FILE") 2>&1
 
@@ -161,18 +200,16 @@ run_step() {
   return 1
 }
 
-if ! run_step preflight "$PREFLIGHT_SCRIPT" "$ENVIRONMENT"; then
+cleanup_stack
+cleanup_runtime
+
+if ! run_step preflight "$PREFLIGHT_SCRIPT" "$ENVIRONMENT" --require-clean-runtime; then
   exit 1
 fi
 
 if ! run_step archive_ready "$ROOT_DIR/scripts/archive-ready.sh"; then
   exit 1
 fi
-
-cleanup_stack
-for runtime_name in mysql documents uploads logs; do
-  docker run --rm -v "$ROOT_DIR/deploy/runtime/$ENVIRONMENT/$runtime_name:/target" alpine:3.20 sh -lc 'rm -rf /target/* /target/.[!.]* /target/..?*'
-done
 
 if ! run_step bootstrap "$ROOT_DIR/scripts/db-bootstrap.sh" "$ENVIRONMENT" cutover; then
   exit 1
