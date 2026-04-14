@@ -10,11 +10,19 @@ The change SHALL introduce a Vue 3 frontend, a Go modular monolith backend, and 
 - **THEN** the application SHALL connect to the configured MySQL 8 instance and expose working frontend and backend health endpoints
 
 ### Requirement: The system SHALL externalize environment configuration and runtime mounts
-The change SHALL define environment-specific configuration with file-based defaults and environment-variable overrides. Test and production environments SHALL mount runtime paths for configuration, logs, generated documents, uploads, and MySQL data.
+The change SHALL define environment-specific configuration with file-based defaults and environment-variable overrides. Test and production environments SHALL mount runtime paths for configuration, logs, generated documents, uploads, and MySQL data. Production runtime mounts SHALL also enforce documented hygiene and permission assumptions so rehearsal and go-live validation are not considered valid under contaminated runtime baselines or unsupported container runtime behavior.
 
 #### Scenario: Production runtime paths are configured
 - **WHEN** the production Docker Compose configuration is rendered
 - **THEN** explicit mounts SHALL exist for configuration, logs, generated documents/uploads, and MySQL data
+
+#### Scenario: Production runtime mount hygiene is validated
+- **WHEN** production startup or rehearsal preflight evaluates runtime mount baselines
+- **THEN** the workflow SHALL reject runtime baselines that violate documented clean-start and hygiene constraints for supported production validation
+
+#### Scenario: Runtime mount permissions are validated for supported container behavior
+- **WHEN** production startup or rehearsal validation checks mounted runtime paths
+- **THEN** the workflow SHALL verify required writable paths under supported container runtime assumptions and SHALL fail when those assumptions are not met
 
 ### Requirement: The system SHALL establish automated test foundations before feature slices
 The change SHALL provide backend unit and integration test harnesses, frontend unit tests, Playwright end-to-end tests, and artifact comparison support for generated outputs before feature slices depend on them. End-to-end verification for first-release non-membership scope SHALL be reproducible under documented clean-checkout bootstrap assumptions so archive-evidence generation remains trustworthy. Unit and integration evidence emitted by the verification scripts SHALL derive reported test counts from actual test results rather than fixed placeholder values. The repository SHALL also provide a supported validation path for frontend typechecking, backend static analysis, and frontend build verification so non-test regressions are caught through the default delivery workflow rather than left to ad hoc local checks.

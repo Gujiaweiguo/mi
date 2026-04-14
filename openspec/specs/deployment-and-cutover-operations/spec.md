@@ -5,7 +5,7 @@ TBD: Canonical deployment and cutover operations spec for the replacement MI sys
 ## Requirements
 
 ### Requirement: The system SHALL provide Compose-based test and production operations
-The change SHALL provide Docker Compose definitions for test and production that include nginx, frontend, backend, and MySQL 8 with explicit health checks, mounted runtime paths, rendered environment-specific configuration, and executable bring-up validation for the documented runtime assumptions.
+The change SHALL provide Docker Compose definitions for test and production that include nginx, frontend, backend, and MySQL 8 with explicit health checks, mounted runtime paths, rendered environment-specific configuration, and executable bring-up validation for the documented runtime assumptions. Production-oriented operational validation SHALL additionally fail fast when runtime mount hygiene or container runtime assumptions would make rehearsal outcomes unreliable.
 
 #### Scenario: Test environment starts successfully
 - **WHEN** the test Docker Compose stack is started from a clean environment
@@ -19,8 +19,12 @@ The change SHALL provide Docker Compose definitions for test and production that
 - **WHEN** the test or production stack is started through the supported operational workflow
 - **THEN** the system SHALL validate that required runtime directories and mounted paths exist and are writable before declaring the environment ready
 
+#### Scenario: Production runtime hygiene is validated before stack bring-up
+- **WHEN** production compose startup is prepared for rehearsal or go-live-oriented validation
+- **THEN** the workflow SHALL fail fast if runtime data and mount baselines violate documented clean-start and hygiene assumptions
+
 ### Requirement: The system SHALL provide a cutover rehearsal and rollback model
-The first release SHALL include a repeatable rehearsal flow, release gates, rollback criteria, backup rehearsal, restore rehearsal, and machine-readable GO/NO-GO output for one-time cutover.
+The first release SHALL include a repeatable rehearsal flow, release gates, rollback criteria, backup rehearsal, restore rehearsal, and machine-readable GO/NO-GO output for one-time cutover. Production-topology rehearsal for the evaluated commit SHALL remain a mandatory release-confidence checkpoint and SHALL fail fast when prerequisite evidence or runtime assumptions are invalid.
 
 #### Scenario: Blocking decision prevents go-live
 - **WHEN** a cutover rehearsal is run while a blocking release-gate decision remains unresolved
@@ -41,6 +45,10 @@ The first release SHALL include a repeatable rehearsal flow, release gates, roll
 #### Scenario: Rehearsal emits machine-readable result artifacts
 - **WHEN** the cutover rehearsal completes in either success or failure state
 - **THEN** the system SHALL write machine-readable result artifacts and logs under `artifacts/rehearsal/<commit-sha>/` that identify the evaluated commit and the binary GO/NO-GO result
+
+#### Scenario: Current-commit release readiness requires production rehearsal GO
+- **WHEN** release readiness is evaluated for the current commit
+- **THEN** the workflow SHALL require a production-environment rehearsal artifact for that commit with `status` equal to `GO` before treating the commit as go-live ready
 
 ### Requirement: The system SHALL start production without migrating legacy records
 The first release SHALL start with reinitialized base data and SHALL NOT migrate legacy business records, pending drafts, approvals, or open operational transactions from the old system. Rehearsal and go-live execution SHALL validate bootstrap-only initialization and SHALL reject any path that attempts to import legacy transactional business data.
