@@ -10,6 +10,11 @@ Run the destructive rehearsal against the production Compose topology:
 scripts/cutover-rehearsal.sh production --build
 ```
 
+The supported command now renders the production topology against an isolated
+temporary runtime root, isolated host ports, and an isolated read-only config
+copy so rehearsal proves the production service graph without depending on
+contaminated repository runtime state or conflicting local host ports.
+
 The binary result is written to:
 
 ```text
@@ -26,11 +31,15 @@ artifacts/rehearsal/<commit-sha>/cutover-rehearsal-production-<timestamp>.json
   - `artifacts/rehearsal/<commit-sha>/cutover-rehearsal-production-<timestamp>.json`
 - Rehearsal log:
   - `artifacts/rehearsal/<commit-sha>/cutover-rehearsal-production-<timestamp>.log`
+- Backup artifact created during rehearsal:
+  - `artifacts/backups/production/mi-production-backup-<timestamp>.tar.gz`
 
 ## Checklist
 
 - [ ] Current commit is archive-ready.
+- [ ] CI-ready evidence for the current commit (`unit` + `integration`) passed before archive/go-live validation.
 - [ ] Production-topology rehearsal used a clean runtime directory and fresh-start bootstrap data only.
+- [ ] Production-topology rehearsal used the supported isolated host-port/runtime/config path rather than reusing contaminated repository runtime state.
 - [ ] Migrations applied successfully.
 - [ ] Cutover bootstrap seeds loaded successfully.
 - [ ] Fresh-start verification passed with no imported operational business data.
@@ -40,7 +49,7 @@ artifacts/rehearsal/<commit-sha>/cutover-rehearsal-production-<timestamp>.json
 - [ ] Restore rehearsal included runtime-file restoration and post-restore smoke validation.
 - [ ] Mandatory outputs remain validated against `docs/output-catalog.md` through current-commit archive evidence.
 - [ ] Report scope `R01-R19` remains validated against `report-acceptance-matrix.md` through current-commit archive evidence.
-- [ ] Archive-ready e2e evidence includes a passing live-stack operator flow against the supported runtime topology rather than mock-only browser coverage.
+- [ ] Archive-ready e2e evidence reflects the supported default e2e suite for the current commit, while production cutover confidence comes from the separate rehearsal GO artifact.
 
 ## Blocking Decisions Resolved By Repository Artifacts
 

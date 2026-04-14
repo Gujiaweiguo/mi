@@ -91,17 +91,35 @@ Generate current-commit e2e evidence:
 scripts/verification/run-e2e.sh
 ```
 
+`scripts/verification/run-e2e.sh` exercises the default browser suite and now
+excludes `live-stack-*.spec.ts`, which are reserved for runtime-topology
+validation rather than mock/dev-server coverage.
+
 Generate current-commit live-stack e2e evidence for archive validation:
 
 ```bash
 scripts/verification/run-e2e-live.sh
 ```
 
+`scripts/verification/run-e2e-live.sh` bootstraps an isolated production-shaped
+stack with temporary runtime/config paths and alternate host ports before
+executing the dedicated live-stack Playwright config.
+
+Validate go-live rehearsal confidence for the current commit:
+
+```bash
+scripts/cutover-rehearsal.sh production --build
+```
+
+This rehearsal path reuses current-commit archive-ready evidence, then proves
+production-topology bootstrap, smoke, backup, restore, and restore-smoke via a
+ machine-readable GO/NO-GO artifact under `artifacts/rehearsal/<commit-sha>/`.
+
 ## Current Repository State
 
-This repository does not yet contain the target application or real test producers, so the real gate checks are expected to fail for the current HEAD until actual test jobs write evidence files.
-
-That is intentional: the gate should be **red** rather than silently permissive.
+This repository now contains real evidence producers and a supported production
+rehearsal path. When evidence is missing, stale, malformed, or failed, the gate
+is expected to go **red** rather than silently permissive.
 
 ## Maintenance expectations
 
