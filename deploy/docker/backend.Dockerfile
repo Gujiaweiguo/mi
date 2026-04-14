@@ -13,6 +13,11 @@ WORKDIR /app
 
 COPY --from=builder /out/server /app/server
 
+RUN mkdir -p /app/config /app/logs /app/generated-documents /app/uploads \
+    && chown -R appuser:appuser /app \
+    && chmod 0755 /app /app/config \
+    && chmod 0775 /app/logs /app/generated-documents /app/uploads
+
 USER appuser
 
 EXPOSE 5180
