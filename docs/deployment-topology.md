@@ -93,8 +93,10 @@ Before production bring-up:
 
 1. Confirm the runtime directories for the target environment exist and are writable.
 2. Confirm `backend/config/<env>.yaml` matches the target environment.
-3. Confirm `deploy/env/<env>.env` contains the intended MySQL credentials.
+3. Confirm `deploy/env/<env>.env` contains the intended MySQL credentials and non-placeholder production secrets.
 4. Render the Compose file to catch path or syntax errors before startup.
+
+For the supported production workflow, `scripts/compose-preflight.sh production` now rejects the documented placeholder values for `MYSQL_PASSWORD`, `MYSQL_ROOT_PASSWORD`, `MI_DB_PASSWORD`, and `MI_JWT_SECRET` before container startup.
 
 ## Troubleshooting
 

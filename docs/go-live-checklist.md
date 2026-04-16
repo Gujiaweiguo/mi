@@ -38,6 +38,7 @@ artifacts/rehearsal/<commit-sha>/cutover-rehearsal-production-<timestamp>.json
 
 - [ ] Current commit is archive-ready.
 - [ ] CI-ready evidence for the current commit (`unit` + `integration`) passed before archive/go-live validation.
+- [ ] Production env validation passed with no blocked placeholder secrets for `MYSQL_PASSWORD`, `MYSQL_ROOT_PASSWORD`, `MI_DB_PASSWORD`, or `MI_JWT_SECRET`.
 - [ ] Production-topology rehearsal used a clean runtime directory and fresh-start bootstrap data only.
 - [ ] Production-topology rehearsal used the supported isolated host-port/runtime/config path rather than reusing contaminated repository runtime state.
 - [ ] Migrations applied successfully.

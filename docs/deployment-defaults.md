@@ -113,6 +113,8 @@ The following placeholders must be replaced before production use:
 - `MI_DB_PASSWORD=change-me`
 - `MI_JWT_SECRET=change-me-production-secret`
 
+The supported production preflight now enforces this blocked-value contract automatically. `scripts/compose-preflight.sh production` fails before container startup when the evaluated production env file still contains any of these placeholder values. This enforcement is production-scoped and does not apply to local development defaults.
+
 ## Consistency rule
 
 The backend port is intentionally aligned across both supported environments:
