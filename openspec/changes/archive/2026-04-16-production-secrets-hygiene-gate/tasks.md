@@ -11,5 +11,5 @@
 ## 3. Verification and release-gate evidence
 
 - [x] 3.1 Add tests or self-check coverage that proves production preflight and rehearsal reject placeholder secrets while valid production overrides still pass.
-- [ ] 3.2 Run the required verification commands for the implemented change and record commit-scoped evidence under `artifacts/verification/<commit-sha>/unit.json` and `artifacts/verification/<commit-sha>/integration.json` for CI readiness.
-- [ ] 3.3 Run the archive-only verification coverage required for this change and record commit-scoped evidence under `artifacts/verification/<commit-sha>/e2e.json`, ensuring release and archive gates use current-HEAD evidence only.
+- [x] 3.2 Run the required verification commands for the implemented change and record commit-scoped evidence under `artifacts/verification/<commit-sha>/unit.json` and `artifacts/verification/<commit-sha>/integration.json` for CI readiness.
+- [x] 3.3 Run the archive-only verification coverage required for this change and record commit-scoped evidence under `artifacts/verification/<commit-sha>/e2e.json`, ensuring release and archive gates use current-HEAD evidence only.
