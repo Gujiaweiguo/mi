@@ -14,5 +14,5 @@
 
 - [x] 3.1 Add or update focused reporting tests that prove representative query responses return localized `columns[].label` values for multiple report families.
 - [x] 3.2 Add or update export-focused verification that proves generated workbook headers use the localized terminology expected for the affected reports.
-- [ ] 3.3 Run the supported verification required for the evaluated commit and confirm current-commit evidence files under `artifacts/verification/<commit-sha>/unit.json`, `artifacts/verification/<commit-sha>/integration.json`, and `artifacts/verification/<commit-sha>/e2e.json` remain passing after the localization change.
+- [x] 3.3 Run the supported verification required for the evaluated commit and confirm current-commit evidence files under `artifacts/verification/<commit-sha>/unit.json`, `artifacts/verification/<commit-sha>/integration.json`, and `artifacts/verification/<commit-sha>/e2e.json` remain passing after the localization change.
 - [x] 3.4 Recheck the delivered output against the frozen reporting acceptance surface so `R01-R19` remain functionally unchanged while operator-facing headers now match accepted localized terminology.
