@@ -77,7 +77,7 @@ The first release SHALL implement the Generalize report inventory frozen for thi
 - **THEN** acceptance SHALL still be evaluated against the matching `Report ID`, business meaning, and frozen matrix contract
 
 ### Requirement: The system SHALL satisfy the frozen Generalize report acceptance matrix
-Each first-release Generalize report SHALL satisfy the minimum field set, filters, output form, and acceptance checks defined in the frozen report acceptance matrix. Acceptance closure SHALL verify reports by family and SHALL record unresolved gaps as explicit fix-now items or documented non-go-live exceptions instead of leaving report status implicit.
+Each first-release Generalize report SHALL satisfy the minimum field set, filters, output form, and acceptance checks defined in the frozen report acceptance matrix. Acceptance closure SHALL verify reports by family and SHALL record unresolved gaps as explicit fix-now items or documented non-go-live exceptions instead of leaving report status implicit. Operator-facing query output and exported headers for the frozen `R01-R19` inventory SHALL use accepted localized terminology rather than hard-coded English report labels.
 
 #### Scenario: Report acceptance baseline is enforced
 - **WHEN** a Generalize report is implemented or accepted
@@ -98,6 +98,10 @@ Each first-release Generalize report SHALL satisfy the minimum field set, filter
 #### Scenario: Visual report acceptance is output-specific
 - **WHEN** `R19` is accepted for first release
 - **THEN** acceptance SHALL verify both the visual presentation semantics and the correctness of the mapping between visual objects and underlying shop or unit data
+
+#### Scenario: Operator-facing report headers use accepted localized terminology
+- **WHEN** a first-release Generalize report query or export is reviewed against the frozen acceptance surface
+- **THEN** the operator-facing column labels and exported headers SHALL use the accepted localized terminology for that report instead of hard-coded English field labels
 
 ### Requirement: The system SHALL exclude membership from first release scope
 The first release SHALL exclude the membership (`Associator`) module and SHALL NOT expose membership routes, menus, or operational flows.
