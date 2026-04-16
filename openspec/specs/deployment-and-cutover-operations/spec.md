@@ -5,7 +5,7 @@ TBD: Canonical deployment and cutover operations spec for the replacement MI sys
 ## Requirements
 
 ### Requirement: The system SHALL provide Compose-based test and production operations
-The change SHALL provide Docker Compose definitions for test and production that include nginx, frontend, backend, and MySQL 8 with explicit health checks, mounted runtime paths, rendered environment-specific configuration, and executable bring-up validation for the documented runtime assumptions. Production-oriented operational validation SHALL additionally fail fast when runtime mount hygiene or container runtime assumptions would make rehearsal outcomes unreliable.
+The change SHALL provide Docker Compose definitions for test and production that include nginx, frontend, backend, and MySQL 8 with explicit health checks, mounted runtime paths, rendered environment-specific configuration, and executable bring-up validation for the documented runtime assumptions. Production-oriented operational validation SHALL additionally fail fast when runtime mount hygiene, container runtime assumptions, or blocked placeholder production secrets would make rehearsal outcomes unreliable or insecure.
 
 #### Scenario: Test environment starts successfully
 - **WHEN** the test Docker Compose stack is started from a clean environment
@@ -23,8 +23,12 @@ The change SHALL provide Docker Compose definitions for test and production that
 - **WHEN** production compose startup is prepared for rehearsal or go-live-oriented validation
 - **THEN** the workflow SHALL fail fast if runtime data and mount baselines violate documented clean-start and hygiene assumptions
 
+#### Scenario: Production placeholder secrets block stack bring-up validation
+- **WHEN** production compose startup is prepared with an evaluated env file that still contains blocked placeholder values for required production credentials or secrets
+- **THEN** the workflow SHALL fail fast before container startup and SHALL report the affected production secret keys
+
 ### Requirement: The system SHALL provide a cutover rehearsal and rollback model
-The first release SHALL include a repeatable rehearsal flow, release gates, rollback criteria, backup rehearsal, restore rehearsal, and machine-readable GO/NO-GO output for one-time cutover. Production-topology rehearsal for the evaluated commit SHALL remain a mandatory release-confidence checkpoint and SHALL fail fast when prerequisite evidence or runtime assumptions are invalid.
+The first release SHALL include a repeatable rehearsal flow, release gates, rollback criteria, backup rehearsal, restore rehearsal, and machine-readable GO/NO-GO output for one-time cutover. Production-topology rehearsal for the evaluated commit SHALL remain a mandatory release-confidence checkpoint and SHALL fail fast when prerequisite evidence, production configuration hygiene, or runtime assumptions are invalid.
 
 #### Scenario: Blocking decision prevents go-live
 - **WHEN** a cutover rehearsal is run while a blocking release-gate decision remains unresolved
@@ -37,6 +41,10 @@ The first release SHALL include a repeatable rehearsal flow, release gates, roll
 #### Scenario: Stale current-commit archive evidence blocks rehearsal
 - **WHEN** the available archive-ready evidence exists but does not match the current HEAD commit SHA
 - **THEN** the rehearsal SHALL treat the evidence as invalid, report a no-go outcome, and SHALL NOT mark the release ready for production
+
+#### Scenario: Placeholder production secrets block rehearsal
+- **WHEN** cutover rehearsal is started with an evaluated production env file that still contains blocked placeholder values for required credentials or secrets
+- **THEN** the rehearsal SHALL fail fast, report a no-go outcome, and SHALL NOT continue to bootstrap, smoke, backup, or restore steps
 
 #### Scenario: Backup and restore rehearsal are verified together
 - **WHEN** a cutover rehearsal is executed for the supported target environment
