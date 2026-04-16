@@ -140,9 +140,43 @@ require_clean_runtime_dir() {
   done
 }
 
+env_value() {
+  local key=$1
+  local file=$2
+  awk -F= -v key="$key" '$1 == key { value = substr($0, index($0, "=") + 1) } END { print value }' "$file"
+}
+
+require_production_secrets_hygiene() {
+  local failures=()
+  local key
+  local blocked_value
+  local actual_value
+
+  while IFS='|' read -r key blocked_value; do
+    actual_value=$(env_value "$key" "$ENV_FILE")
+    if [[ "$actual_value" == "$blocked_value" ]]; then
+      failures+=("$key=$blocked_value")
+    fi
+  done <<'EOF'
+MYSQL_PASSWORD|change-me
+MYSQL_ROOT_PASSWORD|change-me-root
+MI_DB_PASSWORD|change-me
+MI_JWT_SECRET|change-me-production-secret
+EOF
+
+  if (( ${#failures[@]} > 0 )); then
+    printf 'Production secrets hygiene failed for %s. Replace blocked placeholder values before startup:\n' "$ENV_FILE" >&2
+    for failure in "${failures[@]}"; do
+      printf ' - %s\n' "$failure" >&2
+    done
+    exit 1
+  fi
+}
+
 require_path "$COMPOSE_FILE" compose-file
 require_path "$ENV_FILE" env-file
 require_path "$CONFIG_FILE" backend-config
+require_production_secrets_hygiene
 require_path "$RUNTIME_DIR" runtime-root
 require_container_readable_dir "${MI_RUNTIME_CONFIG:-$ROOT_DIR/backend/config}" backend-config-uid-10001 10001:10001
 

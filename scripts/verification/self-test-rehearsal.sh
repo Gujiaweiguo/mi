@@ -7,6 +7,58 @@ PREFLIGHT="$ROOT_DIR/scripts/compose-preflight.sh"
 WORK_DIR=$(mktemp -d)
 trap 'rm -rf "$WORK_DIR"' EXIT
 
+DOCKER_BIN_DIR="$WORK_DIR/bin"
+mkdir -p "$DOCKER_BIN_DIR"
+cat <<'EOF' > "$DOCKER_BIN_DIR/docker"
+#!/usr/bin/env bash
+set -euo pipefail
+
+case "${1:-}" in
+  run)
+    exit 0
+    ;;
+  compose)
+    shift
+    while (($#)); do
+      if [[ "$1" == "config" ]]; then
+        exit 0
+      fi
+      shift
+    done
+    exit 0
+    ;;
+  *)
+    printf 'Unexpected docker command in self-test: %s\n' "$*" >&2
+    exit 1
+    ;;
+esac
+EOF
+chmod +x "$DOCKER_BIN_DIR/docker"
+
+TEMP_RUNTIME_ROOT="$WORK_DIR/runtime"
+mkdir -p "$TEMP_RUNTIME_ROOT/logs" "$TEMP_RUNTIME_ROOT/documents" "$TEMP_RUNTIME_ROOT/uploads" "$TEMP_RUNTIME_ROOT/mysql"
+
+PLACEHOLDER_ENV="$WORK_DIR/production-placeholder.env"
+VALID_ENV="$WORK_DIR/production-valid.env"
+cp "$ROOT_DIR/deploy/env/production.env" "$PLACEHOLDER_ENV"
+cp "$ROOT_DIR/deploy/env/production.env" "$VALID_ENV"
+python3 - "$VALID_ENV" <<'PY'
+from pathlib import Path
+import sys
+
+path = Path(sys.argv[1])
+text = path.read_text(encoding="utf-8")
+replacements = {
+    "MYSQL_PASSWORD=change-me": "MYSQL_PASSWORD=prod-db-password-2026",
+    "MYSQL_ROOT_PASSWORD=change-me-root": "MYSQL_ROOT_PASSWORD=prod-root-password-2026",
+    "MI_DB_PASSWORD=change-me": "MI_DB_PASSWORD=prod-app-password-2026",
+    "MI_JWT_SECRET=change-me-production-secret": "MI_JWT_SECRET=prod-jwt-secret-2026",
+}
+for old, new in replacements.items():
+    text = text.replace(old, new)
+path.write_text(text, encoding="utf-8")
+PY
+
 expect_success() {
   local name="$1"
   shift
@@ -141,6 +193,26 @@ expect_failure \
 expect_failure \
   "compose preflight rejects unsupported environment" \
   "$PREFLIGHT" invalid
+
+expect_failure \
+  "compose preflight rejects blocked production placeholder secrets" \
+  env \
+  MI_COMPOSE_ENV_FILE="$PLACEHOLDER_ENV" \
+  "$PREFLIGHT" production
+
+PRECHECK_OUTPUT=$(env MI_COMPOSE_ENV_FILE="$PLACEHOLDER_ENV" "$PREFLIGHT" production 2>&1 >/dev/null || true)
+if [[ "$PRECHECK_OUTPUT" != *"MYSQL_PASSWORD=change-me"* || "$PRECHECK_OUTPUT" != *"MI_JWT_SECRET=change-me-production-secret"* ]]; then
+  printf 'Expected placeholder-secret preflight failure to name offending keys, got:\n%s\n' "$PRECHECK_OUTPUT" >&2
+  exit 1
+fi
+
+expect_success \
+  "compose preflight accepts overridden production secrets" \
+  env \
+  PATH="$DOCKER_BIN_DIR:$PATH" \
+  MI_COMPOSE_ENV_FILE="$VALID_ENV" \
+  MI_RUNTIME_BASE="$TEMP_RUNTIME_ROOT" \
+  "$PREFLIGHT" production
 
 echo
 echo "rehearsal verification self-tests passed"
