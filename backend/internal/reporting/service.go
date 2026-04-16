@@ -132,7 +132,7 @@ func (s *Service) runReport(ctx context.Context, input QueryInput) ([]Column, []
 		if err != nil {
 			return nil, nil, err
 		}
-		columns := []Column{{Key: "lease_no", Label: "Lease no."}, {Key: "customer_code", Label: "Customer code"}, {Key: "customer_name", Label: "Customer name"}, {Key: "trade_name", Label: "Trade"}, {Key: "management_type_name", Label: "Management type"}, {Key: "unit_code", Label: "Unit code"}, {Key: "unit_name", Label: "Unit name"}, {Key: "rent_area", Label: "Rent area"}, {Key: "brand_name", Label: "Brand"}, {Key: "shop_type_name", Label: "Shop type"}, {Key: "department_name", Label: "Department"}, {Key: "store_name", Label: "Store"}}
+		columns := reportR02Columns()
 		rows := make([]map[string]any, 0, len(items))
 		for _, item := range items {
 			rows = append(rows, map[string]any{"lease_no": item.LeaseNo, "customer_code": item.CustomerCode, "customer_name": item.CustomerName, "trade_name": item.TradeName, "management_type_name": item.ManagementTypeName, "unit_code": item.UnitCode, "unit_name": item.UnitName, "rent_area": item.RentArea, "brand_name": item.BrandName, "shop_type_name": item.ShopTypeName, "department_name": item.DepartmentName, "store_name": item.StoreName})
@@ -143,7 +143,7 @@ func (s *Service) runReport(ctx context.Context, input QueryInput) ([]Column, []
 		if err != nil {
 			return nil, nil, err
 		}
-		columns := []Column{{Key: "store_name", Label: "Store"}, {Key: "department_name", Label: "Department"}, {Key: "rent_status", Label: "Rent status"}, {Key: "use_area_total", Label: "Use area total"}}
+		columns := reportR01Columns()
 		rows := make([]map[string]any, 0, len(items))
 		for _, item := range items {
 			rows = append(rows, map[string]any{"store_name": item.StoreName, "department_name": item.DepartmentName, "rent_status": item.RentStatus, "use_area_total": item.UseAreaTotal})
@@ -154,7 +154,7 @@ func (s *Service) runReport(ctx context.Context, input QueryInput) ([]Column, []
 		if err != nil {
 			return nil, nil, err
 		}
-		columns := []Column{{Key: "shop_type_name", Label: "Shop type"}, {Key: "rent_area", Label: "Rent area"}, {Key: "current_sales", Label: "Current period sales"}, {Key: "same_period_sales", Label: "Same period last year sales"}, {Key: "comparable_sales", Label: "Comparable sales"}, {Key: "monthly_rent", Label: "Monthly rent"}}
+		columns := reportR03Columns()
 		rows := make([]map[string]any, 0, len(items))
 		for _, item := range items {
 			rows = append(rows, map[string]any{"shop_type_name": item.ShopTypeName, "rent_area": item.RentArea, "current_sales": item.CurrentSales, "same_period_sales": item.SamePeriodSales, "comparable_sales": item.ComparableSales, "monthly_rent": item.MonthlyRent})
@@ -165,10 +165,7 @@ func (s *Service) runReport(ctx context.Context, input QueryInput) ([]Column, []
 		if err != nil {
 			return nil, nil, err
 		}
-		columns := []Column{{Key: "unit_code", Label: "Unit code"}, {Key: "unit_name", Label: "Unit name"}, {Key: "rent_area", Label: "Rent area"}, {Key: "shop_type", Label: "Shop type"}, {Key: "total_sales", Label: "Total sales"}}
-		for day := 1; day <= 31; day++ {
-			columns = append(columns, Column{Key: fmt.Sprintf("day_%02d", day), Label: fmt.Sprintf("Day %d", day)})
-		}
+		columns := reportR04Columns()
 		rows := make([]map[string]any, 0, len(items))
 		for _, item := range items {
 			row := map[string]any{"unit_code": item.UnitCode, "unit_name": item.UnitName, "rent_area": item.RentArea, "shop_type": item.ShopType, "total_sales": item.TotalSales}
@@ -183,7 +180,7 @@ func (s *Service) runReport(ctx context.Context, input QueryInput) ([]Column, []
 		if err != nil {
 			return nil, nil, err
 		}
-		columns := []Column{{Key: "unit_code", Label: "Unit code"}, {Key: "floor_area", Label: "Floor area"}, {Key: "budget_unit_price", Label: "Budget unit price"}, {Key: "current_lease_price", Label: "Current lease price"}, {Key: "potential_customer", Label: "Potential customer"}, {Key: "prospect_brand", Label: "Prospect brand"}, {Key: "prospect_trade", Label: "Prospect trade"}, {Key: "average_ticket", Label: "Average ticket"}, {Key: "prospect_rent_price", Label: "Prospect rent price"}, {Key: "rent_increment", Label: "Rent increment"}, {Key: "prospect_term_months", Label: "Prospect term months"}}
+		columns := reportR05Columns()
 		rows := make([]map[string]any, 0, len(items))
 		for _, item := range items {
 			rows = append(rows, map[string]any{"unit_code": item.UnitCode, "floor_area": item.FloorArea, "budget_unit_price": item.BudgetUnitPrice, "current_lease_price": item.CurrentLeasePrice, "potential_customer": item.PotentialCustomer, "prospect_brand": item.ProspectBrand, "prospect_trade": item.ProspectTrade, "average_ticket": item.AverageTicket, "prospect_rent_price": item.ProspectRentPrice, "rent_increment": item.RentIncrement, "prospect_term_months": item.ProspectTermMonths})
@@ -194,7 +191,7 @@ func (s *Service) runReport(ctx context.Context, input QueryInput) ([]Column, []
 		if err != nil {
 			return nil, nil, err
 		}
-		columns := []Column{{Key: "store_name", Label: "Store"}, {Key: "period", Label: "Period"}, {Key: "period_receivable", Label: "Period receivable"}, {Key: "period_received", Label: "Period received"}, {Key: "monthly_budget", Label: "Monthly budget"}, {Key: "annual_budget", Label: "Annual budget"}, {Key: "ytd_cumulative", Label: "YTD cumulative"}}
+		columns := reportR06Columns()
 		rows := make([]map[string]any, 0, len(items))
 		for _, item := range items {
 			rows = append(rows, map[string]any{"store_name": item.StoreName, "period": item.Period, "period_receivable": item.PeriodReceivable, "period_received": item.PeriodReceived, "monthly_budget": item.MonthlyBudget, "annual_budget": item.AnnualBudget, "ytd_cumulative": item.YTDCumulative})
@@ -205,10 +202,7 @@ func (s *Service) runReport(ctx context.Context, input QueryInput) ([]Column, []
 		if err != nil {
 			return nil, nil, err
 		}
-		columns := []Column{{Key: "store_name", Label: "Store"}, {Key: "brand_name", Label: "Brand"}, {Key: "annual_total", Label: "Annual total"}}
-		for month := 1; month <= 12; month++ {
-			columns = append(columns, Column{Key: fmt.Sprintf("month_%02d", month), Label: time.Month(month).String()[:3]})
-		}
+		columns := reportR07Columns()
 		rows := make([]map[string]any, 0, len(items))
 		for _, item := range items {
 			row := map[string]any{"store_name": item.StoreName, "brand_name": item.BrandName, "annual_total": item.AnnualTotal}
@@ -254,10 +248,7 @@ func (s *Service) runReport(ctx context.Context, input QueryInput) ([]Column, []
 		if err != nil {
 			return nil, nil, err
 		}
-		columns := []Column{{Key: "store_name", Label: "Store"}, {Key: "year", Label: "Year"}, {Key: "annual_total", Label: "Annual total"}}
-		for month := 1; month <= 12; month++ {
-			columns = append(columns, Column{Key: fmt.Sprintf("month_%02d", month), Label: time.Month(month).String()[:3]})
-		}
+		columns := reportR10Columns()
 		rows := make([]map[string]any, 0, len(items))
 		for _, item := range items {
 			row := map[string]any{"store_name": item.StoreName, "year": item.Year, "annual_total": item.MonthlyTotal}
@@ -272,7 +263,7 @@ func (s *Service) runReport(ctx context.Context, input QueryInput) ([]Column, []
 		if err != nil {
 			return nil, nil, err
 		}
-		columns := []Column{{Key: "store_name", Label: "Store"}, {Key: "period", Label: "Period"}, {Key: "leased_area", Label: "Leased area"}, {Key: "total_area", Label: "Total area"}}
+		columns := reportR11Columns()
 		rows := make([]map[string]any, 0, len(items))
 		for _, item := range items {
 			rows = append(rows, map[string]any{"store_name": item.StoreName, "period": item.Period, "leased_area": item.LeasedArea, "total_area": item.TotalArea})
@@ -283,7 +274,7 @@ func (s *Service) runReport(ctx context.Context, input QueryInput) ([]Column, []
 		if err != nil {
 			return nil, nil, err
 		}
-		columns := []Column{{Key: "store_name", Label: "Store"}, {Key: "shop_type_name", Label: "Shop type"}, {Key: "period", Label: "Period"}, {Key: "current_sales", Label: "Current period sales"}, {Key: "ytd_sales", Label: "YTD sales"}, {Key: "prev_month_sales", Label: "Previous month sales"}, {Key: "last_year_ytd_sales", Label: "Last year YTD sales"}}
+		columns := reportR13Columns()
 		rows := make([]map[string]any, 0, len(items))
 		for _, item := range items {
 			rows = append(rows, map[string]any{"store_name": item.StoreName, "shop_type_name": item.ShopTypeName, "period": item.Period, "current_sales": item.CurrentSales, "ytd_sales": item.YTDSales, "prev_month_sales": item.PrevMonthSales, "last_year_ytd_sales": item.LastYearYTDSales})
@@ -294,7 +285,7 @@ func (s *Service) runReport(ctx context.Context, input QueryInput) ([]Column, []
 		if err != nil {
 			return nil, nil, err
 		}
-		columns := []Column{{Key: "store_name", Label: "Store"}, {Key: "shop_type_name", Label: "Shop type"}, {Key: "period", Label: "Period"}, {Key: "sales_amount", Label: "Sales"}, {Key: "area_total", Label: "Area"}, {Key: "days_in_month", Label: "Days in month"}, {Key: "efficiency", Label: "Efficiency"}}
+		columns := reportR14Columns()
 		rows := make([]map[string]any, 0, len(items))
 		for _, item := range items {
 			rows = append(rows, map[string]any{"store_name": item.StoreName, "shop_type_name": item.ShopTypeName, "period": item.Period, "sales_amount": item.SalesAmount, "area_total": item.AreaTotal, "days_in_month": item.DaysInMonth, "efficiency": item.Efficiency})
@@ -305,7 +296,7 @@ func (s *Service) runReport(ctx context.Context, input QueryInput) ([]Column, []
 		if err != nil {
 			return nil, nil, err
 		}
-		columns := []Column{{Key: "store_name", Label: "Store"}, {Key: "shop_type_name", Label: "Shop type"}, {Key: "period", Label: "Period"}, {Key: "sales_amount", Label: "Sales"}, {Key: "rent_income", Label: "Rent income"}}
+		columns := reportR15Columns()
 		rows := make([]map[string]any, 0, len(items))
 		for _, item := range items {
 			rows = append(rows, map[string]any{"store_name": item.StoreName, "shop_type_name": item.ShopTypeName, "period": item.Period, "sales_amount": item.SalesAmount, "rent_income": item.RentIncome})
@@ -338,7 +329,7 @@ func (s *Service) runReport(ctx context.Context, input QueryInput) ([]Column, []
 		if err != nil {
 			return nil, nil, err
 		}
-		columns := []Column{{Key: "customer_name", Label: "Customer"}, {Key: "store_name", Label: "Store"}, {Key: "unit_name", Label: "Unit"}, {Key: "brand_name", Label: "Brand"}, {Key: "period", Label: "Period"}, {Key: "rent_area", Label: "Rent area"}, {Key: "current_sales", Label: "Current sales"}, {Key: "comparable_sales", Label: "Comparable sales"}, {Key: "same_period_sales", Label: "Same period last year sales"}, {Key: "period_receivable", Label: "Period receivable"}, {Key: "period_received", Label: "Period received"}, {Key: "period_arrears", Label: "Period arrears"}, {Key: "cumulative_receivable", Label: "Cumulative receivable"}, {Key: "cumulative_arrears", Label: "Cumulative arrears"}, {Key: "days_in_month", Label: "Days in month"}, {Key: "efficiency", Label: "Efficiency"}}
+		columns := reportR18Columns()
 		rows := make([]map[string]any, 0, len(items))
 		for _, item := range items {
 			rows = append(rows, map[string]any{"customer_name": item.CustomerName, "store_name": item.StoreName, "unit_name": item.UnitName, "brand_name": item.BrandName, "period": item.Period, "rent_area": item.RentArea, "current_sales": item.CurrentSales, "comparable_sales": item.ComparableSales, "same_period_sales": item.SamePeriodSales, "period_receivable": item.PeriodReceivable, "period_received": item.PeriodReceived, "period_arrears": item.PeriodArrears, "cumulative_receivable": item.CumulativeReceivable, "cumulative_arrears": item.CumulativeArrears, "days_in_month": item.DaysInMonth, "efficiency": item.Efficiency})
@@ -349,7 +340,7 @@ func (s *Service) runReport(ctx context.Context, input QueryInput) ([]Column, []
 		if err != nil {
 			return nil, nil, err
 		}
-		columns := []Column{{Key: "store_name", Label: "Store"}, {Key: "period", Label: "Period"}, {Key: "shop_type_name", Label: "Shop type"}, {Key: "occupancy_status", Label: "Occupancy status"}, {Key: "area_total", Label: "Area total"}}
+		columns := reportR12Columns()
 		rows := make([]map[string]any, 0, len(items))
 		for _, item := range items {
 			rows = append(rows, map[string]any{"store_name": item.StoreName, "period": item.Period, "shop_type_name": item.ShopTypeName, "occupancy_status": item.OccupancyStatus, "area_total": item.AreaTotal})
@@ -361,32 +352,12 @@ func (s *Service) runReport(ctx context.Context, input QueryInput) ([]Column, []
 }
 
 func flattenR19Visual(visual *R19Result) ([]Column, []map[string]any) {
-	columns := []Column{{Key: "unit_code", Label: "Unit code"}, {Key: "unit_name", Label: "Unit name"}, {Key: "floor_area", Label: "Floor area"}, {Key: "rent_area", Label: "Rent area"}, {Key: "rent_status", Label: "Rent status"}, {Key: "brand_name", Label: "Brand"}, {Key: "customer_name", Label: "Customer"}, {Key: "shop_type_name", Label: "Shop type"}, {Key: "pos_x", Label: "Pos X"}, {Key: "pos_y", Label: "Pos Y"}, {Key: "color_hex", Label: "Color"}}
+	columns := reportR19Columns()
 	rows := make([]map[string]any, 0, len(visual.Units))
 	for _, item := range visual.Units {
 		rows = append(rows, map[string]any{"unit_code": item.UnitCode, "unit_name": item.UnitName, "floor_area": item.FloorArea, "rent_area": item.RentArea, "rent_status": item.RentStatus, "brand_name": item.BrandName, "customer_name": item.CustomerName, "shop_type_name": item.ShopTypeName, "pos_x": item.PosX, "pos_y": item.PosY, "color_hex": item.ColorHex})
 	}
 	return columns, rows
-}
-
-func agingCustomerColumns(includeChargeType bool) []Column {
-	columns := []Column{{Key: "unit_collection", Label: "Units"}, {Key: "customer_name", Label: "Customer"}, {Key: "trade_name", Label: "Trade"}, {Key: "department_name", Label: "Department"}, {Key: "lease_no", Label: "Lease no."}, {Key: "deposit_amount", Label: "Deposit"}}
-	if includeChargeType {
-		columns = append(columns, Column{Key: "charge_type", Label: "Charge type"})
-	}
-	return append(columns, agingBucketColumns()...)
-}
-
-func agingDepartmentColumns(includeChargeType bool) []Column {
-	columns := []Column{{Key: "department_name", Label: "Department"}, {Key: "deposit_amount", Label: "Deposit"}}
-	if includeChargeType {
-		columns = append(columns, Column{Key: "charge_type", Label: "Charge type"})
-	}
-	return append(columns, agingBucketColumns()...)
-}
-
-func agingBucketColumns() []Column {
-	return []Column{{Key: "within_one_month", Label: "<=30 days"}, {Key: "one_to_two_months", Label: "31-60 days"}, {Key: "two_to_three_months", Label: "61-90 days"}, {Key: "three_to_six_months", Label: "91-180 days"}, {Key: "six_to_nine_months", Label: "181-270 days"}, {Key: "nine_to_twelve_months", Label: "271-365 days"}, {Key: "one_to_two_years", Label: "1-2 years"}, {Key: "two_to_three_years", Label: "2-3 years"}, {Key: "over_three_years", Label: ">3 years"}, {Key: "total", Label: "Total"}}
 }
 
 func agingCustomerRow(unitCollection, customerName, tradeName, departmentName, leaseNo string, depositAmount float64, chargeType string, buckets AgingBuckets) map[string]any {

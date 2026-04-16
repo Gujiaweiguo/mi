@@ -92,7 +92,68 @@ func TestReportingServiceQueryAndExportCoreReports(t *testing.T) {
 		if len(rows) < 2 {
 			t.Fatalf("expected workbook data rows for %s, got %v", reportID, rows)
 		}
+		assertWorkbookHeadersMatchColumns(t, result.Columns, rows[0])
 	}
+
+	t.Run("localized report headers follow accepted terminology", func(t *testing.T) {
+		cases := []struct {
+			name     string
+			reportID reporting.ReportID
+			expected map[string]string
+		}{
+			{
+				name:     "r01 area summary",
+				reportID: reporting.ReportR01,
+				expected: map[string]string{"store_name": "门店", "department_name": "部门", "rent_status": "出租状态", "use_area_total": "使用面积汇总"},
+			},
+			{
+				name:     "r02 contract ledger",
+				reportID: reporting.ReportR02,
+				expected: map[string]string{"lease_no": "合同编号", "trade_name": "业态", "management_type_name": "经营方式", "unit_code": "商铺编码", "shop_type_name": "店铺类型", "department_name": "分公司"},
+			},
+			{
+				name:     "r04 daily sales",
+				reportID: reporting.ReportR04,
+				expected: map[string]string{"unit_code": "商铺编码", "shop_type": "业态", "day_01": "1日", "day_31": "31日"},
+			},
+			{
+				name:     "r08 customer aging",
+				reportID: reporting.ReportR08,
+				expected: map[string]string{"unit_collection": "商铺集合", "department_name": "分公司", "deposit_amount": "押金", "within_one_month": "1月内", "over_three_years": "3年以上", "total": "合计"},
+			},
+			{
+				name:     "r10 traffic summary",
+				reportID: reporting.ReportR10,
+				expected: map[string]string{"year": "年度", "annual_total": "月度总客流", "month_01": "1月", "month_12": "12月"},
+			},
+			{
+				name:     "r16 department aging",
+				reportID: reporting.ReportR16,
+				expected: map[string]string{"department_name": "分公司", "deposit_amount": "押金", "total": "合计"},
+			},
+			{
+				name:     "r18 composite analysis",
+				reportID: reporting.ReportR18,
+				expected: map[string]string{"customer_name": "客户", "unit_name": "商铺", "period": "月份", "period_arrears": "本期欠费", "cumulative_arrears": "累计欠费", "efficiency": "坪效"},
+			},
+			{
+				name:     "r19 visual export",
+				reportID: reporting.ReportID("r19"),
+				expected: map[string]string{"unit_code": "商铺编码", "unit_name": "商铺描述", "floor_area": "建筑面积", "shop_type_name": "店铺类型", "color_hex": "颜色"},
+			},
+		}
+
+		for _, tc := range cases {
+			t.Run(tc.name, func(t *testing.T) {
+				result := mustQueryReport(t, ctx, service, withReportID(baseInput, tc.reportID))
+				assertColumnLabels(t, result.Columns, tc.expected)
+
+				headers := artifactHeaderRow(t, service, ctx, withReportID(baseInput, tc.reportID))
+				assertWorkbookHeadersMatchColumns(t, result.Columns, headers)
+				assertHeaderTextsPresent(t, headers, tc.expected)
+			})
+		}
+	})
 
 	t.Run("R02 and R11 preserve contract and area semantics", func(t *testing.T) {
 		r02 := mustQueryReport(t, ctx, service, withReportID(baseInput, reporting.ReportR02))
@@ -826,6 +887,67 @@ func monthKeys(months int) []string {
 		keys = append(keys, fmt.Sprintf("month_%02d", month))
 	}
 	return keys
+}
+
+func artifactHeaderRow(t *testing.T, service *reporting.Service, ctx context.Context, input reporting.QueryInput) []string {
+	t.Helper()
+	artifact, err := service.ExportReport(ctx, input)
+	if err != nil {
+		t.Fatalf("export %s: %v", input.ReportID, err)
+	}
+	file, err := excelize.OpenReader(bytes.NewReader(artifact.Bytes))
+	if err != nil {
+		t.Fatalf("open workbook %s: %v", input.ReportID, err)
+	}
+	rows, err := file.GetRows(file.GetSheetName(0))
+	_ = file.Close()
+	if err != nil {
+		t.Fatalf("read workbook rows %s: %v", input.ReportID, err)
+	}
+	if len(rows) < 2 {
+		t.Fatalf("expected workbook data rows for %s, got %v", input.ReportID, rows)
+	}
+	return rows[0]
+}
+
+func assertWorkbookHeadersMatchColumns(t *testing.T, columns []reporting.Column, headers []string) {
+	t.Helper()
+	if len(headers) < len(columns) {
+		t.Fatalf("expected at least %d headers, got %d (%v)", len(columns), len(headers), headers)
+	}
+	for index, column := range columns {
+		if headers[index] != column.Label {
+			t.Fatalf("expected header %d to equal %q for key %s, got %q", index, column.Label, column.Key, headers[index])
+		}
+	}
+}
+
+func assertColumnLabels(t *testing.T, columns []reporting.Column, expected map[string]string) {
+	t.Helper()
+	actual := make(map[string]string, len(columns))
+	for _, column := range columns {
+		actual[column.Key] = column.Label
+	}
+	for key, want := range expected {
+		if got, ok := actual[key]; !ok {
+			t.Fatalf("expected column key %q in %#v", key, columns)
+		} else if got != want {
+			t.Fatalf("expected label for %q to be %q, got %q", key, want, got)
+		}
+	}
+}
+
+func assertHeaderTextsPresent(t *testing.T, headers []string, expected map[string]string) {
+	t.Helper()
+	available := make(map[string]struct{}, len(headers))
+	for _, header := range headers {
+		available[header] = struct{}{}
+	}
+	for _, want := range expected {
+		if _, ok := available[want]; !ok {
+			t.Fatalf("expected header %q in %v", want, headers)
+		}
+	}
 }
 
 func isNilValue(value any) bool {
