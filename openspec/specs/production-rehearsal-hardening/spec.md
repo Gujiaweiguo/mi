@@ -5,7 +5,7 @@ Canonical production rehearsal hardening spec for trustworthy current-commit GO/
 ## Requirements
 
 ### Requirement: The system SHALL provide trustworthy production-topology rehearsal validation
-The release workflow SHALL treat production-topology cutover rehearsal as an explicit validation surface, and SHALL require that rehearsal outputs reflect the real supported production compose topology, current evaluated commit, and runtime assumptions needed for a credible GO/NO-GO decision.
+The release workflow SHALL treat production-topology cutover rehearsal as an explicit validation surface, and SHALL require that rehearsal outputs reflect the real supported production compose topology, current evaluated commit, runtime assumptions, and production configuration hygiene needed for a credible GO/NO-GO decision.
 
 #### Scenario: Production rehearsal runs against supported production topology
 - **WHEN** an operator runs the supported cutover rehearsal command for the production environment
@@ -18,6 +18,10 @@ The release workflow SHALL treat production-topology cutover rehearsal as an exp
 #### Scenario: Runtime mount write assumptions are validated as part of rehearsal readiness
 - **WHEN** the rehearsal validates production runtime mounts and container execution assumptions
 - **THEN** the workflow SHALL verify required writable runtime paths under supported container behavior and SHALL fail fast if those assumptions are not satisfied
+
+#### Scenario: Placeholder production secrets block trustworthy rehearsal
+- **WHEN** rehearsal readiness detects blocked placeholder values for required production credentials or secrets in the evaluated production env file
+- **THEN** the rehearsal SHALL fail fast with a NO-GO result, SHALL identify the affected secret keys, and SHALL NOT continue to bootstrap, smoke, backup, or restore steps
 
 ### Requirement: The system SHALL keep production rehearsal evidence auditable and release-decisive
 Production rehearsal outcomes SHALL remain machine-readable and directly usable for release decisions, and release readiness SHALL depend on current-commit evidence consistency between verification gates and production rehearsal outputs.
