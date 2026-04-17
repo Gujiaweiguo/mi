@@ -1,6 +1,6 @@
 # Spec: platform-foundation (locale-placeholder-cleanup delta)
 
-## MODIFIED Requirements
+## ADDED Requirements
 
 ### Requirement: All placeholder URLs and scaffolding text SHALL be removed before first release
 Seed data and i18n locale files SHALL NOT contain `https://example.com` placeholder URLs. User-facing locale strings SHALL NOT contain scaffolding-era text such as the word "stub". Floor plan image URLs SHALL use empty strings to indicate "not provided" since the field is optional and the UI already handles absence with a fallback.
