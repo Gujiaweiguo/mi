@@ -110,6 +110,79 @@ func TestIntegrationMySQLConnection(t *testing.T) {
 	}
 }
 
+func TestIntegrationIdempotentMigrations(t *testing.T) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+	defer cancel()
+
+	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
+		ContainerRequest: testcontainers.ContainerRequest{
+			Image:        "mysql:8.0",
+			ExposedPorts: []string{"3306/tcp"},
+			Env: map[string]string{
+				"MYSQL_DATABASE":      "mi_idempotency",
+				"MYSQL_USER":          "mi_user",
+				"MYSQL_PASSWORD":      "mi_password",
+				"MYSQL_ROOT_PASSWORD": "mi_root_password",
+			},
+			WaitingFor: wait.ForListeningPort("3306/tcp").WithStartupTimeout(3 * time.Minute),
+		},
+		Started: true,
+	})
+	if err != nil {
+		t.Fatalf("start mysql container: %v", err)
+	}
+	defer func() {
+		_ = container.Terminate(context.Background())
+	}()
+
+	host, err := container.Host(ctx)
+	if err != nil {
+		t.Fatalf("resolve mysql host: %v", err)
+	}
+
+	port, err := container.MappedPort(ctx, "3306/tcp")
+	if err != nil {
+		t.Fatalf("resolve mysql port: %v", err)
+	}
+
+	db, err := sql.Open("mysql", platformdb.Config{
+		Host:     host,
+		Port:     port.Int(),
+		Name:     "mi_idempotency",
+		User:     "mi_user",
+		Password: "mi_password",
+	}.DSN())
+	if err != nil {
+		t.Fatalf("open mysql connection: %v", err)
+	}
+	defer db.Close()
+
+	if err := waitForDatabase(ctx, db); err != nil {
+		t.Fatalf("ping mysql: %v", err)
+	}
+
+	migrator := platformdb.NewMigrator(db, os.DirFS("."), "migrations")
+
+	// First application
+	if err := migrator.ApplyUpMigrations(); err != nil {
+		t.Fatalf("first apply migrations: %v", err)
+	}
+
+	// Second application must succeed (idempotent)
+	if err := migrator.ApplyUpMigrations(); err != nil {
+		t.Fatalf("second apply migrations (idempotent): %v", err)
+	}
+
+	// Verify schema_migrations table has entries
+	var count int
+	if err := db.QueryRowContext(ctx, "SELECT COUNT(*) FROM schema_migrations").Scan(&count); err != nil {
+		t.Fatalf("count schema_migrations: %v", err)
+	}
+	if count == 0 {
+		t.Fatal("expected at least one row in schema_migrations")
+	}
+}
+
 func waitForDatabase(ctx context.Context, db *sql.DB) error {
 	deadline := time.Now().Add(30 * time.Second)
 	var lastErr error
