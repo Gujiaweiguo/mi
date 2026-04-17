@@ -7,6 +7,7 @@ import { listReceivables, type ReceivableListItem } from '../api/invoice'
 import FilterForm from '../components/platform/FilterForm.vue'
 import PageSection from '../components/platform/PageSection.vue'
 import { useFilterForm } from '../composables/useFilterForm'
+import { usePagination } from '../composables/usePagination'
 import { useAppStore } from '../stores/app'
 
 const router = useRouter()
@@ -14,7 +15,7 @@ const { t } = useI18n()
 const appStore = useAppStore()
 
 const rows = ref<ReceivableListItem[]>([])
-const total = ref(0)
+const { page, pageSize, total, paginationParams, resetPage, handlePageChange, handleSizeChange } = usePagination()
 const isLoading = ref(false)
 const errorMessage = ref('')
 
@@ -120,6 +121,7 @@ const loadReceivables = async () => {
       department_id: parseOptionalPositiveInteger(filters.department_id),
       due_date_start: filters.due_date_start || undefined,
       due_date_end: filters.due_date_end || undefined,
+      ...paginationParams.value,
     })
 
     rows.value = response.data.items
@@ -135,6 +137,17 @@ const loadReceivables = async () => {
 
 const handleReset = () => {
   reset()
+  resetPage()
+  void loadReceivables()
+}
+
+const handlePaginationPageChange = (newPage: number) => {
+  handlePageChange(newPage)
+  void loadReceivables()
+}
+
+const handlePaginationSizeChange = (newSize: number) => {
+  handleSizeChange(newSize)
   void loadReceivables()
 }
 
@@ -167,7 +180,7 @@ onMounted(() => {
       :busy="isLoading"
       :reset-disabled="!isDirty"
       @reset="handleReset"
-      @submit="loadReceivables"
+      @submit="resetPage(); loadReceivables()"
     >
       <el-form-item :label="t('receivables.fields.customerId')">
         <el-input
@@ -273,6 +286,18 @@ onMounted(() => {
           </template>
         </el-table-column>
       </el-table>
+
+      <div class="receivables-view__pagination">
+        <el-pagination
+          v-model:current-page="page"
+          v-model:page-size="pageSize"
+          :total="total"
+          :page-sizes="[10, 20, 50, 100]"
+          layout="total, sizes, prev, pager, next"
+          @current-change="handlePaginationPageChange"
+          @size-change="handlePaginationSizeChange"
+        />
+      </div>
     </el-card>
   </div>
 </template>
@@ -306,6 +331,12 @@ onMounted(() => {
   font-size: var(--mi-font-size-300);
   font-weight: var(--mi-font-weight-semibold);
   color: var(--mi-color-text);
+}
+
+.receivables-view__pagination {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--mi-space-4);
 }
 
 @media (max-width: 52rem) {

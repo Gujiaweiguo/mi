@@ -6,6 +6,7 @@ import { generateCharges, listCharges, type BillingRun, type ChargeLine } from '
 import FilterForm from '../components/platform/FilterForm.vue'
 import PageSection from '../components/platform/PageSection.vue'
 import { useFilterForm } from '../composables/useFilterForm'
+import { usePagination } from '../composables/usePagination'
 import { useAppStore } from '../stores/app'
 
 type Feedback = {
@@ -17,7 +18,7 @@ type Feedback = {
 const rows = ref<ChargeLine[]>([])
 const { t } = useI18n()
 const appStore = useAppStore()
-const total = ref(0)
+const { page, pageSize, total, paginationParams, resetPage, handlePageChange, handleSizeChange } = usePagination()
 const isLoading = ref(false)
 const isGenerating = ref(false)
 const feedback = ref<Feedback | null>(null)
@@ -102,6 +103,7 @@ const loadCharges = async () => {
     const response = await listCharges({
       period_start: filters.period_start || undefined,
       period_end: filters.period_end || undefined,
+      ...paginationParams.value,
     })
 
     rows.value = response.data.items
@@ -121,7 +123,18 @@ const loadCharges = async () => {
 
 const handleReset = () => {
   reset()
+  resetPage()
   feedback.value = null
+  void loadCharges()
+}
+
+const handlePaginationPageChange = (newPage: number) => {
+  handlePageChange(newPage)
+  void loadCharges()
+}
+
+const handlePaginationSizeChange = (newSize: number) => {
+  handleSizeChange(newSize)
   void loadCharges()
 }
 
@@ -209,7 +222,7 @@ onMounted(() => {
       :busy="isLoading"
       :reset-disabled="!isDirty"
       @reset="handleReset"
-      @submit="loadCharges"
+      @submit="resetPage(); loadCharges()"
     >
       <el-form-item :label="t('billingCharges.fields.periodStart')">
         <el-date-picker
@@ -303,6 +316,18 @@ onMounted(() => {
             </template>
         </el-table-column>
       </el-table>
+
+      <div class="billing-charges-view__pagination">
+        <el-pagination
+          v-model:current-page="page"
+          v-model:page-size="pageSize"
+          :total="total"
+          :page-sizes="[10, 20, 50, 100]"
+          layout="total, sizes, prev, pager, next"
+          @current-change="handlePaginationPageChange"
+          @size-change="handlePaginationSizeChange"
+        />
+      </div>
     </el-card>
   </div>
 </template>
@@ -334,6 +359,12 @@ onMounted(() => {
   font-size: var(--mi-font-size-300);
   font-weight: var(--mi-font-weight-semibold);
   color: var(--mi-color-text);
+}
+
+.billing-charges-view__pagination {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--mi-space-4);
 }
 
 @media (max-width: 52rem) {

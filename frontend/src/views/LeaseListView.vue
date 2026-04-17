@@ -7,12 +7,13 @@ import { listLeases, type LeaseSummary } from '../api/lease'
 import FilterForm from '../components/platform/FilterForm.vue'
 import PageSection from '../components/platform/PageSection.vue'
 import { useFilterForm } from '../composables/useFilterForm'
+import { usePagination } from '../composables/usePagination'
 
 const router = useRouter()
 const { t } = useI18n()
 
 const rows = ref<LeaseSummary[]>([])
-const total = ref(0)
+const { page, pageSize, total, paginationParams, resetPage, handlePageChange, handleSizeChange } = usePagination()
 const isLoading = ref(false)
 const errorMessage = ref('')
 
@@ -54,6 +55,7 @@ const loadLeases = async () => {
     const response = await listLeases({
       lease_no: filters.lease_no.trim() || undefined,
       status: filters.status || undefined,
+      ...paginationParams.value,
     })
 
     rows.value = response.data.items
@@ -69,6 +71,17 @@ const loadLeases = async () => {
 
 const handleReset = () => {
   reset()
+  resetPage()
+  void loadLeases()
+}
+
+const handlePaginationPageChange = (newPage: number) => {
+  handlePageChange(newPage)
+  void loadLeases()
+}
+
+const handlePaginationSizeChange = (newSize: number) => {
+  handleSizeChange(newSize)
   void loadLeases()
 }
 
@@ -119,7 +132,7 @@ onMounted(() => {
         :busy="isLoading"
         :reset-disabled="!isDirty"
         @reset="handleReset"
-        @submit="loadLeases"
+        @submit="resetPage(); loadLeases()"
       >
         <el-form-item :label="t('lease.fields.leaseNumber')">
           <el-input
@@ -175,6 +188,18 @@ onMounted(() => {
             </template>
           </el-table-column>
         </el-table>
+
+        <div class="lease-list-view__pagination">
+          <el-pagination
+            v-model:current-page="page"
+            v-model:page-size="pageSize"
+            :total="total"
+            :page-sizes="[10, 20, 50, 100]"
+            layout="total, sizes, prev, pager, next"
+            @current-change="handlePaginationPageChange"
+            @size-change="handlePaginationSizeChange"
+          />
+        </div>
       </el-card>
     </div>
   </div>
@@ -214,6 +239,12 @@ onMounted(() => {
 
 .lease-list-view__table {
   width: 100%;
+}
+
+.lease-list-view__pagination {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--mi-space-4);
 }
 
 .lease-list-view__table :deep(.el-table__row) {
