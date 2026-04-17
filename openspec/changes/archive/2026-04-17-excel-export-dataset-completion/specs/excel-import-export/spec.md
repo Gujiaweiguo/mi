@@ -1,4 +1,4 @@
-## MODIFIED Requirements
+## ADDED Requirements
 
 ### Requirement: The system SHALL support mandatory Excel import and export flows
 The first release SHALL support the Excel import and export flows frozen in the output catalog, with validation errors surfaced before invalid data is committed. This SHALL include downloadable templates and batch import handling for daily shop sales and customer traffic so report-driving operational datasets can be refreshed at business scale. The export surface SHALL cover all four operational datasets: `invoices`, `billing_charges`, `lease_contracts`, and `unit_data`.
