@@ -1,16 +1,30 @@
 # Spec: platform-foundation (locale-placeholder-cleanup delta)
 
-## Requirement
+## MODIFIED Requirements
 
-All `https://example.com` placeholder URLs in seed data and i18n locale files **MUST** be replaced with empty strings before first release.
+### Requirement: All placeholder URLs and scaffolding text SHALL be removed before first release
+Seed data and i18n locale files SHALL NOT contain `https://example.com` placeholder URLs. User-facing locale strings SHALL NOT contain scaffolding-era text such as the word "stub". Floor plan image URLs SHALL use empty strings to indicate "not provided" since the field is optional and the UI already handles absence with a fallback.
 
-All scaffolding-era text containing the word "stub" in user-facing locale strings **MUST** be replaced with appropriate production wording.
+#### Scenario: No placeholder URLs in locale files
+- **WHEN** a search is performed across `frontend/src/i18n/messages/` for `example.com`
+- **THEN** no matches SHALL be found
 
-## Acceptance criteria
+#### Scenario: No placeholder URLs in seed data
+- **WHEN** `commercial_seed.go` is examined for `example.com`
+- **THEN** no matches SHALL be found
 
-1. `grep -r 'example.com' frontend/src/i18n/messages/` returns no matches.
-2. `grep 'example.com' backend/internal/platform/database/bootstrap/commercial_seed.go` returns no matches.
-3. `grep -r 'example.com' frontend/e2e/task16-r19-visual.spec.ts` returns no matches.
-4. `grep 'No stub records' frontend/src/i18n/messages/en-US.ts` returns no matches.
-5. Backend compiles: `go build ./...` succeeds.
-6. Frontend typechecks: `vue-tsc --noEmit` succeeds.
+#### Scenario: No placeholder URLs in e2e fixtures
+- **WHEN** `frontend/e2e/task16-r19-visual.spec.ts` is examined for `example.com`
+- **THEN** no matches SHALL be found
+
+#### Scenario: No scaffolding-era stub text in locale files
+- **WHEN** `en-US.ts` is searched for "No stub records"
+- **THEN** no matches SHALL be found
+
+#### Scenario: Backend compiles after seed data change
+- **WHEN** `go build ./...` is run from the backend directory
+- **THEN** it SHALL succeed
+
+#### Scenario: Frontend typechecks after locale string change
+- **WHEN** `vue-tsc --noEmit` is run from the frontend directory
+- **THEN** it SHALL succeed
