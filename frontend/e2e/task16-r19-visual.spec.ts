@@ -85,7 +85,7 @@ test('queries and exports the visual shop analysis report (R19)', async ({ page 
       floor: {
         id: 8,
         name: 'Level 2 retail arcade',
-        floor_plan_image_url: 'https://example.com/floor-plan-r19.png',
+        floor_plan_image_url: '',
       },
       units: [
         {

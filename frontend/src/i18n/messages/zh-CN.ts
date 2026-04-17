@@ -1209,7 +1209,7 @@ export const zhCNMessages = {
       buildingName: '例如 East Tower',
       floorCode: '例如 F-1',
       floorName: '例如 Floor 1',
-      floorPlanUrl: 'https://example.com/floor-1.png',
+      floorPlanUrl: '',
       areaCode: '例如 AR-101',
       areaName: '例如 Main Atrium',
       selectAreaLevel: '选择区域层级',

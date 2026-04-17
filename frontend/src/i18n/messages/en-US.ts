@@ -495,7 +495,7 @@ export const enUSMessages = {
     },
     table: {
       queueTitle: '{title} queue',
-      empty: 'No stub records match the current filters.',
+      empty: 'No records match the current filters.',
     },
   },
   billingCharges: {
@@ -1214,7 +1214,7 @@ export const enUSMessages = {
       buildingName: 'e.g. East Tower',
       floorCode: 'e.g. F-1',
       floorName: 'e.g. Floor 1',
-      floorPlanUrl: 'https://example.com/floor-1.png',
+      floorPlanUrl: '',
       areaCode: 'e.g. AR-101',
       areaName: 'e.g. Main Atrium',
       selectAreaLevel: 'Select area level',

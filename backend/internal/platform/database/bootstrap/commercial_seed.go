@@ -55,7 +55,7 @@ func seedBuildings() Seed {
 	return simpleSeed("buildings", `INSERT INTO buildings (id, store_id, code, name, status) VALUES (101, 101, 'BLD-A', 'Building A', 'active') ON DUPLICATE KEY UPDATE name = VALUES(name), status = VALUES(status)`)
 }
 func seedFloors() Seed {
-	return simpleSeed("floors", `INSERT INTO floors (id, building_id, code, name, status, floor_plan_image_url) VALUES (101, 101, 'F1', 'Floor 1', 'active', 'https://example.com/floor-101.png') ON DUPLICATE KEY UPDATE name = VALUES(name), status = VALUES(status), floor_plan_image_url = VALUES(floor_plan_image_url)`)
+	return simpleSeed("floors", `INSERT INTO floors (id, building_id, code, name, status, floor_plan_image_url) VALUES (101, 101, 'F1', 'Floor 1', 'active', '') ON DUPLICATE KEY UPDATE name = VALUES(name), status = VALUES(status), floor_plan_image_url = VALUES(floor_plan_image_url)`)
 }
 func seedLocations() Seed {
 	return simpleSeed("locations", `INSERT INTO locations (id, store_id, floor_id, code, name, status) VALUES (101, 101, 101, 'L1', 'North Wing', 'active') ON DUPLICATE KEY UPDATE name = VALUES(name), status = VALUES(status)`)
