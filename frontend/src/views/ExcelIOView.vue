@@ -24,6 +24,7 @@ const datasetOptions = computed(() => [
   { label: t('excel.datasets.billingCharges'), value: 'billing_charges' },
   { label: t('excel.datasets.leaseContracts'), value: 'lease_contracts' },
   { label: t('excel.datasets.unitData'), value: 'unit_data' },
+  { label: t('excel.datasets.invoices'), value: 'invoices' },
 ])
 
 const downloadBlob = (data: unknown, filename: string) => {

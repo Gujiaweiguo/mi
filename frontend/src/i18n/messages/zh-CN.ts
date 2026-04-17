@@ -1506,6 +1506,7 @@ export const zhCNMessages = {
       billingCharges: '账单费用',
       leaseContracts: '租赁合同',
       unitData: '单元数据',
+      invoices: '发票',
     },
     placeholders: {
       selectDataset: '选择导出数据集',

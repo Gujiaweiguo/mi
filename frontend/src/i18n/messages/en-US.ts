@@ -1521,6 +1521,7 @@ export const enUSMessages = {
       billingCharges: 'Billing charges',
       leaseContracts: 'Lease contracts',
       unitData: 'Unit data',
+      invoices: 'Invoices',
     },
     placeholders: {
       selectDataset: 'Select a dataset',
