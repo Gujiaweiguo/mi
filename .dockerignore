@@ -1,0 +1,15 @@
+.git
+.gitignore
+legacy_code/
+legacy_docs/
+openspec/
+.opencode/
+.sisyphus/
+**/node_modules/
+*.md
+deploy/compose/
+deploy/docker/
+deploy/env/
+.env*
+*.log
+artifacts/
