@@ -87,6 +87,10 @@ expect_failure \
   "$VALIDATOR" ci --root "$TESTDATA_DIR/unit-failed-status" --commit-sha 1212121212121212121212121212121212121212
 
 expect_failure \
+  "ci gate fails when integration status is failed" \
+  "$VALIDATOR" ci --root "$TESTDATA_DIR/integration-failed-status" --commit-sha 3434343434343434343434343434343434343434
+
+expect_failure \
   "archive gate fails on invalid timestamp format" \
   "$VALIDATOR" archive --root "$TESTDATA_DIR/timestamp-bad-format" --commit-sha abababababababababababababababababababab
 
