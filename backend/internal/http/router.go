@@ -40,7 +40,7 @@ func NewRouter(cfg *config.Config, db *sql.DB) *gin.Engine {
 	router := gin.New()
 	router.Use(gin.Logger(), gin.Recovery())
 
-	healthHandler := handlers.NewHealthHandler(cfg)
+	healthHandler := handlers.NewHealthHandler(cfg, db)
 	authRepository := auth.NewRepository(db)
 	authService := auth.NewService(authRepository, cfg.Auth)
 	authHandler := handlers.NewAuthHandler(authService)

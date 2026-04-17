@@ -90,6 +90,11 @@ func New() (*App, error) {
 		return nil, fmt.Errorf("open database connection: %w", err)
 	}
 
+	db.SetMaxOpenConns(25)
+	db.SetMaxIdleConns(10)
+	db.SetConnMaxLifetime(5 * time.Minute)
+	db.SetConnMaxIdleTime(1 * time.Minute)
+
 	router := api.NewRouter(cfg, db)
 
 	server := &http.Server{
@@ -103,9 +108,8 @@ func New() (*App, error) {
 	return &App{config: cfg, logger: logger, db: db, server: server}, nil
 }
 
-func (a *App) Run() error {
+func (a *App) Run(ctx context.Context) error {
 	stopReminderScheduler := a.startWorkflowReminderScheduler()
-	defer stopReminderScheduler()
 
 	a.logger.Sugar().Infow(
 		"starting backend service",
@@ -113,7 +117,45 @@ func (a *App) Run() error {
 		"address", a.server.Addr,
 	)
 
-	return a.server.ListenAndServe()
+	serverErr := make(chan error, 1)
+	go func() {
+		if err := a.server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			serverErr <- err
+		}
+		close(serverErr)
+	}()
+
+	select {
+	case <-ctx.Done():
+		a.logger.Sugar().Infow("received shutdown signal")
+	case err := <-serverErr:
+		stopReminderScheduler()
+		return err
+	}
+
+	stopReminderScheduler()
+
+	shutdownCtx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	defer cancel()
+
+	return a.Shutdown(shutdownCtx)
+}
+
+func (a *App) Shutdown(ctx context.Context) error {
+	a.logger.Sugar().Infow("shutting down backend service")
+
+	if err := a.server.Shutdown(ctx); err != nil {
+		a.logger.Sugar().Errorw("server shutdown error", "error", err)
+		return err
+	}
+
+	if err := a.db.Close(); err != nil {
+		a.logger.Sugar().Errorw("database close error", "error", err)
+		return err
+	}
+
+	a.logger.Sugar().Infow("backend service stopped")
+	return nil
 }
 
 func (a *App) Logger() *zap.Logger {
