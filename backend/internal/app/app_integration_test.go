@@ -59,7 +59,7 @@ func TestMySQLWorkflowReminderDistributedLockerHoldsLockUntilFunctionReturns(t *
 	}
 	defer db.Close()
 
-	if err := waitForDatabase(ctx, db); err != nil {
+	if err := platformdb.WaitForDatabase(ctx, db); err != nil {
 		t.Fatalf("ping mysql: %v", err)
 	}
 
@@ -104,19 +104,4 @@ func TestMySQLWorkflowReminderDistributedLockerHoldsLockUntilFunctionReturns(t *
 	if !secondRan {
 		t.Fatal("expected callback to run after lock was released")
 	}
-}
-
-func waitForDatabase(ctx context.Context, db *sql.DB) error {
-	deadline := time.Now().Add(30 * time.Second)
-	var lastErr error
-	for time.Now().Before(deadline) {
-		pingCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
-		lastErr = db.PingContext(pingCtx)
-		cancel()
-		if lastErr == nil {
-			return nil
-		}
-		time.Sleep(500 * time.Millisecond)
-	}
-	return lastErr
 }

@@ -14,18 +14,15 @@ import (
 	"github.com/Gujiaweiguo/mi/backend/internal/invoice"
 	"github.com/Gujiaweiguo/mi/backend/internal/lease"
 	platformdb "github.com/Gujiaweiguo/mi/backend/internal/platform/database"
-	bootstrap "github.com/Gujiaweiguo/mi/backend/internal/platform/database/bootstrap"
 	"github.com/Gujiaweiguo/mi/backend/internal/workflow"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/testcontainers/testcontainers-go"
-	"github.com/testcontainers/testcontainers-go/wait"
 )
 
 func TestLeaseServiceCreateSubmitAndActivate(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
 
-	db := newLeaseTestDB(t, ctx)
+	db := platformdb.NewTestDB(t, ctx, os.DirFS("../platform/database"))
 	workflowService := workflow.NewService(db, workflow.NewRepository(db))
 	leaseService := lease.NewService(db, lease.NewRepository(db), workflowService)
 
@@ -94,7 +91,7 @@ func TestLeaseServiceRejectAndResubmit(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
 
-	db := newLeaseTestDB(t, ctx)
+	db := platformdb.NewTestDB(t, ctx, os.DirFS("../platform/database"))
 	workflowService := workflow.NewService(db, workflow.NewRepository(db))
 	leaseService := lease.NewService(db, lease.NewRepository(db), workflowService)
 
@@ -144,7 +141,7 @@ func TestLeaseServiceRejectsDuplicateSubmit(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
 
-	db := newLeaseTestDB(t, ctx)
+	db := platformdb.NewTestDB(t, ctx, os.DirFS("../platform/database"))
 	workflowService := workflow.NewService(db, workflow.NewRepository(db))
 	leaseService := lease.NewService(db, lease.NewRepository(db), workflowService)
 
@@ -164,7 +161,7 @@ func TestLeaseServiceAmendmentUpdatesBillingEffectiveLease(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
 
-	db := newLeaseTestDB(t, ctx)
+	db := platformdb.NewTestDB(t, ctx, os.DirFS("../platform/database"))
 	workflowService := workflow.NewService(db, workflow.NewRepository(db))
 	leaseService := lease.NewService(db, lease.NewRepository(db), workflowService)
 
@@ -224,7 +221,7 @@ func TestLeaseServiceTerminateActiveLease(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
 
-	db := newLeaseTestDB(t, ctx)
+	db := platformdb.NewTestDB(t, ctx, os.DirFS("../platform/database"))
 	workflowService := workflow.NewService(db, workflow.NewRepository(db))
 	leaseService := lease.NewService(db, lease.NewRepository(db), workflowService)
 
@@ -243,7 +240,7 @@ func TestLeaseServiceRejectsTerminateOnAlreadyTerminatedLease(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
 
-	db := newLeaseTestDB(t, ctx)
+	db := platformdb.NewTestDB(t, ctx, os.DirFS("../platform/database"))
 	workflowService := workflow.NewService(db, workflow.NewRepository(db))
 	leaseService := lease.NewService(db, lease.NewRepository(db), workflowService)
 
@@ -262,7 +259,7 @@ func TestLeaseServiceRejectsAmendmentOnTerminatedLease(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
 
-	db := newLeaseTestDB(t, ctx)
+	db := platformdb.NewTestDB(t, ctx, os.DirFS("../platform/database"))
 	workflowService := workflow.NewService(db, workflow.NewRepository(db))
 	leaseService := lease.NewService(db, lease.NewRepository(db), workflowService)
 
@@ -282,7 +279,7 @@ func TestLeaseServiceRejectsTerminateWhenBillingDocumentInFlight(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
 
-	db := newLeaseTestDB(t, ctx)
+	db := platformdb.NewTestDB(t, ctx, os.DirFS("../platform/database"))
 	workflowService := workflow.NewService(db, workflow.NewRepository(db))
 	leaseService := lease.NewService(db, lease.NewRepository(db), workflowService)
 	billingRepo := billing.NewRepository(db)
@@ -378,74 +375,4 @@ func activateLease(t *testing.T, ctx context.Context, leaseService *lease.Servic
 
 func int64Pointer(value int64) *int64 {
 	return &value
-}
-
-func newLeaseTestDB(t *testing.T, ctx context.Context) *sql.DB {
-	t.Helper()
-
-	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
-		ContainerRequest: testcontainers.ContainerRequest{
-			Image:        "mysql:8.0",
-			ExposedPorts: []string{"3306/tcp"},
-			Env: map[string]string{
-				"MYSQL_DATABASE":      "mi_integration",
-				"MYSQL_USER":          "mi_user",
-				"MYSQL_PASSWORD":      "mi_password",
-				"MYSQL_ROOT_PASSWORD": "mi_root_password",
-			},
-			WaitingFor: wait.ForListeningPort("3306/tcp").WithStartupTimeout(3 * time.Minute),
-		},
-		Started: true,
-	})
-	if err != nil {
-		t.Fatalf("start mysql container: %v", err)
-	}
-	t.Cleanup(func() { _ = container.Terminate(context.Background()) })
-
-	host, err := container.Host(ctx)
-	if err != nil {
-		t.Fatalf("resolve mysql host: %v", err)
-	}
-
-	port, err := container.MappedPort(ctx, "3306/tcp")
-	if err != nil {
-		t.Fatalf("resolve mysql port: %v", err)
-	}
-
-	db, err := sql.Open("mysql", platformdb.Config{Host: host, Port: port.Int(), Name: "mi_integration", User: "mi_user", Password: "mi_password"}.DSN())
-	if err != nil {
-		t.Fatalf("open mysql connection: %v", err)
-	}
-	t.Cleanup(func() { _ = db.Close() })
-
-	if err := waitForDatabase(ctx, db); err != nil {
-		t.Fatalf("wait for mysql: %v", err)
-	}
-
-	migrator := platformdb.NewMigrator(db, os.DirFS("../platform/database"), "migrations")
-	if err := migrator.ApplyUpMigrations(); err != nil {
-		t.Fatalf("apply migrations: %v", err)
-	}
-
-	bootstrapRunner := platformdb.NewBootstrapRunner(db, bootstrap.All()...)
-	if err := bootstrapRunner.Run(ctx); err != nil {
-		t.Fatalf("run bootstrap seeds: %v", err)
-	}
-
-	return db
-}
-
-func waitForDatabase(ctx context.Context, db *sql.DB) error {
-	deadline := time.Now().Add(30 * time.Second)
-	var lastErr error
-	for time.Now().Before(deadline) {
-		pingCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
-		lastErr = db.PingContext(pingCtx)
-		cancel()
-		if lastErr == nil {
-			return nil
-		}
-		time.Sleep(500 * time.Millisecond)
-	}
-	return lastErr
 }

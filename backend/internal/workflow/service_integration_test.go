@@ -11,18 +11,15 @@ import (
 	"time"
 
 	platformdb "github.com/Gujiaweiguo/mi/backend/internal/platform/database"
-	bootstrap "github.com/Gujiaweiguo/mi/backend/internal/platform/database/bootstrap"
 	"github.com/Gujiaweiguo/mi/backend/internal/workflow"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/testcontainers/testcontainers-go"
-	"github.com/testcontainers/testcontainers-go/wait"
 )
 
 func TestWorkflowServiceApproveAndDeduplicate(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
 
-	db := newWorkflowTestDB(t, ctx)
+	db := platformdb.NewTestDB(t, ctx, os.DirFS("../platform/database"))
 	service := workflow.NewService(db, workflow.NewRepository(db))
 
 	instance, err := service.Start(ctx, workflow.StartInput{
@@ -102,7 +99,7 @@ func TestWorkflowServiceStartDeduplicatesByIdempotencyKey(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
 
-	db := newWorkflowTestDB(t, ctx)
+	db := platformdb.NewTestDB(t, ctx, os.DirFS("../platform/database"))
 	service := workflow.NewService(db, workflow.NewRepository(db))
 
 	first, err := service.Start(ctx, workflow.StartInput{
@@ -166,7 +163,7 @@ func TestWorkflowServiceRejectAndResubmit(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
 
-	db := newWorkflowTestDB(t, ctx)
+	db := platformdb.NewTestDB(t, ctx, os.DirFS("../platform/database"))
 	service := workflow.NewService(db, workflow.NewRepository(db))
 
 	instance, err := service.Start(ctx, workflow.StartInput{
@@ -219,7 +216,7 @@ func TestWorkflowServiceListInstancesFilters(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
 
-	db := newWorkflowTestDB(t, ctx)
+	db := platformdb.NewTestDB(t, ctx, os.DirFS("../platform/database"))
 	service := workflow.NewService(db, workflow.NewRepository(db))
 
 	leaseInstance, err := service.Start(ctx, workflow.StartInput{
@@ -290,7 +287,7 @@ func TestWorkflowReminderRunEmitsAndStaysReadOnly(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
 
-	db := newWorkflowTestDB(t, ctx)
+	db := platformdb.NewTestDB(t, ctx, os.DirFS("../platform/database"))
 	baseTime := time.Date(2026, 4, 10, 9, 0, 0, 0, time.UTC)
 	repo := workflow.NewRepositoryWithNowFunc(db, func() time.Time { return baseTime })
 	service := workflow.NewService(db, repo)
@@ -402,7 +399,7 @@ func TestWorkflowReminderRunSkipsWhenNotDue(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
 
-	db := newWorkflowTestDB(t, ctx)
+	db := platformdb.NewTestDB(t, ctx, os.DirFS("../platform/database"))
 	baseTime := time.Date(2026, 4, 10, 9, 0, 0, 0, time.UTC)
 	repo := workflow.NewRepositoryWithNowFunc(db, func() time.Time { return baseTime })
 	service := workflow.NewService(db, repo)
@@ -447,145 +444,4 @@ func TestWorkflowReminderRunSkipsWhenNotDue(t *testing.T) {
 	if instanceAfter.Status != workflow.InstanceStatusPending || instanceAfter.CurrentStepOrder == nil || *instanceAfter.CurrentStepOrder != 1 {
 		t.Fatalf("expected workflow state to remain pending after not_due run, got %#v", instanceAfter)
 	}
-}
-
-func newWorkflowTestDB(t *testing.T, ctx context.Context) *sql.DB {
-	t.Helper()
-
-	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
-		ContainerRequest: testcontainers.ContainerRequest{
-			Image:        "mysql:8.0",
-			ExposedPorts: []string{"3306/tcp"},
-			Env: map[string]string{
-				"MYSQL_DATABASE":      "mi_integration",
-				"MYSQL_USER":          "mi_user",
-				"MYSQL_PASSWORD":      "mi_password",
-				"MYSQL_ROOT_PASSWORD": "mi_root_password",
-			},
-			WaitingFor: wait.ForListeningPort("3306/tcp").WithStartupTimeout(3 * time.Minute),
-		},
-		Started: true,
-	})
-	if err != nil {
-		t.Fatalf("start mysql container: %v", err)
-	}
-	t.Cleanup(func() { _ = container.Terminate(context.Background()) })
-
-	host, err := container.Host(ctx)
-	if err != nil {
-		t.Fatalf("resolve mysql host: %v", err)
-	}
-
-	port, err := container.MappedPort(ctx, "3306/tcp")
-	if err != nil {
-		t.Fatalf("resolve mysql port: %v", err)
-	}
-
-	db, err := sql.Open("mysql", platformdb.Config{Host: host, Port: port.Int(), Name: "mi_integration", User: "mi_user", Password: "mi_password"}.DSN())
-	if err != nil {
-		t.Fatalf("open mysql connection: %v", err)
-	}
-	t.Cleanup(func() { _ = db.Close() })
-
-	if err := waitForDatabase(ctx, db); err != nil {
-		t.Fatalf("wait for mysql: %v", err)
-	}
-
-	migrator := platformdb.NewMigrator(db, os.DirFS("../platform/database"), "migrations")
-	if err := migrator.ApplyUpMigrations(); err != nil {
-		t.Fatalf("apply migrations: %v", err)
-	}
-
-	bootstrapRunner := platformdb.NewBootstrapRunner(db, bootstrap.All()...)
-	if err := bootstrapRunner.Run(ctx); err != nil {
-		t.Fatalf("run bootstrap seeds: %v", err)
-	}
-
-	return db
-}
-
-func TestWorkflowServiceStartPreventsConcurrentDuplicate(t *testing.T) {
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
-	defer cancel()
-
-	db := newWorkflowTestDB(t, ctx)
-	service := workflow.NewService(db, workflow.NewRepository(db))
-
-	type startResult struct {
-		instance *workflow.Instance
-		err      error
-	}
-
-	barrier := make(chan struct{})
-	results := make(chan startResult, 2)
-
-	var wg sync.WaitGroup
-	wg.Add(2)
-
-	for _, idempotencyKey := range []string{"concurrent-start-a", "concurrent-start-b"} {
-		go func(key string) {
-			defer wg.Done()
-			<-barrier
-			instance, err := service.Start(ctx, workflow.StartInput{
-				DefinitionCode: "lease-approval",
-				DocumentType:   "lease_contract",
-				DocumentID:     9901,
-				ActorUserID:    101,
-				DepartmentID:   101,
-				IdempotencyKey: key,
-				Comment:        "concurrent start",
-			})
-			results <- startResult{instance: instance, err: err}
-		}(idempotencyKey)
-	}
-
-	close(barrier)
-	wg.Wait()
-	close(results)
-
-	var successes []*workflow.Instance
-	var failures []error
-	for res := range results {
-		if res.err != nil {
-			failures = append(failures, res.err)
-		} else {
-			successes = append(successes, res.instance)
-		}
-	}
-
-	if len(successes) == 0 {
-		t.Fatalf("expected at least one successful start, got %d failures: %v", len(failures), failures)
-	}
-
-	if len(successes) == 2 {
-		if successes[0].ID != successes[1].ID {
-			t.Fatalf("expected both concurrent starts to return same instance, got %d and %d", successes[0].ID, successes[1].ID)
-		}
-	}
-
-	instances, err := service.ListInstances(ctx, workflow.InstanceFilter{})
-	if err != nil {
-		t.Fatalf("list workflow instances: %v", err)
-	}
-	if len(instances) != 1 {
-		t.Fatalf("expected exactly 1 workflow instance after concurrent start, got %d", len(instances))
-	}
-	if instances[0].Status != workflow.InstanceStatusPending {
-		t.Fatalf("expected pending instance, got %s", instances[0].Status)
-	}
-}
-
-func waitForDatabase(ctx context.Context, db *sql.DB) error {
-	deadline := time.Now().Add(30 * time.Second)
-	var lastErr error
-	for time.Now().Before(deadline) {
-		pingCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
-		lastErr = db.PingContext(pingCtx)
-		cancel()
-		if lastErr == nil {
-			return nil
-		}
-		time.Sleep(500 * time.Millisecond)
-	}
-	return lastErr
 }

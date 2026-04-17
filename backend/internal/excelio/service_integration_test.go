@@ -16,12 +16,9 @@ import (
 	"github.com/Gujiaweiguo/mi/backend/internal/invoice"
 	"github.com/Gujiaweiguo/mi/backend/internal/lease"
 	platformdb "github.com/Gujiaweiguo/mi/backend/internal/platform/database"
-	bootstrap "github.com/Gujiaweiguo/mi/backend/internal/platform/database/bootstrap"
 	"github.com/Gujiaweiguo/mi/backend/internal/sales"
 	"github.com/Gujiaweiguo/mi/backend/internal/workflow"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/testcontainers/testcontainers-go"
-	"github.com/testcontainers/testcontainers-go/wait"
 	"github.com/xuri/excelize/v2"
 )
 
@@ -30,7 +27,7 @@ var excelWorkflowNow = func() time.Time { return time.Date(2026, 4, 1, 9, 0, 0, 
 func TestExcelIOServiceDownloadsUnitTemplate(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
-	db := newExcelIOTestDB(t, ctx)
+	db := platformdb.NewTestDB(t, ctx, os.DirFS("../platform/database"))
 	service := excelio.NewService(excelio.NewRepository(db), sales.NewService(sales.NewRepository(db)))
 
 	artifact, err := service.DownloadUnitTemplate(ctx)
@@ -53,7 +50,7 @@ func TestExcelIOServiceDownloadsUnitTemplate(t *testing.T) {
 func TestExcelIOServiceImportsUnitsDeterministically(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
-	db := newExcelIOTestDB(t, ctx)
+	db := platformdb.NewTestDB(t, ctx, os.DirFS("../platform/database"))
 	service := excelio.NewService(excelio.NewRepository(db), sales.NewService(sales.NewRepository(db)))
 
 	workbookBytes := buildUnitWorkbook(t, [][]string{{"U-201", "BLD-A", "F1", "L1", "A01", "shop", "130", "128", "128", "true", "active"}, {"U-202", "BLD-A", "F1", "L1", "A01", "shop", "140", "138", "138", "false", "inactive"}})
@@ -93,7 +90,7 @@ func TestExcelIOServiceImportsUnitsDeterministically(t *testing.T) {
 func TestExcelIOServiceRejectsInvalidImportWithoutPartialCommit(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
-	db := newExcelIOTestDB(t, ctx)
+	db := platformdb.NewTestDB(t, ctx, os.DirFS("../platform/database"))
 	service := excelio.NewService(excelio.NewRepository(db), sales.NewService(sales.NewRepository(db)))
 
 	invalidWorkbook := buildUnitWorkbook(t, [][]string{{"U-301", "BLD-A", "F1", "L1", "A01", "shop", "130", "128", "128", "true", "active"}, {"U-301", "UNKNOWN", "F1", "L1", "A01", "shop", "x", "138", "138", "false", "inactive"}})
@@ -116,7 +113,7 @@ func TestExcelIOServiceRejectsInvalidImportWithoutPartialCommit(t *testing.T) {
 func TestExcelIOServiceExportsOperationalDatasets(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
-	db := newExcelIOTestDB(t, ctx)
+	db := platformdb.NewTestDB(t, ctx, os.DirFS("../platform/database"))
 	service := excelio.NewService(excelio.NewRepository(db), sales.NewService(sales.NewRepository(db)))
 	prepareApprovedInvoiceForExcel(t, ctx, db)
 
@@ -158,7 +155,7 @@ func TestExcelIOServiceExportsOperationalDatasets(t *testing.T) {
 func TestExcelIOServiceDownloadsSalesTemplates(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
-	db := newExcelIOTestDB(t, ctx)
+	db := platformdb.NewTestDB(t, ctx, os.DirFS("../platform/database"))
 	service := excelio.NewService(excelio.NewRepository(db), sales.NewService(sales.NewRepository(db)))
 
 	dailyArtifact, err := service.DownloadDailySalesTemplate(ctx)
@@ -194,7 +191,7 @@ func TestExcelIOServiceDownloadsSalesTemplates(t *testing.T) {
 func TestExcelIOServiceImportsSalesDataDeterministically(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
-	db := newExcelIOTestDB(t, ctx)
+	db := platformdb.NewTestDB(t, ctx, os.DirFS("../platform/database"))
 	service := excelio.NewService(excelio.NewRepository(db), sales.NewService(sales.NewRepository(db)))
 
 	dailyWorkbook := buildGenericWorkbook(t, excelio.DailySalesSheetName, []string{"store_code", "unit_code", "sale_date", "sales_amount"}, [][]string{{"MI-001", "U-101", "2026-05-01", "6000"}, {"MI-001", "U-101", "2026-05-02", "4500"}})
@@ -248,7 +245,7 @@ func TestExcelIOServiceImportsSalesDataDeterministically(t *testing.T) {
 func TestExcelIOServiceRejectsInvalidSalesImportsWithoutPartialCommit(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
-	db := newExcelIOTestDB(t, ctx)
+	db := platformdb.NewTestDB(t, ctx, os.DirFS("../platform/database"))
 	service := excelio.NewService(excelio.NewRepository(db), sales.NewService(sales.NewRepository(db)))
 
 	invalidDailyWorkbook := buildGenericWorkbook(t, excelio.DailySalesSheetName, []string{"store_code", "unit_code", "sale_date", "sales_amount"}, [][]string{{"MI-001", "U-101", "2026-05-01", "6000"}, {"UNKNOWN", "U-101", "2026-05-01", "bad"}})
@@ -326,55 +323,6 @@ func buildGenericWorkbook(t *testing.T, sheetName string, headers []string, data
 		t.Fatalf("write generic workbook: %v", err)
 	}
 	return buffer.Bytes()
-}
-
-func newExcelIOTestDB(t *testing.T, ctx context.Context) *sql.DB {
-	t.Helper()
-	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{ContainerRequest: testcontainers.ContainerRequest{Image: "mysql:8.0", ExposedPorts: []string{"3306/tcp"}, Env: map[string]string{"MYSQL_DATABASE": "mi_integration", "MYSQL_USER": "mi_user", "MYSQL_PASSWORD": "mi_password", "MYSQL_ROOT_PASSWORD": "mi_root_password"}, WaitingFor: wait.ForListeningPort("3306/tcp").WithStartupTimeout(3 * time.Minute)}, Started: true})
-	if err != nil {
-		t.Fatalf("start mysql container: %v", err)
-	}
-	t.Cleanup(func() { _ = container.Terminate(context.Background()) })
-	host, err := container.Host(ctx)
-	if err != nil {
-		t.Fatalf("resolve mysql host: %v", err)
-	}
-	port, err := container.MappedPort(ctx, "3306/tcp")
-	if err != nil {
-		t.Fatalf("resolve mysql port: %v", err)
-	}
-	db, err := sql.Open("mysql", platformdb.Config{Host: host, Port: port.Int(), Name: "mi_integration", User: "mi_user", Password: "mi_password"}.DSN())
-	if err != nil {
-		t.Fatalf("open mysql connection: %v", err)
-	}
-	t.Cleanup(func() { _ = db.Close() })
-	if err := waitForDatabase(ctx, db); err != nil {
-		t.Fatalf("wait for mysql: %v", err)
-	}
-	migrator := platformdb.NewMigrator(db, os.DirFS("../platform/database"), "migrations")
-	if err := migrator.ApplyUpMigrations(); err != nil {
-		t.Fatalf("apply migrations: %v", err)
-	}
-	bootstrapRunner := platformdb.NewBootstrapRunner(db, bootstrap.All()...)
-	if err := bootstrapRunner.Run(ctx); err != nil {
-		t.Fatalf("run bootstrap seeds: %v", err)
-	}
-	return db
-}
-
-func waitForDatabase(ctx context.Context, db *sql.DB) error {
-	deadline := time.Now().Add(30 * time.Second)
-	var lastErr error
-	for time.Now().Before(deadline) {
-		pingCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
-		lastErr = db.PingContext(pingCtx)
-		cancel()
-		if lastErr == nil {
-			return nil
-		}
-		time.Sleep(500 * time.Millisecond)
-	}
-	return lastErr
 }
 
 func prepareApprovedInvoiceForExcel(t *testing.T, ctx context.Context, db *sql.DB) {
