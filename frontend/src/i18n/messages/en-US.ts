@@ -1525,6 +1525,42 @@ export const enUSMessages = {
       documentType: 'Document type',
       outputMode: 'Output mode',
     },
+    dialog: {
+      title: {
+        create: 'Create print template',
+        edit: 'Edit print template',
+      },
+      fields: {
+        code: 'Code',
+        name: 'Name',
+        documentType: 'Document type',
+        outputMode: 'Output mode',
+        title: 'Title',
+        subtitle: 'Subtitle',
+        headerLines: 'Header lines',
+        footerLines: 'Footer lines',
+      },
+      actions: {
+        addTemplate: 'Add template',
+        addLine: 'Add line',
+        removeLine: 'Remove line',
+        submit: 'Submit',
+      },
+      documentTypeOptions: {
+        invoice: 'Invoice',
+        receipt: 'Receipt',
+        leaseContract: 'Lease contract',
+      },
+      outputModeOptions: {
+        html: 'HTML',
+        pdf: 'PDF',
+      },
+      feedback: {
+        created: 'Print template created',
+        updated: 'Print template updated',
+        failed: 'Print template save failed',
+      },
+    },
     table: {
       empty: 'No print templates available.',
     },

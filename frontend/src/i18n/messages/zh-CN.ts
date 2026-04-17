@@ -1510,6 +1510,42 @@ export const zhCNMessages = {
       documentType: '单据类型',
       outputMode: '输出方式',
     },
+    dialog: {
+      title: {
+        create: '新增打印模板',
+        edit: '编辑打印模板',
+      },
+      fields: {
+        code: '编码',
+        name: '名称',
+        documentType: '单据类型',
+        outputMode: '输出方式',
+        title: '标题',
+        subtitle: '副标题',
+        headerLines: '页眉行',
+        footerLines: '页脚行',
+      },
+      actions: {
+        addTemplate: '新增模板',
+        addLine: '新增行',
+        removeLine: '移除行',
+        submit: '提交',
+      },
+      documentTypeOptions: {
+        invoice: '发票',
+        receipt: '收据',
+        leaseContract: '租赁合同',
+      },
+      outputModeOptions: {
+        html: 'HTML',
+        pdf: 'PDF',
+      },
+      feedback: {
+        created: '打印模板已创建',
+        updated: '打印模板已更新',
+        failed: '打印模板保存失败',
+      },
+    },
     table: {
       empty: '暂无打印模板。',
     },

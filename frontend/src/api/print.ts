@@ -18,8 +18,20 @@ export interface PrintTemplate {
   updated_at: string
 }
 
+export interface UpsertPrintTemplateRequest {
+  code: string
+  name: string
+  document_type: string
+  output_mode: string
+  title: string
+  subtitle: string
+  header_lines: string[]
+  footer_lines: string[]
+}
+
 export const listPrintTemplates = (params?: { page?: number; page_size?: number }) =>
   http.get<PaginatedResponse<PrintTemplate>>('/print/templates', { params })
+export const upsertPrintTemplate = (data: UpsertPrintTemplateRequest) => http.post('/print/templates', data)
 export const renderPrintHtml = (data: { template_code: string; document_ids: number[] }) =>
   http.post('/print/render/html', data, { responseType: 'text' })
 export const renderPrintPdf = (data: { template_code: string; document_ids: number[] }) =>
