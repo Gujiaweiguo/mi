@@ -1,4 +1,4 @@
-## MODIFIED Requirements
+## ADDED Requirements
 
 ### Requirement: Pagination types SHALL be consolidated into a shared package
 All backend modules that support paginated list endpoints SHALL use a shared `pagination` package for the `ListResult` type, `NormalizePage` function, and pagination constants instead of defining their own local duplicates. The shared package SHALL use `int64` for total count and `20` for default page size.
