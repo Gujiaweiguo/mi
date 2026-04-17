@@ -29,7 +29,25 @@ export interface TaxRuleSet {
   rules: TaxRule[]
 }
 
+export interface UpsertTaxRuleSetRequest {
+  code: string
+  name: string
+  document_type: string
+  rules: {
+    sequence_no: number
+    entry_side: string
+    charge_type_filter: string
+    account_number: string
+    account_name: string
+    explanation_template: string
+    use_tenant_name: boolean
+    is_balancing_entry: boolean
+  }[]
+}
+
 export const listTaxRuleSets = (params?: { page?: number; page_size?: number }) =>
   http.get<PaginatedResponse<TaxRuleSet>>('/tax/rule-sets', { params })
+export const upsertTaxRuleSet = (data: UpsertTaxRuleSetRequest) =>
+  http.post('/tax/rule-sets', data)
 export const exportTaxVouchers = (data: { rule_set_code: string; from_date: string; to_date: string }) =>
   http.post('/tax/exports/vouchers', data, { responseType: 'blob' })

@@ -1429,6 +1429,46 @@ export const zhCNMessages = {
       documentType: '单据类型',
       rules: '规则数',
     },
+    dialog: {
+      title: {
+        create: '新增税务规则集',
+        edit: '编辑税务规则集',
+      },
+      fields: {
+        code: '编码',
+        name: '名称',
+        documentType: '单据类型',
+        rules: {
+          sequenceNo: '序号',
+          entrySide: '分录方向',
+          chargeTypeFilter: '费用类型筛选',
+          accountNumber: '科目编号',
+          accountName: '科目名称',
+          explanationTemplate: '摘要模板',
+          useTenantName: '使用租户名称',
+          isBalancingEntry: '平衡分录',
+        },
+      },
+      actions: {
+        addRuleSet: '新增规则集',
+        addRow: '新增行',
+        removeRow: '移除行',
+        submit: '提交',
+      },
+      entrySideOptions: {
+        debit: '借方',
+        credit: '贷方',
+      },
+      documentTypeOptions: {
+        invoice: '发票',
+        receipt: '收据',
+      },
+      feedback: {
+        created: '税务规则集已创建',
+        updated: '税务规则集已更新',
+        failed: '税务规则集保存失败',
+      },
+    },
     table: {
       empty: '暂无税务规则集。',
     },

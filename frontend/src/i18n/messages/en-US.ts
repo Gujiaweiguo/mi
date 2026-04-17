@@ -1444,6 +1444,46 @@ export const enUSMessages = {
       documentType: 'Document type',
       rules: 'Rules',
     },
+    dialog: {
+      title: {
+        create: 'Create tax rule set',
+        edit: 'Edit tax rule set',
+      },
+      fields: {
+        code: 'Code',
+        name: 'Name',
+        documentType: 'Document type',
+        rules: {
+          sequenceNo: 'Sequence no.',
+          entrySide: 'Entry side',
+          chargeTypeFilter: 'Charge type filter',
+          accountNumber: 'Account number',
+          accountName: 'Account name',
+          explanationTemplate: 'Explanation template',
+          useTenantName: 'Use tenant name',
+          isBalancingEntry: 'Balancing entry',
+        },
+      },
+      actions: {
+        addRuleSet: 'Add rule set',
+        addRow: 'Add row',
+        removeRow: 'Remove row',
+        submit: 'Submit',
+      },
+      entrySideOptions: {
+        debit: 'Debit',
+        credit: 'Credit',
+      },
+      documentTypeOptions: {
+        invoice: 'Invoice',
+        receipt: 'Receipt',
+      },
+      feedback: {
+        created: 'Tax rule set created',
+        updated: 'Tax rule set updated',
+        failed: 'Tax rule set save failed',
+      },
+    },
     table: {
       empty: 'No tax rule sets available.',
     },
