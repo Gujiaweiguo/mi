@@ -39,6 +39,10 @@ The change SHALL define environment-specific configuration with file-based defau
 ### Requirement: The system SHALL establish automated test foundations before feature slices
 The change SHALL provide backend unit and integration test harnesses, frontend unit tests, Playwright end-to-end tests, and artifact comparison support for generated outputs before feature slices depend on them. End-to-end verification for first-release non-membership scope SHALL be reproducible under documented clean-checkout bootstrap assumptions so archive-evidence generation remains trustworthy. Unit and integration evidence emitted by the verification scripts SHALL derive reported test counts from actual test results rather than fixed placeholder values. The repository SHALL also provide a supported validation path for frontend typechecking, backend static analysis, and frontend build verification so non-test regressions are caught through the default delivery workflow rather than left to ad hoc local checks. Verification scripts that produce `unit` or `integration` evidence SHALL always emit commit-scoped evidence for the evaluated commit regardless of whether the underlying test command succeeds or fails, and SHALL reflect the real pass/fail outcome in the evidence `status` field rather than hardcoding success semantics.
 
+#### Scenario: Shared integration test database helper is available
+- **WHEN** an integration test file imports the `platform/database` package and calls `NewTestDB(t, ctx)`
+- **THEN** the helper SHALL start a MySQL 8.0 testcontainer with the canonical integration test credentials, connect to it, wait for readiness, apply all migrations, run the full bootstrap seed set, register container and connection cleanup via `t.Cleanup()`, and return a ready-to-use `*sql.DB`
+
 #### Scenario: Unit evidence reports real aggregated counts
 - **WHEN** the unit verification workflow runs backend unit tests and frontend unit tests for a commit
 - **THEN** the resulting `unit` evidence SHALL report `total`, `passed`, `failed`, and `skipped` counts derived from the actual executed test results across the covered unit suites
