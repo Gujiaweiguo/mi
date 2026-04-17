@@ -21,6 +21,7 @@ import (
 	"github.com/Gujiaweiguo/mi/backend/internal/taxexport"
 	"github.com/Gujiaweiguo/mi/backend/internal/workflow"
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 type workflowSyncers struct {
@@ -36,9 +37,13 @@ func (w workflowSyncers) SyncWorkflowState(ctx context.Context, instance *workfl
 	return nil
 }
 
-func NewRouter(cfg *config.Config, db *sql.DB) *gin.Engine {
+func NewRouter(cfg *config.Config, db *sql.DB, logger *zap.Logger) *gin.Engine {
 	router := gin.New()
-	router.Use(gin.Logger(), gin.Recovery())
+	router.Use(
+		middleware.RequestID(),
+		middleware.StructuredLogger(logger),
+		middleware.StructuredRecovery(logger),
+	)
 
 	healthHandler := handlers.NewHealthHandler(cfg, db)
 	authRepository := auth.NewRepository(db)

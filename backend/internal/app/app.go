@@ -95,7 +95,7 @@ func New() (*App, error) {
 	db.SetConnMaxLifetime(5 * time.Minute)
 	db.SetConnMaxIdleTime(1 * time.Minute)
 
-	router := api.NewRouter(cfg, db)
+	router := api.NewRouter(cfg, db, logger)
 
 	server := &http.Server{
 		Addr:              fmt.Sprintf("%s:%d", cfg.Server.Host, cfg.Server.Port),
