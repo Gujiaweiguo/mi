@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"strings"
 	"time"
+
+	"github.com/Gujiaweiguo/mi/backend/internal/pagination"
 )
 
 type Repository struct{ db *sql.DB }
@@ -66,8 +68,8 @@ func (r *Repository) FindTemplateByCode(ctx context.Context, code string) (*Temp
 	return &template, nil
 }
 
-func (r *Repository) ListTemplates(ctx context.Context, filter ListFilter) (*ListResult, error) {
-	page, pageSize := normalizePage(filter.Page, filter.PageSize)
+func (r *Repository) ListTemplates(ctx context.Context, filter ListFilter) (*pagination.ListResult[Template], error) {
+	page, pageSize := pagination.NormalizePage(filter.Page, filter.PageSize)
 	var total int64
 	if err := r.db.QueryRowContext(ctx, `SELECT COUNT(*) FROM print_templates`).Scan(&total); err != nil {
 		return nil, fmt.Errorf("count print templates: %w", err)
@@ -97,20 +99,7 @@ func (r *Repository) ListTemplates(ctx context.Context, filter ListFilter) (*Lis
 	if err := rows.Err(); err != nil {
 		return nil, fmt.Errorf("iterate print templates: %w", err)
 	}
-	return &ListResult{Items: items, Total: total, Page: page, PageSize: pageSize}, nil
-}
-
-func normalizePage(page, pageSize int) (int, int) {
-	if page < 1 {
-		page = DefaultPage
-	}
-	if pageSize < 1 {
-		pageSize = DefaultPageSize
-	}
-	if pageSize > MaxPageSize {
-		pageSize = MaxPageSize
-	}
-	return page, pageSize
+	return &pagination.ListResult[Template]{Items: items, Total: total, Page: page, PageSize: pageSize}, nil
 }
 
 func joinLines(lines []string) string {

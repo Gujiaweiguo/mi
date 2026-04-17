@@ -7,6 +7,8 @@ import (
 	"sort"
 	"strings"
 	"time"
+
+	"github.com/Gujiaweiguo/mi/backend/internal/pagination"
 )
 
 type Repository struct {
@@ -129,8 +131,8 @@ func (r *Repository) GetRun(ctx context.Context, runID int64) (*Run, error) {
 	return &run, nil
 }
 
-func (r *Repository) ListChargeLines(ctx context.Context, filter ChargeListFilter) (*ChargeListResult, error) {
-	page, pageSize := normalizePage(filter.Page, filter.PageSize)
+func (r *Repository) ListChargeLines(ctx context.Context, filter ChargeListFilter) (*pagination.ListResult[ChargeLine], error) {
+	page, pageSize := pagination.NormalizePage(filter.Page, filter.PageSize)
 	conditions := []string{"1=1"}
 	args := make([]any, 0)
 	if filter.LeaseContractID != nil {
@@ -180,7 +182,7 @@ func (r *Repository) ListChargeLines(ctx context.Context, filter ChargeListFilte
 		return nil, fmt.Errorf("iterate billing charge lines: %w", err)
 	}
 
-	return &ChargeListResult{Items: items, Total: total, Page: page, PageSize: pageSize}, nil
+	return &pagination.ListResult[ChargeLine]{Items: items, Total: total, Page: page, PageSize: pageSize}, nil
 }
 
 func (r *Repository) GetChargeLinesByIDs(ctx context.Context, ids []int64) ([]ChargeLine, error) {
@@ -223,19 +225,6 @@ func (r *Repository) GetChargeLinesByIDs(ctx context.Context, ids []int64) ([]Ch
 	}
 	sort.Slice(items, func(i, j int) bool { return order[items[i].ID] < order[items[j].ID] })
 	return items, nil
-}
-
-func normalizePage(page, pageSize int) (int, int) {
-	if page < 1 {
-		page = DefaultPage
-	}
-	if pageSize < 1 {
-		pageSize = DefaultPageSize
-	}
-	if pageSize > MaxPageSize {
-		pageSize = MaxPageSize
-	}
-	return page, pageSize
 }
 
 func nullTimePointer(value sql.NullTime) *time.Time {

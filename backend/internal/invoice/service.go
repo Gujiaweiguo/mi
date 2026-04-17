@@ -11,6 +11,7 @@ import (
 
 	"github.com/Gujiaweiguo/mi/backend/internal/billing"
 	"github.com/Gujiaweiguo/mi/backend/internal/lease"
+	"github.com/Gujiaweiguo/mi/backend/internal/pagination"
 	"github.com/Gujiaweiguo/mi/backend/internal/workflow"
 )
 
@@ -89,7 +90,7 @@ func (s *Service) GetDocument(ctx context.Context, documentID int64) (*Document,
 	return document, nil
 }
 
-func (s *Service) ListDocuments(ctx context.Context, filter ListFilter) (*ListResult, error) {
+func (s *Service) ListDocuments(ctx context.Context, filter ListFilter) (*pagination.ListResult[Document], error) {
 	return s.repository.List(ctx, filter)
 }
 
@@ -332,7 +333,7 @@ func (s *Service) GetReceivable(ctx context.Context, documentID int64) (*Receiva
 	return summary, nil
 }
 
-func (s *Service) ListReceivables(ctx context.Context, filter ReceivableFilter) (*ReceivableListResult, error) {
+func (s *Service) ListReceivables(ctx context.Context, filter ReceivableFilter) (*pagination.ListResult[ReceivableListItem], error) {
 	return s.repository.ListReceivables(ctx, filter)
 }
 

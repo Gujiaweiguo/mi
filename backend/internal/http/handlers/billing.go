@@ -8,6 +8,7 @@ import (
 
 	"github.com/Gujiaweiguo/mi/backend/internal/billing"
 	"github.com/Gujiaweiguo/mi/backend/internal/http/middleware"
+	"github.com/Gujiaweiguo/mi/backend/internal/pagination"
 	"github.com/gin-gonic/gin"
 )
 
@@ -80,7 +81,7 @@ func (h *BillingHandler) ListCharges(c *gin.Context) {
 		}
 		filter.PeriodEnd = &periodEnd
 	}
-	if pageText := c.DefaultQuery("page", strconv.Itoa(billing.DefaultPage)); pageText != "" {
+	if pageText := c.DefaultQuery("page", strconv.Itoa(pagination.DefaultPage)); pageText != "" {
 		page, err := strconv.Atoi(pageText)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"message": "invalid page"})
@@ -88,7 +89,7 @@ func (h *BillingHandler) ListCharges(c *gin.Context) {
 		}
 		filter.Page = page
 	}
-	if pageSizeText := c.DefaultQuery("page_size", strconv.Itoa(billing.DefaultPageSize)); pageSizeText != "" {
+	if pageSizeText := c.DefaultQuery("page_size", strconv.Itoa(pagination.DefaultPageSize)); pageSizeText != "" {
 		pageSize, err := strconv.Atoi(pageSizeText)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"message": "invalid page size"})
@@ -103,7 +104,7 @@ func (h *BillingHandler) ListCharges(c *gin.Context) {
 		return
 	}
 	if result == nil {
-		result = &billing.ChargeListResult{Items: []billing.ChargeLine{}, Total: 0, Page: billing.DefaultPage, PageSize: billing.DefaultPageSize}
+		result = &pagination.ListResult[billing.ChargeLine]{Items: []billing.ChargeLine{}, Total: 0, Page: pagination.DefaultPage, PageSize: pagination.DefaultPageSize}
 	}
 	if result.Items == nil {
 		result.Items = []billing.ChargeLine{}

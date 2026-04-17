@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"strings"
 	"time"
+
+	"github.com/Gujiaweiguo/mi/backend/internal/pagination"
 )
 
 type Repository struct {
@@ -82,8 +84,8 @@ func (r *Repository) FindByIDForUpdate(ctx context.Context, tx *sql.Tx, id int64
 	return contract, nil
 }
 
-func (r *Repository) List(ctx context.Context, filter ListFilter) (*ListResult, error) {
-	page, pageSize := normalizePage(filter.Page, filter.PageSize)
+func (r *Repository) List(ctx context.Context, filter ListFilter) (*pagination.ListResult[Summary], error) {
+	page, pageSize := pagination.NormalizePage(filter.Page, filter.PageSize)
 	conditions := []string{"1=1"}
 	args := make([]any, 0)
 
@@ -147,7 +149,7 @@ func (r *Repository) List(ctx context.Context, filter ListFilter) (*ListResult, 
 		return nil, fmt.Errorf("iterate lease contract summaries: %w", err)
 	}
 
-	return &ListResult{Items: items, Total: total, Page: page, PageSize: pageSize}, nil
+	return &pagination.ListResult[Summary]{Items: items, Total: total, Page: page, PageSize: pageSize}, nil
 }
 
 func (r *Repository) AttachWorkflowInstance(ctx context.Context, tx *sql.Tx, leaseID, workflowInstanceID, updatedBy int64, submittedAt time.Time) error {
@@ -326,19 +328,6 @@ func (r *Repository) listTerms(ctx context.Context, db queryer, leaseID int64) (
 		terms = append(terms, term)
 	}
 	return terms, rows.Err()
-}
-
-func normalizePage(page, pageSize int) (int, int) {
-	if page < 1 {
-		page = DefaultPage
-	}
-	if pageSize < 1 {
-		pageSize = DefaultPageSize
-	}
-	if pageSize > MaxPageSize {
-		pageSize = MaxPageSize
-	}
-	return page, pageSize
 }
 
 func nullInt64Pointer(value sql.NullInt64) *int64 {

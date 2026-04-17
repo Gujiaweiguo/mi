@@ -3,10 +3,7 @@ package docoutput
 import "time"
 
 const (
-	DateLayout      = "2006-01-02"
-	DefaultPage     = 1
-	DefaultPageSize = 20
-	MaxPageSize     = 100
+	DateLayout = "2006-01-02"
 )
 
 type TemplateStatus string
@@ -55,13 +52,6 @@ type UpsertTemplateInput struct {
 type ListFilter struct {
 	Page     int
 	PageSize int
-}
-
-type ListResult struct {
-	Items    []Template `json:"items"`
-	Total    int64      `json:"total"`
-	Page     int        `json:"page"`
-	PageSize int        `json:"page_size"`
 }
 
 type RenderInput struct {

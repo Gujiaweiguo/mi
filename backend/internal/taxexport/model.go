@@ -3,10 +3,7 @@ package taxexport
 import "time"
 
 const (
-	DateLayout      = "2006-01-02"
-	DefaultPage     = 1
-	DefaultPageSize = 20
-	MaxPageSize     = 100
+	DateLayout = "2006-01-02"
 )
 
 type RuleSetStatus string
@@ -73,13 +70,6 @@ type UpsertRuleInput struct {
 type ListFilter struct {
 	Page     int
 	PageSize int
-}
-
-type ListResult struct {
-	Items    []RuleSet `json:"items"`
-	Total    int64     `json:"total"`
-	Page     int       `json:"page"`
-	PageSize int       `json:"page_size"`
 }
 
 type ExportInput struct {

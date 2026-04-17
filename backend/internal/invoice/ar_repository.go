@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"strings"
 	"time"
+
+	"github.com/Gujiaweiguo/mi/backend/internal/pagination"
 )
 
 type receivableLeaseContext struct {
@@ -172,8 +174,8 @@ func (r *Repository) GetReceivableSummary(ctx context.Context, documentID int64)
 	}, nil
 }
 
-func (r *Repository) ListReceivables(ctx context.Context, filter ReceivableFilter) (*ReceivableListResult, error) {
-	page, pageSize := normalizePage(filter.Page, filter.PageSize)
+func (r *Repository) ListReceivables(ctx context.Context, filter ReceivableFilter) (*pagination.ListResult[ReceivableListItem], error) {
+	page, pageSize := pagination.NormalizePage(filter.Page, filter.PageSize)
 	conditions := []string{"ai.outstanding_amount > 0"}
 	args := make([]any, 0)
 	if filter.CustomerID != nil {
@@ -248,7 +250,7 @@ func (r *Repository) ListReceivables(ctx context.Context, filter ReceivableFilte
 	if err := rows.Err(); err != nil {
 		return nil, fmt.Errorf("iterate receivables: %w", err)
 	}
-	return &ReceivableListResult{Items: items, Total: total, Page: page, PageSize: pageSize}, nil
+	return &pagination.ListResult[ReceivableListItem]{Items: items, Total: total, Page: page, PageSize: pageSize}, nil
 }
 
 func (r *Repository) getOpenItemsByDocumentID(ctx context.Context, documentID int64) ([]OpenItem, error) {

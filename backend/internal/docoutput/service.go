@@ -13,6 +13,7 @@ import (
 
 	"github.com/Gujiaweiguo/mi/backend/internal/config"
 	"github.com/Gujiaweiguo/mi/backend/internal/invoice"
+	"github.com/Gujiaweiguo/mi/backend/internal/pagination"
 )
 
 var (
@@ -51,7 +52,7 @@ func (s *Service) UpsertTemplate(ctx context.Context, input UpsertTemplateInput)
 	return s.repository.FindTemplateByCode(ctx, templateValue.Code)
 }
 
-func (s *Service) ListTemplates(ctx context.Context, filter ListFilter) (*ListResult, error) {
+func (s *Service) ListTemplates(ctx context.Context, filter ListFilter) (*pagination.ListResult[Template], error) {
 	return s.repository.ListTemplates(ctx, filter)
 }
 

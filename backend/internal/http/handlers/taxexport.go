@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/Gujiaweiguo/mi/backend/internal/http/middleware"
+	"github.com/Gujiaweiguo/mi/backend/internal/pagination"
 	"github.com/Gujiaweiguo/mi/backend/internal/taxexport"
 	"github.com/gin-gonic/gin"
 )
@@ -64,7 +65,7 @@ func (h *TaxExportHandler) UpsertRuleSet(c *gin.Context) {
 
 func (h *TaxExportHandler) ListRuleSets(c *gin.Context) {
 	filter := taxexport.ListFilter{}
-	if pageText := c.DefaultQuery("page", strconv.Itoa(taxexport.DefaultPage)); pageText != "" {
+	if pageText := c.DefaultQuery("page", strconv.Itoa(pagination.DefaultPage)); pageText != "" {
 		page, err := strconv.Atoi(pageText)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"message": "invalid page"})
@@ -72,7 +73,7 @@ func (h *TaxExportHandler) ListRuleSets(c *gin.Context) {
 		}
 		filter.Page = page
 	}
-	if pageSizeText := c.DefaultQuery("page_size", strconv.Itoa(taxexport.DefaultPageSize)); pageSizeText != "" {
+	if pageSizeText := c.DefaultQuery("page_size", strconv.Itoa(pagination.DefaultPageSize)); pageSizeText != "" {
 		pageSize, err := strconv.Atoi(pageSizeText)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"message": "invalid page size"})
@@ -86,7 +87,7 @@ func (h *TaxExportHandler) ListRuleSets(c *gin.Context) {
 		return
 	}
 	if result == nil {
-		result = &taxexport.ListResult{Items: []taxexport.RuleSet{}, Total: 0, Page: taxexport.DefaultPage, PageSize: taxexport.DefaultPageSize}
+		result = &pagination.ListResult[taxexport.RuleSet]{Items: []taxexport.RuleSet{}, Total: 0, Page: pagination.DefaultPage, PageSize: pagination.DefaultPageSize}
 	}
 	if result.Items == nil {
 		result.Items = []taxexport.RuleSet{}

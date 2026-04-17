@@ -9,9 +9,6 @@ const (
 	DocumentTypeInvoice    DocumentType = "invoice"
 	ApprovalDefinitionCode              = "invoice-approval"
 	DateLayout                          = "2006-01-02"
-	DefaultPage                         = 1
-	DefaultPageSize                     = 20
-	MaxPageSize                         = 100
 )
 
 type Status string
@@ -174,13 +171,6 @@ type ReceivableFilter struct {
 	PageSize     int
 }
 
-type ReceivableListResult struct {
-	Items    []ReceivableListItem `json:"items"`
-	Total    int64                `json:"total"`
-	Page     int                  `json:"page"`
-	PageSize int                  `json:"page_size"`
-}
-
 type ListFilter struct {
 	DocumentType    *DocumentType
 	Status          *Status
@@ -188,11 +178,4 @@ type ListFilter struct {
 	BillingRunID    *int64
 	Page            int
 	PageSize        int
-}
-
-type ListResult struct {
-	Items    []Document `json:"items"`
-	Total    int64      `json:"total"`
-	Page     int        `json:"page"`
-	PageSize int        `json:"page_size"`
 }

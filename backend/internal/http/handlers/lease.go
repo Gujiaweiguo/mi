@@ -8,6 +8,7 @@ import (
 
 	"github.com/Gujiaweiguo/mi/backend/internal/http/middleware"
 	"github.com/Gujiaweiguo/mi/backend/internal/lease"
+	"github.com/Gujiaweiguo/mi/backend/internal/pagination"
 	"github.com/Gujiaweiguo/mi/backend/internal/workflow"
 	"github.com/gin-gonic/gin"
 )
@@ -148,7 +149,7 @@ func (h *LeaseHandler) List(c *gin.Context) {
 		}
 		filter.StoreID = &storeID
 	}
-	if pageText := c.DefaultQuery("page", strconv.Itoa(lease.DefaultPage)); pageText != "" {
+	if pageText := c.DefaultQuery("page", strconv.Itoa(pagination.DefaultPage)); pageText != "" {
 		page, err := strconv.Atoi(pageText)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"message": "invalid page"})
@@ -156,7 +157,7 @@ func (h *LeaseHandler) List(c *gin.Context) {
 		}
 		filter.Page = page
 	}
-	if pageSizeText := c.DefaultQuery("page_size", strconv.Itoa(lease.DefaultPageSize)); pageSizeText != "" {
+	if pageSizeText := c.DefaultQuery("page_size", strconv.Itoa(pagination.DefaultPageSize)); pageSizeText != "" {
 		pageSize, err := strconv.Atoi(pageSizeText)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"message": "invalid page size"})
@@ -171,7 +172,7 @@ func (h *LeaseHandler) List(c *gin.Context) {
 		return
 	}
 	if result == nil {
-		result = &lease.ListResult{Items: []lease.Summary{}, Total: 0, Page: lease.DefaultPage, PageSize: lease.DefaultPageSize}
+		result = &pagination.ListResult[lease.Summary]{Items: []lease.Summary{}, Total: 0, Page: pagination.DefaultPage, PageSize: pagination.DefaultPageSize}
 	}
 	if result.Items == nil {
 		result.Items = []lease.Summary{}

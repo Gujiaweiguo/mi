@@ -7,6 +7,7 @@ import (
 
 	"github.com/Gujiaweiguo/mi/backend/internal/docoutput"
 	"github.com/Gujiaweiguo/mi/backend/internal/http/middleware"
+	"github.com/Gujiaweiguo/mi/backend/internal/pagination"
 	"github.com/gin-gonic/gin"
 )
 
@@ -53,7 +54,7 @@ func (h *DocOutputHandler) UpsertTemplate(c *gin.Context) {
 
 func (h *DocOutputHandler) ListTemplates(c *gin.Context) {
 	filter := docoutput.ListFilter{}
-	if pageText := c.DefaultQuery("page", strconv.Itoa(docoutput.DefaultPage)); pageText != "" {
+	if pageText := c.DefaultQuery("page", strconv.Itoa(pagination.DefaultPage)); pageText != "" {
 		page, err := strconv.Atoi(pageText)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"message": "invalid page"})
@@ -61,7 +62,7 @@ func (h *DocOutputHandler) ListTemplates(c *gin.Context) {
 		}
 		filter.Page = page
 	}
-	if pageSizeText := c.DefaultQuery("page_size", strconv.Itoa(docoutput.DefaultPageSize)); pageSizeText != "" {
+	if pageSizeText := c.DefaultQuery("page_size", strconv.Itoa(pagination.DefaultPageSize)); pageSizeText != "" {
 		pageSize, err := strconv.Atoi(pageSizeText)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"message": "invalid page size"})
@@ -75,7 +76,7 @@ func (h *DocOutputHandler) ListTemplates(c *gin.Context) {
 		return
 	}
 	if result == nil {
-		result = &docoutput.ListResult{Items: []docoutput.Template{}, Total: 0, Page: docoutput.DefaultPage, PageSize: docoutput.DefaultPageSize}
+		result = &pagination.ListResult[docoutput.Template]{Items: []docoutput.Template{}, Total: 0, Page: pagination.DefaultPage, PageSize: pagination.DefaultPageSize}
 	}
 	if result.Items == nil {
 		result.Items = []docoutput.Template{}

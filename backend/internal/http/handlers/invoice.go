@@ -8,6 +8,7 @@ import (
 
 	"github.com/Gujiaweiguo/mi/backend/internal/http/middleware"
 	"github.com/Gujiaweiguo/mi/backend/internal/invoice"
+	"github.com/Gujiaweiguo/mi/backend/internal/pagination"
 	"github.com/Gujiaweiguo/mi/backend/internal/workflow"
 	"github.com/gin-gonic/gin"
 )
@@ -101,7 +102,7 @@ func (h *InvoiceHandler) List(c *gin.Context) {
 		}
 		filter.BillingRunID = &runID
 	}
-	if pageText := c.DefaultQuery("page", strconv.Itoa(invoice.DefaultPage)); pageText != "" {
+	if pageText := c.DefaultQuery("page", strconv.Itoa(pagination.DefaultPage)); pageText != "" {
 		page, err := strconv.Atoi(pageText)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"message": "invalid page"})
@@ -109,7 +110,7 @@ func (h *InvoiceHandler) List(c *gin.Context) {
 		}
 		filter.Page = page
 	}
-	if pageSizeText := c.DefaultQuery("page_size", strconv.Itoa(invoice.DefaultPageSize)); pageSizeText != "" {
+	if pageSizeText := c.DefaultQuery("page_size", strconv.Itoa(pagination.DefaultPageSize)); pageSizeText != "" {
 		pageSize, err := strconv.Atoi(pageSizeText)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"message": "invalid page size"})
@@ -123,7 +124,7 @@ func (h *InvoiceHandler) List(c *gin.Context) {
 		return
 	}
 	if result == nil {
-		result = &invoice.ListResult{Items: []invoice.Document{}, Total: 0, Page: invoice.DefaultPage, PageSize: invoice.DefaultPageSize}
+		result = &pagination.ListResult[invoice.Document]{Items: []invoice.Document{}, Total: 0, Page: pagination.DefaultPage, PageSize: pagination.DefaultPageSize}
 	}
 	if result.Items == nil {
 		result.Items = []invoice.Document{}
@@ -283,7 +284,7 @@ func (h *InvoiceHandler) ListReceivables(c *gin.Context) {
 		}
 		filter.DueDateEnd = &parsed
 	}
-	if pageText := c.DefaultQuery("page", strconv.Itoa(invoice.DefaultPage)); pageText != "" {
+	if pageText := c.DefaultQuery("page", strconv.Itoa(pagination.DefaultPage)); pageText != "" {
 		page, err := strconv.Atoi(pageText)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"message": "invalid page"})
@@ -291,7 +292,7 @@ func (h *InvoiceHandler) ListReceivables(c *gin.Context) {
 		}
 		filter.Page = page
 	}
-	if pageSizeText := c.DefaultQuery("page_size", strconv.Itoa(invoice.DefaultPageSize)); pageSizeText != "" {
+	if pageSizeText := c.DefaultQuery("page_size", strconv.Itoa(pagination.DefaultPageSize)); pageSizeText != "" {
 		pageSize, err := strconv.Atoi(pageSizeText)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"message": "invalid page size"})
@@ -305,7 +306,7 @@ func (h *InvoiceHandler) ListReceivables(c *gin.Context) {
 		return
 	}
 	if result == nil {
-		result = &invoice.ReceivableListResult{Items: []invoice.ReceivableListItem{}, Total: 0, Page: invoice.DefaultPage, PageSize: invoice.DefaultPageSize}
+		result = &pagination.ListResult[invoice.ReceivableListItem]{Items: []invoice.ReceivableListItem{}, Total: 0, Page: pagination.DefaultPage, PageSize: pagination.DefaultPageSize}
 	}
 	if result.Items == nil {
 		result.Items = []invoice.ReceivableListItem{}

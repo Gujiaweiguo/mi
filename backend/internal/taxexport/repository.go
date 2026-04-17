@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"strings"
 	"time"
+
+	"github.com/Gujiaweiguo/mi/backend/internal/pagination"
 )
 
 type Repository struct{ db *sql.DB }
@@ -54,8 +56,8 @@ func (r *Repository) UpsertRuleSet(ctx context.Context, tx *sql.Tx, ruleSet *Rul
 	return nil
 }
 
-func (r *Repository) ListRuleSets(ctx context.Context, filter ListFilter) (*ListResult, error) {
-	page, pageSize := normalizePage(filter.Page, filter.PageSize)
+func (r *Repository) ListRuleSets(ctx context.Context, filter ListFilter) (*pagination.ListResult[RuleSet], error) {
+	page, pageSize := pagination.NormalizePage(filter.Page, filter.PageSize)
 	var total int64
 	if err := r.db.QueryRowContext(ctx, `SELECT COUNT(*) FROM tax_voucher_rule_sets`).Scan(&total); err != nil {
 		return nil, fmt.Errorf("count tax voucher rule sets: %w", err)
@@ -86,7 +88,7 @@ func (r *Repository) ListRuleSets(ctx context.Context, filter ListFilter) (*List
 		}
 		items[index].Rules = rules
 	}
-	return &ListResult{Items: items, Total: total, Page: page, PageSize: pageSize}, nil
+	return &pagination.ListResult[RuleSet]{Items: items, Total: total, Page: page, PageSize: pageSize}, nil
 }
 
 func (r *Repository) FindRuleSetByCode(ctx context.Context, code string) (*RuleSet, error) {
@@ -179,19 +181,6 @@ func (r *Repository) loadRules(ctx context.Context, ruleSetID int64) ([]Rule, er
 		return nil, fmt.Errorf("iterate tax voucher rules: %w", err)
 	}
 	return rules, nil
-}
-
-func normalizePage(page, pageSize int) (int, int) {
-	if page < 1 {
-		page = DefaultPage
-	}
-	if pageSize < 1 {
-		pageSize = DefaultPageSize
-	}
-	if pageSize > MaxPageSize {
-		pageSize = MaxPageSize
-	}
-	return page, pageSize
 }
 
 func normalizeCode(code string) string { return strings.TrimSpace(code) }

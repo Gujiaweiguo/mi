@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Gujiaweiguo/mi/backend/internal/pagination"
 	"github.com/Gujiaweiguo/mi/backend/internal/workflow"
 	mysql "github.com/go-sql-driver/mysql"
 )
@@ -107,7 +108,7 @@ func (s *Service) CreateAmendment(ctx context.Context, input AmendInput) (*Contr
 	return s.repository.FindByID(ctx, contract.ID)
 }
 
-func (s *Service) ListLeases(ctx context.Context, filter ListFilter) (*ListResult, error) {
+func (s *Service) ListLeases(ctx context.Context, filter ListFilter) (*pagination.ListResult[Summary], error) {
 	return s.repository.List(ctx, filter)
 }
 

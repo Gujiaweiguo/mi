@@ -8,6 +8,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/Gujiaweiguo/mi/backend/internal/pagination"
 	"github.com/xuri/excelize/v2"
 )
 
@@ -41,7 +42,7 @@ func (s *Service) UpsertRuleSet(ctx context.Context, input UpsertRuleSetInput) (
 	return s.repository.FindRuleSetByCode(ctx, ruleSet.Code)
 }
 
-func (s *Service) ListRuleSets(ctx context.Context, filter ListFilter) (*ListResult, error) {
+func (s *Service) ListRuleSets(ctx context.Context, filter ListFilter) (*pagination.ListResult[RuleSet], error) {
 	return s.repository.ListRuleSets(ctx, filter)
 }
 

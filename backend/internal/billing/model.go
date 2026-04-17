@@ -8,9 +8,6 @@ const (
 	RunStatusCompleted RunStatus = "completed"
 	ChargeTypeRent     string    = "rent"
 	DateLayout         string    = "2006-01-02"
-	DefaultPage        int       = 1
-	DefaultPageSize    int       = 20
-	MaxPageSize        int       = 100
 )
 
 type Run struct {
@@ -66,13 +63,6 @@ type ChargeListFilter struct {
 	PeriodEnd       *time.Time
 	Page            int
 	PageSize        int
-}
-
-type ChargeListResult struct {
-	Items    []ChargeLine `json:"items"`
-	Total    int64        `json:"total"`
-	Page     int          `json:"page"`
-	PageSize int          `json:"page_size"`
 }
 
 type chargeCandidate struct {

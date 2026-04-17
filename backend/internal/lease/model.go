@@ -17,9 +17,6 @@ const (
 	ApprovalDefinitionCode = "lease-approval"
 	ChangeDefinitionCode   = "lease-change"
 	DateLayout             = "2006-01-02"
-	DefaultPage            = 1
-	DefaultPageSize        = 20
-	MaxPageSize            = 100
 )
 
 type TermType string
@@ -111,13 +108,6 @@ type ListFilter struct {
 	LeaseNo  string
 	Page     int
 	PageSize int
-}
-
-type ListResult struct {
-	Items    []Summary `json:"items"`
-	Total    int64     `json:"total"`
-	Page     int       `json:"page"`
-	PageSize int       `json:"page_size"`
 }
 
 type CreateDraftInput struct {

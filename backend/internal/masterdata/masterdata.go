@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Gujiaweiguo/mi/backend/internal/pagination"
 	mysql "github.com/go-sql-driver/mysql"
 )
 
@@ -19,20 +20,6 @@ var (
 
 type ListFilter struct {
 	Query    string
-	Page     int
-	PageSize int
-}
-
-type CustomerListResult struct {
-	Items    []Customer
-	Total    int
-	Page     int
-	PageSize int
-}
-
-type BrandListResult struct {
-	Items    []Brand
-	Total    int
 	Page     int
 	PageSize int
 }
@@ -213,10 +200,10 @@ func (s *Service) UpdateBrand(ctx context.Context, input UpdateBrandInput) (*Bra
 	return item, err
 }
 
-func (s *Service) ListCustomers(ctx context.Context, filter ListFilter) (*CustomerListResult, error) {
+func (s *Service) ListCustomers(ctx context.Context, filter ListFilter) (*pagination.ListResult[Customer], error) {
 	return s.repository.ListCustomers(ctx, normalizeListFilter(filter))
 }
-func (s *Service) ListBrands(ctx context.Context, filter ListFilter) (*BrandListResult, error) {
+func (s *Service) ListBrands(ctx context.Context, filter ListFilter) (*pagination.ListResult[Brand], error) {
 	return s.repository.ListBrands(ctx, normalizeListFilter(filter))
 }
 
@@ -362,7 +349,7 @@ func (r *Repository) FindBrandByID(ctx context.Context, id int64) (*Brand, error
 	return &item, nil
 }
 
-func (r *Repository) ListCustomers(ctx context.Context, filter ListFilter) (*CustomerListResult, error) {
+func (r *Repository) ListCustomers(ctx context.Context, filter ListFilter) (*pagination.ListResult[Customer], error) {
 	whereClause, args := buildSearchClause(filter.Query)
 	countQuery := fmt.Sprintf(`SELECT COUNT(*) FROM customers%s`, whereClause)
 	var total int
@@ -397,10 +384,10 @@ func (r *Repository) ListCustomers(ctx context.Context, filter ListFilter) (*Cus
 	if err := rows.Err(); err != nil {
 		return nil, err
 	}
-	return &CustomerListResult{Items: items, Total: total, Page: filter.Page, PageSize: filter.PageSize}, nil
+	return &pagination.ListResult[Customer]{Items: items, Total: int64(total), Page: filter.Page, PageSize: filter.PageSize}, nil
 }
 
-func (r *Repository) ListBrands(ctx context.Context, filter ListFilter) (*BrandListResult, error) {
+func (r *Repository) ListBrands(ctx context.Context, filter ListFilter) (*pagination.ListResult[Brand], error) {
 	whereClause, args := buildSearchClause(filter.Query)
 	countQuery := fmt.Sprintf(`SELECT COUNT(*) FROM brands%s`, whereClause)
 	var total int
@@ -431,7 +418,7 @@ func (r *Repository) ListBrands(ctx context.Context, filter ListFilter) (*BrandL
 	if err := rows.Err(); err != nil {
 		return nil, err
 	}
-	return &BrandListResult{Items: items, Total: total, Page: filter.Page, PageSize: filter.PageSize}, nil
+	return &pagination.ListResult[Brand]{Items: items, Total: int64(total), Page: filter.Page, PageSize: filter.PageSize}, nil
 }
 
 func (r *Repository) ListUnitRentBudgets(ctx context.Context) ([]UnitRentBudget, error) {
@@ -614,15 +601,7 @@ func scanUnitProspect(row scanner) (UnitProspect, error) {
 
 func normalizeListFilter(filter ListFilter) ListFilter {
 	filter.Query = strings.TrimSpace(filter.Query)
-	if filter.Page <= 0 {
-		filter.Page = 1
-	}
-	if filter.PageSize <= 0 {
-		filter.PageSize = 10
-	}
-	if filter.PageSize > 100 {
-		filter.PageSize = 100
-	}
+	filter.Page, filter.PageSize = pagination.NormalizePage(filter.Page, filter.PageSize)
 	return filter
 }
 

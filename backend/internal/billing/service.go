@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/Gujiaweiguo/mi/backend/internal/lease"
+	"github.com/Gujiaweiguo/mi/backend/internal/pagination"
 	mysql "github.com/go-sql-driver/mysql"
 )
 
@@ -93,7 +94,7 @@ func (s *Service) GenerateCharges(ctx context.Context, input GenerateInput) (*Ge
 	return &GenerateResult{Run: run, Lines: lines, Totals: Totals{Generated: generatedCount, Skipped: skippedCount}}, nil
 }
 
-func (s *Service) ListChargeLines(ctx context.Context, filter ChargeListFilter) (*ChargeListResult, error) {
+func (s *Service) ListChargeLines(ctx context.Context, filter ChargeListFilter) (*pagination.ListResult[ChargeLine], error) {
 	return s.repository.ListChargeLines(ctx, filter)
 }
 
