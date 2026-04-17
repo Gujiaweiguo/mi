@@ -9,6 +9,18 @@ The change SHALL introduce a Vue 3 frontend, a Go modular monolith backend, and 
 - **WHEN** a developer starts the frontend and backend locally with the documented development configuration
 - **THEN** the application SHALL connect to the configured MySQL 8 instance and expose working frontend and backend health endpoints
 
+#### Scenario: Database migrations are idempotent
+- **WHEN** the migration tool is executed against a database that has already been migrated
+- **THEN** the tool SHALL detect previously applied migrations via a tracking table and SHALL skip them without error
+
+#### Scenario: Migration tracking table is maintained
+- **WHEN** a database migration is successfully applied
+- **THEN** the tool SHALL record the migration version and timestamp in a `schema_migrations` tracking table
+
+#### Scenario: Fresh database receives all migrations
+- **WHEN** the migration tool is executed against an empty database
+- **THEN** the tool SHALL apply all pending migrations in order and SHALL record each in the tracking table
+
 ### Requirement: The system SHALL externalize environment configuration and runtime mounts
 The change SHALL define environment-specific configuration with file-based defaults and environment-variable overrides. Test and production environments SHALL mount runtime paths for configuration, logs, generated documents, uploads, and MySQL data. Production runtime mounts SHALL also enforce documented hygiene and permission assumptions so rehearsal and go-live validation are not considered valid under contaminated runtime baselines or unsupported container runtime behavior.
 
