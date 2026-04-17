@@ -1,6 +1,9 @@
 package reporting
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 const (
 	PeriodLayout = "2006-01"
@@ -27,6 +30,7 @@ const (
 	ReportR16 ReportID = "r16"
 	ReportR17 ReportID = "r17"
 	ReportR18 ReportID = "r18"
+	ReportR19 ReportID = "r19"
 )
 
 type QueryInput struct {
@@ -344,4 +348,125 @@ type R12Row struct {
 	ShopTypeName    string
 	OccupancyStatus string
 	AreaTotal       float64
+}
+
+func (r R01Row) ToMap() map[string]any {
+	return map[string]any{"store_name": r.StoreName, "department_name": r.DepartmentName, "rent_status": r.RentStatus, "use_area_total": r.UseAreaTotal}
+}
+
+func (r R02Row) ToMap() map[string]any {
+	return map[string]any{"lease_no": r.LeaseNo, "customer_code": r.CustomerCode, "customer_name": r.CustomerName, "trade_name": r.TradeName, "management_type_name": r.ManagementTypeName, "unit_code": r.UnitCode, "unit_name": r.UnitName, "rent_area": r.RentArea, "brand_name": r.BrandName, "shop_type_name": r.ShopTypeName, "department_name": r.DepartmentName, "store_name": r.StoreName}
+}
+
+func (r R03Row) ToMap() map[string]any {
+	return map[string]any{"shop_type_name": r.ShopTypeName, "rent_area": r.RentArea, "current_sales": r.CurrentSales, "same_period_sales": r.SamePeriodSales, "comparable_sales": r.ComparableSales, "monthly_rent": r.MonthlyRent}
+}
+
+func (r R04Row) ToMap() map[string]any {
+	row := map[string]any{"unit_code": r.UnitCode, "unit_name": r.UnitName, "rent_area": r.RentArea, "shop_type": r.ShopType, "total_sales": r.TotalSales}
+	for day := 1; day <= 31; day++ {
+		row[fmt.Sprintf("day_%02d", day)] = r.DayValue(day)
+	}
+	return row
+}
+
+func (r R05Row) ToMap() map[string]any {
+	return map[string]any{"unit_code": r.UnitCode, "floor_area": r.FloorArea, "budget_unit_price": r.BudgetUnitPrice, "current_lease_price": r.CurrentLeasePrice, "potential_customer": r.PotentialCustomer, "prospect_brand": r.ProspectBrand, "prospect_trade": r.ProspectTrade, "average_ticket": r.AverageTicket, "prospect_rent_price": r.ProspectRentPrice, "rent_increment": r.RentIncrement, "prospect_term_months": r.ProspectTermMonths}
+}
+
+func (r R06Row) ToMap() map[string]any {
+	return map[string]any{"store_name": r.StoreName, "period": r.Period, "period_receivable": r.PeriodReceivable, "period_received": r.PeriodReceived, "monthly_budget": r.MonthlyBudget, "annual_budget": r.AnnualBudget, "ytd_cumulative": r.YTDCumulative}
+}
+
+func (r R07Row) ToMap() map[string]any {
+	return map[string]any{"store_name": r.StoreName, "brand_name": r.BrandName, "annual_total": r.AnnualTotal, "month_01": r.Month01, "month_02": r.Month02, "month_03": r.Month03, "month_04": r.Month04, "month_05": r.Month05, "month_06": r.Month06, "month_07": r.Month07, "month_08": r.Month08, "month_09": r.Month09, "month_10": r.Month10, "month_11": r.Month11, "month_12": r.Month12}
+}
+
+func (b AgingBuckets) ToMap() map[string]any {
+	return map[string]any{
+		"within_one_month":      b.WithinOneMonth,
+		"one_to_two_months":     b.OneToTwoMonths,
+		"two_to_three_months":   b.TwoToThreeMonths,
+		"three_to_six_months":   b.ThreeToSixMonths,
+		"six_to_nine_months":    b.SixToNineMonths,
+		"nine_to_twelve_months": b.NineToTwelveMonths,
+		"one_to_two_years":      b.OneToTwoYears,
+		"two_to_three_years":    b.TwoToThreeYears,
+		"over_three_years":      b.OverThreeYears,
+		"total":                 b.Total,
+	}
+}
+
+func (r R08Row) ToMap() map[string]any {
+	row := r.AgingBuckets.ToMap()
+	row["unit_collection"] = r.UnitCollection
+	row["customer_name"] = r.CustomerName
+	row["trade_name"] = r.TradeName
+	row["department_name"] = r.DepartmentName
+	row["lease_no"] = r.LeaseNo
+	row["deposit_amount"] = r.DepositAmount
+	return row
+}
+
+func (r R09Row) ToMap() map[string]any {
+	row := r.AgingBuckets.ToMap()
+	row["unit_collection"] = r.UnitCollection
+	row["customer_name"] = r.CustomerName
+	row["trade_name"] = r.TradeName
+	row["department_name"] = r.DepartmentName
+	row["lease_no"] = r.LeaseNo
+	row["deposit_amount"] = r.DepositAmount
+	row["charge_type"] = r.ChargeType
+	return row
+}
+
+func (r R10Row) ToMap() map[string]any {
+	row := map[string]any{"store_name": r.StoreName, "year": r.Year, "annual_total": r.MonthlyTotal}
+	for month := 1; month <= 12; month++ {
+		row[fmt.Sprintf("month_%02d", month)] = r.MonthValue(month)
+	}
+	return row
+}
+
+func (r R11Row) ToMap() map[string]any {
+	return map[string]any{"store_name": r.StoreName, "period": r.Period, "leased_area": r.LeasedArea, "total_area": r.TotalArea}
+}
+
+func (r R12Row) ToMap() map[string]any {
+	return map[string]any{"store_name": r.StoreName, "period": r.Period, "shop_type_name": r.ShopTypeName, "occupancy_status": r.OccupancyStatus, "area_total": r.AreaTotal}
+}
+
+func (r R13Row) ToMap() map[string]any {
+	return map[string]any{"store_name": r.StoreName, "shop_type_name": r.ShopTypeName, "period": r.Period, "current_sales": r.CurrentSales, "ytd_sales": r.YTDSales, "prev_month_sales": r.PrevMonthSales, "last_year_ytd_sales": r.LastYearYTDSales}
+}
+
+func (r R14Row) ToMap() map[string]any {
+	return map[string]any{"store_name": r.StoreName, "shop_type_name": r.ShopTypeName, "period": r.Period, "sales_amount": r.SalesAmount, "area_total": r.AreaTotal, "days_in_month": r.DaysInMonth, "efficiency": r.Efficiency}
+}
+
+func (r R15Row) ToMap() map[string]any {
+	return map[string]any{"store_name": r.StoreName, "shop_type_name": r.ShopTypeName, "period": r.Period, "sales_amount": r.SalesAmount, "rent_income": r.RentIncome}
+}
+
+func (r R16Row) ToMap() map[string]any {
+	row := r.AgingBuckets.ToMap()
+	row["department_name"] = r.DepartmentName
+	row["deposit_amount"] = r.DepositAmount
+	return row
+}
+
+func (r R17Row) ToMap() map[string]any {
+	row := r.AgingBuckets.ToMap()
+	row["department_name"] = r.DepartmentName
+	row["deposit_amount"] = r.DepositAmount
+	row["charge_type"] = r.ChargeType
+	return row
+}
+
+func (r R18Row) ToMap() map[string]any {
+	return map[string]any{"customer_name": r.CustomerName, "store_name": r.StoreName, "unit_name": r.UnitName, "brand_name": r.BrandName, "period": r.Period, "rent_area": r.RentArea, "current_sales": r.CurrentSales, "comparable_sales": r.ComparableSales, "same_period_sales": r.SamePeriodSales, "period_receivable": r.PeriodReceivable, "period_received": r.PeriodReceived, "period_arrears": r.PeriodArrears, "cumulative_receivable": r.CumulativeReceivable, "cumulative_arrears": r.CumulativeArrears, "days_in_month": r.DaysInMonth, "efficiency": r.Efficiency}
+}
+
+func (u R19Unit) ToMap() map[string]any {
+	return map[string]any{"unit_code": u.UnitCode, "unit_name": u.UnitName, "floor_area": u.FloorArea, "rent_area": u.RentArea, "rent_status": u.RentStatus, "brand_name": u.BrandName, "customer_name": u.CustomerName, "shop_type_name": u.ShopTypeName, "pos_x": u.PosX, "pos_y": u.PosY, "color_hex": u.ColorHex}
 }
