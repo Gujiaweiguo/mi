@@ -205,6 +205,10 @@ func (s *Service) ExportOperationalDataset(ctx context.Context, input ExportInpu
 		return s.exportInvoices(ctx)
 	case "billing_charges":
 		return s.exportBillingCharges(ctx)
+	case "lease_contracts":
+		return s.exportLeaseContracts(ctx)
+	case "unit_data":
+		return s.exportUnitData(ctx)
 	default:
 		return nil, ErrInvalidDataset
 	}
@@ -262,6 +266,64 @@ func (s *Service) exportBillingCharges(ctx context.Context) (*ExportArtifact, er
 		return nil, fmt.Errorf("write charge export workbook: %w", err)
 	}
 	return &ExportArtifact{FileName: "operational-billing-charges.xlsx", ContentType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", Body: buffer.Bytes()}, nil
+}
+
+func (s *Service) exportLeaseContracts(ctx context.Context) (*ExportArtifact, error) {
+	rows, err := s.repository.ListLeaseContractExportRows(ctx)
+	if err != nil {
+		return nil, err
+	}
+	f := excelize.NewFile()
+	defer func() { _ = f.Close() }()
+	sheet := f.GetSheetName(0)
+	headers := []string{"lease_no", "tenant_name", "store_code", "department_code", "start_date", "end_date", "status", "effective_version"}
+	for index, header := range headers {
+		cell, _ := excelize.CoordinatesToCellName(index+1, 1)
+		_ = f.SetCellValue(sheet, cell, header)
+	}
+	for rowIndex, row := range rows {
+		values := []any{row.LeaseNo, row.TenantName, row.StoreCode, row.DepartmentCode, row.StartDate.Format(DateLayout), row.EndDate.Format(DateLayout), row.Status, row.EffectiveVersion}
+		for colIndex, value := range values {
+			cell, _ := excelize.CoordinatesToCellName(colIndex+1, rowIndex+2)
+			_ = f.SetCellValue(sheet, cell, value)
+		}
+	}
+	buffer, err := f.WriteToBuffer()
+	if err != nil {
+		return nil, fmt.Errorf("write lease contract export workbook: %w", err)
+	}
+	return &ExportArtifact{FileName: "operational-lease-contracts.xlsx", ContentType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", Body: buffer.Bytes()}, nil
+}
+
+func (s *Service) exportUnitData(ctx context.Context) (*ExportArtifact, error) {
+	rows, err := s.repository.ListUnitDataExportRows(ctx)
+	if err != nil {
+		return nil, err
+	}
+	f := excelize.NewFile()
+	defer func() { _ = f.Close() }()
+	sheet := f.GetSheetName(0)
+	headers := []string{"code", "building_code", "floor_code", "location_code", "area_code", "unit_type_code", "floor_area", "use_area", "rent_area", "is_rentable", "status"}
+	for index, header := range headers {
+		cell, _ := excelize.CoordinatesToCellName(index+1, 1)
+		_ = f.SetCellValue(sheet, cell, header)
+	}
+	for rowIndex, row := range rows {
+		isRentable := "false"
+		if row.IsRentable {
+			isRentable = "true"
+		}
+		values := []any{row.Code, row.BuildingCode, row.FloorCode, row.LocationCode, row.AreaCode, row.UnitTypeCode, row.FloorArea, row.UseArea, row.RentArea, isRentable, row.Status}
+		for colIndex, value := range values {
+			cell, _ := excelize.CoordinatesToCellName(colIndex+1, rowIndex+2)
+			_ = f.SetCellValue(sheet, cell, value)
+		}
+	}
+	buffer, err := f.WriteToBuffer()
+	if err != nil {
+		return nil, fmt.Errorf("write unit data export workbook: %w", err)
+	}
+	return &ExportArtifact{FileName: "operational-unit-data.xlsx", ContentType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", Body: buffer.Bytes()}, nil
 }
 
 func writeReferenceSection(f *excelize.File, sheet string, startColumn int, title string, items []ReferenceItem) {

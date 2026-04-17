@@ -132,6 +132,64 @@ func (r *Repository) ListChargeExportRows(ctx context.Context) ([]exportChargeRo
 	return items, nil
 }
 
+func (r *Repository) ListLeaseContractExportRows(ctx context.Context) ([]exportLeaseContractRow, error) {
+	rows, err := r.db.QueryContext(ctx, `
+		SELECT lc.lease_no, lc.tenant_name, s.code AS store_code, d.code AS department_code,
+		       lc.start_date, lc.end_date, lc.status, lc.effective_version
+		FROM lease_contracts lc
+		INNER JOIN stores s ON s.id = lc.store_id
+		INNER JOIN departments d ON d.id = lc.department_id
+		ORDER BY lc.id
+	`)
+	if err != nil {
+		return nil, fmt.Errorf("list lease contract export rows: %w", err)
+	}
+	defer rows.Close()
+	items := make([]exportLeaseContractRow, 0)
+	for rows.Next() {
+		var item exportLeaseContractRow
+		if err := rows.Scan(&item.LeaseNo, &item.TenantName, &item.StoreCode, &item.DepartmentCode, &item.StartDate, &item.EndDate, &item.Status, &item.EffectiveVersion); err != nil {
+			return nil, fmt.Errorf("scan lease contract export row: %w", err)
+		}
+		items = append(items, item)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("iterate lease contract export rows: %w", err)
+	}
+	return items, nil
+}
+
+func (r *Repository) ListUnitDataExportRows(ctx context.Context) ([]exportUnitDataRow, error) {
+	rows, err := r.db.QueryContext(ctx, `
+		SELECT u.code, b.code AS building_code, f.code AS floor_code, l.code AS location_code,
+		       a.code AS area_code, ut.code AS unit_type_code,
+		       u.floor_area, u.use_area, u.rent_area, u.is_rentable, u.status
+		FROM units u
+		INNER JOIN buildings b ON b.id = u.building_id
+		INNER JOIN floors f ON f.id = u.floor_id
+		INNER JOIN locations l ON l.id = u.location_id
+		INNER JOIN areas a ON a.id = u.area_id
+		INNER JOIN unit_types ut ON ut.id = u.unit_type_id
+		ORDER BY u.id
+	`)
+	if err != nil {
+		return nil, fmt.Errorf("list unit data export rows: %w", err)
+	}
+	defer rows.Close()
+	items := make([]exportUnitDataRow, 0)
+	for rows.Next() {
+		var item exportUnitDataRow
+		if err := rows.Scan(&item.Code, &item.BuildingCode, &item.FloorCode, &item.LocationCode, &item.AreaCode, &item.UnitTypeCode, &item.FloorArea, &item.UseArea, &item.RentArea, &item.IsRentable, &item.Status); err != nil {
+			return nil, fmt.Errorf("scan unit data export row: %w", err)
+		}
+		items = append(items, item)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("iterate unit data export rows: %w", err)
+	}
+	return items, nil
+}
+
 func loadReferenceItems(ctx context.Context, db *sql.DB, query string) ([]ReferenceItem, error) {
 	rows, err := db.QueryContext(ctx, query)
 	if err != nil {

@@ -106,3 +106,28 @@ type exportChargeRow struct {
 	UnitAmount   float64
 	Amount       float64
 }
+
+type exportLeaseContractRow struct {
+	LeaseNo          string
+	TenantName       string
+	StoreCode        string
+	DepartmentCode   string
+	StartDate        time.Time
+	EndDate          time.Time
+	Status           string
+	EffectiveVersion int
+}
+
+type exportUnitDataRow struct {
+	Code         string
+	BuildingCode string
+	FloorCode    string
+	LocationCode string
+	AreaCode     string
+	UnitTypeCode string
+	FloorArea    float64
+	UseArea      float64
+	RentArea     float64
+	IsRentable   bool
+	Status       string
+}
