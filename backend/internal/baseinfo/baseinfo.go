@@ -268,12 +268,13 @@ func (r *Repository) List(ctx context.Context, config entityConfig) ([]Reference
 }
 
 func (r *Repository) Create(ctx context.Context, config entityConfig, input CatalogInput) (*ReferenceCatalogItem, error) {
-	id, err := r.nextID(ctx, config.table)
+	query, args := buildInsertQuery(config, input)
+	result, err := r.db.ExecContext(ctx, query, args...)
 	if err != nil {
 		return nil, err
 	}
-	query, args := buildInsertQuery(config, id, input)
-	if _, err := r.db.ExecContext(ctx, query, args...); err != nil {
+	id, err := result.LastInsertId()
+	if err != nil {
 		return nil, err
 	}
 	return r.FindByID(ctx, config, id)
@@ -308,19 +309,10 @@ func (r *Repository) FindByID(ctx context.Context, config entityConfig, id int64
 	return &item, nil
 }
 
-func (r *Repository) nextID(ctx context.Context, table string) (int64, error) {
-	var id int64
-	query := fmt.Sprintf(`SELECT COALESCE(MAX(id), 0) + 1 FROM %s`, table)
-	if err := r.db.QueryRowContext(ctx, query).Scan(&id); err != nil {
-		return 0, err
-	}
-	return id, nil
-}
-
-func buildInsertQuery(config entityConfig, id int64, input CatalogInput) (string, []any) {
-	columns := []string{"id", "code", "name"}
-	placeholders := []string{"?", "?", "?"}
-	args := []any{id, input.Code, input.Name}
+func buildInsertQuery(config entityConfig, input CatalogInput) (string, []any) {
+	columns := []string{"code", "name"}
+	placeholders := []string{"?", "?"}
+	args := []any{input.Code, input.Name}
 	if config.hasColor {
 		columns = append(columns, "color_hex")
 		placeholders = append(placeholders, "?")

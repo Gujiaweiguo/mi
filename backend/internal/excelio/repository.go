@@ -52,30 +52,36 @@ func (r *Repository) UpsertUnits(ctx context.Context, rows []UnitImportRow, refs
 		return fmt.Errorf("begin unit import transaction: %w", err)
 	}
 	defer func() { _ = tx.Rollback() }()
-	nextID, err := nextUnitID(ctx, tx)
-	if err != nil {
-		return err
-	}
 	buildingByCode := referenceByCode(refs.Buildings)
 	floorByCode := referenceByCode(refs.Floors)
 	locationByCode := referenceByCode(refs.Locations)
 	areaByCode := referenceByCode(refs.Areas)
 	unitTypeByCode := referenceByCode(refs.UnitTypes)
-	for index, row := range rows {
+	for _, row := range rows {
 		unitID, err := existingUnitID(ctx, tx, row.Code)
 		if err != nil {
 			return err
 		}
 		if unitID == 0 {
-			unitID = nextID + int64(index)
-		}
-		_, err = tx.ExecContext(ctx, `
-			INSERT INTO units (id, building_id, floor_id, location_id, area_id, unit_type_id, code, floor_area, use_area, rent_area, is_rentable, status)
-			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-			ON DUPLICATE KEY UPDATE building_id = VALUES(building_id), floor_id = VALUES(floor_id), location_id = VALUES(location_id), area_id = VALUES(area_id), unit_type_id = VALUES(unit_type_id), floor_area = VALUES(floor_area), use_area = VALUES(use_area), rent_area = VALUES(rent_area), is_rentable = VALUES(is_rentable), status = VALUES(status)
-		`, unitID, buildingByCode[row.BuildingCode].ID, floorByCode[row.FloorCode].ID, locationByCode[row.LocationCode].ID, areaByCode[row.AreaCode].ID, unitTypeByCode[row.UnitTypeCode].ID, row.Code, row.FloorArea, row.UseArea, row.RentArea, row.IsRentable, row.Status)
-		if err != nil {
-			return fmt.Errorf("upsert unit %s: %w", row.Code, err)
+			result, err := tx.ExecContext(ctx, `
+				INSERT INTO units (building_id, floor_id, location_id, area_id, unit_type_id, code, floor_area, use_area, rent_area, is_rentable, status)
+				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+			`, buildingByCode[row.BuildingCode].ID, floorByCode[row.FloorCode].ID, locationByCode[row.LocationCode].ID, areaByCode[row.AreaCode].ID, unitTypeByCode[row.UnitTypeCode].ID, row.Code, row.FloorArea, row.UseArea, row.RentArea, row.IsRentable, row.Status)
+			if err != nil {
+				return fmt.Errorf("insert unit %s: %w", row.Code, err)
+			}
+			unitID, err = result.LastInsertId()
+			if err != nil {
+				return fmt.Errorf("last insert id for unit %s: %w", row.Code, err)
+			}
+		} else {
+			_, err = tx.ExecContext(ctx, `
+				UPDATE units SET building_id = ?, floor_id = ?, location_id = ?, area_id = ?, unit_type_id = ?, floor_area = ?, use_area = ?, rent_area = ?, is_rentable = ?, status = ?
+				WHERE id = ?
+			`, buildingByCode[row.BuildingCode].ID, floorByCode[row.FloorCode].ID, locationByCode[row.LocationCode].ID, areaByCode[row.AreaCode].ID, unitTypeByCode[row.UnitTypeCode].ID, row.FloorArea, row.UseArea, row.RentArea, row.IsRentable, row.Status, unitID)
+			if err != nil {
+				return fmt.Errorf("update unit %s: %w", row.Code, err)
+			}
 		}
 	}
 	if err := tx.Commit(); err != nil {
@@ -216,14 +222,6 @@ func referenceByCode(items []ReferenceItem) map[string]ReferenceItem {
 		result[item.Code] = item
 	}
 	return result
-}
-
-func nextUnitID(ctx context.Context, tx *sql.Tx) (int64, error) {
-	var id int64
-	if err := tx.QueryRowContext(ctx, `SELECT COALESCE(MAX(id), 0) + 1 FROM units`).Scan(&id); err != nil {
-		return 0, fmt.Errorf("load next unit id: %w", err)
-	}
-	return id, nil
 }
 
 func existingUnitID(ctx context.Context, tx *sql.Tx, code string) (int64, error) {

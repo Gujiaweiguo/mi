@@ -498,14 +498,15 @@ func (r *Repository) ListStores(ctx context.Context) ([]Store, error) {
 }
 
 func (r *Repository) CreateStore(ctx context.Context, input StoreInput) (*Store, error) {
-	id, err := r.nextID(ctx, "stores")
+	result, err := r.db.ExecContext(ctx, `
+		INSERT INTO stores (department_id, store_type_id, management_type_id, code, name, short_name, status)
+		VALUES (?, ?, ?, ?, ?, ?, ?)
+	`, input.DepartmentID, input.StoreTypeID, input.ManagementTypeID, input.Code, input.Name, input.ShortName, input.Status)
 	if err != nil {
 		return nil, err
 	}
-	if _, err := r.db.ExecContext(ctx, `
-		INSERT INTO stores (id, department_id, store_type_id, management_type_id, code, name, short_name, status)
-		VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-	`, id, input.DepartmentID, input.StoreTypeID, input.ManagementTypeID, input.Code, input.Name, input.ShortName, input.Status); err != nil {
+	id, err := result.LastInsertId()
+	if err != nil {
 		return nil, err
 	}
 	return r.findStoreByID(ctx, id)
@@ -554,14 +555,15 @@ func (r *Repository) ListBuildings(ctx context.Context, filter BuildingFilter) (
 }
 
 func (r *Repository) CreateBuilding(ctx context.Context, input BuildingInput) (*Building, error) {
-	id, err := r.nextID(ctx, "buildings")
+	result, err := r.db.ExecContext(ctx, `
+		INSERT INTO buildings (store_id, code, name, status)
+		VALUES (?, ?, ?, ?)
+	`, input.StoreID, input.Code, input.Name, input.Status)
 	if err != nil {
 		return nil, err
 	}
-	if _, err := r.db.ExecContext(ctx, `
-		INSERT INTO buildings (id, store_id, code, name, status)
-		VALUES (?, ?, ?, ?, ?)
-	`, id, input.StoreID, input.Code, input.Name, input.Status); err != nil {
+	id, err := result.LastInsertId()
+	if err != nil {
 		return nil, err
 	}
 	return r.findBuildingByID(ctx, id)
@@ -608,14 +610,15 @@ func (r *Repository) ListFloors(ctx context.Context, filter FloorFilter) ([]Floo
 }
 
 func (r *Repository) CreateFloor(ctx context.Context, input FloorInput) (*Floor, error) {
-	id, err := r.nextID(ctx, "floors")
+	result, err := r.db.ExecContext(ctx, `
+		INSERT INTO floors (building_id, code, name, status, floor_plan_image_url)
+		VALUES (?, ?, ?, ?, ?)
+	`, input.BuildingID, input.Code, input.Name, input.Status, sqlutil.StringPointerValue(input.FloorPlanImageURL))
 	if err != nil {
 		return nil, err
 	}
-	if _, err := r.db.ExecContext(ctx, `
-		INSERT INTO floors (id, building_id, code, name, status, floor_plan_image_url)
-		VALUES (?, ?, ?, ?, ?, ?)
-	`, id, input.BuildingID, input.Code, input.Name, input.Status, sqlutil.StringPointerValue(input.FloorPlanImageURL)); err != nil {
+	id, err := result.LastInsertId()
+	if err != nil {
 		return nil, err
 	}
 	return r.findFloorByID(ctx, id)
@@ -696,14 +699,15 @@ func (r *Repository) ListAreas(ctx context.Context, filter AreaFilter) ([]Area, 
 }
 
 func (r *Repository) CreateArea(ctx context.Context, input AreaInput) (*Area, error) {
-	id, err := r.nextID(ctx, "areas")
+	result, err := r.db.ExecContext(ctx, `
+		INSERT INTO areas (store_id, area_level_id, code, name, status)
+		VALUES (?, ?, ?, ?, ?)
+	`, input.StoreID, input.AreaLevelID, input.Code, input.Name, input.Status)
 	if err != nil {
 		return nil, err
 	}
-	if _, err := r.db.ExecContext(ctx, `
-		INSERT INTO areas (id, store_id, area_level_id, code, name, status)
-		VALUES (?, ?, ?, ?, ?, ?)
-	`, id, input.StoreID, input.AreaLevelID, input.Code, input.Name, input.Status); err != nil {
+	id, err := result.LastInsertId()
+	if err != nil {
 		return nil, err
 	}
 	return r.findAreaByID(ctx, id)
@@ -754,14 +758,15 @@ func (r *Repository) ListLocations(ctx context.Context, filter LocationFilter) (
 }
 
 func (r *Repository) CreateLocation(ctx context.Context, input LocationInput) (*Location, error) {
-	id, err := r.nextID(ctx, "locations")
+	result, err := r.db.ExecContext(ctx, `
+		INSERT INTO locations (store_id, floor_id, code, name, status)
+		VALUES (?, ?, ?, ?, ?)
+	`, input.StoreID, input.FloorID, input.Code, input.Name, input.Status)
 	if err != nil {
 		return nil, err
 	}
-	if _, err := r.db.ExecContext(ctx, `
-		INSERT INTO locations (id, store_id, floor_id, code, name, status)
-		VALUES (?, ?, ?, ?, ?, ?)
-	`, id, input.StoreID, input.FloorID, input.Code, input.Name, input.Status); err != nil {
+	id, err := result.LastInsertId()
+	if err != nil {
 		return nil, err
 	}
 	return r.findLocationByID(ctx, id)
@@ -816,14 +821,15 @@ func (r *Repository) ListUnits(ctx context.Context, filter UnitFilter) ([]Unit, 
 }
 
 func (r *Repository) CreateUnit(ctx context.Context, input UnitInput) (*Unit, error) {
-	id, err := r.nextID(ctx, "units")
+	result, err := r.db.ExecContext(ctx, `
+		INSERT INTO units (building_id, floor_id, location_id, area_id, unit_type_id, shop_type_id, code, floor_area, use_area, rent_area, is_rentable, status)
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+	`, input.BuildingID, input.FloorID, input.LocationID, input.AreaID, input.UnitTypeID, sqlutil.Int64PointerValue(input.ShopTypeID), input.Code, input.FloorArea, input.UseArea, input.RentArea, input.IsRentable, input.Status)
 	if err != nil {
 		return nil, err
 	}
-	if _, err := r.db.ExecContext(ctx, `
-		INSERT INTO units (id, building_id, floor_id, location_id, area_id, unit_type_id, shop_type_id, code, floor_area, use_area, rent_area, is_rentable, status)
-		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-	`, id, input.BuildingID, input.FloorID, input.LocationID, input.AreaID, input.UnitTypeID, sqlutil.Int64PointerValue(input.ShopTypeID), input.Code, input.FloorArea, input.UseArea, input.RentArea, input.IsRentable, input.Status); err != nil {
+	id, err := result.LastInsertId()
+	if err != nil {
 		return nil, err
 	}
 	return r.findUnitByID(ctx, id)
@@ -879,15 +885,6 @@ func (r *Repository) findUnitByID(ctx context.Context, id int64) (*Unit, error) 
 		return nil, err
 	}
 	return &item, nil
-}
-
-func (r *Repository) nextID(ctx context.Context, table string) (int64, error) {
-	query := fmt.Sprintf(`SELECT COALESCE(MAX(id), 0) + 1 FROM %s`, table)
-	var id int64
-	if err := r.db.QueryRowContext(ctx, query).Scan(&id); err != nil {
-		return 0, err
-	}
-	return id, nil
 }
 
 type scanner interface {
