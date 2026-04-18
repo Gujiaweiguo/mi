@@ -274,3 +274,14 @@ All backend modules that scan SQL nullable types into Go pointers SHALL use a sh
 - **WHEN** a repository needs to scan nullable SQL columns into Go pointers
 - **THEN** it SHALL use `sqlutil.NullInt64Pointer()`, `sqlutil.NullStringPointer()`, etc. instead of local helper functions
 
+### Requirement: Primary key generation SHALL be concurrency-safe
+All user-facing entity tables SHALL use MySQL AUTO_INCREMENT for primary key generation. The Go code SHALL NOT manually compute IDs using MAX(id)+1 or similar patterns that are vulnerable to race conditions under concurrent writes.
+
+#### Scenario: AUTO_INCREMENT is used for all entity tables
+- **WHEN** a new record is inserted into stores, buildings, floors, areas, locations, units, or any baseinfo catalog table
+- **THEN** the database SHALL assign the ID via AUTO_INCREMENT, and the Go code SHALL retrieve it via `result.LastInsertId()`
+
+#### Scenario: Concurrent inserts receive unique IDs
+- **WHEN** two or more concurrent requests create records in the same table
+- **THEN** each request SHALL receive a unique ID without race conditions or duplicate-key errors
+
