@@ -42,7 +42,6 @@ const authStore = useAuthStore()
 const summary = ref<DashboardSummary>(getEmptyDashboardSummary())
 const isLoading = ref(false)
 const errorMessage = ref('')
-const hasPartialData = ref(false)
 const lastUpdatedAt = ref(t('common.notCheckedYet'))
 
 const formatTimestamp = (value: Date) =>
@@ -60,24 +59,12 @@ const navigateTo = async (path: string) => {
 const loadDashboard = async () => {
   isLoading.value = true
   errorMessage.value = ''
-  hasPartialData.value = false
 
   try {
-    const result = await getDashboardSummary()
-
-    summary.value = result.summary
-
-    if (result.failedMetrics.length > 0) {
-      hasPartialData.value = result.failedMetrics.length < Object.keys(summary.value).length
-      errorMessage.value = getErrorMessage(
-        result.error,
-        t(hasPartialData.value ? 'dashboard.errors.partialData' : 'dashboard.errors.unableToLoad'),
-      )
-    }
+    summary.value = await getDashboardSummary()
   } catch (error) {
     summary.value = getEmptyDashboardSummary()
     errorMessage.value = getErrorMessage(error, t('dashboard.errors.unableToLoad'))
-    hasPartialData.value = false
   } finally {
     lastUpdatedAt.value = formatTimestamp(new Date())
     isLoading.value = false
@@ -198,11 +185,6 @@ const collectionRows = computed<QueueRow[]>(() => [
   },
 ])
 
-const alertType = computed(() => (hasPartialData.value ? 'warning' : 'error'))
-const alertTitle = computed(() =>
-  t(hasPartialData.value ? 'dashboard.alerts.partialData' : 'dashboard.alerts.dataUnavailable'),
-)
-
 onMounted(() => {
   void loadDashboard()
 })
@@ -230,8 +212,8 @@ onMounted(() => {
       :closable="false"
       class="dashboard-view__alert"
       show-icon
-      :title="alertTitle"
-      :type="alertType"
+      :title="t('dashboard.alerts.dataUnavailable')"
+      type="error"
       :description="errorMessage"
     />
 
