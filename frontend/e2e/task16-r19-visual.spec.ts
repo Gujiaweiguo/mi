@@ -149,7 +149,7 @@ test('queries and exports the visual shop analysis report (R19)', async ({ page 
   await page.getByTestId('login-password-input').fill('password')
   await page.getByTestId('login-submit-button').click()
 
-  await expect(page).toHaveURL(/\/health/)
+  await expect(page).toHaveURL(/\/dashboard/)
   await expect(page.getByTestId('nav--reports-visual-shop')).toBeVisible()
 
   await page.getByTestId('nav--reports-visual-shop').click()
