@@ -345,3 +345,10 @@ All Vue views that download blob data SHALL use the shared `downloadBlob` functi
 - **WHEN** a view needs to trigger a file download from a Blob
 - **THEN** it SHALL call `downloadBlob(blob, filename)` from the shared composable
 
+### Requirement: Handler unit tests SHALL verify input validation
+All HTTP handler files SHALL have unit tests that verify input validation (invalid JSON, missing fields, bad route params, bad query params) returns appropriate HTTP 400 responses.
+
+#### Scenario: Each handler has input validation tests
+- **WHEN** a handler receives malformed input
+- **THEN** it SHALL return HTTP 400 with a descriptive message
+
