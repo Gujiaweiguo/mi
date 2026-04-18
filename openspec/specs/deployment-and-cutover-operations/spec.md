@@ -111,3 +111,10 @@ The first release SHALL start with reinitialized base data and SHALL NOT migrate
 - **WHEN** rehearsal input or operator configuration attempts to include migrated legacy business records, open operational items, or in-flight approvals as starting state
 - **THEN** the cutover workflow SHALL reject the attempt, report a no-go outcome, and preserve the repository’s fresh-start cutover rule
 
+### Requirement: Production env vars SHALL match Viper's expected names
+The production environment file SHALL use env var names that match Viper's automatic environment binding (`MI_` prefix + config key path with dots replaced by underscores).
+
+#### Scenario: Env vars override YAML config
+- **WHEN** `MI_DATABASE_HOST=mysql` is set in the environment
+- **THEN** the backend SHALL use `mysql` as the database host, overriding any value in the YAML config file
+
