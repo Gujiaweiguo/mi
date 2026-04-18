@@ -8,6 +8,7 @@ import (
 	"github.com/Gujiaweiguo/mi/backend/internal/baseinfo"
 	"github.com/Gujiaweiguo/mi/backend/internal/billing"
 	"github.com/Gujiaweiguo/mi/backend/internal/config"
+	"github.com/Gujiaweiguo/mi/backend/internal/dashboard"
 	"github.com/Gujiaweiguo/mi/backend/internal/docoutput"
 	"github.com/Gujiaweiguo/mi/backend/internal/excelio"
 	"github.com/Gujiaweiguo/mi/backend/internal/http/handlers"
@@ -85,6 +86,8 @@ func NewRouter(cfg *config.Config, db *sql.DB, logger *zap.Logger) *gin.Engine {
 	structureHandler := handlers.NewStructureHandler(structureService)
 	baseInfoHandler := handlers.NewBaseInfoHandler(baseInfoService)
 	taxExportHandler := handlers.NewTaxExportHandler(taxExportService)
+	dashboardService := dashboard.NewDashboardService(db)
+	dashboardHandler := handlers.NewDashboardHandler(dashboardService)
 	workflowHandler := handlers.NewWorkflowHandler(workflowService, workflowSyncers{syncers: []handlers.WorkflowStateSyncer{leaseService, invoiceService}})
 	router.GET("/health", healthHandler.Get)
 	router.GET("/healthz", healthHandler.Get)
@@ -95,6 +98,10 @@ func NewRouter(cfg *config.Config, db *sql.DB, logger *zap.Logger) *gin.Engine {
 	authGroup := api.Group("/auth")
 	authGroup.POST("/login", authHandler.Login)
 	authGroup.GET("/me", middleware.RequireAuth(authService, authRepository), authHandler.Me)
+
+	dashboardGroup := api.Group("/dashboard")
+	dashboardGroup.Use(middleware.RequireAuth(authService, authRepository))
+	dashboardGroup.GET("/summary", dashboardHandler.Summary)
 
 	orgGroup := api.Group("/org")
 	orgGroup.Use(middleware.RequireAuth(authService, authRepository))
