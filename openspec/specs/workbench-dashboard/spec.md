@@ -12,7 +12,15 @@ After login, authenticated users SHALL be routed to a dashboard page that summar
 - **THEN** the application SHALL route them to the dashboard as the first authorized navigation destination
 
 ### Requirement: The dashboard SHALL surface key operational counts using existing APIs
-The dashboard SHALL display operational summary cards for the highest-value day-one work queues by aggregating existing frontend API responses.
+The dashboard SHALL display operational summary cards for the highest-value day-one work queues.
+
+#### Scenario: Dashboard summary is available from a single backend endpoint
+- **WHEN** an authenticated user requests `GET /api/dashboard/summary`
+- **THEN** the backend SHALL return a single JSON object containing all six operational metrics in one response
+
+#### Scenario: Frontend dashboard loads with one API call
+- **WHEN** the dashboard view mounts
+- **THEN** it SHALL make exactly one API call to fetch all summary metrics
 
 #### Scenario: Summary cards show current operational counts
 - **WHEN** the dashboard loads successfully
