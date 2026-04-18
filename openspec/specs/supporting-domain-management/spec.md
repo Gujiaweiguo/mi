@@ -99,6 +99,10 @@ Each first-release Generalize report SHALL satisfy the minimum field set, filter
 - **WHEN** `R19` is accepted for first release
 - **THEN** acceptance SHALL verify both the visual presentation semantics and the correctness of the mapping between visual objects and underlying shop or unit data
 
+#### Scenario: R19 filters and export remain part of acceptance closure
+- **WHEN** `R19` is verified for first release
+- **THEN** acceptance SHALL also cover store, floor, and area filtering together with the associated structured export path used by operators
+
 #### Scenario: Operator-facing report headers use accepted localized terminology
 - **WHEN** a first-release Generalize report query or export is reviewed against the frozen acceptance surface
 - **THEN** the operator-facing column labels and exported headers SHALL use the accepted localized terminology for that report instead of hard-coded English field labels
