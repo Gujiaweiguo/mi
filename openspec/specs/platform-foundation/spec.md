@@ -320,3 +320,28 @@ All Vue views with create/edit form dialogs SHALL use Element Plus `:rules` for 
 - **WHEN** a user submits a form with empty required fields
 - **THEN** the form SHALL display validation errors without making an API call
 
+### Requirement: Shared backend utility packages SHALL have unit test coverage
+The `sqlutil` and `pagination` shared packages SHALL have unit tests covering all exported functions and types.
+
+#### Scenario: sqlutil helpers are tested
+- **WHEN** the sqlutil test suite runs
+- **THEN** all 14 exported functions SHALL be tested with valid and invalid inputs
+
+#### Scenario: pagination functions are tested
+- **WHEN** the pagination test suite runs
+- **THEN** NormalizePage SHALL be tested with boundary values and ListResult generic SHALL be verified
+
+### Requirement: All frontend error message handling SHALL use the shared composable
+All Vue views SHALL import `getErrorMessage` from the shared composable instead of using inline ternary expressions.
+
+#### Scenario: No inline error ternaries remain
+- **WHEN** a view needs to extract an error message
+- **THEN** it SHALL use the shared `getErrorMessage` from the useErrorMessage composable
+
+### Requirement: Blob download logic SHALL use a shared composable
+All Vue views that download blob data SHALL use the shared `downloadBlob` function from the useDownload composable.
+
+#### Scenario: downloadBlob is used for all file downloads
+- **WHEN** a view needs to trigger a file download from a Blob
+- **THEN** it SHALL call `downloadBlob(blob, filename)` from the shared composable
+
