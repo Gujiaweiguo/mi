@@ -5,6 +5,8 @@ import (
 	"database/sql"
 	"fmt"
 	"time"
+
+	"github.com/Gujiaweiguo/mi/backend/internal/sqlutil"
 )
 
 type DailySale struct {
@@ -74,7 +76,7 @@ func (r *Repository) ListDailySales(ctx context.Context, filter DailySaleFilter)
 		  AND (? IS NULL OR sale_date <= ?)
 		ORDER BY sale_date DESC, id DESC
 		LIMIT ? OFFSET ?
-	`, int64PointerValue(filter.StoreID), int64PointerValue(filter.StoreID), int64PointerValue(filter.UnitID), int64PointerValue(filter.UnitID), timePointerValue(filter.DateFrom), timePointerValue(filter.DateFrom), timePointerValue(filter.DateTo), timePointerValue(filter.DateTo), normalizeLimit(filter.Limit), normalizeOffset(filter.Offset))
+	`, sqlutil.Int64PointerValue(filter.StoreID), sqlutil.Int64PointerValue(filter.StoreID), sqlutil.Int64PointerValue(filter.UnitID), sqlutil.Int64PointerValue(filter.UnitID), sqlutil.TimePointerDateString(filter.DateFrom), sqlutil.TimePointerDateString(filter.DateFrom), sqlutil.TimePointerDateString(filter.DateTo), sqlutil.TimePointerDateString(filter.DateTo), normalizeLimit(filter.Limit), normalizeOffset(filter.Offset))
 	if err != nil {
 		return nil, fmt.Errorf("list daily sales: %w", err)
 	}
@@ -139,7 +141,7 @@ func (r *Repository) ListTraffic(ctx context.Context, filter TrafficFilter) ([]C
 		  AND (? IS NULL OR traffic_date <= ?)
 		ORDER BY traffic_date DESC, id DESC
 		LIMIT ? OFFSET ?
-	`, int64PointerValue(filter.StoreID), int64PointerValue(filter.StoreID), timePointerValue(filter.DateFrom), timePointerValue(filter.DateFrom), timePointerValue(filter.DateTo), timePointerValue(filter.DateTo), normalizeLimit(filter.Limit), normalizeOffset(filter.Offset))
+	`, sqlutil.Int64PointerValue(filter.StoreID), sqlutil.Int64PointerValue(filter.StoreID), sqlutil.TimePointerDateString(filter.DateFrom), sqlutil.TimePointerDateString(filter.DateFrom), sqlutil.TimePointerDateString(filter.DateTo), sqlutil.TimePointerDateString(filter.DateTo), normalizeLimit(filter.Limit), normalizeOffset(filter.Offset))
 	if err != nil {
 		return nil, fmt.Errorf("list customer traffic: %w", err)
 	}
@@ -286,16 +288,4 @@ func normalizeOffset(offset int) int {
 	return offset
 }
 
-func int64PointerValue(value *int64) any {
-	if value == nil {
-		return nil
-	}
-	return *value
-}
 
-func timePointerValue(value *time.Time) any {
-	if value == nil {
-		return nil
-	}
-	return value.Format("2006-01-02")
-}

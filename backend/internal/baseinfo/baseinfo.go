@@ -9,6 +9,8 @@ import (
 	"time"
 
 	mysql "github.com/go-sql-driver/mysql"
+
+	"github.com/Gujiaweiguo/mi/backend/internal/sqlutil"
 )
 
 var (
@@ -322,22 +324,22 @@ func buildInsertQuery(config entityConfig, id int64, input CatalogInput) (string
 	if config.hasColor {
 		columns = append(columns, "color_hex")
 		placeholders = append(placeholders, "?")
-		args = append(args, stringPointerValue(input.ColorHex))
+		args = append(args, sqlutil.StringPointerValue(input.ColorHex))
 	}
 	if config.hasLocal {
 		columns = append(columns, "is_local")
 		placeholders = append(placeholders, "?")
-		args = append(args, boolPointerValue(input.IsLocal))
+		args = append(args, sqlutil.BoolPointerValue(input.IsLocal))
 	}
 	if config.hasParent {
 		columns = append(columns, "parent_id")
 		placeholders = append(placeholders, "?")
-		args = append(args, int64PointerValue(input.ParentID))
+		args = append(args, sqlutil.Int64PointerValue(input.ParentID))
 	}
 	if config.hasLevel {
 		columns = append(columns, "level")
 		placeholders = append(placeholders, "?")
-		args = append(args, intPointerValue(input.Level))
+		args = append(args, sqlutil.IntPointerValue(input.Level))
 	}
 	if config.hasStatus {
 		columns = append(columns, "status")
@@ -353,19 +355,19 @@ func buildUpdateQuery(config entityConfig, id int64, input CatalogInput) (string
 	args := []any{input.Code, input.Name}
 	if config.hasColor {
 		assignments = append(assignments, "color_hex = ?")
-		args = append(args, stringPointerValue(input.ColorHex))
+		args = append(args, sqlutil.StringPointerValue(input.ColorHex))
 	}
 	if config.hasLocal {
 		assignments = append(assignments, "is_local = ?")
-		args = append(args, boolPointerValue(input.IsLocal))
+		args = append(args, sqlutil.BoolPointerValue(input.IsLocal))
 	}
 	if config.hasParent {
 		assignments = append(assignments, "parent_id = ?")
-		args = append(args, int64PointerValue(input.ParentID))
+		args = append(args, sqlutil.Int64PointerValue(input.ParentID))
 	}
 	if config.hasLevel {
 		assignments = append(assignments, "level = ?")
-		args = append(args, intPointerValue(input.Level))
+		args = append(args, sqlutil.IntPointerValue(input.Level))
 	}
 	if config.hasStatus {
 		assignments = append(assignments, "status = ?")
@@ -442,30 +444,4 @@ func scanReferenceCatalogItem(target scanner, config entityConfig) (ReferenceCat
 	return item, nil
 }
 
-func stringPointerValue(value *string) any {
-	if value == nil {
-		return nil
-	}
-	return *value
-}
 
-func boolPointerValue(value *bool) any {
-	if value == nil {
-		return false
-	}
-	return *value
-}
-
-func int64PointerValue(value *int64) any {
-	if value == nil {
-		return nil
-	}
-	return *value
-}
-
-func intPointerValue(value *int) any {
-	if value == nil {
-		return nil
-	}
-	return *value
-}

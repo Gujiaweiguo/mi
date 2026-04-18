@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/Gujiaweiguo/mi/backend/internal/pagination"
+	"github.com/Gujiaweiguo/mi/backend/internal/sqlutil"
 )
 
 type Repository struct {
@@ -24,7 +25,7 @@ func (r *Repository) Create(ctx context.Context, tx *sql.Tx, contract *Contract)
 			amended_from_id, lease_no, department_id, store_id, building_id, customer_id, brand_id, trade_id, management_type_id, tenant_name,
 			start_date, end_date, status, effective_version, created_by, updated_by
 		) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-	`, int64PointerValue(contract.AmendedFromID), contract.LeaseNo, contract.DepartmentID, contract.StoreID, int64PointerValue(contract.BuildingID), int64PointerValue(contract.CustomerID), int64PointerValue(contract.BrandID), int64PointerValue(contract.TradeID), int64PointerValue(contract.ManagementTypeID), contract.TenantName, contract.StartDate, contract.EndDate, contract.Status, contract.EffectiveVersion, contract.CreatedBy, contract.UpdatedBy)
+	`, sqlutil.Int64PointerValue(contract.AmendedFromID), contract.LeaseNo, contract.DepartmentID, contract.StoreID, sqlutil.Int64PointerValue(contract.BuildingID), sqlutil.Int64PointerValue(contract.CustomerID), sqlutil.Int64PointerValue(contract.BrandID), sqlutil.Int64PointerValue(contract.TradeID), sqlutil.Int64PointerValue(contract.ManagementTypeID), contract.TenantName, contract.StartDate, contract.EndDate, contract.Status, contract.EffectiveVersion, contract.CreatedBy, contract.UpdatedBy)
 	if err != nil {
 		return fmt.Errorf("insert lease contract: %w", err)
 	}
@@ -136,13 +137,13 @@ func (r *Repository) List(ctx context.Context, filter ListFilter) (*pagination.L
 		if err := rows.Scan(&summary.ID, &summary.LeaseNo, &summary.TenantName, &summary.DepartmentID, &summary.StoreID, &buildingID, &customerID, &brandID, &tradeID, &managementTypeID, &summary.StartDate, &summary.EndDate, &summary.Status, &workflowInstanceID, &billingEffectiveAt, &summary.UpdatedAt); err != nil {
 			return nil, fmt.Errorf("scan lease contract summary: %w", err)
 		}
-		summary.BuildingID = nullInt64Pointer(buildingID)
-		summary.CustomerID = nullInt64Pointer(customerID)
-		summary.BrandID = nullInt64Pointer(brandID)
-		summary.TradeID = nullInt64Pointer(tradeID)
-		summary.ManagementTypeID = nullInt64Pointer(managementTypeID)
-		summary.WorkflowInstanceID = nullInt64Pointer(workflowInstanceID)
-		summary.BillingEffectiveAt = nullTimePointer(billingEffectiveAt)
+		summary.BuildingID = sqlutil.NullInt64Pointer(buildingID)
+		summary.CustomerID = sqlutil.NullInt64Pointer(customerID)
+		summary.BrandID = sqlutil.NullInt64Pointer(brandID)
+		summary.TradeID = sqlutil.NullInt64Pointer(tradeID)
+		summary.ManagementTypeID = sqlutil.NullInt64Pointer(managementTypeID)
+		summary.WorkflowInstanceID = sqlutil.NullInt64Pointer(workflowInstanceID)
+		summary.BillingEffectiveAt = sqlutil.NullTimePointer(billingEffectiveAt)
 		items = append(items, summary)
 	}
 	if err := rows.Err(); err != nil {
@@ -176,7 +177,7 @@ func (r *Repository) UpdateWorkflowState(ctx context.Context, tx *sql.Tx, leaseI
 		UPDATE lease_contracts
 		SET workflow_instance_id = ?, status = ?, approved_at = ?, billing_effective_at = ?, terminated_at = ?, updated_by = ?
 		WHERE id = ?
-	`, workflowInstanceID, status, timePointerValue(approvedAt), timePointerValue(billingEffectiveAt), timePointerValue(terminatedAt), updatedBy, leaseID); err != nil {
+	`, workflowInstanceID, status, sqlutil.TimePointerValue(approvedAt), sqlutil.TimePointerValue(billingEffectiveAt), sqlutil.TimePointerValue(terminatedAt), updatedBy, leaseID); err != nil {
 		return fmt.Errorf("update lease contract workflow state: %w", err)
 	}
 	return nil
@@ -238,17 +239,17 @@ func (r *Repository) findContract(_ context.Context, scanner rowScanner) (*Contr
 		}
 		return nil, fmt.Errorf("scan lease contract: %w", err)
 	}
-	contract.AmendedFromID = nullInt64Pointer(amendedFromID)
-	contract.BuildingID = nullInt64Pointer(buildingID)
-	contract.CustomerID = nullInt64Pointer(customerID)
-	contract.BrandID = nullInt64Pointer(brandID)
-	contract.TradeID = nullInt64Pointer(tradeID)
-	contract.ManagementTypeID = nullInt64Pointer(managementTypeID)
-	contract.WorkflowInstanceID = nullInt64Pointer(workflowInstanceID)
-	contract.SubmittedAt = nullTimePointer(submittedAt)
-	contract.ApprovedAt = nullTimePointer(approvedAt)
-	contract.BillingEffectiveAt = nullTimePointer(billingEffectiveAt)
-	contract.TerminatedAt = nullTimePointer(terminatedAt)
+	contract.AmendedFromID = sqlutil.NullInt64Pointer(amendedFromID)
+	contract.BuildingID = sqlutil.NullInt64Pointer(buildingID)
+	contract.CustomerID = sqlutil.NullInt64Pointer(customerID)
+	contract.BrandID = sqlutil.NullInt64Pointer(brandID)
+	contract.TradeID = sqlutil.NullInt64Pointer(tradeID)
+	contract.ManagementTypeID = sqlutil.NullInt64Pointer(managementTypeID)
+	contract.WorkflowInstanceID = sqlutil.NullInt64Pointer(workflowInstanceID)
+	contract.SubmittedAt = sqlutil.NullTimePointer(submittedAt)
+	contract.ApprovedAt = sqlutil.NullTimePointer(approvedAt)
+	contract.BillingEffectiveAt = sqlutil.NullTimePointer(billingEffectiveAt)
+	contract.TerminatedAt = sqlutil.NullTimePointer(terminatedAt)
 	return &contract, nil
 }
 
@@ -330,32 +331,4 @@ func (r *Repository) listTerms(ctx context.Context, db queryer, leaseID int64) (
 	return terms, rows.Err()
 }
 
-func nullInt64Pointer(value sql.NullInt64) *int64 {
-	if !value.Valid {
-		return nil
-	}
-	v := value.Int64
-	return &v
-}
 
-func nullTimePointer(value sql.NullTime) *time.Time {
-	if !value.Valid {
-		return nil
-	}
-	v := value.Time
-	return &v
-}
-
-func int64PointerValue(value *int64) any {
-	if value == nil {
-		return nil
-	}
-	return *value
-}
-
-func timePointerValue(value *time.Time) any {
-	if value == nil {
-		return nil
-	}
-	return *value
-}

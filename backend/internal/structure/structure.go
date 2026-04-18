@@ -9,6 +9,8 @@ import (
 	"time"
 
 	mysql "github.com/go-sql-driver/mysql"
+
+	"github.com/Gujiaweiguo/mi/backend/internal/sqlutil"
 )
 
 var (
@@ -534,7 +536,7 @@ func (r *Repository) ListBuildings(ctx context.Context, filter BuildingFilter) (
 		FROM buildings
 		WHERE (? IS NULL OR store_id = ?)
 		ORDER BY store_id, id
-	`, int64PointerValue(filter.StoreID), int64PointerValue(filter.StoreID))
+	`, sqlutil.Int64PointerValue(filter.StoreID), sqlutil.Int64PointerValue(filter.StoreID))
 	if err != nil {
 		return nil, fmt.Errorf("list buildings: %w", err)
 	}
@@ -588,7 +590,7 @@ func (r *Repository) ListFloors(ctx context.Context, filter FloorFilter) ([]Floo
 		FROM floors
 		WHERE (? IS NULL OR building_id = ?)
 		ORDER BY building_id, id
-	`, int64PointerValue(filter.BuildingID), int64PointerValue(filter.BuildingID))
+	`, sqlutil.Int64PointerValue(filter.BuildingID), sqlutil.Int64PointerValue(filter.BuildingID))
 	if err != nil {
 		return nil, fmt.Errorf("list floors: %w", err)
 	}
@@ -613,7 +615,7 @@ func (r *Repository) CreateFloor(ctx context.Context, input FloorInput) (*Floor,
 	if _, err := r.db.ExecContext(ctx, `
 		INSERT INTO floors (id, building_id, code, name, status, floor_plan_image_url)
 		VALUES (?, ?, ?, ?, ?, ?)
-	`, id, input.BuildingID, input.Code, input.Name, input.Status, stringPointerValue(input.FloorPlanImageURL)); err != nil {
+	`, id, input.BuildingID, input.Code, input.Name, input.Status, sqlutil.StringPointerValue(input.FloorPlanImageURL)); err != nil {
 		return nil, err
 	}
 	return r.findFloorByID(ctx, id)
@@ -622,7 +624,7 @@ func (r *Repository) CreateFloor(ctx context.Context, input FloorInput) (*Floor,
 func (r *Repository) UpdateFloor(ctx context.Context, id int64, input FloorInput) (*Floor, error) {
 	result, err := r.db.ExecContext(ctx, `
 		UPDATE floors SET building_id = ?, code = ?, name = ?, status = ?, floor_plan_image_url = ? WHERE id = ?
-	`, input.BuildingID, input.Code, input.Name, input.Status, stringPointerValue(input.FloorPlanImageURL), id)
+	`, input.BuildingID, input.Code, input.Name, input.Status, sqlutil.StringPointerValue(input.FloorPlanImageURL), id)
 	if err != nil {
 		return nil, err
 	}
@@ -676,7 +678,7 @@ func (r *Repository) ListAreas(ctx context.Context, filter AreaFilter) ([]Area, 
 		FROM areas
 		WHERE (? IS NULL OR store_id = ?)
 		ORDER BY store_id, id
-	`, int64PointerValue(filter.StoreID), int64PointerValue(filter.StoreID))
+	`, sqlutil.Int64PointerValue(filter.StoreID), sqlutil.Int64PointerValue(filter.StoreID))
 	if err != nil {
 		return nil, fmt.Errorf("list areas: %w", err)
 	}
@@ -732,8 +734,8 @@ func (r *Repository) ListLocations(ctx context.Context, filter LocationFilter) (
 		  AND (? IS NULL OR floor_id = ?)
 		ORDER BY store_id, floor_id, id
 	`,
-		int64PointerValue(filter.StoreID), int64PointerValue(filter.StoreID),
-		int64PointerValue(filter.FloorID), int64PointerValue(filter.FloorID),
+		sqlutil.Int64PointerValue(filter.StoreID), sqlutil.Int64PointerValue(filter.StoreID),
+		sqlutil.Int64PointerValue(filter.FloorID), sqlutil.Int64PointerValue(filter.FloorID),
 	)
 	if err != nil {
 		return nil, fmt.Errorf("list locations: %w", err)
@@ -792,10 +794,10 @@ func (r *Repository) ListUnits(ctx context.Context, filter UnitFilter) ([]Unit, 
 		  AND (? IS NULL OR area_id = ?)
 		ORDER BY building_id, floor_id, id
 	`,
-		int64PointerValue(filter.BuildingID), int64PointerValue(filter.BuildingID),
-		int64PointerValue(filter.FloorID), int64PointerValue(filter.FloorID),
-		int64PointerValue(filter.LocationID), int64PointerValue(filter.LocationID),
-		int64PointerValue(filter.AreaID), int64PointerValue(filter.AreaID),
+		sqlutil.Int64PointerValue(filter.BuildingID), sqlutil.Int64PointerValue(filter.BuildingID),
+		sqlutil.Int64PointerValue(filter.FloorID), sqlutil.Int64PointerValue(filter.FloorID),
+		sqlutil.Int64PointerValue(filter.LocationID), sqlutil.Int64PointerValue(filter.LocationID),
+		sqlutil.Int64PointerValue(filter.AreaID), sqlutil.Int64PointerValue(filter.AreaID),
 	)
 	if err != nil {
 		return nil, fmt.Errorf("list units: %w", err)
@@ -821,7 +823,7 @@ func (r *Repository) CreateUnit(ctx context.Context, input UnitInput) (*Unit, er
 	if _, err := r.db.ExecContext(ctx, `
 		INSERT INTO units (id, building_id, floor_id, location_id, area_id, unit_type_id, shop_type_id, code, floor_area, use_area, rent_area, is_rentable, status)
 		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-	`, id, input.BuildingID, input.FloorID, input.LocationID, input.AreaID, input.UnitTypeID, int64PointerValue(input.ShopTypeID), input.Code, input.FloorArea, input.UseArea, input.RentArea, input.IsRentable, input.Status); err != nil {
+	`, id, input.BuildingID, input.FloorID, input.LocationID, input.AreaID, input.UnitTypeID, sqlutil.Int64PointerValue(input.ShopTypeID), input.Code, input.FloorArea, input.UseArea, input.RentArea, input.IsRentable, input.Status); err != nil {
 		return nil, err
 	}
 	return r.findUnitByID(ctx, id)
@@ -832,7 +834,7 @@ func (r *Repository) UpdateUnit(ctx context.Context, id int64, input UnitInput) 
 		UPDATE units
 		SET building_id = ?, floor_id = ?, location_id = ?, area_id = ?, unit_type_id = ?, shop_type_id = ?, code = ?, floor_area = ?, use_area = ?, rent_area = ?, is_rentable = ?, status = ?
 		WHERE id = ?
-	`, input.BuildingID, input.FloorID, input.LocationID, input.AreaID, input.UnitTypeID, int64PointerValue(input.ShopTypeID), input.Code, input.FloorArea, input.UseArea, input.RentArea, input.IsRentable, input.Status, id)
+	`, input.BuildingID, input.FloorID, input.LocationID, input.AreaID, input.UnitTypeID, sqlutil.Int64PointerValue(input.ShopTypeID), input.Code, input.FloorArea, input.UseArea, input.RentArea, input.IsRentable, input.Status, id)
 	if err != nil {
 		return nil, err
 	}
@@ -898,28 +900,8 @@ func scanFloor(row scanner) (Floor, error) {
 	if err := row.Scan(&item.ID, &item.BuildingID, &item.Code, &item.Name, &item.Status, &floorPlanImageURL, &item.CreatedAt, &item.UpdatedAt); err != nil {
 		return Floor{}, err
 	}
-	item.FloorPlanImageURL = nullStringPointer(floorPlanImageURL)
+	item.FloorPlanImageURL = sqlutil.NullStringPointer(floorPlanImageURL)
 	return item, nil
 }
 
-func int64PointerValue(value *int64) any {
-	if value == nil {
-		return nil
-	}
-	return *value
-}
 
-func stringPointerValue(value *string) any {
-	if value == nil {
-		return nil
-	}
-	return *value
-}
-
-func nullStringPointer(value sql.NullString) *string {
-	if !value.Valid {
-		return nil
-	}
-	v := value.String
-	return &v
-}

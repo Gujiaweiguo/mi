@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/Gujiaweiguo/mi/backend/internal/pagination"
+	"github.com/Gujiaweiguo/mi/backend/internal/sqlutil"
 )
 
 type receivableLeaseContext struct {
@@ -48,7 +49,7 @@ func (r *Repository) findReceivableLeaseContext(ctx context.Context, scanner row
 		return nil, nil
 	}
 	result.CustomerID = customerID.Int64
-	result.TradeID = nullInt64Pointer(tradeID)
+	result.TradeID = sqlutil.NullInt64Pointer(tradeID)
 	return &result, nil
 }
 
@@ -63,7 +64,7 @@ func (r *Repository) UpsertReceivableOpenItem(ctx context.Context, tx *sql.Tx, l
 		) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 		ON DUPLICATE KEY UPDATE
 			billing_document_line_id = billing_document_line_id
-	`, leaseCtx.LeaseContractID, documentID, row.BillingDocumentLineID, leaseCtx.CustomerID, leaseCtx.DepartmentID, int64PointerValue(leaseCtx.TradeID), row.ChargeType, row.DueDate, row.OutstandingAmount, nil, row.IsDeposit); err != nil {
+	`, leaseCtx.LeaseContractID, documentID, row.BillingDocumentLineID, leaseCtx.CustomerID, leaseCtx.DepartmentID, sqlutil.Int64PointerValue(leaseCtx.TradeID), row.ChargeType, row.DueDate, row.OutstandingAmount, nil, row.IsDeposit); err != nil {
 		return fmt.Errorf("upsert receivable open item: %w", err)
 	}
 	return nil
@@ -124,7 +125,7 @@ func (r *Repository) InsertPaymentEntry(ctx context.Context, tx *sql.Tx, entry P
 		INSERT INTO ar_payment_entries (
 			billing_document_id, lease_contract_id, payment_date, amount, note, recorded_by, idempotency_key
 		) VALUES (?, ?, ?, ?, ?, ?, ?)
-	`, entry.BillingDocumentID, entry.LeaseContractID, entry.PaymentDate, entry.Amount, stringPointerValue(entry.Note), entry.RecordedBy, entry.IdempotencyKey); err != nil {
+	`, entry.BillingDocumentID, entry.LeaseContractID, entry.PaymentDate, entry.Amount, sqlutil.StringPointerValue(entry.Note), entry.RecordedBy, entry.IdempotencyKey); err != nil {
 		return fmt.Errorf("insert payment entry: %w", err)
 	}
 	return nil
@@ -135,7 +136,7 @@ func (r *Repository) UpdateOpenItemBalance(ctx context.Context, tx *sql.Tx, item
 		UPDATE ar_open_items
 		SET outstanding_amount = ?, settled_at = ?
 		WHERE id = ?
-	`, outstandingAmount, timePointerValue(settledAt), itemID); err != nil {
+	`, outstandingAmount, sqlutil.TimePointerValue(settledAt), itemID); err != nil {
 		return fmt.Errorf("update receivable open item balance: %w", err)
 	}
 	return nil
@@ -242,8 +243,8 @@ func (r *Repository) ListReceivables(ctx context.Context, filter ReceivableFilte
 		if err := rows.Scan(&item.BillingDocumentID, &item.DocumentType, &documentNo, &item.TenantName, &item.DocumentStatus, &item.LeaseContractID, &item.CustomerID, &item.DepartmentID, &tradeID, &item.EarliestDueDate, &item.LatestDueDate, &item.OutstandingAmount); err != nil {
 			return nil, fmt.Errorf("scan receivable list item: %w", err)
 		}
-		item.DocumentNo = nullStringPointer(documentNo)
-		item.TradeID = nullInt64Pointer(tradeID)
+		item.DocumentNo = sqlutil.NullStringPointer(documentNo)
+		item.TradeID = sqlutil.NullInt64Pointer(tradeID)
 		item.SettlementStatus = settlementStatus(item.OutstandingAmount)
 		items = append(items, item)
 	}
@@ -278,9 +279,9 @@ func scanOpenItems(rows *sql.Rows) ([]OpenItem, error) {
 		if err := rows.Scan(&item.ID, &item.LeaseContractID, &item.BillingDocumentID, &billingDocumentLineID, &item.CustomerID, &item.DepartmentID, &tradeID, &item.ChargeType, &item.DueDate, &item.OutstandingAmount, &settledAt, &item.IsDeposit, &item.CreatedAt, &item.UpdatedAt); err != nil {
 			return nil, fmt.Errorf("scan receivable open item: %w", err)
 		}
-		item.BillingDocumentLineID = nullInt64Pointer(billingDocumentLineID)
-		item.TradeID = nullInt64Pointer(tradeID)
-		item.SettledAt = nullTimePointer(settledAt)
+		item.BillingDocumentLineID = sqlutil.NullInt64Pointer(billingDocumentLineID)
+		item.TradeID = sqlutil.NullInt64Pointer(tradeID)
+		item.SettledAt = sqlutil.NullTimePointer(settledAt)
 		items = append(items, item)
 	}
 	if err := rows.Err(); err != nil {
@@ -307,7 +308,7 @@ func (r *Repository) getPaymentHistoryByDocumentID(ctx context.Context, document
 		if err := rows.Scan(&entry.ID, &entry.BillingDocumentID, &entry.LeaseContractID, &entry.PaymentDate, &entry.Amount, &note, &entry.RecordedBy, &entry.IdempotencyKey, &entry.CreatedAt); err != nil {
 			return nil, fmt.Errorf("scan payment history entry: %w", err)
 		}
-		entry.Note = nullStringPointer(note)
+		entry.Note = sqlutil.NullStringPointer(note)
 		history = append(history, entry)
 	}
 	if err := rows.Err(); err != nil {
@@ -322,7 +323,7 @@ func (r *Repository) scanPaymentEntry(scanner rowScanner) (*PaymentEntry, error)
 	if err := scanner.Scan(&entry.ID, &entry.BillingDocumentID, &entry.LeaseContractID, &entry.PaymentDate, &entry.Amount, &note, &entry.RecordedBy, &entry.IdempotencyKey, &entry.CreatedAt); err != nil {
 		return nil, err
 	}
-	entry.Note = nullStringPointer(note)
+	entry.Note = sqlutil.NullStringPointer(note)
 	return &entry, nil
 }
 

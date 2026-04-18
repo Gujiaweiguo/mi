@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/Gujiaweiguo/mi/backend/internal/pagination"
+	"github.com/Gujiaweiguo/mi/backend/internal/sqlutil"
 )
 
 type Repository struct {
@@ -111,7 +112,7 @@ func (r *Repository) ListChargeCandidates(ctx context.Context, periodStart, peri
 		if err := rows.Scan(&candidate.LeaseContractID, &candidate.LeaseNo, &candidate.TenantName, &candidate.LeaseStatus, &candidate.LeaseStartDate, &candidate.LeaseEndDate, &candidate.BillingEffectiveAt, &terminatedAt, &candidate.EffectiveVersion, &candidate.LeaseTermID, &candidate.TermType, &candidate.BillingCycle, &candidate.CurrencyTypeID, &candidate.UnitAmount, &candidate.TermEffectiveFrom, &candidate.TermEffectiveTo); err != nil {
 			return nil, fmt.Errorf("scan billing charge candidate: %w", err)
 		}
-		candidate.TerminatedAt = nullTimePointer(terminatedAt)
+		candidate.TerminatedAt = sqlutil.NullTimePointer(terminatedAt)
 		candidates = append(candidates, candidate)
 	}
 	return candidates, rows.Err()
@@ -227,10 +228,3 @@ func (r *Repository) GetChargeLinesByIDs(ctx context.Context, ids []int64) ([]Ch
 	return items, nil
 }
 
-func nullTimePointer(value sql.NullTime) *time.Time {
-	if !value.Valid {
-		return nil
-	}
-	v := value.Time
-	return &v
-}

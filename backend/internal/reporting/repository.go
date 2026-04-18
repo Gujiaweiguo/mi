@@ -8,6 +8,8 @@ import (
 	"sort"
 	"strings"
 	"time"
+
+	"github.com/Gujiaweiguo/mi/backend/internal/sqlutil"
 )
 
 type Repository struct{ db *sql.DB }
@@ -390,11 +392,11 @@ func (r *Repository) QueryR05(ctx context.Context, input QueryInput) ([]R05Row, 
 		if err := rows.Scan(&item.UnitCode, &item.FloorArea, &budgetPrice, &leasePrice, &item.PotentialCustomer, &item.ProspectBrand, &item.ProspectTrade, &avgTransaction, &prospectRent, &item.RentIncrement, &prospectTerm); err != nil {
 			return nil, fmt.Errorf("scan R05 row: %w", err)
 		}
-		item.BudgetUnitPrice = nullFloat64Pointer(budgetPrice)
-		item.CurrentLeasePrice = nullFloat64Pointer(leasePrice)
-		item.AverageTicket = nullFloat64Pointer(avgTransaction)
-		item.ProspectRentPrice = nullFloat64Pointer(prospectRent)
-		item.ProspectTermMonths = nullIntPointer(prospectTerm)
+		item.BudgetUnitPrice = sqlutil.NullFloat64Pointer(budgetPrice)
+		item.CurrentLeasePrice = sqlutil.NullFloat64Pointer(leasePrice)
+		item.AverageTicket = sqlutil.NullFloat64Pointer(avgTransaction)
+		item.ProspectRentPrice = sqlutil.NullFloat64Pointer(prospectRent)
+		item.ProspectTermMonths = sqlutil.NullIntPointer(prospectTerm)
 		items = append(items, item)
 	}
 	if err := rows.Err(); err != nil {
@@ -882,7 +884,7 @@ func (r *Repository) QueryR18(ctx context.Context, input QueryInput) ([]R18Row, 
 		if err := rows.Scan(&item.CustomerName, &item.StoreName, &item.UnitName, &item.BrandName, &item.Period, &item.RentArea, &item.CurrentSales, &item.ComparableSales, &item.SamePeriodSales, &item.PeriodReceivable, &item.PeriodReceived, &item.PeriodArrears, &item.CumulativeReceivable, &item.CumulativeArrears, &item.DaysInMonth, &efficiency); err != nil {
 			return nil, fmt.Errorf("scan R18 row: %w", err)
 		}
-		item.Efficiency = nullFloat64Pointer(efficiency)
+		item.Efficiency = sqlutil.NullFloat64Pointer(efficiency)
 		items = append(items, item)
 	}
 	if err := rows.Err(); err != nil {
@@ -908,7 +910,7 @@ func (r *Repository) QueryR19(ctx context.Context, input QueryInput) (*R19Result
 	`, *input.FloorID, input.StoreID, input.StoreID).Scan(&floor.ID, &floor.Name, &floorURL); err != nil {
 		return nil, fmt.Errorf("query R19 floor: %w", err)
 	}
-	floor.FloorPlanImageURL = nullStringPointer(floorURL)
+	floor.FloorPlanImageURL = sqlutil.NullStringPointer(floorURL)
 
 	rows, err := r.db.QueryContext(ctx, `
 		SELECT
@@ -1004,29 +1006,7 @@ func timeDate(year, month, day int) string {
 	return fmt.Sprintf("%04d-%02d-%02d", year, month, day)
 }
 
-func nullFloat64Pointer(value sql.NullFloat64) *float64 {
-	if !value.Valid {
-		return nil
-	}
-	v := value.Float64
-	return &v
-}
 
-func nullIntPointer(value sql.NullInt64) *int {
-	if !value.Valid {
-		return nil
-	}
-	v := int(value.Int64)
-	return &v
-}
-
-func nullStringPointer(value sql.NullString) *string {
-	if !value.Valid {
-		return nil
-	}
-	v := value.String
-	return &v
-}
 
 func daysInMonth(value time.Time) int {
 	start := time.Date(value.Year(), value.Month(), 1, 0, 0, 0, 0, time.UTC)
@@ -1148,7 +1128,7 @@ func (r *Repository) QueryR08(ctx context.Context, input QueryInput) ([]R08Row, 
 
 func (r *Repository) QueryR09(ctx context.Context, input QueryInput) ([]R09Row, error) {
 	args := agingBucketArgs(input.PeriodEnd)
-	args = append(args, input.PeriodEnd, input.DepartmentID, input.DepartmentID, input.CustomerID, input.CustomerID, input.TradeID, input.TradeID, stringPointerValue(input.ChargeType), stringPointerValue(input.ChargeType))
+	args = append(args, input.PeriodEnd, input.DepartmentID, input.DepartmentID, input.CustomerID, input.CustomerID, input.TradeID, input.TradeID, sqlutil.StringPointerValue(input.ChargeType), sqlutil.StringPointerValue(input.ChargeType))
 	rows, err := r.db.QueryContext(ctx, `
 		SELECT
 			COALESCE(GROUP_CONCAT(DISTINCT u.code ORDER BY u.code SEPARATOR ', '), '') AS unit_collection,
@@ -1260,7 +1240,7 @@ func (r *Repository) QueryR16(ctx context.Context, input QueryInput) ([]R16Row, 
 
 func (r *Repository) QueryR17(ctx context.Context, input QueryInput) ([]R17Row, error) {
 	args := agingBucketArgs(input.PeriodEnd)
-	args = append(args, input.PeriodEnd, input.DepartmentID, input.DepartmentID, stringPointerValue(input.ChargeType), stringPointerValue(input.ChargeType))
+	args = append(args, input.PeriodEnd, input.DepartmentID, input.DepartmentID, sqlutil.StringPointerValue(input.ChargeType), sqlutil.StringPointerValue(input.ChargeType))
 	rows, err := r.db.QueryContext(ctx, `
 		SELECT
 			d.name AS department_name,
@@ -1332,9 +1312,3 @@ func agingBucketSelectSQL(alias string) string {
 	}, ",\n\t\t\t")
 }
 
-func stringPointerValue(value *string) any {
-	if value == nil {
-		return nil
-	}
-	return *value
-}

@@ -10,6 +10,8 @@ import (
 
 	"github.com/Gujiaweiguo/mi/backend/internal/pagination"
 	mysql "github.com/go-sql-driver/mysql"
+
+	"github.com/Gujiaweiguo/mi/backend/internal/sqlutil"
 )
 
 var (
@@ -259,7 +261,7 @@ func (r *Repository) CreateCustomer(ctx context.Context, input CreateCustomerInp
 	result, err := r.db.ExecContext(ctx, `
 		INSERT INTO customers (code, name, trade_id, department_id, status)
 		VALUES (?, ?, ?, ?, ?)
-	`, input.Code, input.Name, int64PointerValue(input.TradeID), int64PointerValue(input.DepartmentID), input.Status)
+	`, input.Code, input.Name, sqlutil.Int64PointerValue(input.TradeID), sqlutil.Int64PointerValue(input.DepartmentID), input.Status)
 	if err != nil {
 		return nil, err
 	}
@@ -290,7 +292,7 @@ func (r *Repository) UpdateCustomer(ctx context.Context, input UpdateCustomerInp
 		UPDATE customers
 		SET code = ?, name = ?, trade_id = ?, department_id = ?, status = ?, updated_at = CURRENT_TIMESTAMP
 		WHERE id = ?
-	`, input.Code, input.Name, int64PointerValue(input.TradeID), int64PointerValue(input.DepartmentID), input.Status, input.ID)
+	`, input.Code, input.Name, sqlutil.Int64PointerValue(input.TradeID), sqlutil.Int64PointerValue(input.DepartmentID), input.Status, input.ID)
 	if err != nil {
 		return nil, err
 	}
@@ -333,8 +335,8 @@ func (r *Repository) FindCustomerByID(ctx context.Context, id int64) (*Customer,
 	`, id).Scan(&item.ID, &item.Code, &item.Name, &tradeID, &departmentID, &item.Status, &item.CreatedAt, &item.UpdatedAt); err != nil {
 		return nil, err
 	}
-	item.TradeID = nullInt64Pointer(tradeID)
-	item.DepartmentID = nullInt64Pointer(departmentID)
+	item.TradeID = sqlutil.NullInt64Pointer(tradeID)
+	item.DepartmentID = sqlutil.NullInt64Pointer(departmentID)
 	return &item, nil
 }
 
@@ -377,8 +379,8 @@ func (r *Repository) ListCustomers(ctx context.Context, filter ListFilter) (*pag
 		if err := rows.Scan(&item.ID, &item.Code, &item.Name, &tradeID, &departmentID, &item.Status, &item.CreatedAt, &item.UpdatedAt); err != nil {
 			return nil, err
 		}
-		item.TradeID = nullInt64Pointer(tradeID)
-		item.DepartmentID = nullInt64Pointer(departmentID)
+		item.TradeID = sqlutil.NullInt64Pointer(tradeID)
+		item.DepartmentID = sqlutil.NullInt64Pointer(departmentID)
 		items = append(items, item)
 	}
 	if err := rows.Err(); err != nil {
@@ -543,7 +545,7 @@ func (r *Repository) UpsertUnitProspect(ctx context.Context, input UpsertUnitPro
 		  rent_increment = VALUES(rent_increment),
 		  prospect_term_months = VALUES(prospect_term_months),
 		  updated_at = CURRENT_TIMESTAMP
-	`, input.UnitID, input.FiscalYear, int64PointerValue(input.PotentialCustomerID), int64PointerValue(input.ProspectBrandID), int64PointerValue(input.ProspectTradeID), float64PointerValue(input.AvgTransaction), float64PointerValue(input.ProspectRentPrice), stringPointerValue(input.RentIncrement), intPointerValue(input.ProspectTermMonths))
+	`, input.UnitID, input.FiscalYear, sqlutil.Int64PointerValue(input.PotentialCustomerID), sqlutil.Int64PointerValue(input.ProspectBrandID), sqlutil.Int64PointerValue(input.ProspectTradeID), sqlutil.Float64PointerValue(input.AvgTransaction), sqlutil.Float64PointerValue(input.ProspectRentPrice), sqlutil.StringPointerValue(input.RentIncrement), sqlutil.IntPointerValue(input.ProspectTermMonths))
 	if err != nil {
 		return nil, err
 	}
@@ -589,13 +591,13 @@ func scanUnitProspect(row scanner) (UnitProspect, error) {
 	if err != nil {
 		return UnitProspect{}, err
 	}
-	item.PotentialCustomerID = nullInt64Pointer(potentialCustomerID)
-	item.ProspectBrandID = nullInt64Pointer(prospectBrandID)
-	item.ProspectTradeID = nullInt64Pointer(prospectTradeID)
-	item.AvgTransaction = nullFloat64Pointer(avgTransaction)
-	item.ProspectRentPrice = nullFloat64Pointer(prospectRentPrice)
-	item.RentIncrement = nullStringPointer(rentIncrement)
-	item.ProspectTermMonths = nullIntPointer(prospectTermMonths)
+	item.PotentialCustomerID = sqlutil.NullInt64Pointer(potentialCustomerID)
+	item.ProspectBrandID = sqlutil.NullInt64Pointer(prospectBrandID)
+	item.ProspectTradeID = sqlutil.NullInt64Pointer(prospectTradeID)
+	item.AvgTransaction = sqlutil.NullFloat64Pointer(avgTransaction)
+	item.ProspectRentPrice = sqlutil.NullFloat64Pointer(prospectRentPrice)
+	item.RentIncrement = sqlutil.NullStringPointer(rentIncrement)
+	item.ProspectTermMonths = sqlutil.NullIntPointer(prospectTermMonths)
 	return item, nil
 }
 
@@ -621,62 +623,4 @@ func buildSearchClause(query string) (string, []any) {
 	return " WHERE code LIKE ? OR name LIKE ?", []any{likeQuery, likeQuery}
 }
 
-func nullInt64Pointer(value sql.NullInt64) *int64 {
-	if !value.Valid {
-		return nil
-	}
-	v := value.Int64
-	return &v
-}
 
-func int64PointerValue(value *int64) any {
-	if value == nil {
-		return nil
-	}
-	return *value
-}
-
-func nullFloat64Pointer(value sql.NullFloat64) *float64 {
-	if !value.Valid {
-		return nil
-	}
-	v := value.Float64
-	return &v
-}
-
-func nullStringPointer(value sql.NullString) *string {
-	if !value.Valid {
-		return nil
-	}
-	v := value.String
-	return &v
-}
-
-func nullIntPointer(value sql.NullInt64) *int {
-	if !value.Valid {
-		return nil
-	}
-	v := int(value.Int64)
-	return &v
-}
-
-func float64PointerValue(value *float64) any {
-	if value == nil {
-		return nil
-	}
-	return *value
-}
-
-func stringPointerValue(value *string) any {
-	if value == nil {
-		return nil
-	}
-	return *value
-}
-
-func intPointerValue(value *int) any {
-	if value == nil {
-		return nil
-	}
-	return *value
-}

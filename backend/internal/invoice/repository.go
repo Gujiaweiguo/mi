@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/Gujiaweiguo/mi/backend/internal/pagination"
+	"github.com/Gujiaweiguo/mi/backend/internal/sqlutil"
 )
 
 type Repository struct {
@@ -25,7 +26,7 @@ func (r *Repository) Create(ctx context.Context, tx *sql.Tx, document *Document)
 			document_type, document_no, billing_run_id, lease_contract_id, tenant_name, period_start, period_end,
 			total_amount, currency_type_id, status, adjusted_from_id, created_by, updated_by
 		) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-	`, document.DocumentType, stringPointerValue(document.DocumentNo), document.BillingRunID, document.LeaseContractID, document.TenantName, document.PeriodStart, document.PeriodEnd, document.TotalAmount, document.CurrencyTypeID, document.Status, int64PointerValue(document.AdjustedFromID), document.CreatedBy, document.UpdatedBy)
+	`, document.DocumentType, sqlutil.StringPointerValue(document.DocumentNo), document.BillingRunID, document.LeaseContractID, document.TenantName, document.PeriodStart, document.PeriodEnd, document.TotalAmount, document.CurrencyTypeID, document.Status, sqlutil.Int64PointerValue(document.AdjustedFromID), document.CreatedBy, document.UpdatedBy)
 	if err != nil {
 		return fmt.Errorf("insert billing document: %w", err)
 	}
@@ -138,7 +139,7 @@ func (r *Repository) UpdateWorkflowState(ctx context.Context, tx *sql.Tx, docume
 		UPDATE billing_documents
 		SET workflow_instance_id = ?, status = ?, document_no = ?, approved_at = ?, updated_by = ?
 		WHERE id = ?
-	`, workflowInstanceID, status, stringPointerValue(documentNo), timePointerValue(approvedAt), updatedBy, documentID); err != nil {
+	`, workflowInstanceID, status, sqlutil.StringPointerValue(documentNo), sqlutil.TimePointerValue(approvedAt), updatedBy, documentID); err != nil {
 		return fmt.Errorf("update billing document workflow state: %w", err)
 	}
 	return nil
@@ -246,12 +247,12 @@ func (r *Repository) scanDocument(scanner rowScanner) (*Document, error) {
 	if err := scanner.Scan(&document.ID, &document.DocumentType, &documentNo, &document.BillingRunID, &document.LeaseContractID, &document.TenantName, &document.PeriodStart, &document.PeriodEnd, &document.TotalAmount, &document.CurrencyTypeID, &document.Status, &workflowInstanceID, &adjustedFromID, &submittedAt, &approvedAt, &cancelledAt, &document.CreatedBy, &document.UpdatedBy, &document.CreatedAt, &document.UpdatedAt); err != nil {
 		return nil, err
 	}
-	document.DocumentNo = nullStringPointer(documentNo)
-	document.WorkflowInstanceID = nullInt64Pointer(workflowInstanceID)
-	document.AdjustedFromID = nullInt64Pointer(adjustedFromID)
-	document.SubmittedAt = nullTimePointer(submittedAt)
-	document.ApprovedAt = nullTimePointer(approvedAt)
-	document.CancelledAt = nullTimePointer(cancelledAt)
+	document.DocumentNo = sqlutil.NullStringPointer(documentNo)
+	document.WorkflowInstanceID = sqlutil.NullInt64Pointer(workflowInstanceID)
+	document.AdjustedFromID = sqlutil.NullInt64Pointer(adjustedFromID)
+	document.SubmittedAt = sqlutil.NullTimePointer(submittedAt)
+	document.ApprovedAt = sqlutil.NullTimePointer(approvedAt)
+	document.CancelledAt = sqlutil.NullTimePointer(cancelledAt)
 	return &document, nil
 }
 
@@ -296,42 +297,4 @@ func normalizeChargeLineIDs(ids []int64) []int64 {
 	return result
 }
 
-func nullInt64Pointer(value sql.NullInt64) *int64 {
-	if !value.Valid {
-		return nil
-	}
-	v := value.Int64
-	return &v
-}
-func nullTimePointer(value sql.NullTime) *time.Time {
-	if !value.Valid {
-		return nil
-	}
-	v := value.Time
-	return &v
-}
-func nullStringPointer(value sql.NullString) *string {
-	if !value.Valid {
-		return nil
-	}
-	v := value.String
-	return &v
-}
-func int64PointerValue(value *int64) any {
-	if value == nil {
-		return nil
-	}
-	return *value
-}
-func stringPointerValue(value *string) any {
-	if value == nil {
-		return nil
-	}
-	return *value
-}
-func timePointerValue(value *time.Time) any {
-	if value == nil {
-		return nil
-	}
-	return *value
-}
+
