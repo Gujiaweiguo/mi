@@ -54,7 +54,7 @@ describe('auth guard helpers', () => {
         { isAuthenticated: true, user: permittedUser },
       ),
     ).toEqual({
-      path: '/health',
+      path: '/dashboard',
     })
   })
 
@@ -78,6 +78,6 @@ describe('auth guard helpers', () => {
 
   it('maps the root path to the expected home route', () => {
     expect(resolveRootRedirect({ isAuthenticated: false })).toBe('/login')
-    expect(resolveRootRedirect({ isAuthenticated: true, user: permittedUser })).toBe('/health')
+    expect(resolveRootRedirect({ isAuthenticated: true, user: permittedUser })).toBe('/dashboard')
   })
 })

@@ -61,14 +61,18 @@ describe('permission helpers', () => {
   it('filters navigation items to authorized entries', () => {
     const paths = filterNavigationItems(baseUser).map((item) => item.path)
 
-    expect(paths).toEqual(['/health', '/lease/contracts', '/excel/io'])
-    expect(resolveAuthorizedHomePath(baseUser)).toBe('/health')
+    expect(paths).toEqual(['/dashboard', '/health', '/lease/contracts', '/excel/io'])
+    expect(resolveAuthorizedHomePath(baseUser)).toBe('/dashboard')
   })
 
   it('resolves navigation labels from locale messages', () => {
     setI18nLocale('zh-CN')
 
     expect(resolveNavigationItems(baseUser, (key) => translateMessage(key))).toEqual([
+      {
+        path: '/dashboard',
+        label: '工作台概览',
+      },
       {
         path: '/health',
         label: '平台健康',
