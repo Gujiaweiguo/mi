@@ -359,3 +359,10 @@ All frontend API modules SHALL have unit tests that verify correct HTTP method, 
 - **WHEN** an API function is called
 - **THEN** it SHALL call the correct HTTP method on the correct URL and return properly unwrapped data
 
+### Requirement: All backend packages SHALL have unit test coverage
+Every backend package SHALL have at least one test file covering exported functions, constructors, and pure helper functions.
+
+#### Scenario: Each package has unit tests
+- **WHEN** a package contains exported functions or constructors
+- **THEN** it SHALL have test coverage for those exports
+
