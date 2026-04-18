@@ -1,4 +1,4 @@
-## MODIFIED Requirements
+## ADDED Requirements
 
 ### Requirement: The system SHALL provide automated database initialization
 The deployment stack SHALL include a migration init service that runs database migrations and seed data before the backend starts. The backend Docker image SHALL include the `dbops` binary for this purpose.
