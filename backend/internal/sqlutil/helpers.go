@@ -2,6 +2,7 @@ package sqlutil
 
 import (
 	"database/sql"
+	"strings"
 	"time"
 )
 
@@ -92,4 +93,16 @@ func TimePointerDateString(v *time.Time) any {
 		return v.Format("2006-01-02")
 	}
 	return nil
+}
+
+// InPlaceholders returns a comma-separated string of n question marks for SQL IN clauses.
+func InPlaceholders(n int) string {
+	if n <= 0 {
+		return ""
+	}
+	parts := make([]string, n)
+	for i := range parts {
+		parts[i] = "?"
+	}
+	return strings.Join(parts, ", ")
 }

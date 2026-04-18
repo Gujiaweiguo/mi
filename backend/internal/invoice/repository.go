@@ -179,10 +179,8 @@ func (r *Repository) CountReservedChargeLines(ctx context.Context, tx *sql.Tx, c
 	if len(chargeLineIDs) == 0 {
 		return 0, nil
 	}
-	placeholders := make([]string, 0, len(chargeLineIDs))
 	args := make([]any, 0, len(chargeLineIDs)+4)
 	for _, id := range chargeLineIDs {
-		placeholders = append(placeholders, "?")
 		args = append(args, id)
 	}
 	args = append(args, StatusDraft, StatusPendingApproval, StatusApproved, StatusRejected)
@@ -191,7 +189,7 @@ func (r *Repository) CountReservedChargeLines(ctx context.Context, tx *sql.Tx, c
 		SELECT COUNT(DISTINCT bdl.billing_charge_line_id)
 		FROM billing_document_lines bdl
 		INNER JOIN billing_documents bd ON bd.id = bdl.billing_document_id
-		WHERE bdl.billing_charge_line_id IN (` + strings.Join(placeholders, ",") + `)
+		WHERE bdl.billing_charge_line_id IN (` + sqlutil.InPlaceholders(len(chargeLineIDs)) + `)
 		  AND bd.status IN (?, ?, ?, ?)
 	`
 	if err := tx.QueryRowContext(ctx, query, args...).Scan(&count); err != nil {

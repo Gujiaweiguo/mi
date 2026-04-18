@@ -42,7 +42,7 @@ func (h *ReportingHandler) Query(c *gin.Context) {
 		h.renderReportingError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, result)
+	c.JSON(http.StatusOK, gin.H{"report": result})
 }
 
 func (h *ReportingHandler) Export(c *gin.Context) {

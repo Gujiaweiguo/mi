@@ -190,10 +190,8 @@ func (r *Repository) GetChargeLinesByIDs(ctx context.Context, ids []int64) ([]Ch
 	if len(ids) == 0 {
 		return []ChargeLine{}, nil
 	}
-	placeholders := make([]string, 0, len(ids))
 	args := make([]any, 0, len(ids))
 	for _, id := range ids {
-		placeholders = append(placeholders, "?")
 		args = append(args, id)
 	}
 	rows, err := r.db.QueryContext(ctx, `
@@ -202,7 +200,7 @@ func (r *Repository) GetChargeLinesByIDs(ctx context.Context, ids []int64) ([]Ch
 			bcl.currency_type_id, bcl.source_effective_version, bcl.created_at
 		FROM billing_charge_lines bcl
 		INNER JOIN lease_contracts lc ON lc.id = bcl.lease_contract_id
-		WHERE bcl.id IN (`+strings.Join(placeholders, ",")+`)
+		WHERE bcl.id IN (` + sqlutil.InPlaceholders(len(ids)) + `)
 	`, args...)
 	if err != nil {
 		return nil, fmt.Errorf("get billing charge lines by ids: %w", err)
