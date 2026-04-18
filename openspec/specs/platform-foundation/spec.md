@@ -359,6 +359,13 @@ All frontend API modules SHALL have unit tests that verify correct HTTP method, 
 - **WHEN** an API function is called
 - **THEN** it SHALL call the correct HTTP method on the correct URL and return properly unwrapped data
 
+### Requirement: Critical user-facing views SHALL have component tests
+LoginView and DashboardView SHALL have component-level tests verifying mount, API interaction, and error handling.
+
+#### Scenario: Login and dashboard views are tested
+- **WHEN** a critical view is mounted
+- **THEN** it SHALL call the correct API and handle responses appropriately
+
 ### Requirement: All backend packages SHALL have unit test coverage
 Every backend package SHALL have at least one test file covering exported functions, constructors, and pure helper functions.
 
