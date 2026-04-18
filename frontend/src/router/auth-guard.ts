@@ -3,7 +3,7 @@ import type { RouteLocationNormalized } from 'vue-router'
 import { canAccessFunction, resolveAuthorizedHomePath } from '../auth/permissions'
 import type { PermissionAction, SessionUser } from '../types/auth'
 
-export const DEFAULT_AUTHENTICATED_PATH = '/health'
+export const DEFAULT_AUTHENTICATED_PATH = '/dashboard'
 export const LOGIN_PATH = '/login'
 export const FORBIDDEN_PATH = '/forbidden'
 

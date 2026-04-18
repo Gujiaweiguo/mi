@@ -49,6 +49,7 @@ export const enUSMessages = {
     eyebrow: 'Legacy system migration',
     navigation: {
       accessNotices: 'Access notices',
+      dashboard: 'Dashboard',
       health: 'Platform health',
       workflowAdmin: 'Workflow administration',
       masterdataAdmin: 'Master data admin',
@@ -155,6 +156,83 @@ export const enUSMessages = {
     errors: {
       backendUnreachable: 'Backend service is unreachable.',
       unknown: 'Unable to complete health check.',
+    },
+  },
+  dashboard: {
+    eyebrow: 'Operational workbench',
+    title: 'Dashboard',
+    summary: 'Track today’s lease, billing, receivable, and workflow workload from one authenticated landing page.',
+    lastUpdated: 'Updated {value}',
+    actions: {
+      refresh: 'Refresh dashboard',
+      reviewQueue: 'Review queue',
+      openWorkspace: 'Open workspace',
+    },
+    alerts: {
+      partialData: 'Some dashboard data is unavailable',
+      dataUnavailable: 'Dashboard data unavailable',
+    },
+    errors: {
+      partialData: 'Some dashboard counts could not be refreshed.',
+      unableToLoad: 'Unable to load dashboard data.',
+    },
+    sections: {
+      summaryCards: 'Operational snapshot',
+      summaryCardsSummary: 'Monitor the six work queues that drive first-release operations.',
+      quickActions: 'Quick actions',
+      quickActionsSummary: 'Jump directly into the daily tools your team uses most.',
+      priorityQueues: 'Priority queues',
+      priorityQueuesSummary: 'Focus attention on approvals and collections before moving deeper into the system.',
+    },
+    cards: {
+      activeLeases: 'Active leases',
+      pendingLeaseApprovals: 'Pending lease approvals',
+      pendingInvoiceApprovals: 'Pending invoice approvals',
+      openReceivables: 'Open receivables',
+      overdueReceivables: 'Overdue receivables',
+      pendingWorkflows: 'Pending workflows',
+    },
+    cardDescriptions: {
+      activeLeases: 'Current live contracts across the operational portfolio.',
+      pendingLeaseApprovals: 'Lease records still waiting for approval action.',
+      pendingInvoiceApprovals: 'Billing documents queued for approval review.',
+      openReceivables: 'Receivable balances that remain unresolved.',
+      overdueReceivables: 'Receivables already due as of today.',
+      pendingWorkflows: 'Workflow instances that still need a decision.',
+    },
+    quickActions: {
+      leaseContracts: {
+        title: 'Lease contracts',
+        summary: 'Review contract activity, filter queues, and move directly into lease operations.',
+      },
+      billingInvoices: {
+        title: 'Billing invoices',
+        summary: 'Inspect billing documents and act on pending invoice approvals.',
+      },
+      receivables: {
+        title: 'Receivables',
+        summary: 'Open the receivables ledger to follow up on outstanding balances.',
+      },
+      workflowAdmin: {
+        title: 'Workflow administration',
+        summary: 'Handle pending workflow instances and inspect approval progress.',
+      },
+    },
+    queueRows: {
+      pendingLeaseApprovals: 'Lease approvals awaiting action',
+      pendingInvoiceApprovals: 'Invoice approvals awaiting action',
+      openReceivables: 'Outstanding receivable accounts',
+      overdueReceivables: 'Past-due receivable accounts',
+    },
+    panels: {
+      approvals: {
+        title: 'Approval focus',
+        summary: 'Keep lease and invoice approvals moving so downstream billing stays unblocked.',
+      },
+      collections: {
+        title: 'Collections focus',
+        summary: 'Watch open exposure and overdue balances to prioritize follow-up work.',
+      },
     },
   },
   lease: {

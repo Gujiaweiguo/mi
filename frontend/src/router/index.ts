@@ -6,6 +6,7 @@ import ForbiddenView from '../views/ForbiddenView.vue'
 import BillingChargesView from '../views/BillingChargesView.vue'
 import BillingInvoicesView from '../views/BillingInvoicesView.vue'
 import ReceivablesView from '../views/ReceivablesView.vue'
+import DashboardView from '../views/DashboardView.vue'
 import HealthView from '../views/HealthView.vue'
 import InvoiceDetailView from '../views/InvoiceDetailView.vue'
 import LeaseCreateView from '../views/LeaseCreateView.vue'
@@ -46,6 +47,14 @@ const router = createRouter({
       component: LoginView,
       meta: {
         guestOnly: true,
+      },
+    },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: DashboardView,
+      meta: {
+        requiresAuth: true,
       },
     },
     {

@@ -49,6 +49,7 @@ export const zhCNMessages = {
     eyebrow: '遗留系统迁移',
     navigation: {
       accessNotices: '访问提示',
+      dashboard: '工作台概览',
       health: '平台健康',
       workflowAdmin: '工作流管理',
       masterdataAdmin: '主数据管理',
@@ -155,6 +156,83 @@ export const zhCNMessages = {
     errors: {
       backendUnreachable: '无法连接后端服务。',
       unknown: '无法完成健康检查。',
+    },
+  },
+  dashboard: {
+    eyebrow: '运营工作台',
+    title: '工作台概览',
+    summary: '将租赁、开票、应收与工作流的当日任务集中到统一的认证后首页。',
+    lastUpdated: '更新时间：{value}',
+    actions: {
+      refresh: '刷新概览',
+      reviewQueue: '查看队列',
+      openWorkspace: '进入工作区',
+    },
+    alerts: {
+      partialData: '部分概览数据暂不可用',
+      dataUnavailable: '概览数据不可用',
+    },
+    errors: {
+      partialData: '部分概览计数刷新失败。',
+      unableToLoad: '无法加载概览数据。',
+    },
+    sections: {
+      summaryCards: '运营快照',
+      summaryCardsSummary: '集中查看首发版本最关键的六个工作队列。',
+      quickActions: '快捷入口',
+      quickActionsSummary: '直接进入团队日常最常用的核心操作区域。',
+      priorityQueues: '重点队列',
+      priorityQueuesSummary: '先处理审批与催收，再继续深入业务详情。',
+    },
+    cards: {
+      activeLeases: '生效中合同',
+      pendingLeaseApprovals: '待审批租赁合同',
+      pendingInvoiceApprovals: '待审批账单发票',
+      openReceivables: '未结应收',
+      overdueReceivables: '逾期应收',
+      pendingWorkflows: '待处理流程',
+    },
+    cardDescriptions: {
+      activeLeases: '当前已生效并持续履约的租赁合同数量。',
+      pendingLeaseApprovals: '仍在等待审批动作的租赁合同记录。',
+      pendingInvoiceApprovals: '进入审批队列的账单与发票单据数量。',
+      openReceivables: '仍有未结余额的应收账户数量。',
+      overdueReceivables: '截至今日已经到期的应收账户数量。',
+      pendingWorkflows: '仍需处理或决策的流程实例数量。',
+    },
+    quickActions: {
+      leaseContracts: {
+        title: '租赁合同',
+        summary: '查看合同队列、筛选记录，并直接进入租赁运营处理。',
+      },
+      billingInvoices: {
+        title: '账单发票',
+        summary: '检查账单单据并处理待审批的开票事项。',
+      },
+      receivables: {
+        title: '应收台账',
+        summary: '打开应收台账，跟进未结与逾期余额。',
+      },
+      workflowAdmin: {
+        title: '工作流管理',
+        summary: '处理待办流程实例并查看审批推进情况。',
+      },
+    },
+    queueRows: {
+      pendingLeaseApprovals: '待处理的租赁审批',
+      pendingInvoiceApprovals: '待处理的发票审批',
+      openReceivables: '仍未结清的应收账户',
+      overdueReceivables: '已经逾期的应收账户',
+    },
+    panels: {
+      approvals: {
+        title: '审批重点',
+        summary: '持续推进租赁与开票审批，避免后续开票与回款流程受阻。',
+      },
+      collections: {
+        title: '催收重点',
+        summary: '关注未结与逾期余额，优先安排跟进动作。',
+      },
     },
   },
   lease: {

@@ -29,6 +29,10 @@ export type ResolvedNavigationItem = Omit<NavigationItem, 'labelKey'> & {
 
 export const NAVIGATION_ITEMS: NavigationItem[] = [
   {
+    path: '/dashboard',
+    labelKey: 'app.navigation.dashboard',
+  },
+  {
     path: '/health',
     labelKey: 'app.navigation.health',
   },
