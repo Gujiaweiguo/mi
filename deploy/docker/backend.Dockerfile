@@ -4,7 +4,7 @@ ENV GOPROXY=https://goproxy.cn,direct
 
 WORKDIR /app
 COPY backend /app
-RUN go mod download && go build -o /out/server ./cmd/server
+RUN go mod download && go build -o /out/server ./cmd/server && go build -o /out/dbops ./cmd/dbops
 
 FROM alpine:3.20
 
@@ -13,6 +13,8 @@ RUN apk add --no-cache chromium
 WORKDIR /app
 
 COPY --from=builder /out/server /app/server
+COPY --from=builder /out/dbops /app/dbops
+COPY backend/internal/platform/database/migrations /app/migrations
 
 RUN mkdir -p /app/config /app/logs /app/generated-documents /app/uploads \
     && chown -R appuser:appuser /app \

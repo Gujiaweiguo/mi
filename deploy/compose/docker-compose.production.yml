@@ -50,6 +50,24 @@ services:
         max-size: "10m"
         max-file: "3"
 
+  migrate:
+    build:
+      context: ../..
+      dockerfile: deploy/docker/backend.Dockerfile
+    restart: "no"
+    entrypoint: ["/app/dbops"]
+    command: ["migrate"]
+    environment:
+      MI_DATABASE_HOST: mysql
+      MI_DATABASE_PORT: "3306"
+      MI_DATABASE_NAME: ${MYSQL_DATABASE:-mi_prod}
+      MI_DATABASE_USER: ${MYSQL_USER:-mi_prod}
+      MI_DATABASE_PASSWORD: ${MYSQL_PASSWORD:-change-me}
+      MI_CONFIG_FILE: /dev/null
+    depends_on:
+      mysql:
+        condition: service_healthy
+
   backend:
     build:
       context: ../..
@@ -58,6 +76,12 @@ services:
     stop_grace_period: 30s
     environment:
       MI_CONFIG_FILE: ${MI_BACKEND_CONFIG_FILE:-/app/config/production.yaml}
+      MI_DATABASE_HOST: mysql
+      MI_DATABASE_PORT: "3306"
+      MI_DATABASE_NAME: ${MYSQL_DATABASE:-mi_prod}
+      MI_DATABASE_USER: ${MYSQL_USER:-mi_prod}
+      MI_DATABASE_PASSWORD: ${MYSQL_PASSWORD:-change-me}
+      MI_AUTH_JWT_SECRET: ${MI_AUTH_JWT_SECRET:-change-me-production-secret}
     volumes:
       - ${MI_RUNTIME_CONFIG:-../../backend/config}:/app/config:ro
       - ${MI_RUNTIME_LOGS:-../runtime/production/logs}:/app/logs
@@ -71,6 +95,8 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
     deploy:
       resources:
         limits:
