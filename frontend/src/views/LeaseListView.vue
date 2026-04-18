@@ -7,6 +7,7 @@ import { listLeases, type LeaseSummary } from '../api/lease'
 import FilterForm from '../components/platform/FilterForm.vue'
 import PageSection from '../components/platform/PageSection.vue'
 import { useFilterForm } from '../composables/useFilterForm'
+import { getErrorMessage } from '../composables/useErrorMessage'
 import { usePagination } from '../composables/usePagination'
 
 const router = useRouter()
@@ -61,7 +62,7 @@ const loadLeases = async () => {
     rows.value = response.data.items
     total.value = response.data.total
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : t('lease.errors.unableToLoad')
+    errorMessage.value = getErrorMessage(error, t('lease.errors.unableToLoad'))
     rows.value = []
     total.value = 0
   } finally {

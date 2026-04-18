@@ -10,6 +10,8 @@ import {
   type UpsertPrintTemplateRequest,
 } from '../api/print'
 import PageSection from '../components/platform/PageSection.vue'
+import { downloadBlob } from '../composables/useDownload'
+import { getErrorMessage } from '../composables/useErrorMessage'
 import { useAppStore } from '../stores/app'
 
 type Feedback = {
@@ -174,7 +176,7 @@ const loadTemplates = async () => {
     feedback.value = {
       type: 'error',
       title: t('printPreview.errors.templatesUnavailable'),
-      description: error instanceof Error ? error.message : t('printPreview.errors.unableToLoadTemplates'),
+      description: getErrorMessage(error, t('printPreview.errors.unableToLoadTemplates')),
     }
   } finally {
     isLoading.value = false
@@ -221,12 +223,7 @@ const handleRenderPdf = async () => {
     })
 
     const blob = new Blob([response.data as unknown as BlobPart], { type: 'application/pdf' })
-    const url = URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = url
-    link.download = 'print-output.pdf'
-    link.click()
-    URL.revokeObjectURL(url)
+    downloadBlob(blob, 'print-output.pdf')
 
     feedback.value = {
       type: 'success',
@@ -237,7 +234,7 @@ const handleRenderPdf = async () => {
     feedback.value = {
       type: 'error',
       title: t('printPreview.errors.generationFailed'),
-      description: error instanceof Error ? error.message : t('printPreview.errors.unableToGeneratePdf'),
+      description: getErrorMessage(error, t('printPreview.errors.unableToGeneratePdf')),
     }
   } finally {
     isRendering.value = false
@@ -277,7 +274,7 @@ const handleSubmit = async () => {
     feedback.value = {
       type: 'error',
       title: t('printPreview.dialog.feedback.failed'),
-      description: error instanceof Error ? error.message : t('printPreview.errors.unableToLoadTemplates'),
+      description: getErrorMessage(error, t('printPreview.errors.unableToLoadTemplates')),
     }
   } finally {
     isSubmitting.value = false

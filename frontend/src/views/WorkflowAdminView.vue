@@ -13,6 +13,7 @@ import {
 import FilterForm from '../components/platform/FilterForm.vue'
 import PageSection from '../components/platform/PageSection.vue'
 import { useFilterForm } from '../composables/useFilterForm'
+import { getErrorMessage } from '../composables/useErrorMessage'
 import { useAppStore } from '../stores/app'
 
 type Feedback = {
@@ -70,7 +71,7 @@ const loadDefinitions = async () => {
     const response = await listWorkflowDefinitions()
     definitions.value = response.data.definitions ?? []
   } catch (error) {
-    definitionsErrorMessage.value = error instanceof Error ? error.message : t('workflow.errors.unableToLoadDefinitions')
+    definitionsErrorMessage.value = getErrorMessage(error, t('workflow.errors.unableToLoadDefinitions'))
     definitions.value = []
   } finally {
     isDefinitionsLoading.value = false
@@ -96,7 +97,7 @@ const loadInstances = async (options?: { preserveFeedback?: boolean }) => {
     instanceFeedback.value = {
       type: 'error',
       title: t('workflow.errors.instancesUnavailable'),
-      description: error instanceof Error ? error.message : t('workflow.errors.unableToLoadInstances'),
+      description: getErrorMessage(error, t('workflow.errors.unableToLoadInstances')),
     }
   } finally {
     isInstancesLoading.value = false
@@ -180,7 +181,7 @@ const handleInstanceAction = async (action: 'approve' | 'reject', instance: Work
     instanceFeedback.value = {
       type: 'error',
       title: t('workflow.errors.actionFailed', { action: t(`workflow.actions.${action}`) }),
-      description: error instanceof Error ? error.message : t('workflow.errors.unableToAction', { id: instance.id, action: t(`workflow.actions.${action}`) }),
+      description: getErrorMessage(error, t('workflow.errors.unableToAction', { id: instance.id, action: t(`workflow.actions.${action}`) })),
     }
   } finally {
     instanceActionId.value = null

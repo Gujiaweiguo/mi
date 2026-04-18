@@ -5,6 +5,7 @@ import { useRoute, useRouter } from 'vue-router'
 
 import { getLease, submitLease, terminateLease, type LeaseContract } from '../api/lease'
 import PageSection from '../components/platform/PageSection.vue'
+import { getErrorMessage } from '../composables/useErrorMessage'
 import { useAppStore } from '../stores/app'
 
 const route = useRoute()
@@ -131,7 +132,7 @@ const loadLease = async () => {
     terminateForm.terminated_at = response.data.lease.terminated_at?.slice(0, 10) ?? today()
   } catch (error) {
     lease.value = null
-    errorMessage.value = error instanceof Error ? error.message : t('leaseDetail.errors.unableToLoad')
+    errorMessage.value = getErrorMessage(error, t('leaseDetail.errors.unableToLoad'))
   } finally {
     isLoading.value = false
   }
@@ -158,7 +159,7 @@ const handleSubmitForApproval = async () => {
     lease.value = response.data.lease
     successMessage.value = t('leaseDetail.feedback.submitted')
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : t('leaseDetail.errors.unableToSubmit')
+    errorMessage.value = getErrorMessage(error, t('leaseDetail.errors.unableToSubmit'))
   } finally {
     isSubmitting.value = false
   }
@@ -182,7 +183,7 @@ const handleTerminate = async () => {
     terminateForm.terminated_at = response.data.lease.terminated_at?.slice(0, 10) ?? terminateForm.terminated_at
     successMessage.value = t('leaseDetail.feedback.terminated')
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : t('leaseDetail.errors.unableToTerminate')
+    errorMessage.value = getErrorMessage(error, t('leaseDetail.errors.unableToTerminate'))
   } finally {
     isTerminating.value = false
   }

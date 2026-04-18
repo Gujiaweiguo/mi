@@ -6,6 +6,7 @@ import { generateCharges, listCharges, type BillingRun, type ChargeLine } from '
 import FilterForm from '../components/platform/FilterForm.vue'
 import PageSection from '../components/platform/PageSection.vue'
 import { useFilterForm } from '../composables/useFilterForm'
+import { getErrorMessage } from '../composables/useErrorMessage'
 import { usePagination } from '../composables/usePagination'
 import { useAppStore } from '../stores/app'
 
@@ -114,7 +115,7 @@ const loadCharges = async () => {
     feedback.value = {
       type: 'error',
       title: t('billingCharges.errors.recordsUnavailable'),
-      description: error instanceof Error ? error.message : t('billingCharges.errors.unableToLoad'),
+      description: getErrorMessage(error, t('billingCharges.errors.unableToLoad')),
     }
   } finally {
     isLoading.value = false
@@ -173,7 +174,7 @@ const handleGenerate = async () => {
     feedback.value = {
       type: 'error',
       title: t('billingCharges.errors.generationFailed'),
-      description: error instanceof Error ? error.message : t('billingCharges.errors.unableToGenerate'),
+      description: getErrorMessage(error, t('billingCharges.errors.unableToGenerate')),
     }
   } finally {
     isGenerating.value = false

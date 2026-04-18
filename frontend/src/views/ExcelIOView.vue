@@ -4,6 +4,8 @@ import { useI18n } from 'vue-i18n'
 
 import { downloadUnitTemplate, importUnits, exportOperational, type ImportResult } from '../api/excel'
 import PageSection from '../components/platform/PageSection.vue'
+import { downloadBlob } from '../composables/useDownload'
+import { getErrorMessage } from '../composables/useErrorMessage'
 
 type Feedback = {
   type: 'success' | 'error' | 'warning'
@@ -27,23 +29,14 @@ const datasetOptions = computed(() => [
   { label: t('excel.datasets.invoices'), value: 'invoices' },
 ])
 
-const downloadBlob = (data: unknown, filename: string) => {
-  const blob = new Blob([data as BlobPart], { type: 'application/octet-stream' })
-  const url = URL.createObjectURL(blob)
-  const link = document.createElement('a')
-  link.href = url
-  link.download = filename
-  link.click()
-  URL.revokeObjectURL(url)
-}
-
 const handleDownloadTemplate = async () => {
   isDownloadingTemplate.value = true
   feedback.value = null
 
   try {
     const response = await downloadUnitTemplate()
-    downloadBlob(response.data, 'unit-data-template.xlsx')
+    const blob = new Blob([response.data as BlobPart], { type: 'application/octet-stream' })
+    downloadBlob(blob, 'unit-data-template.xlsx')
     feedback.value = {
       type: 'success',
       title: t('excel.feedback.templateDownloaded'),
@@ -53,7 +46,7 @@ const handleDownloadTemplate = async () => {
     feedback.value = {
       type: 'error',
       title: t('excel.errors.templateDownloadFailed'),
-      description: error instanceof Error ? error.message : t('excel.errors.unableToDownloadTemplate'),
+      description: getErrorMessage(error, t('excel.errors.unableToDownloadTemplate')),
     }
   } finally {
     isDownloadingTemplate.value = false
@@ -90,7 +83,7 @@ const handleImport = async () => {
     feedback.value = {
       type: 'error',
       title: t('excel.errors.importFailed'),
-      description: error instanceof Error ? error.message : t('excel.errors.unableToImport'),
+      description: getErrorMessage(error, t('excel.errors.unableToImport')),
     }
   } finally {
     isImporting.value = false
@@ -112,7 +105,8 @@ const handleExport = async () => {
 
   try {
     const response = await exportOperational(selectedDataset.value)
-    downloadBlob(response.data, `${selectedDataset.value}-export.xlsx`)
+    const blob = new Blob([response.data as BlobPart], { type: 'application/octet-stream' })
+    downloadBlob(blob, `${selectedDataset.value}-export.xlsx`)
     feedback.value = {
       type: 'success',
       title: t('excel.feedback.exportCompleted'),
@@ -122,7 +116,7 @@ const handleExport = async () => {
     feedback.value = {
       type: 'error',
       title: t('excel.errors.exportFailed'),
-      description: error instanceof Error ? error.message : t('excel.errors.unableToExport'),
+      description: getErrorMessage(error, t('excel.errors.unableToExport')),
     }
   } finally {
     isExporting.value = false

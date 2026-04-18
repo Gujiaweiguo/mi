@@ -18,6 +18,7 @@ import {
 import { listStructureStores, listStructureUnits, type StructureStore, type StructureUnit } from '../api/structure'
 import FilterForm from '../components/platform/FilterForm.vue'
 import PageSection from '../components/platform/PageSection.vue'
+import { downloadBlob } from '../composables/useDownload'
 import { getErrorMessage } from '../composables/useErrorMessage'
 import { useFilterForm } from '../composables/useFilterForm'
 
@@ -93,16 +94,6 @@ const trafficForm = reactive<TrafficCreateForm>({
   traffic_date: '',
   inbound_count: undefined,
 })
-
-const downloadBlob = (data: unknown, filename: string) => {
-  const blob = new Blob([data as BlobPart], { type: 'application/octet-stream' })
-  const url = URL.createObjectURL(blob)
-  const link = document.createElement('a')
-  link.href = url
-  link.download = filename
-  link.click()
-  URL.revokeObjectURL(url)
-}
 
 const normalizeFilterValue = (value: string | null | undefined) => value?.trim() ?? ''
 
@@ -324,7 +315,8 @@ const handleDownloadDailyTemplate = async () => {
 
   try {
     const response = await downloadDailySalesTemplate()
-    downloadBlob(response.data, 'daily-sales-template.xlsx')
+    const blob = new Blob([response.data as BlobPart], { type: 'application/octet-stream' })
+    downloadBlob(blob, 'daily-sales-template.xlsx')
     dailyFeedback.value = {
       type: 'success',
       title: t('salesAdmin.feedback.dailySalesTemplateDownloadedTitle'),
@@ -347,7 +339,8 @@ const handleDownloadTrafficTemplate = async () => {
 
   try {
     const response = await downloadCustomerTrafficTemplate()
-    downloadBlob(response.data, 'customer-traffic-template.xlsx')
+    const blob = new Blob([response.data as BlobPart], { type: 'application/octet-stream' })
+    downloadBlob(blob, 'customer-traffic-template.xlsx')
     trafficFeedback.value = {
       type: 'success',
       title: t('salesAdmin.feedback.customerTrafficTemplateDownloadedTitle'),

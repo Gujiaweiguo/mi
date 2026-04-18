@@ -12,7 +12,9 @@ import {
 } from '../api/reports'
 import FilterForm from '../components/platform/FilterForm.vue'
 import PageSection from '../components/platform/PageSection.vue'
+import { downloadBlob } from '../composables/useDownload'
 import { useFilterForm } from '../composables/useFilterForm'
+import { getErrorMessage } from '../composables/useErrorMessage'
 import { useAppStore } from '../stores/app'
 
 type VisualShopFilters = {
@@ -206,7 +208,7 @@ const loadVisualShopReport = async () => {
     result.value = response.data
     selectedUnitId.value = response.data.visual.units[0]?.unit_id ?? null
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : t('visualShopAnalysis.errors.unableToLoad')
+    errorMessage.value = getErrorMessage(error, t('visualShopAnalysis.errors.unableToLoad'))
     result.value = null
     selectedUnitId.value = null
   } finally {
@@ -222,15 +224,9 @@ const handleExport = async () => {
     const response = await exportReport('r19', buildPayload())
     const blob = response.data instanceof Blob ? response.data : new Blob([response.data], { type: 'application/octet-stream' })
     const extension = inferFileExtension(response.headers['content-type'])
-    const url = URL.createObjectURL(blob)
-    const link = document.createElement('a')
-
-    link.href = url
-    link.download = `${buildFileName()}.${extension}`
-    link.click()
-    URL.revokeObjectURL(url)
+    downloadBlob(blob, `${buildFileName()}.${extension}`)
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : t('visualShopAnalysis.errors.unableToExport')
+    errorMessage.value = getErrorMessage(error, t('visualShopAnalysis.errors.unableToExport'))
   } finally {
     isExporting.value = false
   }

@@ -13,6 +13,7 @@ import {
   type InvoiceReceivable,
 } from '../api/invoice'
 import PageSection from '../components/platform/PageSection.vue'
+import { getErrorMessage } from '../composables/useErrorMessage'
 import { useAppStore } from '../stores/app'
 
 const route = useRoute()
@@ -168,7 +169,7 @@ const loadReceivable = async () => {
     receivable.value = response.data.receivable
   } catch (error) {
     receivable.value = null
-    receivableErrorMessage.value = error instanceof Error ? error.message : t('invoiceDetail.errors.unableToLoadReceivable')
+    receivableErrorMessage.value = getErrorMessage(error, t('invoiceDetail.errors.unableToLoadReceivable'))
   } finally {
     isReceivableLoading.value = false
   }
@@ -192,7 +193,7 @@ const loadInvoice = async () => {
     invoice.value = null
     receivable.value = null
     receivableErrorMessage.value = ''
-    errorMessage.value = error instanceof Error ? error.message : t('invoiceDetail.errors.unableToLoad')
+    errorMessage.value = getErrorMessage(error, t('invoiceDetail.errors.unableToLoad'))
   } finally {
     isLoading.value = false
   }
@@ -219,7 +220,7 @@ const handleSubmit = async () => {
     invoice.value = response.data.document
     successMessage.value = t('invoiceDetail.feedback.submitted')
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : t('invoiceDetail.errors.unableToSubmit')
+    errorMessage.value = getErrorMessage(error, t('invoiceDetail.errors.unableToSubmit'))
   } finally {
     isSubmitting.value = false
   }
@@ -239,7 +240,7 @@ const handleCancel = async () => {
     invoice.value = response.data.document
     successMessage.value = t('invoiceDetail.feedback.cancelled')
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : t('invoiceDetail.errors.unableToCancel')
+    errorMessage.value = getErrorMessage(error, t('invoiceDetail.errors.unableToCancel'))
   } finally {
     isCancelling.value = false
   }
@@ -267,7 +268,7 @@ const handleRecordPayment = async () => {
     successMessage.value = t('invoiceDetail.feedback.paymentRecorded')
     resetPaymentForm()
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : t('invoiceDetail.errors.unableToRecordPayment')
+    errorMessage.value = getErrorMessage(error, t('invoiceDetail.errors.unableToRecordPayment'))
   } finally {
     isRecordingPayment.value = false
   }

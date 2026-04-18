@@ -7,6 +7,7 @@ import { cancelInvoice, listInvoices, submitInvoice, type InvoiceDocument } from
 import FilterForm from '../components/platform/FilterForm.vue'
 import PageSection from '../components/platform/PageSection.vue'
 import { useFilterForm } from '../composables/useFilterForm'
+import { getErrorMessage } from '../composables/useErrorMessage'
 import { usePagination } from '../composables/usePagination'
 import { useAppStore } from '../stores/app'
 
@@ -100,7 +101,7 @@ const loadInvoices = async () => {
     rows.value = response.data.items
     total.value = response.data.total
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : t('billingInvoices.errors.unableToLoad')
+    errorMessage.value = getErrorMessage(error, t('billingInvoices.errors.unableToLoad'))
     rows.value = []
     total.value = 0
   } finally {
@@ -138,7 +139,7 @@ const handleSubmit = async (row: InvoiceDocument) => {
     successMessage.value = t('billingInvoices.actions.submit')
     await loadInvoices()
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : t('billingInvoices.errors.unableToSubmit')
+    errorMessage.value = getErrorMessage(error, t('billingInvoices.errors.unableToSubmit'))
   } finally {
     actionDocumentId.value = null
   }
@@ -154,7 +155,7 @@ const handleCancel = async (row: InvoiceDocument) => {
     successMessage.value = t('billingInvoices.actions.cancel')
     await loadInvoices()
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : t('billingInvoices.errors.unableToCancel')
+    errorMessage.value = getErrorMessage(error, t('billingInvoices.errors.unableToCancel'))
   } finally {
     actionDocumentId.value = null
   }

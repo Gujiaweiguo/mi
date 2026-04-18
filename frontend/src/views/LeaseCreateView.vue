@@ -8,6 +8,7 @@ import { listBrands, listCustomers, type Brand, type Customer } from '../api/mas
 import { createLease } from '../api/lease'
 import { listDepartments, listStores, type Department, type Store } from '../api/org'
 import PageSection from '../components/platform/PageSection.vue'
+import { getErrorMessage } from '../composables/useErrorMessage'
 
 type LeaseCreateForm = {
   lease_no: string
@@ -121,8 +122,7 @@ const loadReferenceData = async () => {
     brands.value = []
     departments.value = []
     stores.value = []
-    setupErrorMessage.value =
-      error instanceof Error ? error.message : t('leaseCreate.errors.unableToLoadReferenceData')
+    setupErrorMessage.value = getErrorMessage(error, t('leaseCreate.errors.unableToLoadReferenceData'))
   } finally {
     isLoadingOptions.value = false
   }
@@ -194,7 +194,7 @@ const handleSubmit = async () => {
       params: { id: String(response.data.lease.id) },
     })
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : t('leaseCreate.errors.unableToCreate')
+    errorMessage.value = getErrorMessage(error, t('leaseCreate.errors.unableToCreate'))
   } finally {
     isSaving.value = false
   }

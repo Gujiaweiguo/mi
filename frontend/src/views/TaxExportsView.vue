@@ -5,7 +5,9 @@ import { useI18n } from 'vue-i18n'
 import { exportTaxVouchers, listTaxRuleSets, upsertTaxRuleSet, type TaxRuleSet, type UpsertTaxRuleSetRequest } from '../api/tax'
 import FilterForm from '../components/platform/FilterForm.vue'
 import PageSection from '../components/platform/PageSection.vue'
+import { downloadBlob } from '../composables/useDownload'
 import { useFilterForm } from '../composables/useFilterForm'
+import { getErrorMessage } from '../composables/useErrorMessage'
 import { useAppStore } from '../stores/app'
 
 type Feedback = {
@@ -176,7 +178,7 @@ const loadRuleSets = async () => {
     feedback.value = {
       type: 'error',
       title: t('taxExports.errors.ruleSetsUnavailable'),
-      description: error instanceof Error ? error.message : t('taxExports.errors.unableToLoadRuleSets'),
+      description: getErrorMessage(error, t('taxExports.errors.unableToLoadRuleSets')),
     }
   } finally {
     isLoading.value = false
@@ -212,12 +214,7 @@ const handleExport = async () => {
     })
 
     const blob = new Blob([response.data as unknown as BlobPart], { type: 'application/octet-stream' })
-    const url = URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = url
-    link.download = `tax-vouchers-${selectedRuleSetCode.value}.xlsx`
-    link.click()
-    URL.revokeObjectURL(url)
+    downloadBlob(blob, `tax-vouchers-${selectedRuleSetCode.value}.xlsx`)
 
     feedback.value = {
       type: 'success',
@@ -232,7 +229,7 @@ const handleExport = async () => {
     feedback.value = {
       type: 'error',
       title: t('taxExports.errors.exportFailed'),
-      description: error instanceof Error ? error.message : t('taxExports.errors.unableToExport'),
+      description: getErrorMessage(error, t('taxExports.errors.unableToExport')),
     }
   } finally {
     isExporting.value = false
@@ -277,7 +274,7 @@ const handleSubmit = async () => {
     feedback.value = {
       type: 'error',
       title: t('taxExports.dialog.feedback.failed'),
-      description: error instanceof Error ? error.message : t('taxExports.errors.unableToLoadRuleSets'),
+      description: getErrorMessage(error, t('taxExports.errors.unableToLoadRuleSets')),
     }
   } finally {
     isSubmitting.value = false

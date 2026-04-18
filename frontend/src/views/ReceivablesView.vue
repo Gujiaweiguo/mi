@@ -7,6 +7,7 @@ import { listReceivables, type ReceivableListItem } from '../api/invoice'
 import FilterForm from '../components/platform/FilterForm.vue'
 import PageSection from '../components/platform/PageSection.vue'
 import { useFilterForm } from '../composables/useFilterForm'
+import { getErrorMessage } from '../composables/useErrorMessage'
 import { usePagination } from '../composables/usePagination'
 import { useAppStore } from '../stores/app'
 
@@ -129,7 +130,7 @@ const loadReceivables = async () => {
   } catch (error) {
     rows.value = []
     total.value = 0
-    errorMessage.value = error instanceof Error ? error.message : t('receivables.errors.unableToLoad')
+    errorMessage.value = getErrorMessage(error, t('receivables.errors.unableToLoad'))
   } finally {
     isLoading.value = false
   }

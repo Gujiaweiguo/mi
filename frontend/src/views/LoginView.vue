@@ -5,6 +5,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
 import LocaleSwitcher from '../components/platform/LocaleSwitcher.vue'
+import { getErrorMessage } from '../composables/useErrorMessage'
 import { DEFAULT_AUTHENTICATED_PATH } from '../router/auth-guard'
 import { useAuthStore } from '../stores/auth'
 
@@ -59,7 +60,7 @@ const handleSubmit = async () => {
     await authStore.login({ ...form })
     await router.replace(redirectTarget.value)
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : t('login.errors.unableToSignIn')
+    errorMessage.value = getErrorMessage(error, t('login.errors.unableToSignIn'))
   }
 }
 </script>

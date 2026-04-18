@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 
 import { http } from '../api/http'
 import PageSection from '../components/platform/PageSection.vue'
+import { getErrorMessage } from '../composables/useErrorMessage'
 import { useAppStore } from '../stores/app'
 
 type HealthState = 'idle' | 'loading' | 'ok' | 'error'
@@ -59,7 +60,7 @@ const runHealthCheck = async () => {
   } catch (error) {
     responseCode.value = t('health.defaults.requestFailed')
     responsePayload.value = t('health.errors.backendUnreachable')
-    errorMessage.value = error instanceof Error ? error.message : t('health.errors.unknown')
+    errorMessage.value = getErrorMessage(error, t('health.errors.unknown'))
     state.value = 'error'
   } finally {
     checkedAt.value = formatTimestamp(new Date())
