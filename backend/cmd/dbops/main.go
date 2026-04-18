@@ -73,9 +73,9 @@ func runBootstrap(ctx context.Context, db *sql.DB, args []string) error {
 	var bootstrappers []platformdb.Bootstrapper
 	switch *seedSet {
 	case "cutover":
-		bootstrappers = bootstrap.Cutover()
+		bootstrappers = toBootstrappers(bootstrap.Cutover())
 	case "all":
-		bootstrappers = bootstrap.All()
+		bootstrappers = toBootstrappers(bootstrap.All())
 	default:
 		return fmt.Errorf("unsupported seed set %q", *seedSet)
 	}
@@ -122,4 +122,12 @@ func runVerify(db *sql.DB, args []string) error {
 func fatalf(format string, args ...any) {
 	_, _ = fmt.Fprintf(os.Stderr, format+"\n", args...)
 	os.Exit(1)
+}
+
+func toBootstrappers(seeds []bootstrap.Bootstrapper) []platformdb.Bootstrapper {
+	out := make([]platformdb.Bootstrapper, len(seeds))
+	for i := range seeds {
+		out[i] = seeds[i]
+	}
+	return out
 }

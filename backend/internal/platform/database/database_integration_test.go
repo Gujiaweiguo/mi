@@ -86,7 +86,7 @@ func TestIntegrationMySQLConnection(t *testing.T) {
 		t.Fatalf("verify schema after migrations: %v", err)
 	}
 
-	bootstrapRunner := platformdb.NewBootstrapRunner(db, bootstrap.All()...)
+	bootstrapRunner := platformdb.NewBootstrapRunner(db, toBootstrappers(bootstrap.All())...)
 	if err := bootstrapRunner.Run(ctx); err != nil {
 		t.Fatalf("run bootstrap seeds: %v", err)
 	}
@@ -196,4 +196,12 @@ func waitForDatabase(ctx context.Context, db *sql.DB) error {
 		time.Sleep(500 * time.Millisecond)
 	}
 	return lastErr
+}
+
+func toBootstrappers(seeds []bootstrap.Bootstrapper) []platformdb.Bootstrapper {
+	out := make([]platformdb.Bootstrapper, len(seeds))
+	for i := range seeds {
+		out[i] = seeds[i]
+	}
+	return out
 }

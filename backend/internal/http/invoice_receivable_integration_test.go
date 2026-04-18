@@ -22,6 +22,7 @@ import (
 	platformdb "github.com/Gujiaweiguo/mi/backend/internal/platform/database"
 	"github.com/Gujiaweiguo/mi/backend/internal/workflow"
 	_ "github.com/go-sql-driver/mysql"
+	"go.uber.org/zap"
 )
 
 func TestIntegrationInvoiceReceivableRoutes(t *testing.T) {
@@ -30,7 +31,7 @@ func TestIntegrationInvoiceReceivableRoutes(t *testing.T) {
 
 	db := platformdb.NewTestDB(t, ctx, os.DirFS("../platform/database"))
 
-	router := httpapi.NewRouter(&config.Config{App: config.AppConfig{Name: "mi-backend", Environment: "test"}, Auth: config.AuthConfig{JWTSecret: "test-secret", TokenExpirySeconds: 3600}}, db)
+	router := httpapi.NewRouter(&config.Config{App: config.AppConfig{Name: "mi-backend", Environment: "test"}, Auth: config.AuthConfig{JWTSecret: "test-secret", TokenExpirySeconds: 3600}}, db, zap.NewNop())
 	token := loginAsAdmin(t, router)
 	documentID := seedApprovedInvoiceForReceivableRoutes(t, ctx, db)
 

@@ -1,5 +1,10 @@
 -- Switch 13 tables from manual MAX(id)+1 to AUTO_INCREMENT
 -- to eliminate the race condition on concurrent inserts.
+-- FK checks must be disabled because these id columns are referenced
+-- by foreign keys in child tables (MySQL Error 1833).
+
+SET @old_fk_checks = @@SESSION.foreign_key_checks;
+SET SESSION foreign_key_checks = 0;
 
 ALTER TABLE store_types MODIFY COLUMN id BIGINT NOT NULL AUTO_INCREMENT;
 ALTER TABLE store_management_types MODIFY COLUMN id BIGINT NOT NULL AUTO_INCREMENT;
@@ -14,3 +19,5 @@ ALTER TABLE shop_types MODIFY COLUMN id BIGINT NOT NULL AUTO_INCREMENT;
 ALTER TABLE trade_definitions MODIFY COLUMN id BIGINT NOT NULL AUTO_INCREMENT;
 ALTER TABLE currency_types MODIFY COLUMN id BIGINT NOT NULL AUTO_INCREMENT;
 ALTER TABLE units MODIFY COLUMN id BIGINT NOT NULL AUTO_INCREMENT;
+
+SET SESSION foreign_key_checks = @old_fk_checks;

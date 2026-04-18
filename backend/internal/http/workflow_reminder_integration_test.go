@@ -5,7 +5,6 @@ package http_test
 import (
 	"bytes"
 	"context"
-	"database/sql"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
@@ -19,6 +18,7 @@ import (
 	platformdb "github.com/Gujiaweiguo/mi/backend/internal/platform/database"
 	"github.com/Gujiaweiguo/mi/backend/internal/workflow"
 	_ "github.com/go-sql-driver/mysql"
+	"go.uber.org/zap"
 )
 
 func TestIntegrationWorkflowReminderHistoryRoute(t *testing.T) {
@@ -52,7 +52,7 @@ func TestIntegrationWorkflowReminderHistoryRoute(t *testing.T) {
 	router := httpapi.NewRouter(&config.Config{
 		App:  config.AppConfig{Name: "mi-backend", Environment: "test"},
 		Auth: config.AuthConfig{JWTSecret: "test-secret", TokenExpirySeconds: 3600},
-	}, db)
+	}, db, zap.NewNop())
 	token := loginAsAdmin(t, router)
 
 	recorder := httptest.NewRecorder()
@@ -89,7 +89,7 @@ func TestIntegrationWorkflowReminderTriggerRoute(t *testing.T) {
 	db := platformdb.NewTestDB(t, ctx, os.DirFS("../platform/database"))
 
 	// Create a pending workflow instance so the reminder sweep has something to process.
-	_, err = workflow.NewService(db, workflow.NewRepository(db)).Start(ctx, workflow.StartInput{
+	_, err := workflow.NewService(db, workflow.NewRepository(db)).Start(ctx, workflow.StartInput{
 		DefinitionCode: "lease-approval",
 		DocumentType:   "lease_contract",
 		DocumentID:     9501,
@@ -122,7 +122,7 @@ func TestIntegrationWorkflowReminderTriggerRoute(t *testing.T) {
 	router := httpapi.NewRouter(&config.Config{
 		App:  config.AppConfig{Name: "mi-backend", Environment: "test"},
 		Auth: config.AuthConfig{JWTSecret: "test-secret", TokenExpirySeconds: 3600},
-	}, db)
+	}, db, zap.NewNop())
 	token := loginAsAdmin(t, router)
 
 	t.Run("returns_200_with_reminders", func(t *testing.T) {

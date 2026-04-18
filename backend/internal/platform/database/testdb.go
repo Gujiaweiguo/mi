@@ -75,12 +75,20 @@ func NewTestDB(t *testing.T, ctx context.Context, migrationsFS fs.FS) *sql.DB {
 		t.Fatalf("apply migrations: %v", err)
 	}
 
-	bootstrapRunner := NewBootstrapRunner(db, bootstrap.All()...)
+	bootstrapRunner := NewBootstrapRunner(db, toBootstrappers(bootstrap.All())...)
 	if err := bootstrapRunner.Run(ctx); err != nil {
 		t.Fatalf("run bootstrap seeds: %v", err)
 	}
 
 	return db
+}
+
+func toBootstrappers(seeds []bootstrap.Bootstrapper) []Bootstrapper {
+	out := make([]Bootstrapper, len(seeds))
+	for i := range seeds {
+		out[i] = seeds[i]
+	}
+	return out
 }
 
 // WaitForDatabase retries PingContext until the database is reachable or the

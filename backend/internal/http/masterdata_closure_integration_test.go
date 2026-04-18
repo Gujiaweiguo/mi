@@ -5,7 +5,6 @@ package http_test
 import (
 	"bytes"
 	"context"
-	"database/sql"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
@@ -17,6 +16,7 @@ import (
 	httpapi "github.com/Gujiaweiguo/mi/backend/internal/http"
 	platformdb "github.com/Gujiaweiguo/mi/backend/internal/platform/database"
 	_ "github.com/go-sql-driver/mysql"
+	"go.uber.org/zap"
 )
 
 func TestIntegrationMasterDataClosureRoutes(t *testing.T) {
@@ -25,7 +25,7 @@ func TestIntegrationMasterDataClosureRoutes(t *testing.T) {
 
 	db := platformdb.NewTestDB(t, ctx, os.DirFS("../platform/database"))
 
-	router := httpapi.NewRouter(&config.Config{App: config.AppConfig{Name: "mi-backend", Environment: "test"}, Auth: config.AuthConfig{JWTSecret: "test-secret", TokenExpirySeconds: 3600}}, db)
+	router := httpapi.NewRouter(&config.Config{App: config.AppConfig{Name: "mi-backend", Environment: "test"}, Auth: config.AuthConfig{JWTSecret: "test-secret", TokenExpirySeconds: 3600}}, db, zap.NewNop())
 	token := loginForIntegration(t, router)
 
 	customerListRecorder := httptest.NewRecorder()

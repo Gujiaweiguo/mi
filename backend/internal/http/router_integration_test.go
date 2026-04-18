@@ -5,6 +5,7 @@ package http_test
 import (
 	"bytes"
 	"context"
+	"database/sql"
 	"encoding/json"
 	"mime/multipart"
 	"net/http"
@@ -18,6 +19,7 @@ import (
 	httpapi "github.com/Gujiaweiguo/mi/backend/internal/http"
 	platformdb "github.com/Gujiaweiguo/mi/backend/internal/platform/database"
 	"github.com/xuri/excelize/v2"
+	"go.uber.org/zap"
 )
 
 func TestIntegrationAuthAndOrgRoutes(t *testing.T) {
@@ -29,7 +31,7 @@ func TestIntegrationAuthAndOrgRoutes(t *testing.T) {
 	router := httpapi.NewRouter(&config.Config{
 		App:  config.AppConfig{Name: "mi-backend", Environment: "test"},
 		Auth: config.AuthConfig{JWTSecret: "test-secret", TokenExpirySeconds: 3600},
-	}, db)
+	}, db, zap.NewNop())
 
 	loginRecorder := httptest.NewRecorder()
 	loginRequest := httptest.NewRequest(http.MethodPost, "/api/auth/login", bytes.NewBufferString(`{"username":"admin","password":"password"}`))
@@ -662,7 +664,9 @@ func TestIntegrationAuthAndOrgRoutes(t *testing.T) {
 		t.Fatalf("expected 200 from report query endpoint, got %d body=%s", reportQueryRecorder.Code, reportQueryRecorder.Body.String())
 	}
 	var reportQueryBody struct {
-		Rows []any `json:"rows"`
+		Report struct {
+			Rows []any `json:"rows"`
+		} `json:"report"`
 	}
 	if err := json.Unmarshal(reportQueryRecorder.Body.Bytes(), &reportQueryBody); err != nil {
 		t.Fatalf("decode report query response: %v", err)
@@ -716,8 +720,8 @@ func TestIntegrationAuthAndOrgRoutes(t *testing.T) {
 	if !r01AuditPeriod.Valid || r01AuditPeriod.String != "2026-04" {
 		t.Fatalf("expected report query audit period 2026-04, got %#v", r01AuditPeriod)
 	}
-	if r01AuditRowCount != len(reportQueryBody.Rows) {
-		t.Fatalf("expected report query audit row_count %d, got %d", len(reportQueryBody.Rows), r01AuditRowCount)
+	if r01AuditRowCount != len(reportQueryBody.Report.Rows) {
+		t.Fatalf("expected report query audit row_count %d, got %d", len(reportQueryBody.Report.Rows), r01AuditRowCount)
 	}
 	if r01AuditExportSize != 0 {
 		t.Fatalf("expected report query audit export_size_bytes 0, got %d", r01AuditExportSize)
@@ -1744,7 +1748,7 @@ func TestIntegrationWorkflowInstanceListRoute(t *testing.T) {
 	router := httpapi.NewRouter(&config.Config{
 		App:  config.AppConfig{Name: "mi-backend", Environment: "test"},
 		Auth: config.AuthConfig{JWTSecret: "test-secret", TokenExpirySeconds: 3600},
-	}, db)
+	}, db, zap.NewNop())
 
 	loginRecorder := httptest.NewRecorder()
 	loginRequest := httptest.NewRequest(http.MethodPost, "/api/auth/login", bytes.NewBufferString(`{"username":"admin","password":"password"}`))

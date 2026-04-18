@@ -17,6 +17,7 @@ import (
 	httpapi "github.com/Gujiaweiguo/mi/backend/internal/http"
 	platformdb "github.com/Gujiaweiguo/mi/backend/internal/platform/database"
 	_ "github.com/go-sql-driver/mysql"
+	"go.uber.org/zap"
 )
 
 func TestE2ELeaseToInvoiceSmoke(t *testing.T) {
@@ -27,7 +28,7 @@ func TestE2ELeaseToInvoiceSmoke(t *testing.T) {
 	router := httpapi.NewRouter(&config.Config{
 		App:  config.AppConfig{Name: "mi-backend", Environment: "test"},
 		Auth: config.AuthConfig{JWTSecret: "test-secret", TokenExpirySeconds: 3600},
-	}, db)
+	}, db, zap.NewNop())
 
 	token := loginAsAdmin(t, router)
 	authHeader := "Bearer " + token

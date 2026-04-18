@@ -3,9 +3,15 @@ package bootstrap
 import (
 	"context"
 	"database/sql"
-
-	platformdb "github.com/Gujiaweiguo/mi/backend/internal/platform/database"
 )
+
+// Bootstrapper is the interface for database seed operations.
+// Implementations provide a name and a Seed function that runs
+// within a transaction.
+type Bootstrapper interface {
+	Name() string
+	Seed(context.Context, *sql.Tx) error
+}
 
 type Seed struct {
 	name string
@@ -20,25 +26,25 @@ func (s Seed) Seed(ctx context.Context, tx *sql.Tx) error {
 	return s.run(ctx, tx)
 }
 
-func New(name string, run func(context.Context, *sql.Tx) error) platformdb.Bootstrapper {
+func New(name string, run func(context.Context, *sql.Tx) error) Bootstrapper {
 	return Seed{name: name, run: run}
 }
 
-func All() []platformdb.Bootstrapper {
-	all := make([]platformdb.Bootstrapper, 0)
+func All() []Bootstrapper {
+	all := make([]Bootstrapper, 0)
 
 	for _, seed := range Cutover() {
 		all = append(all, seed)
 	}
-	for _, seed := range []platformdb.Bootstrapper{seedDailySales(), seedCustomerTraffic(), seedUnitRentBudgets(), seedStoreRentBudgets(), seedUnitProspects()} {
+	for _, seed := range []Bootstrapper{seedDailySales(), seedCustomerTraffic(), seedUnitRentBudgets(), seedStoreRentBudgets(), seedUnitProspects()} {
 		all = append(all, seed)
 	}
 
 	return all
 }
 
-func Cutover() []platformdb.Bootstrapper {
-	all := make([]platformdb.Bootstrapper, 0)
+func Cutover() []Bootstrapper {
+	all := make([]Bootstrapper, 0)
 
 	for _, seed := range OrgSeeds() {
 		all = append(all, seed)

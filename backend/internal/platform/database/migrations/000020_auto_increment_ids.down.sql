@@ -1,4 +1,8 @@
 -- Revert AUTO_INCREMENT: remove AUTO_INCREMENT from all 13 tables.
+-- FK checks disabled for the same reason as the up migration.
+
+SET @old_fk_checks = @@SESSION.foreign_key_checks;
+SET SESSION foreign_key_checks = 0;
 
 ALTER TABLE store_types MODIFY COLUMN id BIGINT NOT NULL;
 ALTER TABLE store_management_types MODIFY COLUMN id BIGINT NOT NULL;
@@ -13,3 +17,5 @@ ALTER TABLE shop_types MODIFY COLUMN id BIGINT NOT NULL;
 ALTER TABLE trade_definitions MODIFY COLUMN id BIGINT NOT NULL;
 ALTER TABLE currency_types MODIFY COLUMN id BIGINT NOT NULL;
 ALTER TABLE units MODIFY COLUMN id BIGINT NOT NULL;
+
+SET SESSION foreign_key_checks = @old_fk_checks;
