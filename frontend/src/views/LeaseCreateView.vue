@@ -206,7 +206,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="lease-create-view" data-testid="lease-create-view">
+  <div class="lease-create-view" v-loading="isLoadingOptions" data-testid="lease-create-view">
     <PageSection
       :eyebrow="t('lease.eyebrow')"
       :title="t('leaseCreate.title')"

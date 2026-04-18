@@ -360,7 +360,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="generalize-reports-view" data-testid="generalize-reports-view">
+  <div class="generalize-reports-view" v-loading="isQuerying || isExporting" data-testid="generalize-reports-view">
     <PageSection
       :eyebrow="t('generalizeReports.eyebrow')"
       :title="t('generalizeReports.title')"

@@ -19,6 +19,7 @@ import {
   type ReferenceCatalogItem,
 } from '../api/baseinfo'
 import PageSection from '../components/platform/PageSection.vue'
+import { getErrorMessage } from '../composables/useErrorMessage'
 
 type Feedback = {
   type: 'success' | 'error' | 'warning'
@@ -102,6 +103,14 @@ const storeTypeEditDialogOpen = ref(false)
 const shopTypeEditDialogOpen = ref(false)
 const currencyTypeEditDialogOpen = ref(false)
 const tradeDefinitionEditDialogOpen = ref(false)
+const storeTypeFormRef = ref()
+const shopTypeFormRef = ref()
+const currencyTypeFormRef = ref()
+const tradeDefinitionFormRef = ref()
+const storeTypeEditFormRef = ref()
+const shopTypeEditFormRef = ref()
+const currencyTypeEditFormRef = ref()
+const tradeDefinitionEditFormRef = ref()
 
 const isStoreTypeUpdating = ref(false)
 const isShopTypeUpdating = ref(false)
@@ -140,13 +149,25 @@ const tradeDefinitionEdit = reactive<TradeDefinitionForm & { id: number | null }
 })
 
 const statusOptions: BaseInfoStatus[] = ['active', 'inactive']
+const requiredFieldMessage = 'This field is required'
+const codeNameRules = {
+  code: [{ required: true, message: requiredFieldMessage, trigger: 'blur' }],
+  name: [{ required: true, message: requiredFieldMessage, trigger: 'blur' }],
+}
 
 const canCreateStoreType = computed(() => Boolean(storeTypeForm.code.trim() && storeTypeForm.name.trim()))
 const canCreateShopType = computed(() => Boolean(shopTypeForm.code.trim() && shopTypeForm.name.trim()))
 const canCreateCurrencyType = computed(() => Boolean(currencyTypeForm.code.trim() && currencyTypeForm.name.trim()))
 const canCreateTradeDefinition = computed(() => Boolean(tradeDefinitionForm.code.trim() && tradeDefinitionForm.name.trim()))
 
-const getErrorMessage = (error: unknown, fallback: string) => (error instanceof Error ? error.message : fallback)
+const validateForm = async (formRef: { value?: { validate?: () => Promise<unknown> } }) => {
+  try {
+    await formRef.value?.validate?.()
+    return true
+  } catch {
+    return false
+  }
+}
 
 const formatDate = (value: string) => {
   if (!value) {
@@ -279,6 +300,10 @@ const handleCreateStoreType = async () => {
     return
   }
 
+  if (!(await validateForm(storeTypeFormRef))) {
+    return
+  }
+
   isStoreTypeSaving.value = true
   storeTypeFeedback.value = null
 
@@ -312,6 +337,10 @@ const handleCreateShopType = async () => {
       title: t('baseinfoAdmin.feedback.shopTypeDetailsRequiredTitle'),
       description: t('baseinfoAdmin.feedback.shopTypeDetailsRequiredDescription'),
     }
+    return
+  }
+
+  if (!(await validateForm(shopTypeFormRef))) {
     return
   }
 
@@ -353,6 +382,10 @@ const handleCreateCurrencyType = async () => {
     return
   }
 
+  if (!(await validateForm(currencyTypeFormRef))) {
+    return
+  }
+
   isCurrencyTypeSaving.value = true
   currencyTypeFeedback.value = null
 
@@ -388,6 +421,10 @@ const handleCreateTradeDefinition = async () => {
       title: t('baseinfoAdmin.feedback.tradeDefinitionDetailsRequiredTitle'),
       description: t('baseinfoAdmin.feedback.tradeDefinitionDetailsRequiredDescription'),
     }
+    return
+  }
+
+  if (!(await validateForm(tradeDefinitionFormRef))) {
     return
   }
 
@@ -460,6 +497,10 @@ const handleUpdateStoreType = async () => {
     return
   }
 
+  if (!(await validateForm(storeTypeEditFormRef))) {
+    return
+  }
+
   isStoreTypeUpdating.value = true
   try {
     const response = await updateStoreType(storeTypeEdit.id, {
@@ -481,6 +522,10 @@ const handleUpdateStoreType = async () => {
 
 const handleUpdateShopType = async () => {
   if (shopTypeEdit.id === null || !shopTypeEdit.code.trim() || !shopTypeEdit.name.trim()) {
+    return
+  }
+
+  if (!(await validateForm(shopTypeEditFormRef))) {
     return
   }
 
@@ -510,6 +555,10 @@ const handleUpdateCurrencyType = async () => {
     return
   }
 
+  if (!(await validateForm(currencyTypeEditFormRef))) {
+    return
+  }
+
   isCurrencyTypeUpdating.value = true
   try {
     const response = await updateCurrencyType(currencyTypeEdit.id, {
@@ -533,6 +582,10 @@ const handleUpdateCurrencyType = async () => {
 
 const handleUpdateTradeDefinition = async () => {
   if (tradeDefinitionEdit.id === null || !tradeDefinitionEdit.code.trim() || !tradeDefinitionEdit.name.trim()) {
+    return
+  }
+
+  if (!(await validateForm(tradeDefinitionEditFormRef))) {
     return
   }
 
@@ -564,7 +617,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="baseinfo-admin-view" data-testid="baseinfo-admin-view">
+  <div class="baseinfo-admin-view" v-loading="isLoading" data-testid="baseinfo-admin-view">
     <PageSection
       :eyebrow="t('baseinfoAdmin.eyebrow')"
       :title="t('baseinfoAdmin.title')"
@@ -608,16 +661,16 @@ onMounted(() => {
           show-icon
         />
 
-        <el-form label-position="top" class="baseinfo-admin-view__form" @submit.prevent>
+        <el-form ref="storeTypeFormRef" :model="storeTypeForm" :rules="codeNameRules" label-position="top" class="baseinfo-admin-view__form" @submit.prevent>
           <div class="baseinfo-admin-view__form-grid">
-            <el-form-item :label="t('baseinfoAdmin.fields.code')">
+            <el-form-item :label="t('baseinfoAdmin.fields.code')" prop="code">
               <el-input
                 v-model="storeTypeForm.code"
                 :placeholder="t('baseinfoAdmin.placeholders.storeTypeCode')"
                 data-testid="baseinfo-store-type-code-input"
               />
             </el-form-item>
-            <el-form-item :label="t('baseinfoAdmin.fields.name')">
+            <el-form-item :label="t('baseinfoAdmin.fields.name')" prop="name">
               <el-input
                 v-model="storeTypeForm.name"
                 :placeholder="t('baseinfoAdmin.placeholders.storeTypeName')"
@@ -681,12 +734,12 @@ onMounted(() => {
           show-icon
         />
 
-        <el-form label-position="top" class="baseinfo-admin-view__form" @submit.prevent>
+        <el-form ref="shopTypeFormRef" :model="shopTypeForm" :rules="codeNameRules" label-position="top" class="baseinfo-admin-view__form" @submit.prevent>
           <div class="baseinfo-admin-view__form-grid baseinfo-admin-view__form-grid--wide">
-            <el-form-item :label="t('baseinfoAdmin.fields.code')">
+            <el-form-item :label="t('baseinfoAdmin.fields.code')" prop="code">
               <el-input v-model="shopTypeForm.code" :placeholder="t('baseinfoAdmin.placeholders.shopTypeCode')" />
             </el-form-item>
-            <el-form-item :label="t('baseinfoAdmin.fields.name')">
+            <el-form-item :label="t('baseinfoAdmin.fields.name')" prop="name">
               <el-input v-model="shopTypeForm.name" :placeholder="t('baseinfoAdmin.placeholders.shopTypeName')" />
             </el-form-item>
             <el-form-item :label="t('baseinfoAdmin.fields.colorHex')">
@@ -772,12 +825,12 @@ onMounted(() => {
           show-icon
         />
 
-        <el-form label-position="top" class="baseinfo-admin-view__form" @submit.prevent>
+        <el-form ref="currencyTypeFormRef" :model="currencyTypeForm" :rules="codeNameRules" label-position="top" class="baseinfo-admin-view__form" @submit.prevent>
           <div class="baseinfo-admin-view__form-grid baseinfo-admin-view__form-grid--wide">
-            <el-form-item :label="t('baseinfoAdmin.fields.code')">
+            <el-form-item :label="t('baseinfoAdmin.fields.code')" prop="code">
               <el-input v-model="currencyTypeForm.code" :placeholder="t('baseinfoAdmin.placeholders.currencyCode')" />
             </el-form-item>
-            <el-form-item :label="t('baseinfoAdmin.fields.name')">
+            <el-form-item :label="t('baseinfoAdmin.fields.name')" prop="name">
               <el-input v-model="currencyTypeForm.name" :placeholder="t('baseinfoAdmin.placeholders.currencyName')" />
             </el-form-item>
             <el-form-item :label="t('baseinfoAdmin.fields.localCurrency')">
@@ -858,12 +911,12 @@ onMounted(() => {
           show-icon
         />
 
-        <el-form label-position="top" class="baseinfo-admin-view__form" @submit.prevent>
+        <el-form ref="tradeDefinitionFormRef" :model="tradeDefinitionForm" :rules="codeNameRules" label-position="top" class="baseinfo-admin-view__form" @submit.prevent>
           <div class="baseinfo-admin-view__form-grid baseinfo-admin-view__form-grid--wide">
-            <el-form-item :label="t('baseinfoAdmin.fields.code')">
+            <el-form-item :label="t('baseinfoAdmin.fields.code')" prop="code">
               <el-input v-model="tradeDefinitionForm.code" :placeholder="t('baseinfoAdmin.placeholders.tradeDefinitionCode')" />
             </el-form-item>
-            <el-form-item :label="t('baseinfoAdmin.fields.name')">
+            <el-form-item :label="t('baseinfoAdmin.fields.name')" prop="name">
               <el-input v-model="tradeDefinitionForm.name" :placeholder="t('baseinfoAdmin.placeholders.tradeDefinitionName')" />
             </el-form-item>
             <el-form-item :label="t('baseinfoAdmin.fields.parentId')">
@@ -931,11 +984,11 @@ onMounted(() => {
     </div>
 
     <el-dialog v-model="storeTypeEditDialogOpen" :title="t('baseinfoAdmin.dialogs.editStoreType')" width="32rem">
-      <el-form label-position="top" @submit.prevent>
-        <el-form-item :label="t('baseinfoAdmin.fields.code')">
+      <el-form ref="storeTypeEditFormRef" :model="storeTypeEdit" :rules="codeNameRules" label-position="top" @submit.prevent>
+        <el-form-item :label="t('baseinfoAdmin.fields.code')" prop="code">
           <el-input v-model="storeTypeEdit.code" />
         </el-form-item>
-        <el-form-item :label="t('baseinfoAdmin.fields.name')">
+        <el-form-item :label="t('baseinfoAdmin.fields.name')" prop="name">
           <el-input v-model="storeTypeEdit.name" />
         </el-form-item>
       </el-form>
@@ -946,12 +999,12 @@ onMounted(() => {
     </el-dialog>
 
     <el-dialog v-model="shopTypeEditDialogOpen" :title="t('baseinfoAdmin.dialogs.editShopType')" width="34rem">
-      <el-form label-position="top" @submit.prevent>
+      <el-form ref="shopTypeEditFormRef" :model="shopTypeEdit" :rules="codeNameRules" label-position="top" @submit.prevent>
         <div class="baseinfo-admin-view__dialog-grid">
-          <el-form-item :label="t('baseinfoAdmin.fields.code')">
+          <el-form-item :label="t('baseinfoAdmin.fields.code')" prop="code">
             <el-input v-model="shopTypeEdit.code" />
           </el-form-item>
-          <el-form-item :label="t('baseinfoAdmin.fields.name')">
+          <el-form-item :label="t('baseinfoAdmin.fields.name')" prop="name">
             <el-input v-model="shopTypeEdit.name" />
           </el-form-item>
           <el-form-item :label="t('baseinfoAdmin.fields.colorHex')">
@@ -977,12 +1030,12 @@ onMounted(() => {
     </el-dialog>
 
     <el-dialog v-model="currencyTypeEditDialogOpen" :title="t('baseinfoAdmin.dialogs.editCurrency')" width="34rem">
-      <el-form label-position="top" @submit.prevent>
+      <el-form ref="currencyTypeEditFormRef" :model="currencyTypeEdit" :rules="codeNameRules" label-position="top" @submit.prevent>
         <div class="baseinfo-admin-view__dialog-grid">
-          <el-form-item :label="t('baseinfoAdmin.fields.code')">
+          <el-form-item :label="t('baseinfoAdmin.fields.code')" prop="code">
             <el-input v-model="currencyTypeEdit.code" />
           </el-form-item>
-          <el-form-item :label="t('baseinfoAdmin.fields.name')">
+          <el-form-item :label="t('baseinfoAdmin.fields.name')" prop="name">
             <el-input v-model="currencyTypeEdit.name" />
           </el-form-item>
           <el-form-item :label="t('baseinfoAdmin.fields.localCurrency')">
@@ -1002,12 +1055,12 @@ onMounted(() => {
     </el-dialog>
 
     <el-dialog v-model="tradeDefinitionEditDialogOpen" :title="t('baseinfoAdmin.dialogs.editTradeDefinition')" width="36rem">
-      <el-form label-position="top" @submit.prevent>
+      <el-form ref="tradeDefinitionEditFormRef" :model="tradeDefinitionEdit" :rules="codeNameRules" label-position="top" @submit.prevent>
         <div class="baseinfo-admin-view__dialog-grid baseinfo-admin-view__dialog-grid--trade">
-          <el-form-item :label="t('baseinfoAdmin.fields.code')">
+          <el-form-item :label="t('baseinfoAdmin.fields.code')" prop="code">
             <el-input v-model="tradeDefinitionEdit.code" />
           </el-form-item>
-          <el-form-item :label="t('baseinfoAdmin.fields.name')">
+          <el-form-item :label="t('baseinfoAdmin.fields.name')" prop="name">
             <el-input v-model="tradeDefinitionEdit.name" />
           </el-form-item>
           <el-form-item :label="t('baseinfoAdmin.fields.parentId')">

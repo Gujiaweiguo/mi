@@ -17,6 +17,7 @@ import {
   type StructureUnit,
 } from '../api/structure'
 import PageSection from '../components/platform/PageSection.vue'
+import { getErrorMessage } from '../composables/useErrorMessage'
 
 type Feedback = {
   type: 'success' | 'error' | 'warning'
@@ -109,8 +110,6 @@ const isPositiveInteger = (value: number | undefined): value is number =>
   typeof value === 'number' && Number.isInteger(value) && value > 0
 
 const isFiniteNumber = (value: number | undefined): value is number => typeof value === 'number' && Number.isFinite(value)
-
-const getErrorMessage = (error: unknown, fallback: string) => (error instanceof Error ? error.message : fallback)
 
 const resolveStatusLabel = (status: string) => {
   if (status === 'active') {
@@ -540,7 +539,11 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="rentable-area-admin-view" data-testid="rentable-area-admin-view">
+  <div
+    class="rentable-area-admin-view"
+    v-loading="isBootstrapping || isStoresLoading || isBuildingsLoading || isFloorsLoading || isAreasLoading || isUnitsLoading"
+    data-testid="rentable-area-admin-view"
+  >
     <PageSection
       :eyebrow="t('rentableAreaAdmin.eyebrow')"
       :title="t('rentableAreaAdmin.title')"

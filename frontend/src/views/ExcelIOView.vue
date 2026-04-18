@@ -131,7 +131,11 @@ const handleExport = async () => {
 </script>
 
 <template>
-  <div class="excel-io-view" data-testid="excel-io-view">
+  <div
+    class="excel-io-view"
+    v-loading="isDownloadingTemplate || isImporting || isExporting"
+    data-testid="excel-io-view"
+  >
     <PageSection
       :eyebrow="t('excel.eyebrow')"
       :title="t('excel.title')"

@@ -201,7 +201,7 @@ watch(
 </script>
 
 <template>
-  <div class="lease-detail-view" data-testid="lease-detail-view">
+  <div class="lease-detail-view" v-loading="isLoading" data-testid="lease-detail-view">
     <PageSection
       :eyebrow="t('lease.eyebrow')"
       :title="pageTitle"

@@ -18,6 +18,7 @@ import {
 import { listStructureStores, listStructureUnits, type StructureStore, type StructureUnit } from '../api/structure'
 import FilterForm from '../components/platform/FilterForm.vue'
 import PageSection from '../components/platform/PageSection.vue'
+import { getErrorMessage } from '../composables/useErrorMessage'
 import { useFilterForm } from '../composables/useFilterForm'
 
 const { t } = useI18n()
@@ -92,8 +93,6 @@ const trafficForm = reactive<TrafficCreateForm>({
   traffic_date: '',
   inbound_count: undefined,
 })
-
-const getErrorMessage = (error: unknown, fallback: string) => (error instanceof Error ? error.message : fallback)
 
 const downloadBlob = (data: unknown, filename: string) => {
   const blob = new Blob([data as BlobPart], { type: 'application/octet-stream' })
@@ -591,7 +590,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="sales-admin-view" data-testid="sales-admin-view">
+  <div
+    class="sales-admin-view"
+    v-loading="isMasterDataLoading || isDailyLoading || isTrafficLoading"
+    data-testid="sales-admin-view"
+  >
     <PageSection
       :eyebrow="t('salesAdmin.eyebrow')"
       :title="t('salesAdmin.title')"

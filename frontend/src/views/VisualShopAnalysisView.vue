@@ -286,7 +286,7 @@ const legendItems = computed<VisualShopLegendItem[]>(() => {
 </script>
 
 <template>
-  <div class="visual-shop-analysis-view" data-testid="visual-shop-analysis-view">
+  <div class="visual-shop-analysis-view" v-loading="isQuerying || isExporting" data-testid="visual-shop-analysis-view">
     <PageSection
       :eyebrow="t('visualShopAnalysis.eyebrow')"
       :title="t('visualShopAnalysis.title')"

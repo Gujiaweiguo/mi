@@ -70,7 +70,7 @@ onMounted(runHealthCheck)
 </script>
 
 <template>
-  <div class="health-view" data-testid="health-view">
+  <div class="health-view" v-loading="state === 'loading'" data-testid="health-view">
     <PageSection
       :eyebrow="t('health.eyebrow')"
       :title="t('health.title')"

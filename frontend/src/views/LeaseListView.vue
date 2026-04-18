@@ -103,7 +103,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="lease-list-view" data-testid="lease-list-view">
+  <div class="lease-list-view" v-loading="isLoading" data-testid="lease-list-view">
     <div data-testid="lease-contracts-view">
       <PageSection
         :eyebrow="t('lease.eyebrow')"

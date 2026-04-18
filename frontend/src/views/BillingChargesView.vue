@@ -186,7 +186,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="billing-charges-view" data-testid="billing-charges-view">
+  <div class="billing-charges-view" v-loading="isLoading" data-testid="billing-charges-view">
     <PageSection
       :eyebrow="t('billingCharges.eyebrow')"
       :title="t('billingCharges.title')"

@@ -37,6 +37,7 @@ import {
   type ReferenceCatalogItem,
 } from '../api/baseinfo'
 import PageSection from '../components/platform/PageSection.vue'
+import { getErrorMessage } from '../composables/useErrorMessage'
 
 type Feedback = {
   type: 'success' | 'error' | 'warning'
@@ -142,6 +143,18 @@ const floorEditDialogOpen = ref(false)
 const areaEditDialogOpen = ref(false)
 const locationEditDialogOpen = ref(false)
 const unitEditDialogOpen = ref(false)
+const storeFormRef = ref()
+const buildingFormRef = ref()
+const floorFormRef = ref()
+const areaFormRef = ref()
+const locationFormRef = ref()
+const unitFormRef = ref()
+const storeEditFormRef = ref()
+const buildingEditFormRef = ref()
+const floorEditFormRef = ref()
+const areaEditFormRef = ref()
+const locationEditFormRef = ref()
+const unitEditFormRef = ref()
 
 const isStoreUpdating = ref(false)
 const isBuildingUpdating = ref(false)
@@ -151,6 +164,14 @@ const isLocationUpdating = ref(false)
 const isUnitUpdating = ref(false)
 
 const statusOptions = ['active', 'inactive'] as const
+const requiredFieldMessage = 'This field is required'
+const codeNameRules = {
+  code: [{ required: true, message: requiredFieldMessage, trigger: 'blur' }],
+  name: [{ required: true, message: requiredFieldMessage, trigger: 'blur' }],
+}
+const codeOnlyRules = {
+  code: [{ required: true, message: requiredFieldMessage, trigger: 'blur' }],
+}
 
 const storeForm = reactive<StoreForm>({
   department_id: undefined,
@@ -313,7 +334,14 @@ const canCreateUnit = computed(() => {
   )
 })
 
-const getErrorMessage = (error: unknown, fallback: string) => (error instanceof Error ? error.message : fallback)
+const validateForm = async (formRef: { value?: { validate?: () => Promise<unknown> } }) => {
+  try {
+    await formRef.value?.validate?.()
+    return true
+  } catch {
+    return false
+  }
+}
 
 const formatDate = (value: string) => {
   if (!value) {
@@ -806,6 +834,10 @@ const handleCreateStore = async () => {
     return
   }
 
+  if (!(await validateForm(storeFormRef))) {
+    return
+  }
+
   const departmentId = storeForm.department_id
   const storeTypeId = storeForm.store_type_id
   const managementTypeId = storeForm.management_type_id
@@ -876,6 +908,10 @@ const handleCreateBuilding = async () => {
     return
   }
 
+  if (!(await validateForm(buildingFormRef))) {
+    return
+  }
+
   isBuildingSaving.value = true
   buildingFeedback.value = null
 
@@ -915,6 +951,10 @@ const handleCreateFloor = async () => {
       title: t('structureAdmin.feedback.floorDetailsRequiredTitle'),
       description: t('structureAdmin.feedback.floorDetailsRequiredDescription'),
     }
+    return
+  }
+
+  if (!(await validateForm(floorFormRef))) {
     return
   }
 
@@ -965,6 +1005,10 @@ const handleCreateArea = async () => {
     return
   }
 
+  if (!(await validateForm(areaFormRef))) {
+    return
+  }
+
   isAreaSaving.value = true
   areaFeedback.value = null
 
@@ -1003,6 +1047,10 @@ const handleCreateLocation = async () => {
       title: t('structureAdmin.feedback.locationDetailsRequiredTitle'),
       description: t('structureAdmin.feedback.locationDetailsRequiredDescription'),
     }
+    return
+  }
+
+  if (!(await validateForm(locationFormRef))) {
     return
   }
 
@@ -1057,6 +1105,10 @@ const handleCreateUnit = async () => {
       title: t('structureAdmin.feedback.unitDetailsRequiredTitle'),
       description: t('structureAdmin.feedback.unitDetailsRequiredDescription'),
     }
+    return
+  }
+
+  if (!(await validateForm(unitFormRef))) {
     return
   }
 
@@ -1176,6 +1228,10 @@ const handleUpdateStore = async () => {
     return
   }
 
+  if (!(await validateForm(storeEditFormRef))) {
+    return
+  }
+
   isStoreUpdating.value = true
 
   try {
@@ -1212,6 +1268,10 @@ const handleUpdateBuilding = async () => {
     return
   }
 
+  if (!(await validateForm(buildingEditFormRef))) {
+    return
+  }
+
   isBuildingUpdating.value = true
 
   try {
@@ -1242,6 +1302,10 @@ const handleUpdateFloor = async () => {
     !floorEdit.code.trim() ||
     !floorEdit.name.trim()
   ) {
+    return
+  }
+
+  if (!(await validateForm(floorEditFormRef))) {
     return
   }
 
@@ -1280,6 +1344,10 @@ const handleUpdateArea = async () => {
     return
   }
 
+  if (!(await validateForm(areaEditFormRef))) {
+    return
+  }
+
   isAreaUpdating.value = true
 
   try {
@@ -1312,6 +1380,10 @@ const handleUpdateLocation = async () => {
     !locationEdit.code.trim() ||
     !locationEdit.name.trim()
   ) {
+    return
+  }
+
+  if (!(await validateForm(locationEditFormRef))) {
     return
   }
 
@@ -1352,6 +1424,10 @@ const handleUpdateUnit = async () => {
     !isFiniteNumber(unitEdit.use_area) ||
     !isFiniteNumber(unitEdit.rent_area)
   ) {
+    return
+  }
+
+  if (!(await validateForm(unitEditFormRef))) {
     return
   }
 
@@ -1400,7 +1476,11 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="structure-admin-view" data-testid="structure-admin-view">
+  <div
+    class="structure-admin-view"
+    v-loading="isBootstrapping || isStoresLoading || isBuildingsLoading || isFloorsLoading || isAreasLoading || isLocationsLoading || isUnitsLoading"
+    data-testid="structure-admin-view"
+  >
     <PageSection
       :eyebrow="t('structureAdmin.eyebrow')"
       :title="t('structureAdmin.title')"
@@ -1447,9 +1527,9 @@ onMounted(async () => {
           show-icon
         />
 
-        <el-form label-position="top" class="structure-admin-view__form" @submit.prevent>
+        <el-form ref="storeFormRef" :model="storeForm" :rules="codeNameRules" label-position="top" class="structure-admin-view__form" @submit.prevent>
           <div class="structure-admin-view__form-grid structure-admin-view__form-grid--store">
-            <el-form-item :label="t('structureAdmin.fields.storeCode')">
+            <el-form-item :label="t('structureAdmin.fields.storeCode')" prop="code">
               <el-input
                 v-model="storeForm.code"
                 :placeholder="t('structureAdmin.placeholders.storeCode')"
@@ -1457,7 +1537,7 @@ onMounted(async () => {
               />
             </el-form-item>
 
-            <el-form-item :label="t('structureAdmin.fields.storeName')">
+            <el-form-item :label="t('structureAdmin.fields.storeName')" prop="name">
               <el-input
                 v-model="storeForm.name"
                 :placeholder="t('structureAdmin.placeholders.storeName')"
@@ -1620,13 +1700,13 @@ onMounted(async () => {
           show-icon
         />
 
-        <el-form label-position="top" class="structure-admin-view__form" @submit.prevent>
+        <el-form ref="buildingFormRef" :model="buildingForm" :rules="codeNameRules" label-position="top" class="structure-admin-view__form" @submit.prevent>
           <div class="structure-admin-view__form-grid">
             <el-form-item :label="t('structureAdmin.fields.selectedStoreId')">
               <el-input :model-value="selectedStoreId === null ? '' : String(selectedStoreId)" readonly />
             </el-form-item>
 
-            <el-form-item :label="t('structureAdmin.fields.buildingCode')">
+            <el-form-item :label="t('structureAdmin.fields.buildingCode')" prop="code">
               <el-input
                 v-model="buildingForm.code"
                 :placeholder="t('structureAdmin.placeholders.buildingCode')"
@@ -1634,7 +1714,7 @@ onMounted(async () => {
               />
             </el-form-item>
 
-            <el-form-item :label="t('structureAdmin.fields.buildingName')">
+            <el-form-item :label="t('structureAdmin.fields.buildingName')" prop="name">
               <el-input
                 v-model="buildingForm.name"
                 :placeholder="t('structureAdmin.placeholders.buildingName')"
@@ -1735,13 +1815,13 @@ onMounted(async () => {
           show-icon
         />
 
-        <el-form label-position="top" class="structure-admin-view__form" @submit.prevent>
+        <el-form ref="floorFormRef" :model="floorForm" :rules="codeNameRules" label-position="top" class="structure-admin-view__form" @submit.prevent>
           <div class="structure-admin-view__form-grid">
             <el-form-item :label="t('structureAdmin.fields.selectedBuildingId')">
               <el-input :model-value="selectedBuildingId === null ? '' : String(selectedBuildingId)" readonly />
             </el-form-item>
 
-            <el-form-item :label="t('structureAdmin.fields.floorCode')">
+            <el-form-item :label="t('structureAdmin.fields.floorCode')" prop="code">
               <el-input
                 v-model="floorForm.code"
                 :placeholder="t('structureAdmin.placeholders.floorCode')"
@@ -1749,7 +1829,7 @@ onMounted(async () => {
               />
             </el-form-item>
 
-            <el-form-item :label="t('structureAdmin.fields.floorName')">
+            <el-form-item :label="t('structureAdmin.fields.floorName')" prop="name">
               <el-input
                 v-model="floorForm.name"
                 :placeholder="t('structureAdmin.placeholders.floorName')"
@@ -1861,17 +1941,17 @@ onMounted(async () => {
           show-icon
         />
 
-        <el-form label-position="top" class="structure-admin-view__form" @submit.prevent>
+        <el-form ref="areaFormRef" :model="areaForm" :rules="codeNameRules" label-position="top" class="structure-admin-view__form" @submit.prevent>
           <div class="structure-admin-view__form-grid">
             <el-form-item :label="t('structureAdmin.fields.selectedStoreId')">
               <el-input :model-value="selectedStoreId === null ? '' : String(selectedStoreId)" readonly />
             </el-form-item>
 
-            <el-form-item :label="t('structureAdmin.fields.areaCode')">
+            <el-form-item :label="t('structureAdmin.fields.areaCode')" prop="code">
               <el-input v-model="areaForm.code" :placeholder="t('structureAdmin.placeholders.areaCode')" data-testid="structure-area-code-input" />
             </el-form-item>
 
-            <el-form-item :label="t('structureAdmin.fields.areaName')">
+            <el-form-item :label="t('structureAdmin.fields.areaName')" prop="name">
               <el-input v-model="areaForm.name" :placeholder="t('structureAdmin.placeholders.areaName')" data-testid="structure-area-name-input" />
             </el-form-item>
 
@@ -1987,7 +2067,7 @@ onMounted(async () => {
           show-icon
         />
 
-        <el-form label-position="top" class="structure-admin-view__form" @submit.prevent>
+        <el-form ref="locationFormRef" :model="locationForm" :rules="codeNameRules" label-position="top" class="structure-admin-view__form" @submit.prevent>
           <div class="structure-admin-view__form-grid">
             <el-form-item :label="t('structureAdmin.fields.selectedStoreId')">
               <el-input :model-value="selectedStoreId === null ? '' : String(selectedStoreId)" readonly />
@@ -1999,7 +2079,7 @@ onMounted(async () => {
               </el-select>
             </el-form-item>
 
-            <el-form-item :label="t('structureAdmin.fields.locationCode')">
+            <el-form-item :label="t('structureAdmin.fields.locationCode')" prop="code">
               <el-input
                 v-model="locationForm.code"
                 :placeholder="t('structureAdmin.placeholders.locationCode')"
@@ -2007,7 +2087,7 @@ onMounted(async () => {
               />
             </el-form-item>
 
-            <el-form-item :label="t('structureAdmin.fields.locationName')">
+            <el-form-item :label="t('structureAdmin.fields.locationName')" prop="name">
               <el-input
                 v-model="locationForm.name"
                 :placeholder="t('structureAdmin.placeholders.locationName')"
@@ -2106,7 +2186,7 @@ onMounted(async () => {
           show-icon
         />
 
-        <el-form label-position="top" class="structure-admin-view__form" @submit.prevent>
+        <el-form ref="unitFormRef" :model="unitForm" :rules="codeOnlyRules" label-position="top" class="structure-admin-view__form" @submit.prevent>
           <div class="structure-admin-view__form-grid structure-admin-view__form-grid--unit">
             <el-form-item :label="t('structureAdmin.fields.selectedBuildingId')">
               <el-input :model-value="selectedBuildingId === null ? '' : String(selectedBuildingId)" readonly />
@@ -2116,7 +2196,7 @@ onMounted(async () => {
               <el-input :model-value="selectedFloorId === null ? '' : String(selectedFloorId)" readonly />
             </el-form-item>
 
-            <el-form-item :label="t('structureAdmin.fields.unitCode')">
+            <el-form-item :label="t('structureAdmin.fields.unitCode')" prop="code">
               <el-input v-model="unitForm.code" :placeholder="t('structureAdmin.placeholders.unitCode')" data-testid="structure-unit-code-input" />
             </el-form-item>
 
@@ -2259,7 +2339,7 @@ onMounted(async () => {
     </div>
 
     <el-dialog v-model="storeEditDialogOpen" :title="t('structureAdmin.dialogs.editStore')" width="42rem">
-      <el-form label-position="top" @submit.prevent>
+      <el-form ref="storeEditFormRef" :model="storeEdit" :rules="codeNameRules" label-position="top" @submit.prevent>
         <div class="structure-admin-view__dialog-grid structure-admin-view__dialog-grid--store">
           <el-form-item :label="t('structureAdmin.fields.departmentId')">
             <el-input-number v-model="storeEdit.department_id" :min="1" controls-position="right" />
@@ -2273,11 +2353,11 @@ onMounted(async () => {
             <el-input-number v-model="storeEdit.management_type_id" :min="1" controls-position="right" />
           </el-form-item>
 
-          <el-form-item :label="t('structureAdmin.fields.code')">
+          <el-form-item :label="t('structureAdmin.fields.code')" prop="code">
             <el-input v-model="storeEdit.code" />
           </el-form-item>
 
-          <el-form-item :label="t('structureAdmin.fields.name')">
+          <el-form-item :label="t('structureAdmin.fields.name')" prop="name">
             <el-input v-model="storeEdit.name" />
           </el-form-item>
 
@@ -2300,17 +2380,17 @@ onMounted(async () => {
     </el-dialog>
 
     <el-dialog v-model="buildingEditDialogOpen" :title="t('structureAdmin.dialogs.editBuilding')" width="36rem">
-      <el-form label-position="top" @submit.prevent>
+      <el-form ref="buildingEditFormRef" :model="buildingEdit" :rules="codeNameRules" label-position="top" @submit.prevent>
         <div class="structure-admin-view__dialog-grid">
           <el-form-item :label="t('structureAdmin.fields.storeId')">
             <el-input-number v-model="buildingEdit.store_id" :min="1" controls-position="right" />
           </el-form-item>
 
-          <el-form-item :label="t('structureAdmin.fields.code')">
+          <el-form-item :label="t('structureAdmin.fields.code')" prop="code">
             <el-input v-model="buildingEdit.code" />
           </el-form-item>
 
-          <el-form-item :label="t('structureAdmin.fields.name')">
+          <el-form-item :label="t('structureAdmin.fields.name')" prop="name">
             <el-input v-model="buildingEdit.name" />
           </el-form-item>
 
@@ -2329,17 +2409,17 @@ onMounted(async () => {
     </el-dialog>
 
     <el-dialog v-model="floorEditDialogOpen" :title="t('structureAdmin.dialogs.editFloor')" width="38rem">
-      <el-form label-position="top" @submit.prevent>
+      <el-form ref="floorEditFormRef" :model="floorEdit" :rules="codeNameRules" label-position="top" @submit.prevent>
         <div class="structure-admin-view__dialog-grid">
           <el-form-item :label="t('structureAdmin.fields.buildingId')">
             <el-input-number v-model="floorEdit.building_id" :min="1" controls-position="right" />
           </el-form-item>
 
-          <el-form-item :label="t('structureAdmin.fields.code')">
+          <el-form-item :label="t('structureAdmin.fields.code')" prop="code">
             <el-input v-model="floorEdit.code" />
           </el-form-item>
 
-          <el-form-item :label="t('structureAdmin.fields.name')">
+          <el-form-item :label="t('structureAdmin.fields.name')" prop="name">
             <el-input v-model="floorEdit.name" />
           </el-form-item>
 
@@ -2362,7 +2442,7 @@ onMounted(async () => {
     </el-dialog>
 
     <el-dialog v-model="areaEditDialogOpen" :title="t('structureAdmin.dialogs.editArea')" width="36rem">
-      <el-form label-position="top" @submit.prevent>
+      <el-form ref="areaEditFormRef" :model="areaEdit" :rules="codeNameRules" label-position="top" @submit.prevent>
         <div class="structure-admin-view__dialog-grid">
           <el-form-item :label="t('structureAdmin.fields.storeId')">
             <el-input-number v-model="areaEdit.store_id" :min="1" controls-position="right" />
@@ -2379,11 +2459,11 @@ onMounted(async () => {
             </el-select>
           </el-form-item>
 
-          <el-form-item :label="t('structureAdmin.fields.code')">
+          <el-form-item :label="t('structureAdmin.fields.code')" prop="code">
             <el-input v-model="areaEdit.code" />
           </el-form-item>
 
-          <el-form-item :label="t('structureAdmin.fields.name')">
+          <el-form-item :label="t('structureAdmin.fields.name')" prop="name">
             <el-input v-model="areaEdit.name" />
           </el-form-item>
 
@@ -2402,7 +2482,7 @@ onMounted(async () => {
     </el-dialog>
 
     <el-dialog v-model="locationEditDialogOpen" :title="t('structureAdmin.dialogs.editLocation')" width="36rem">
-      <el-form label-position="top" @submit.prevent>
+      <el-form ref="locationEditFormRef" :model="locationEdit" :rules="codeNameRules" label-position="top" @submit.prevent>
         <div class="structure-admin-view__dialog-grid">
           <el-form-item :label="t('structureAdmin.fields.storeId')">
             <el-input-number v-model="locationEdit.store_id" :min="1" controls-position="right" />
@@ -2414,11 +2494,11 @@ onMounted(async () => {
             </el-select>
           </el-form-item>
 
-          <el-form-item :label="t('structureAdmin.fields.code')">
+          <el-form-item :label="t('structureAdmin.fields.code')" prop="code">
             <el-input v-model="locationEdit.code" />
           </el-form-item>
 
-          <el-form-item :label="t('structureAdmin.fields.name')">
+          <el-form-item :label="t('structureAdmin.fields.name')" prop="name">
             <el-input v-model="locationEdit.name" />
           </el-form-item>
 
@@ -2437,7 +2517,7 @@ onMounted(async () => {
     </el-dialog>
 
     <el-dialog v-model="unitEditDialogOpen" :title="t('structureAdmin.dialogs.editUnit')" width="42rem">
-      <el-form label-position="top" @submit.prevent>
+      <el-form ref="unitEditFormRef" :model="unitEdit" :rules="codeOnlyRules" label-position="top" @submit.prevent>
         <div class="structure-admin-view__dialog-grid structure-admin-view__dialog-grid--unit">
           <el-form-item :label="t('structureAdmin.fields.buildingId')">
             <el-input-number v-model="unitEdit.building_id" :min="1" controls-position="right" />
@@ -2475,7 +2555,7 @@ onMounted(async () => {
             </el-select>
           </el-form-item>
 
-          <el-form-item :label="t('structureAdmin.fields.code')">
+          <el-form-item :label="t('structureAdmin.fields.code')" prop="code">
             <el-input v-model="unitEdit.code" />
           </el-form-item>
 

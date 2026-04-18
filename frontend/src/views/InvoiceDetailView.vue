@@ -286,7 +286,7 @@ watch(
 </script>
 
 <template>
-  <div class="invoice-detail-view" data-testid="invoice-detail-view">
+  <div class="invoice-detail-view" v-loading="isLoading || isReceivableLoading" data-testid="invoice-detail-view">
     <PageSection
       :eyebrow="t('billingInvoices.eyebrow')"
       :title="pageTitle"

@@ -298,7 +298,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="tax-exports-view" data-testid="tax-exports-view">
+  <div class="tax-exports-view" v-loading="isLoading || isExporting" data-testid="tax-exports-view">
     <PageSection
       :eyebrow="t('taxExports.eyebrow')"
       :title="t('taxExports.title')"

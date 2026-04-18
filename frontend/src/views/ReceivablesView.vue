@@ -161,7 +161,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="receivables-view" data-testid="receivables-view">
+  <div class="receivables-view" v-loading="isLoading" data-testid="receivables-view">
     <PageSection :eyebrow="t('receivables.eyebrow')" :title="t('receivables.title')" :summary="t('receivables.summary')" />
 
     <el-alert
