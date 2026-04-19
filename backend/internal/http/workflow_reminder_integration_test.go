@@ -102,6 +102,10 @@ func TestIntegrationWorkflowReminderTriggerRoute(t *testing.T) {
 		t.Fatalf("start workflow: %v", err)
 	}
 
+	if _, err := db.ExecContext(ctx, `UPDATE workflow_instances SET submitted_at = DATE_SUB(UTC_TIMESTAMP(), INTERVAL 2 DAY) WHERE document_type = 'lease_contract' AND document_id = 9501`); err != nil {
+		t.Fatalf("backdate workflow submitted_at: %v", err)
+	}
+
 	_, err = db.ExecContext(ctx, `
 		INSERT INTO users (id, department_id, username, display_name, password_hash, status)
 		VALUES (201, 101, 'viewer', 'Test Viewer', '$2a$10$32RDlfSKfGJDcHhJWP3JoOBi8SyorV7r2lWcs8hixdhFA/AtOI1gC', 'active')
