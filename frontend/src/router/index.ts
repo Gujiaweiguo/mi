@@ -3,26 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { FUNCTION_CODES } from '../auth/permissions'
 import LoginView from '../views/LoginView.vue'
 import ForbiddenView from '../views/ForbiddenView.vue'
-import BillingChargesView from '../views/BillingChargesView.vue'
-import BillingInvoicesView from '../views/BillingInvoicesView.vue'
-import ReceivablesView from '../views/ReceivablesView.vue'
 import DashboardView from '../views/DashboardView.vue'
-import HealthView from '../views/HealthView.vue'
-import InvoiceDetailView from '../views/InvoiceDetailView.vue'
-import LeaseCreateView from '../views/LeaseCreateView.vue'
-import LeaseDetailView from '../views/LeaseDetailView.vue'
-import LeaseListView from '../views/LeaseListView.vue'
-import GeneralizeReportsView from '../views/GeneralizeReportsView.vue'
-import VisualShopAnalysisView from '../views/VisualShopAnalysisView.vue'
-import TaxExportsView from '../views/TaxExportsView.vue'
-import ExcelIOView from '../views/ExcelIOView.vue'
-import PrintPreviewView from '../views/PrintPreviewView.vue'
-import MasterDataAdminView from '../views/MasterDataAdminView.vue'
-import WorkflowAdminView from '../views/WorkflowAdminView.vue'
-import SalesAdminView from '../views/SalesAdminView.vue'
-import BaseInfoAdminView from '../views/BaseInfoAdminView.vue'
-import StructureAdminView from '../views/StructureAdminView.vue'
-import RentableAreaAdminView from '../views/RentableAreaAdminView.vue'
 import { useAuthStore } from '../stores/auth'
 import { pinia } from '../stores/pinia'
 import { resolveAuthRedirect, resolveRootRedirect } from './auth-guard'
@@ -60,7 +41,7 @@ const router = createRouter({
     {
       path: '/health',
       name: 'health',
-      component: HealthView,
+      component: () => import('../views/HealthView.vue'),
       meta: {
         requiresAuth: true,
       },
@@ -76,7 +57,7 @@ const router = createRouter({
     {
       path: '/workflow/admin',
       name: 'workflow-admin',
-      component: WorkflowAdminView,
+      component: () => import('../views/WorkflowAdminView.vue'),
       meta: {
         requiresAuth: true,
         permissionCode: FUNCTION_CODES.workflowAdmin,
@@ -85,7 +66,7 @@ const router = createRouter({
     {
       path: '/admin/master-data',
       name: 'masterdata-admin',
-      component: MasterDataAdminView,
+      component: () => import('../views/MasterDataAdminView.vue'),
       meta: {
         requiresAuth: true,
         permissionCode: FUNCTION_CODES.masterdataAdmin,
@@ -94,7 +75,7 @@ const router = createRouter({
     {
       path: '/admin/sales',
       name: 'sales-admin',
-      component: SalesAdminView,
+      component: () => import('../views/SalesAdminView.vue'),
       meta: {
         requiresAuth: true,
         permissionCode: FUNCTION_CODES.salesAdmin,
@@ -103,7 +84,7 @@ const router = createRouter({
     {
       path: '/admin/base-info',
       name: 'baseinfo-admin',
-      component: BaseInfoAdminView,
+      component: () => import('../views/BaseInfoAdminView.vue'),
       meta: {
         requiresAuth: true,
         permissionCode: FUNCTION_CODES.baseinfoAdmin,
@@ -112,7 +93,7 @@ const router = createRouter({
     {
       path: '/admin/structure',
       name: 'structure-admin',
-      component: StructureAdminView,
+      component: () => import('../views/StructureAdminView.vue'),
       meta: {
         requiresAuth: true,
         permissionCode: FUNCTION_CODES.structureAdmin,
@@ -121,7 +102,7 @@ const router = createRouter({
     {
       path: '/admin/rentable-areas',
       name: 'rentable-area-admin',
-      component: RentableAreaAdminView,
+      component: () => import('../views/RentableAreaAdminView.vue'),
       meta: {
         requiresAuth: true,
         permissionCode: FUNCTION_CODES.structureAdmin,
@@ -130,7 +111,7 @@ const router = createRouter({
     {
       path: '/lease/contracts',
       name: 'lease-contracts',
-      component: LeaseListView,
+      component: () => import('../views/LeaseListView.vue'),
       meta: {
         requiresAuth: true,
         permissionCode: FUNCTION_CODES.leaseContract,
@@ -139,7 +120,7 @@ const router = createRouter({
     {
       path: '/lease/contracts/new',
       name: 'lease-contracts-new',
-      component: LeaseCreateView,
+      component: () => import('../views/LeaseCreateView.vue'),
       meta: {
         requiresAuth: true,
         permissionCode: FUNCTION_CODES.leaseContract,
@@ -148,7 +129,7 @@ const router = createRouter({
     {
       path: '/lease/contracts/:id',
       name: 'lease-contract-detail',
-      component: LeaseDetailView,
+      component: () => import('../views/LeaseDetailView.vue'),
       meta: {
         requiresAuth: true,
         permissionCode: FUNCTION_CODES.leaseContract,
@@ -157,7 +138,7 @@ const router = createRouter({
     {
       path: '/billing/charges',
       name: 'billing-charges',
-      component: BillingChargesView,
+      component: () => import('../views/BillingChargesView.vue'),
       meta: {
         requiresAuth: true,
         permissionCode: FUNCTION_CODES.billingCharge,
@@ -166,7 +147,7 @@ const router = createRouter({
     {
       path: '/billing/invoices',
       name: 'billing-invoices',
-      component: BillingInvoicesView,
+      component: () => import('../views/BillingInvoicesView.vue'),
       meta: {
         requiresAuth: true,
         permissionCode: FUNCTION_CODES.billingInvoice,
@@ -175,7 +156,7 @@ const router = createRouter({
     {
       path: '/billing/receivables',
       name: 'billing-receivables',
-      component: ReceivablesView,
+      component: () => import('../views/ReceivablesView.vue'),
       meta: {
         requiresAuth: true,
         permissionCode: FUNCTION_CODES.billingInvoice,
@@ -184,7 +165,7 @@ const router = createRouter({
     {
       path: '/billing/invoices/:id',
       name: 'billing-invoice-detail',
-      component: InvoiceDetailView,
+      component: () => import('../views/InvoiceDetailView.vue'),
       meta: {
         requiresAuth: true,
         permissionCode: FUNCTION_CODES.billingInvoice,
@@ -193,7 +174,7 @@ const router = createRouter({
     {
       path: '/tax/exports',
       name: 'tax-exports',
-      component: TaxExportsView,
+      component: () => import('../views/TaxExportsView.vue'),
       meta: {
         requiresAuth: true,
         permissionCode: FUNCTION_CODES.taxExport,
@@ -202,7 +183,7 @@ const router = createRouter({
     {
       path: '/reports/generalize',
       name: 'generalize-reports',
-      component: GeneralizeReportsView,
+      component: () => import('../views/GeneralizeReportsView.vue'),
       meta: {
         requiresAuth: true,
         permissionCode: FUNCTION_CODES.generalizeReport,
@@ -211,7 +192,7 @@ const router = createRouter({
     {
       path: '/reports/visual-shop',
       name: 'visual-shop-analysis',
-      component: VisualShopAnalysisView,
+      component: () => import('../views/VisualShopAnalysisView.vue'),
       meta: {
         requiresAuth: true,
         permissionCode: FUNCTION_CODES.generalizeReport,
@@ -220,7 +201,7 @@ const router = createRouter({
     {
       path: '/excel/io',
       name: 'excel-io',
-      component: ExcelIOView,
+      component: () => import('../views/ExcelIOView.vue'),
       meta: {
         requiresAuth: true,
         permissionCode: FUNCTION_CODES.excelIo,
@@ -229,7 +210,7 @@ const router = createRouter({
     {
       path: '/print/preview',
       name: 'print-preview',
-      component: PrintPreviewView,
+      component: () => import('../views/PrintPreviewView.vue'),
       meta: {
         requiresAuth: true,
       },
