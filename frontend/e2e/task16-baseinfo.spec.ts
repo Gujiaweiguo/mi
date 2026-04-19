@@ -55,11 +55,24 @@ const attachBaseInfoMocks = async (page: Page) => {
     })
   })
 
-  await page.route('**/api/auth/login', async (route) => {
+  await page.route('**/api/auth/login', async (route) => { await route.fulfill({
+    status: 200,
+    contentType: 'application/json',
+    body: JSON.stringify({ token: 'playwright-token' }),
+  }) })
+  
+  await page.route('**/api/dashboard/summary', async (route) => {
     await route.fulfill({
       status: 200,
       contentType: 'application/json',
-      body: JSON.stringify({ token: 'playwright-token' }),
+      body: JSON.stringify({
+        activeLeases: 0,
+        pendingLeaseApprovals: 0,
+        pendingInvoiceApprovals: 0,
+        openReceivables: 0,
+        overdueReceivables: 0,
+        pendingWorkflows: 0,
+      }),
     })
   })
 
@@ -158,7 +171,7 @@ test('creates store type records from the base info admin view', async ({ page }
   await page.getByTestId('login-password-input').fill('password')
   await page.getByTestId('login-submit-button').click()
 
-  await expect(page).toHaveURL(/\/health/)
+  await expect(page).toHaveURL(/\/dashboard/)
   await expect(page.getByTestId('nav--admin-base-info')).toBeVisible()
 
   await page.getByTestId('nav--admin-base-info').click()
