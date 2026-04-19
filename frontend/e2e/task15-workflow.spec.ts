@@ -147,11 +147,24 @@ const attachTask15Mocks = async (page: Page) => {
     })
   })
 
-  await page.route('**/api/auth/login', async (route) => {
+  await page.route('**/api/auth/login', async (route) => { await route.fulfill({
+    status: 200,
+    contentType: 'application/json',
+    body: JSON.stringify({ token: 'playwright-token' }),
+  }) })
+  
+  await page.route('**/api/dashboard/summary', async (route) => {
     await route.fulfill({
       status: 200,
       contentType: 'application/json',
-      body: JSON.stringify({ token: 'playwright-token' }),
+      body: JSON.stringify({
+        activeLeases: 0,
+        pendingLeaseApprovals: 0,
+        pendingInvoiceApprovals: 0,
+        openReceivables: 0,
+        overdueReceivables: 0,
+        pendingWorkflows: 0,
+      }),
     })
   })
 
@@ -588,7 +601,7 @@ test('completes the task 15 lease to billing output workflow with stable test id
   await page.getByTestId('login-password-input').fill('password')
   await page.getByTestId('login-submit-button').click()
 
-  await expect(page).toHaveURL(/\/health/)
+  await expect(page).toHaveURL(/\/dashboard/)
 
   await page.getByTestId('nav--lease-contracts').click()
   await expect(page.getByTestId('lease-contracts-view')).toBeVisible()
