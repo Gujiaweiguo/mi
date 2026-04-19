@@ -1,0 +1,2 @@
+# Run backup daily at 2:00 AM CST
+0 2 * * * /app/scripts/backup-sidecar.sh >> /var/log/backup.log 2>&1
