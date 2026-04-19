@@ -26,7 +26,7 @@ This document records first-release migration decisions against legacy behavior 
 | Charge generation / bill / invoice lifecycle | PRESERVE | Core first-release financial chain. |
 | Workflow approval engine | REDESIGN | Approval capability is mandatory, but workflow rules and implementation may change. |
 | Sales / POS / commercial transaction capture | PRESERVE | Needed for commercial reports and operational analysis. |
-| Generalize media/promotion management | PRESERVE | Included business area outside membership. |
+| Generalize media/promotion management | REDESIGN | Legacy media concepts split across sales transaction media/payment details and lease/reporting-facing ad/visual outputs; first release preserves the business outcomes through those domains rather than a standalone module. |
 | Generalize reports `R01-R19` | PRESERVE | Explicitly frozen in OpenSpec. |
 | Reports outside `R01-R19` | DROP | Out of first-release scope unless OpenSpec changes. |
 | Membership / Associator capability | DROP | Explicit first-release exclusion. |

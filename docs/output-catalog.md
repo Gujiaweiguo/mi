@@ -21,8 +21,8 @@ This catalog freezes the mandatory first-release outputs for `legacy-system-migr
 | `P05` | Lease invoice reprint | Lease/Bill/Invoice | `legacy_code/Web/Lease/ChargeAccount/InvoiceAgainPrint.aspx.cs` | HTML + PDF |
 | `P06` | JV / unit invoice reprint | Lease/Bill/Invoice | `legacy_code/Web/Lease/ChargeAccount/UnionAgainPrint.aspx.cs` | HTML + PDF |
 | `P07` | Interest invoice print | Lease/Bill/Invoice | `legacy_code/Web/Lease/ChargeAccount/InterestAgainPrint.aspx.cs` | HTML + PDF |
-| `P08` | Paid voucher print | Financial ops | `legacy_code/Web/ReportM/RptInv/RptPaidVoucher.aspx.cs` | HTML + PDF |
-| `P09` | Accounting voucher report print | Voucher export support | `legacy_code/Web/Invoice/MakePoolVoucher/MakePoolVoucher.aspx.cs` + `RptAccountReport.rpt` | HTML + PDF |
+| `P08` | Paid voucher print (redesigned) | Financial ops | `legacy_code/Web/ReportM/RptInv/RptPaidVoucher.aspx.cs` | Supported through current voucher/export output surfaces rather than a standalone first-release print flow |
+| `P09` | Accounting voucher report print (redesigned) | Voucher export support | `legacy_code/Web/Invoice/MakePoolVoucher/MakePoolVoucher.aspx.cs` + `RptAccountReport.rpt` | Supported through current voucher/export output surfaces rather than a standalone first-release print flow |
 | `P10` | Invoice detail print | Lease/Bill/Invoice | `legacy_code/Web/ReportM/RptLeaseInv.aspx.cs` | HTML + PDF |
 | `P11` | Bill post-approval printable state | Bill | `legacy_code/Bill/ConfirmVoucher.cs` | Printable document state |
 
@@ -31,20 +31,22 @@ This catalog freezes the mandatory first-release outputs for `legacy-system-migr
 - Legacy Crystal Report rendering is **not** the target implementation.
 - Template configurability implied by `InvoicePara` / `InvoiceJVPara` must remain available as a business capability.
 - Batch print and reprint are both required where the legacy system supports them for first-release financial documents.
+- `P08` and `P09` are redesign boundaries. First release may satisfy the same operator outcome through the voucher-export and printable-output surfaces already present in the current tax/document stack, rather than reproducing a standalone legacy voucher-print subsystem.
 
 ## Category B — Mandatory Voucher / Tax-Adjacent Export Outputs
 
 | Output ID | Output | Scope | Legacy Evidence | Target Form |
 |---|---|---|---|---|
 | `T01` | Kingdee-style voucher export | Finance / tax-adjacent export | `legacy_code/Invoice/MakePoolVoucher/KingdeeExcelOutPut.cs` | XLSX export |
-| `T02` | Voucher/accounting export preview | Finance / tax-adjacent export | `legacy_code/Invoice/MakePoolVoucher/MakePoolVoucher.aspx.cs` | HTML + PDF preview |
-| `T03` | Voucher configuration import | Finance setup | `legacy_code/Web/Invoice/MakePoolVoucher/VoucherInput.aspx.cs` | Structured import |
+| `T02` | Voucher/accounting export preview (redesigned) | Finance / tax-adjacent export | `legacy_code/Invoice/MakePoolVoucher/MakePoolVoucher.aspx.cs` | Supported through current tax rule set UI plus workbook generation flow |
+| `T03` | Voucher configuration import (redesigned) | Finance setup | `legacy_code/Web/Invoice/MakePoolVoucher/VoucherInput.aspx.cs` | Supported through current tax rule set maintenance surfaces |
 
 ### Voucher Export Rules
 - The business export outcome is mandatory.
 - Legacy Kingdee field semantics must be preserved at the business/output level.
 - Office Interop and `.xls` template binding are not preserved as implementation choices.
 - The exact export field layout must be pinned before Task 11 is considered complete.
+- `T02` and `T03` are redesign boundaries: first release may satisfy them through current rule-set maintenance plus workbook-generation/export flows, rather than separate legacy preview/import pages.
 
 ## Category C — Mandatory Excel Import / Export Flows
 
@@ -52,12 +54,13 @@ This catalog freezes the mandatory first-release outputs for `legacy-system-migr
 |---|---|---|---|---|
 | `E01` | Generic tabular export from operational views | Shared | `legacy_code/Base/ToExcel.cs` | XLSX export |
 | `E02` | Sales data import | Sell | `legacy_code/Web/Sell/SellData.aspx.cs` | Structured import |
-| `E03` | SKU master import | Sell | `legacy_code/Web/Sell/SkuInput.aspx.cs` | Structured import |
+| `E03` | Sales support master import (redesigned from legacy SKU master import) | Sell | `legacy_code/Web/Sell/SkuInput.aspx.cs` | Structured import |
 | `E04` | Unit data template download + import | Spatial master | `legacy_code/Web/RentableArea/Building/UnitDataExport.aspx.cs` | XLSX template + import |
 | `E05` | Voucher export workbook | Finance export | `legacy_code/Web/Invoice/MakePoolVoucher/MakePoolVoucher.aspx.cs` | XLSX export |
 
 ### Excel I/O Rules
 - Excel import/export is mandatory in first release.
+- `E03` is a redesign boundary: the legacy SKU-master import reflected the old POS/SKU model. First release may satisfy the same business outcome through the current sales-support import surfaces instead of reproducing a standalone SKU master module.
 - All accepted imports must provide deterministic validation and row-level diagnostics where applicable.
 - Server-side Office Interop and OleDb/Jet are not preserved as implementation choices.
 
