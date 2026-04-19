@@ -6,7 +6,7 @@ This summary refreshes release posture for the current repository head after cur
 
 ## Current validated head
 
-- Current repository head: `dd3094889794cb3bcbcaa50e60eff131e6264bb4`
+- Current repository head: `896212969a988f63309591e8815795b98337aadb`
 
 ## Working-tree status
 
@@ -17,16 +17,16 @@ This summary refreshes release posture for the current repository head after cur
 
 - `CI Ready: YES`
 - `Archive Ready: YES`
-- Verification root: `artifacts/verification/dd3094889794cb3bcbcaa50e60eff131e6264bb4/`
+- Verification root: `artifacts/verification/896212969a988f63309591e8815795b98337aadb/`
   - `unit.json` — PASS (`582/582`)
-  - `integration.json` — PASS (`395/395`)
-  - `e2e.json` — PASS (`41/41`)
+  - `integration.json` — PASS (`396/396`)
+  - `e2e.json` — PASS (`42/42`)
 
 ## Current-head production rehearsal status
 
-- Production rehearsal artifact: `artifacts/rehearsal/dd3094889794cb3bcbcaa50e60eff131e6264bb4/cutover-rehearsal-production-20260419T045231Z.json`
-- Production rehearsal log: `artifacts/rehearsal/dd3094889794cb3bcbcaa50e60eff131e6264bb4/cutover-rehearsal-production-20260419T045231Z.log`
-- Backup artifact: `artifacts/backups/production/mi-production-backup-20260419T045331Z.tar.gz`
+- Production rehearsal artifact: `artifacts/rehearsal/896212969a988f63309591e8815795b98337aadb/cutover-rehearsal-production-20260419T050014Z.json`
+- Production rehearsal log: `artifacts/rehearsal/896212969a988f63309591e8815795b98337aadb/cutover-rehearsal-production-20260419T050014Z.log`
+- Backup artifact: `artifacts/backups/production/mi-production-backup-20260419T050113Z.tar.gz`
 - Rehearsal result: `GO`
 
 Per-gate status:
@@ -88,4 +88,4 @@ No blocker-class gaps remain in the current audit for the governed scope, and no
 
 ## Conclusion
 
-The current repository head `dd3094889794cb3bcbcaa50e60eff131e6264bb4` is technically validated with `Archive Ready: YES` and a production cutover rehearsal `GO`. After the current capability/output evidence refresh and redesign-boundary corrections in the governing artifacts, no blocker-class scope gaps remain for the currently governed first-release scope.
+The current repository head `896212969a988f63309591e8815795b98337aadb` is technically validated with `Archive Ready: YES` and a production cutover rehearsal `GO`. After the current capability/output evidence refresh and redesign-boundary corrections in the governing artifacts, no blocker-class scope gaps remain for the currently governed first-release scope.
