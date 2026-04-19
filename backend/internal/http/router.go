@@ -56,8 +56,10 @@ func NewRouter(cfg *config.Config, db *sql.DB, logger *zap.Logger) *gin.Engine {
 		middleware.RequestID(),
 		middleware.StructuredLogger(logger),
 		middleware.StructuredRecovery(logger),
+		middleware.PrometheusMiddleware(),
 	)
 	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	router.GET("/metrics", gin.WrapH(middleware.MetricsHandler()))
 
 	healthHandler := handlers.NewHealthHandler(cfg, db)
 	authRepository := auth.NewRepository(db)
