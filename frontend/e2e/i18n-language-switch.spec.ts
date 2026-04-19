@@ -26,11 +26,24 @@ const attachPlatformMocks = async (page: Page, permissions: PermissionFixture[])
     })
   })
 
-  await page.route('**/api/auth/login', async (route) => {
+  await page.route('**/api/auth/login', async (route) => { await route.fulfill({
+    status: 200,
+    contentType: 'application/json',
+    body: JSON.stringify({ token: 'playwright-token' }),
+  }) })
+  
+  await page.route('**/api/dashboard/summary', async (route) => {
     await route.fulfill({
       status: 200,
       contentType: 'application/json',
-      body: JSON.stringify({ token: 'playwright-token' }),
+      body: JSON.stringify({
+        activeLeases: 0,
+        pendingLeaseApprovals: 0,
+        pendingInvoiceApprovals: 0,
+        openReceivables: 0,
+        overdueReceivables: 0,
+        pendingWorkflows: 0,
+      }),
     })
   })
 
@@ -283,7 +296,7 @@ const login = async (page: Page) => {
   await page.getByTestId('login-username-input').fill('operator')
   await page.getByTestId('login-password-input').fill('password')
   await page.getByTestId('login-submit-button').click()
-  await expect(page).toHaveURL(/\/health/)
+  await expect(page).toHaveURL(/\/dashboard/)
 }
 
 const switchLocale = async (page: Page, testId: string, optionLabel: string) => {
@@ -333,18 +346,21 @@ test('shows zh-CN by default and switches shell, navigation, and health view to 
   await login(page)
 
   await expect(page.getByText('遗留系统迁移')).toBeVisible()
+  await expect(page.getByTestId('nav--dashboard')).toHaveText('工作台概览')
   await expect(page.getByTestId('nav--health')).toHaveText('平台健康')
   await expect(page.getByTestId('nav--lease-contracts')).toHaveText('租赁合同')
   await expect(page.getByTestId('app-logout-button')).toHaveText('退出登录')
-  await expect(page.getByRole('heading', { name: '平台健康检查' })).toBeVisible()
+  await expect(page.getByTestId('dashboard-view')).toBeVisible()
+  await expect(page.getByRole('heading', { name: '工作台概览' })).toBeVisible()
 
   await switchLocale(page, 'app-locale-switcher', 'English')
 
   await expect(page.getByText('Legacy system migration')).toBeVisible()
+  await expect(page.getByTestId('nav--dashboard')).toHaveText('Dashboard')
   await expect(page.getByTestId('nav--health')).toHaveText('Platform health')
   await expect(page.getByTestId('nav--lease-contracts')).toHaveText('Lease contracts')
   await expect(page.getByTestId('app-logout-button')).toHaveText('Logout')
-  await expect(page.getByRole('heading', { name: 'Platform health' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Dashboard' })).toBeVisible()
 })
 
 test('persists the selected locale across navigation and refresh on a first-wave route', async ({ page }) => {

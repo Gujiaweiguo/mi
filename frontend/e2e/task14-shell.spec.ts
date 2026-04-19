@@ -30,12 +30,25 @@ const attachPlatformMocks = async (
     })
   })
 
-  await page.route('**/api/auth/login', async (route) => {
+  await page.route('**/api/auth/login', async (route) => { await route.fulfill({
+    status: 200,
+    contentType: 'application/json',
+    body: JSON.stringify({
+      token: 'playwright-token',
+    }),
+  }) })
+  
+  await page.route('**/api/dashboard/summary', async (route) => {
     await route.fulfill({
       status: 200,
       contentType: 'application/json',
       body: JSON.stringify({
-        token: 'playwright-token',
+        activeLeases: 0,
+        pendingLeaseApprovals: 0,
+        pendingInvoiceApprovals: 0,
+        openReceivables: 0,
+        overdueReceivables: 0,
+        pendingWorkflows: 0,
       }),
     })
   })
@@ -55,8 +68,8 @@ const attachPlatformMocks = async (
   })
 }
 
-test('redirects protected health route to login for guests', async ({ page }) => {
-  await page.goto('/health')
+test('redirects protected dashboard route to login for guests', async ({ page }) => {
+  await page.goto('/dashboard')
 
   await expect(page).toHaveURL(/\/login/)
   await expect(page.getByTestId('login-view')).toBeVisible()
@@ -133,7 +146,8 @@ test('shows permission-aware navigation after login and supports shared workbenc
   await page.getByTestId('login-password-input').fill('password')
   await page.getByTestId('login-submit-button').click()
 
-  await expect(page).toHaveURL(/\/health/)
+  await expect(page).toHaveURL(/\/dashboard/)
+  await expect(page.getByTestId('nav--dashboard')).toBeVisible()
   await expect(page.getByTestId('nav--health')).toBeVisible()
   await expect(page.getByTestId('nav--lease-contracts')).toBeVisible()
   await expect(page.getByTestId('nav--excel-io')).toBeVisible()
