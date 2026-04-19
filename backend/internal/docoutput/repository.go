@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"fmt"
 	"strings"
-	"time"
 
 	"github.com/Gujiaweiguo/mi/backend/internal/pagination"
 )
@@ -138,4 +137,3 @@ func nullableString(value string) any {
 	return value
 }
 
-var _ = time.Time{}
