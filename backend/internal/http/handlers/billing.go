@@ -25,6 +25,20 @@ type generateBillingRequest struct {
 	PeriodEnd   string `json:"period_end" binding:"required"`
 }
 
+// GenerateCharges godoc
+//
+//	@Summary		Generate billing charges
+//	@Description	Generates billing charge lines for the requested billing window.
+//	@Tags			Billing
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		generateBillingRequest	true	"Billing generation request"
+//	@Success		201		{object}	billing.GenerateResult
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/billing/charges/generate [post]
 func (h *BillingHandler) GenerateCharges(c *gin.Context) {
 	var request generateBillingRequest
 	if err := c.ShouldBindJSON(&request); err != nil {
@@ -55,6 +69,24 @@ func (h *BillingHandler) GenerateCharges(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"run": result.Run, "lines": result.Lines, "totals": result.Totals})
 }
 
+// ListCharges godoc
+//
+//	@Summary		List billing charges
+//	@Description	Returns paginated billing charge lines filtered by lease and billing period.
+//	@Tags			Billing
+//	@Accept			json
+//	@Produce		json
+//	@Param			lease_contract_id	query		int		false	"Lease contract ID"
+//	@Param			period_start		query		string	false	"Billing period start (YYYY-MM-DD)"
+//	@Param			period_end			query		string	false	"Billing period end (YYYY-MM-DD)"
+//	@Param			page				query		int		false	"Page number"
+//	@Param			page_size			query		int		false	"Page size"
+//	@Success		200					{object}	swaggerEnvelope{items=[]billing.ChargeLine,total=int,page=int,page_size=int}
+//	@Failure		400					{object}	swaggerMessageResponse
+//	@Failure		401					{object}	swaggerMessageResponse
+//	@Failure		500					{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/billing/charges [get]
 func (h *BillingHandler) ListCharges(c *gin.Context) {
 	filter := billing.ChargeListFilter{}
 	if leaseIDText := c.Query("lease_contract_id"); leaseIDText != "" {

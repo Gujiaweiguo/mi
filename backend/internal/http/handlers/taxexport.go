@@ -40,6 +40,21 @@ type exportVoucherRequest struct {
 	ToDate      string `json:"to_date" binding:"required"`
 }
 
+// UpsertRuleSet godoc
+//
+//	@Summary		Upsert tax rule set
+//	@Description	Creates or updates a tax voucher rule set with its accounting rules.
+//	@Tags			Tax
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		upsertTaxRuleSetRequest	true	"Tax rule set request"
+//	@Success		201		{object}	swaggerEnvelope{rule_set=taxexport.RuleSet}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/tax/rule-sets [post]
 func (h *TaxExportHandler) UpsertRuleSet(c *gin.Context) {
 	var request upsertTaxRuleSetRequest
 	if err := c.ShouldBindJSON(&request); err != nil {
@@ -63,6 +78,21 @@ func (h *TaxExportHandler) UpsertRuleSet(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"rule_set": ruleSet})
 }
 
+// ListRuleSets godoc
+//
+//	@Summary		List tax rule sets
+//	@Description	Returns paginated tax voucher rule sets.
+//	@Tags			Tax
+//	@Accept			json
+//	@Produce		json
+//	@Param			page		query		int	false	"Page number"
+//	@Param			page_size	query		int	false	"Page size"
+//	@Success		200			{object}	swaggerEnvelope{items=[]taxexport.RuleSet,total=int,page=int,page_size=int}
+//	@Failure		400			{object}	swaggerMessageResponse
+//	@Failure		401			{object}	swaggerMessageResponse
+//	@Failure		500			{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/tax/rule-sets [get]
 func (h *TaxExportHandler) ListRuleSets(c *gin.Context) {
 	filter := taxexport.ListFilter{}
 	if pageText := c.DefaultQuery("page", strconv.Itoa(pagination.DefaultPage)); pageText != "" {
@@ -95,6 +125,21 @@ func (h *TaxExportHandler) ListRuleSets(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"items": result.Items, "total": result.Total, "page": result.Page, "page_size": result.PageSize})
 }
 
+// ExportVoucherWorkbook godoc
+//
+//	@Summary		Export voucher workbook
+//	@Description	Exports an accounting voucher workbook for approved billing documents in the requested date range.
+//	@Tags			Tax
+//	@Accept			json
+//	@Produce		application/octet-stream
+//	@Param			request	body		exportVoucherRequest	true	"Tax export request"
+//	@Success		200		{file}		file					"Voucher workbook"
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/tax/exports/vouchers [post]
 func (h *TaxExportHandler) ExportVoucherWorkbook(c *gin.Context) {
 	var request exportVoucherRequest
 	if err := c.ShouldBindJSON(&request); err != nil {

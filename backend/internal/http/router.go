@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 
+	_ "github.com/Gujiaweiguo/mi/backend/docs"
 	"github.com/Gujiaweiguo/mi/backend/internal/auth"
 	"github.com/Gujiaweiguo/mi/backend/internal/baseinfo"
 	"github.com/Gujiaweiguo/mi/backend/internal/billing"
@@ -22,8 +23,19 @@ import (
 	"github.com/Gujiaweiguo/mi/backend/internal/taxexport"
 	"github.com/Gujiaweiguo/mi/backend/internal/workflow"
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"go.uber.org/zap"
 )
+
+//	@title						MI Management Information System API
+//	@version					1.0
+//	@description				Backend API for the MI property management system
+//	@host						localhost:5180
+//	@BasePath					/api
+//	@securityDefinitions.apikey	BearerAuth
+//	@in							header
+//	@name						Authorization
 
 type workflowSyncers struct {
 	syncers []handlers.WorkflowStateSyncer
@@ -45,6 +57,7 @@ func NewRouter(cfg *config.Config, db *sql.DB, logger *zap.Logger) *gin.Engine {
 		middleware.StructuredLogger(logger),
 		middleware.StructuredRecovery(logger),
 	)
+	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	healthHandler := handlers.NewHealthHandler(cfg, db)
 	authRepository := auth.NewRepository(db)

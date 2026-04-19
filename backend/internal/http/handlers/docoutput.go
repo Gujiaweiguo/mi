@@ -33,6 +33,21 @@ type renderDocumentRequest struct {
 	DocumentIDs  []int64 `json:"document_ids" binding:"required"`
 }
 
+// UpsertTemplate godoc
+//
+//	@Summary		Upsert print template
+//	@Description	Creates or updates a print template used for HTML and PDF document rendering.
+//	@Tags			Print
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		upsertPrintTemplateRequest	true	"Template request"
+//	@Success		201		{object}	swaggerEnvelope{template=docoutput.Template}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/print/templates [post]
 func (h *DocOutputHandler) UpsertTemplate(c *gin.Context) {
 	var request upsertPrintTemplateRequest
 	if err := c.ShouldBindJSON(&request); err != nil {
@@ -52,6 +67,21 @@ func (h *DocOutputHandler) UpsertTemplate(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"template": templateValue})
 }
 
+// ListTemplates godoc
+//
+//	@Summary		List print templates
+//	@Description	Returns paginated print templates available for document output.
+//	@Tags			Print
+//	@Accept			json
+//	@Produce		json
+//	@Param			page		query		int	false	"Page number"
+//	@Param			page_size	query		int	false	"Page size"
+//	@Success		200			{object}	swaggerEnvelope{items=[]docoutput.Template,total=int,page=int,page_size=int}
+//	@Failure		400			{object}	swaggerMessageResponse
+//	@Failure		401			{object}	swaggerMessageResponse
+//	@Failure		500			{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/print/templates [get]
 func (h *DocOutputHandler) ListTemplates(c *gin.Context) {
 	filter := docoutput.ListFilter{}
 	if pageText := c.DefaultQuery("page", strconv.Itoa(pagination.DefaultPage)); pageText != "" {
@@ -84,6 +114,21 @@ func (h *DocOutputHandler) ListTemplates(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"items": result.Items, "total": result.Total, "page": result.Page, "page_size": result.PageSize})
 }
 
+// RenderHTML godoc
+//
+//	@Summary		Render HTML document
+//	@Description	Renders the requested documents into HTML using the selected print template.
+//	@Tags			Print
+//	@Accept			json
+//	@Produce		text/html
+//	@Param			request	body		renderDocumentRequest	true	"Render request"
+//	@Success		200		{string}	string					"Rendered HTML"
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/print/render/html [post]
 func (h *DocOutputHandler) RenderHTML(c *gin.Context) {
 	rendered := h.render(c, true)
 	if rendered == nil {
@@ -92,6 +137,21 @@ func (h *DocOutputHandler) RenderHTML(c *gin.Context) {
 	c.Data(http.StatusOK, rendered.ContentType, rendered.Body)
 }
 
+// RenderPDF godoc
+//
+//	@Summary		Render PDF document
+//	@Description	Renders the requested documents into a downloadable PDF using the selected print template.
+//	@Tags			Print
+//	@Accept			json
+//	@Produce		application/octet-stream
+//	@Param			request	body		renderDocumentRequest	true	"Render request"
+//	@Success		200		{file}		file					"Rendered PDF"
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/print/render/pdf [post]
 func (h *DocOutputHandler) RenderPDF(c *gin.Context) {
 	rendered := h.render(c, false)
 	if rendered == nil {

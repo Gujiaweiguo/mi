@@ -32,6 +32,22 @@ type reportRequest struct {
 	Status           *string `json:"status"`
 }
 
+// Query godoc
+//
+//	@Summary		Query report
+//	@Description	Runs a generalize report query for the supplied report ID and filters.
+//	@Tags			Reports
+//	@Accept			json
+//	@Produce		json
+//	@Param			reportId	path		string			true	"Report ID"
+//	@Param			request		body		reportRequest	true	"Report query request"
+//	@Success		200			{object}	swaggerEnvelope{report=reporting.Result}
+//	@Failure		400			{object}	swaggerMessageResponse
+//	@Failure		401			{object}	swaggerMessageResponse
+//	@Failure		404			{object}	swaggerMessageResponse
+//	@Failure		500			{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/reports/{reportId}/query [post]
 func (h *ReportingHandler) Query(c *gin.Context) {
 	input, ok := h.buildInput(c)
 	if !ok {
@@ -45,6 +61,22 @@ func (h *ReportingHandler) Query(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"report": result})
 }
 
+// Export godoc
+//
+//	@Summary		Export report
+//	@Description	Exports a generalize report for the supplied report ID and filters.
+//	@Tags			Reports
+//	@Accept			json
+//	@Produce		application/octet-stream
+//	@Param			reportId	path		string			true	"Report ID"
+//	@Param			request		body		reportRequest	true	"Report export request"
+//	@Success		200			{file}		file			"Report export file"
+//	@Failure		400			{object}	swaggerMessageResponse
+//	@Failure		401			{object}	swaggerMessageResponse
+//	@Failure		404			{object}	swaggerMessageResponse
+//	@Failure		500			{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/reports/{reportId}/export [post]
 func (h *ReportingHandler) Export(c *gin.Context) {
 	input, ok := h.buildInput(c)
 	if !ok {

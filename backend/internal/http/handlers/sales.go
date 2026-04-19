@@ -30,6 +30,23 @@ type createTrafficRequest struct {
 	InboundCount int    `json:"inbound_count" binding:"required"`
 }
 
+// ListDailySales godoc
+//
+//	@Summary		List daily sales
+//	@Description	Returns daily sales records filtered by store, unit, and date range.
+//	@Tags			Sales
+//	@Accept			json
+//	@Produce		json
+//	@Param			store_id	query		int		false	"Store ID"
+//	@Param			unit_id		query		int		false	"Unit ID"
+//	@Param			date_from	query		string	false	"Start date (YYYY-MM-DD)"
+//	@Param			date_to		query		string	false	"End date (YYYY-MM-DD)"
+//	@Success		200			{object}	swaggerEnvelope{daily_sales=[]sales.DailySale}
+//	@Failure		400			{object}	swaggerMessageResponse
+//	@Failure		401			{object}	swaggerMessageResponse
+//	@Failure		500			{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/sales/daily [get]
 func (h *SalesHandler) ListDailySales(c *gin.Context) {
 	filter, ok := buildDailySaleFilter(c)
 	if !ok {
@@ -43,6 +60,20 @@ func (h *SalesHandler) ListDailySales(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"daily_sales": items})
 }
 
+// CreateDailySale godoc
+//
+//	@Summary		Create daily sale
+//	@Description	Creates or updates a daily sales record for a unit on a given date.
+//	@Tags			Sales
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		createDailySaleRequest	true	"Daily sale request"
+//	@Success		201		{object}	swaggerEnvelope{daily_sale=sales.DailySale}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/sales/daily [post]
 func (h *SalesHandler) CreateDailySale(c *gin.Context) {
 	var request createDailySaleRequest
 	if err := c.ShouldBindJSON(&request); err != nil {
@@ -62,6 +93,22 @@ func (h *SalesHandler) CreateDailySale(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"daily_sale": item})
 }
 
+// ListTraffic godoc
+//
+//	@Summary		List customer traffic
+//	@Description	Returns customer traffic records filtered by store and date range.
+//	@Tags			Sales
+//	@Accept			json
+//	@Produce		json
+//	@Param			store_id	query		int		false	"Store ID"
+//	@Param			date_from	query		string	false	"Start date (YYYY-MM-DD)"
+//	@Param			date_to		query		string	false	"End date (YYYY-MM-DD)"
+//	@Success		200			{object}	swaggerEnvelope{customer_traffic=[]sales.CustomerTraffic}
+//	@Failure		400			{object}	swaggerMessageResponse
+//	@Failure		401			{object}	swaggerMessageResponse
+//	@Failure		500			{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/sales/traffic [get]
 func (h *SalesHandler) ListTraffic(c *gin.Context) {
 	filter, ok := buildTrafficFilter(c)
 	if !ok {
@@ -75,6 +122,20 @@ func (h *SalesHandler) ListTraffic(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"customer_traffic": items})
 }
 
+// CreateTraffic godoc
+//
+//	@Summary		Create customer traffic record
+//	@Description	Creates or updates a customer traffic record for a store on a given date.
+//	@Tags			Sales
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		createTrafficRequest	true	"Customer traffic request"
+//	@Success		201		{object}	swaggerEnvelope{traffic=sales.CustomerTraffic}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/sales/traffic [post]
 func (h *SalesHandler) CreateTraffic(c *gin.Context) {
 	var request createTrafficRequest
 	if err := c.ShouldBindJSON(&request); err != nil {

@@ -49,6 +49,18 @@ type workflowActionRequest struct {
 	IdempotencyKey string `json:"idempotency_key" binding:"required"`
 }
 
+// ListDefinitions godoc
+//
+//	@Summary		List workflow definitions
+//	@Description	Returns workflow definitions available for approval flows.
+//	@Tags			Workflow
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	swaggerEnvelope{definitions=[]workflow.Definition}
+//	@Failure		401	{object}	swaggerMessageResponse
+//	@Failure		500	{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/workflow/definitions [get]
 func (h *WorkflowHandler) ListDefinitions(c *gin.Context) {
 	definitions, err := h.service.ListDefinitions(c.Request.Context())
 	if err != nil {
@@ -58,6 +70,22 @@ func (h *WorkflowHandler) ListDefinitions(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"definitions": definitions})
 }
 
+// ListInstances godoc
+//
+//	@Summary		List workflow instances
+//	@Description	Returns workflow instances filtered by status, document type, and document ID.
+//	@Tags			Workflow
+//	@Accept			json
+//	@Produce		json
+//	@Param			status			query		string	false	"Workflow status"
+//	@Param			document_type	query		string	false	"Document type"
+//	@Param			document_id		query		int		false	"Document ID"
+//	@Success		200				{object}	swaggerEnvelope{instances=[]workflow.Instance}
+//	@Failure		400				{object}	swaggerMessageResponse
+//	@Failure		401				{object}	swaggerMessageResponse
+//	@Failure		500				{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/workflow/instances [get]
 func (h *WorkflowHandler) ListInstances(c *gin.Context) {
 	filter := workflow.InstanceFilter{}
 
@@ -86,6 +114,21 @@ func (h *WorkflowHandler) ListInstances(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"instances": instances})
 }
 
+// Start godoc
+//
+//	@Summary		Start workflow instance
+//	@Description	Starts a workflow instance for a document and assigns the first approval step.
+//	@Tags			Workflow
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		startWorkflowRequest	true	"Workflow start request"
+//	@Success		201		{object}	swaggerEnvelope{instance=workflow.Instance}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/workflow/instances [post]
 func (h *WorkflowHandler) Start(c *gin.Context) {
 	var request startWorkflowRequest
 	if err := c.ShouldBindJSON(&request); err != nil {
@@ -119,14 +162,62 @@ func (h *WorkflowHandler) Start(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"instance": instance})
 }
 
+// Approve godoc
+//
+//	@Summary		Approve workflow instance
+//	@Description	Approves the current step of a workflow instance.
+//	@Tags			Workflow
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		int						true	"Workflow instance ID"
+//	@Param			request	body		workflowActionRequest	true	"Workflow action request"
+//	@Success		200		{object}	swaggerEnvelope{instance=workflow.Instance}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/workflow/instances/{id}/approve [post]
 func (h *WorkflowHandler) Approve(c *gin.Context) {
 	h.transition(c, workflow.ActionApprove)
 }
 
+// Reject godoc
+//
+//	@Summary		Reject workflow instance
+//	@Description	Rejects the current step of a workflow instance.
+//	@Tags			Workflow
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		int						true	"Workflow instance ID"
+//	@Param			request	body		workflowActionRequest	true	"Workflow action request"
+//	@Success		200		{object}	swaggerEnvelope{instance=workflow.Instance}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/workflow/instances/{id}/reject [post]
 func (h *WorkflowHandler) Reject(c *gin.Context) {
 	h.transition(c, workflow.ActionReject)
 }
 
+// Resubmit godoc
+//
+//	@Summary		Resubmit workflow instance
+//	@Description	Resubmits a rejected workflow instance for approval.
+//	@Tags			Workflow
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		int						true	"Workflow instance ID"
+//	@Param			request	body		workflowActionRequest	true	"Workflow action request"
+//	@Success		200		{object}	swaggerEnvelope{instance=workflow.Instance}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/workflow/instances/{id}/resubmit [post]
 func (h *WorkflowHandler) Resubmit(c *gin.Context) {
 	h.transition(c, workflow.ActionResubmit)
 }
@@ -179,6 +270,21 @@ func (h *WorkflowHandler) transition(c *gin.Context, action workflow.Action) {
 	c.JSON(http.StatusOK, gin.H{"instance": instance})
 }
 
+// GetInstance godoc
+//
+//	@Summary		Get workflow instance
+//	@Description	Returns a workflow instance by ID.
+//	@Tags			Workflow
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path		int	true	"Workflow instance ID"
+//	@Success		200	{object}	swaggerEnvelope{instance=workflow.Instance}
+//	@Failure		400	{object}	swaggerMessageResponse
+//	@Failure		401	{object}	swaggerMessageResponse
+//	@Failure		404	{object}	swaggerMessageResponse
+//	@Failure		500	{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/workflow/instances/{id} [get]
 func (h *WorkflowHandler) GetInstance(c *gin.Context) {
 	instanceID, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -197,6 +303,21 @@ func (h *WorkflowHandler) GetInstance(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"instance": instance})
 }
 
+// AuditHistory godoc
+//
+//	@Summary		Get workflow audit history
+//	@Description	Returns workflow audit entries for a workflow instance.
+//	@Tags			Workflow
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path		int	true	"Workflow instance ID"
+//	@Success		200	{object}	swaggerEnvelope{history=[]workflow.AuditEntry}
+//	@Failure		400	{object}	swaggerMessageResponse
+//	@Failure		401	{object}	swaggerMessageResponse
+//	@Failure		404	{object}	swaggerMessageResponse
+//	@Failure		500	{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/workflow/instances/{id}/audit [get]
 func (h *WorkflowHandler) AuditHistory(c *gin.Context) {
 	instanceID, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -211,6 +332,21 @@ func (h *WorkflowHandler) AuditHistory(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"history": history})
 }
 
+// ReminderHistory godoc
+//
+//	@Summary		Get workflow reminder history
+//	@Description	Returns reminder audit entries for a workflow instance.
+//	@Tags			Workflow
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path		int	true	"Workflow instance ID"
+//	@Success		200	{object}	swaggerEnvelope{reminders=[]workflow.ReminderAuditRecord}
+//	@Failure		400	{object}	swaggerMessageResponse
+//	@Failure		401	{object}	swaggerMessageResponse
+//	@Failure		404	{object}	swaggerMessageResponse
+//	@Failure		500	{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/workflow/instances/{id}/reminders [get]
 func (h *WorkflowHandler) ReminderHistory(c *gin.Context) {
 	instanceID, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -231,6 +367,20 @@ type runRemindersRequest struct {
 	WindowTruncSec   *int    `json:"window_truncation_sec"`
 }
 
+// RunReminders godoc
+//
+//	@Summary		Run workflow reminders
+//	@Description	Evaluates pending workflow reminders and records any reminder emissions.
+//	@Tags			Workflow
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		runRemindersRequest	false	"Reminder execution request"
+//	@Success		200		{object}	swaggerEnvelope{reminders=[]workflow.ReminderAuditRecord}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/workflow/reminders/run [post]
 func (h *WorkflowHandler) RunReminders(c *gin.Context) {
 	var req runRemindersRequest
 	if c.Request.ContentLength > 0 {

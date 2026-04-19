@@ -57,6 +57,21 @@ type upsertUnitProspectRequest struct {
 	ProspectTermMonths  *int     `json:"prospect_term_months"`
 }
 
+// ListCustomers godoc
+//
+//	@Summary		List customers
+//	@Description	Returns paginated customer master data filtered by a search query.
+//	@Tags			MasterData
+//	@Accept			json
+//	@Produce		json
+//	@Param			query		query		string	false	"Search query"
+//	@Param			page		query		int		false	"Page number"
+//	@Param			page_size	query		int		false	"Page size"
+//	@Success		200			{object}	swaggerEnvelope{customers=[]masterdata.Customer,total=int,page=int,page_size=int}
+//	@Failure		401			{object}	swaggerMessageResponse
+//	@Failure		500			{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/master-data/customers [get]
 func (h *MasterDataHandler) ListCustomers(c *gin.Context) {
 	result, err := h.service.ListCustomers(c.Request.Context(), masterdata.ListFilter{
 		Query:    c.Query("query"),
@@ -70,6 +85,21 @@ func (h *MasterDataHandler) ListCustomers(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"customers": result.Items, "total": result.Total, "page": result.Page, "page_size": result.PageSize})
 }
 
+// CreateCustomer godoc
+//
+//	@Summary		Create customer
+//	@Description	Creates a new customer master data record.
+//	@Tags			MasterData
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		createCustomerRequest	true	"Customer request"
+//	@Success		201		{object}	swaggerEnvelope{customer=masterdata.Customer}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/master-data/customers [post]
 func (h *MasterDataHandler) CreateCustomer(c *gin.Context) {
 	var request createCustomerRequest
 	if err := c.ShouldBindJSON(&request); err != nil {
@@ -84,6 +114,22 @@ func (h *MasterDataHandler) CreateCustomer(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"customer": item})
 }
 
+// UpdateCustomer godoc
+//
+//	@Summary		Update customer
+//	@Description	Updates an existing customer master data record.
+//	@Tags			MasterData
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		int						true	"Customer ID"
+//	@Param			request	body		updateCustomerRequest	true	"Customer request"
+//	@Success		200		{object}	swaggerEnvelope{customer=masterdata.Customer}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/master-data/customers/{id} [put]
 func (h *MasterDataHandler) UpdateCustomer(c *gin.Context) {
 	id, ok := parseInt64Param(c, "id")
 	if !ok {
@@ -102,6 +148,21 @@ func (h *MasterDataHandler) UpdateCustomer(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"customer": item})
 }
 
+// ListBrands godoc
+//
+//	@Summary		List brands
+//	@Description	Returns paginated brand master data filtered by a search query.
+//	@Tags			MasterData
+//	@Accept			json
+//	@Produce		json
+//	@Param			query		query		string	false	"Search query"
+//	@Param			page		query		int		false	"Page number"
+//	@Param			page_size	query		int		false	"Page size"
+//	@Success		200			{object}	swaggerEnvelope{brands=[]masterdata.Brand,total=int,page=int,page_size=int}
+//	@Failure		401			{object}	swaggerMessageResponse
+//	@Failure		500			{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/master-data/brands [get]
 func (h *MasterDataHandler) ListBrands(c *gin.Context) {
 	result, err := h.service.ListBrands(c.Request.Context(), masterdata.ListFilter{
 		Query:    c.Query("query"),
@@ -115,6 +176,21 @@ func (h *MasterDataHandler) ListBrands(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"brands": result.Items, "total": result.Total, "page": result.Page, "page_size": result.PageSize})
 }
 
+// CreateBrand godoc
+//
+//	@Summary		Create brand
+//	@Description	Creates a new brand master data record.
+//	@Tags			MasterData
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		createBrandRequest	true	"Brand request"
+//	@Success		201		{object}	swaggerEnvelope{brand=masterdata.Brand}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/master-data/brands [post]
 func (h *MasterDataHandler) CreateBrand(c *gin.Context) {
 	var request createBrandRequest
 	if err := c.ShouldBindJSON(&request); err != nil {
@@ -129,6 +205,22 @@ func (h *MasterDataHandler) CreateBrand(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"brand": item})
 }
 
+// UpdateBrand godoc
+//
+//	@Summary		Update brand
+//	@Description	Updates an existing brand master data record.
+//	@Tags			MasterData
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		int					true	"Brand ID"
+//	@Param			request	body		updateBrandRequest	true	"Brand request"
+//	@Success		200		{object}	swaggerEnvelope{brand=masterdata.Brand}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/master-data/brands/{id} [put]
 func (h *MasterDataHandler) UpdateBrand(c *gin.Context) {
 	id, ok := parseInt64Param(c, "id")
 	if !ok {
@@ -147,6 +239,18 @@ func (h *MasterDataHandler) UpdateBrand(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"brand": item})
 }
 
+// ListUnitRentBudgets godoc
+//
+//	@Summary		List unit rent budgets
+//	@Description	Returns all configured unit rent budgets.
+//	@Tags			MasterData
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	swaggerEnvelope{unit_rent_budgets=[]masterdata.UnitRentBudget}
+//	@Failure		401	{object}	swaggerMessageResponse
+//	@Failure		500	{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/master-data/unit-rent-budgets [get]
 func (h *MasterDataHandler) ListUnitRentBudgets(c *gin.Context) {
 	items, err := h.service.ListUnitRentBudgets(c.Request.Context())
 	if err != nil {
@@ -156,10 +260,42 @@ func (h *MasterDataHandler) ListUnitRentBudgets(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"unit_rent_budgets": items})
 }
 
+// CreateUnitRentBudget godoc
+//
+//	@Summary		Create unit rent budget
+//	@Description	Creates or upserts a unit rent budget for a fiscal year.
+//	@Tags			MasterData
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		upsertUnitRentBudgetRequest	true	"Unit rent budget request"
+//	@Success		201		{object}	swaggerEnvelope{unit_rent_budget=masterdata.UnitRentBudget}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/master-data/unit-rent-budgets [post]
 func (h *MasterDataHandler) CreateUnitRentBudget(c *gin.Context) {
 	h.upsertUnitRentBudget(c, http.StatusCreated)
 }
 
+// UpdateUnitRentBudget godoc
+//
+//	@Summary		Update unit rent budget
+//	@Description	Updates or upserts a unit rent budget for a fiscal year.
+//	@Tags			MasterData
+//	@Accept			json
+//	@Produce		json
+//	@Param			unitId		path		int							true	"Unit ID"
+//	@Param			fiscalYear	path		int							true	"Fiscal year"
+//	@Param			request		body		upsertUnitRentBudgetRequest	true	"Unit rent budget request"
+//	@Success		200			{object}	swaggerEnvelope{unit_rent_budget=masterdata.UnitRentBudget}
+//	@Failure		400			{object}	swaggerMessageResponse
+//	@Failure		401			{object}	swaggerMessageResponse
+//	@Failure		404			{object}	swaggerMessageResponse
+//	@Failure		500			{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/master-data/unit-rent-budgets/{unitId}/{fiscalYear} [put]
 func (h *MasterDataHandler) UpdateUnitRentBudget(c *gin.Context) {
 	h.upsertUnitRentBudget(c, http.StatusOK)
 }
@@ -178,6 +314,18 @@ func (h *MasterDataHandler) upsertUnitRentBudget(c *gin.Context, successStatus i
 	c.JSON(successStatus, gin.H{"unit_rent_budget": item})
 }
 
+// ListStoreRentBudgets godoc
+//
+//	@Summary		List store rent budgets
+//	@Description	Returns all configured store rent budgets.
+//	@Tags			MasterData
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	swaggerEnvelope{store_rent_budgets=[]masterdata.StoreRentBudget}
+//	@Failure		401	{object}	swaggerMessageResponse
+//	@Failure		500	{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/master-data/store-rent-budgets [get]
 func (h *MasterDataHandler) ListStoreRentBudgets(c *gin.Context) {
 	items, err := h.service.ListStoreRentBudgets(c.Request.Context())
 	if err != nil {
@@ -187,10 +335,43 @@ func (h *MasterDataHandler) ListStoreRentBudgets(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"store_rent_budgets": items})
 }
 
+// CreateStoreRentBudget godoc
+//
+//	@Summary		Create store rent budget
+//	@Description	Creates or upserts a store rent budget for a fiscal month.
+//	@Tags			MasterData
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		upsertStoreRentBudgetRequest	true	"Store rent budget request"
+//	@Success		201		{object}	swaggerEnvelope{store_rent_budget=masterdata.StoreRentBudget}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/master-data/store-rent-budgets [post]
 func (h *MasterDataHandler) CreateStoreRentBudget(c *gin.Context) {
 	h.upsertStoreRentBudget(c, http.StatusCreated)
 }
 
+// UpdateStoreRentBudget godoc
+//
+//	@Summary		Update store rent budget
+//	@Description	Updates or upserts a store rent budget for a fiscal month.
+//	@Tags			MasterData
+//	@Accept			json
+//	@Produce		json
+//	@Param			storeId		path		int								true	"Store ID"
+//	@Param			fiscalYear	path		int								true	"Fiscal year"
+//	@Param			fiscalMonth	path		int								true	"Fiscal month"
+//	@Param			request		body		upsertStoreRentBudgetRequest	true	"Store rent budget request"
+//	@Success		200			{object}	swaggerEnvelope{store_rent_budget=masterdata.StoreRentBudget}
+//	@Failure		400			{object}	swaggerMessageResponse
+//	@Failure		401			{object}	swaggerMessageResponse
+//	@Failure		404			{object}	swaggerMessageResponse
+//	@Failure		500			{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/master-data/store-rent-budgets/{storeId}/{fiscalYear}/{fiscalMonth} [put]
 func (h *MasterDataHandler) UpdateStoreRentBudget(c *gin.Context) {
 	h.upsertStoreRentBudget(c, http.StatusOK)
 }
@@ -209,6 +390,18 @@ func (h *MasterDataHandler) upsertStoreRentBudget(c *gin.Context, successStatus 
 	c.JSON(successStatus, gin.H{"store_rent_budget": item})
 }
 
+// ListUnitProspects godoc
+//
+//	@Summary		List unit prospects
+//	@Description	Returns all configured unit prospect planning records.
+//	@Tags			MasterData
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	swaggerEnvelope{unit_prospects=[]masterdata.UnitProspect}
+//	@Failure		401	{object}	swaggerMessageResponse
+//	@Failure		500	{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/master-data/unit-prospects [get]
 func (h *MasterDataHandler) ListUnitProspects(c *gin.Context) {
 	items, err := h.service.ListUnitProspects(c.Request.Context())
 	if err != nil {
@@ -218,10 +411,42 @@ func (h *MasterDataHandler) ListUnitProspects(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"unit_prospects": items})
 }
 
+// CreateUnitProspect godoc
+//
+//	@Summary		Create unit prospect
+//	@Description	Creates or upserts a unit prospect planning record.
+//	@Tags			MasterData
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		upsertUnitProspectRequest	true	"Unit prospect request"
+//	@Success		201		{object}	swaggerEnvelope{unit_prospect=masterdata.UnitProspect}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/master-data/unit-prospects [post]
 func (h *MasterDataHandler) CreateUnitProspect(c *gin.Context) {
 	h.upsertUnitProspect(c, http.StatusCreated)
 }
 
+// UpdateUnitProspect godoc
+//
+//	@Summary		Update unit prospect
+//	@Description	Updates or upserts a unit prospect planning record.
+//	@Tags			MasterData
+//	@Accept			json
+//	@Produce		json
+//	@Param			unitId		path		int							true	"Unit ID"
+//	@Param			fiscalYear	path		int							true	"Fiscal year"
+//	@Param			request		body		upsertUnitProspectRequest	true	"Unit prospect request"
+//	@Success		200			{object}	swaggerEnvelope{unit_prospect=masterdata.UnitProspect}
+//	@Failure		400			{object}	swaggerMessageResponse
+//	@Failure		401			{object}	swaggerMessageResponse
+//	@Failure		404			{object}	swaggerMessageResponse
+//	@Failure		500			{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/master-data/unit-prospects/{unitId}/{fiscalYear} [put]
 func (h *MasterDataHandler) UpdateUnitProspect(c *gin.Context) {
 	h.upsertUnitProspect(c, http.StatusOK)
 }

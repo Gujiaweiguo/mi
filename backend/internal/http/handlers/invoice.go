@@ -43,6 +43,21 @@ type recordPaymentRequest struct {
 	Note           string  `json:"note"`
 }
 
+// Create godoc
+//
+//	@Summary		Create billing document
+//	@Description	Creates a bill or invoice from billing charge lines.
+//	@Tags			Invoice
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		createInvoiceRequest	true	"Billing document create request"
+//	@Success		201		{object}	swaggerEnvelope{document=invoice.Document}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/invoices [post]
 func (h *InvoiceHandler) Create(c *gin.Context) {
 	var request createInvoiceRequest
 	if err := c.ShouldBindJSON(&request); err != nil {
@@ -62,6 +77,21 @@ func (h *InvoiceHandler) Create(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"document": document})
 }
 
+// Get godoc
+//
+//	@Summary		Get billing document
+//	@Description	Returns a billing document with its line items by ID.
+//	@Tags			Invoice
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path		int	true	"Billing document ID"
+//	@Success		200	{object}	swaggerEnvelope{document=invoice.Document}
+//	@Failure		400	{object}	swaggerMessageResponse
+//	@Failure		401	{object}	swaggerMessageResponse
+//	@Failure		404	{object}	swaggerMessageResponse
+//	@Failure		500	{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/invoices/{id} [get]
 func (h *InvoiceHandler) Get(c *gin.Context) {
 	documentID, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -76,6 +106,25 @@ func (h *InvoiceHandler) Get(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"document": document})
 }
 
+// List godoc
+//
+//	@Summary		List billing documents
+//	@Description	Returns paginated billing documents filtered by document type, status, lease, and billing run.
+//	@Tags			Invoice
+//	@Accept			json
+//	@Produce		json
+//	@Param			document_type		query		string	false	"Document type"
+//	@Param			status				query		string	false	"Document status"
+//	@Param			lease_contract_id	query		int		false	"Lease contract ID"
+//	@Param			billing_run_id		query		int		false	"Billing run ID"
+//	@Param			page				query		int		false	"Page number"
+//	@Param			page_size			query		int		false	"Page size"
+//	@Success		200					{object}	swaggerEnvelope{items=[]invoice.Document,total=int,page=int,page_size=int}
+//	@Failure		400					{object}	swaggerMessageResponse
+//	@Failure		401					{object}	swaggerMessageResponse
+//	@Failure		500					{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/invoices [get]
 func (h *InvoiceHandler) List(c *gin.Context) {
 	filter := invoice.ListFilter{}
 	if documentType := c.Query("document_type"); documentType != "" {
@@ -132,6 +181,22 @@ func (h *InvoiceHandler) List(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"items": result.Items, "total": result.Total, "page": result.Page, "page_size": result.PageSize})
 }
 
+// Submit godoc
+//
+//	@Summary		Submit billing document
+//	@Description	Submits a billing document into the workflow approval process.
+//	@Tags			Invoice
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		int						true	"Billing document ID"
+//	@Param			request	body		submitInvoiceRequest	true	"Billing document submit request"
+//	@Success		200		{object}	swaggerEnvelope{document=invoice.Document}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/invoices/{id}/submit [post]
 func (h *InvoiceHandler) Submit(c *gin.Context) {
 	documentID, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -156,6 +221,21 @@ func (h *InvoiceHandler) Submit(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"document": document})
 }
 
+// Cancel godoc
+//
+//	@Summary		Cancel billing document
+//	@Description	Cancels a billing document that is still eligible for cancellation.
+//	@Tags			Invoice
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path		int	true	"Billing document ID"
+//	@Success		200	{object}	swaggerEnvelope{document=invoice.Document}
+//	@Failure		400	{object}	swaggerMessageResponse
+//	@Failure		401	{object}	swaggerMessageResponse
+//	@Failure		404	{object}	swaggerMessageResponse
+//	@Failure		500	{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/invoices/{id}/cancel [post]
 func (h *InvoiceHandler) Cancel(c *gin.Context) {
 	documentID, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -175,6 +255,22 @@ func (h *InvoiceHandler) Cancel(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"document": document})
 }
 
+// Adjust godoc
+//
+//	@Summary		Adjust billing document
+//	@Description	Creates an adjusted billing document with replacement line amounts.
+//	@Tags			Invoice
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		int						true	"Billing document ID"
+//	@Param			request	body		adjustInvoiceRequest	true	"Billing document adjust request"
+//	@Success		201		{object}	swaggerEnvelope{document=invoice.Document}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/invoices/{id}/adjust [post]
 func (h *InvoiceHandler) Adjust(c *gin.Context) {
 	documentID, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -203,6 +299,22 @@ func (h *InvoiceHandler) Adjust(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"document": document})
 }
 
+// RecordPayment godoc
+//
+//	@Summary		Record payment
+//	@Description	Records a payment against a billing document receivable.
+//	@Tags			Invoice
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		int						true	"Billing document ID"
+//	@Param			request	body		recordPaymentRequest	true	"Payment request"
+//	@Success		200		{object}	swaggerEnvelope{receivable=invoice.ReceivableSummary}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/invoices/{id}/payments [post]
 func (h *InvoiceHandler) RecordPayment(c *gin.Context) {
 	documentID, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -236,6 +348,21 @@ func (h *InvoiceHandler) RecordPayment(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"receivable": receivable})
 }
 
+// GetReceivable godoc
+//
+//	@Summary		Get receivable summary
+//	@Description	Returns receivable status and payment history for a billing document.
+//	@Tags			Invoice
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path		int	true	"Billing document ID"
+//	@Success		200	{object}	swaggerEnvelope{receivable=invoice.ReceivableSummary}
+//	@Failure		400	{object}	swaggerMessageResponse
+//	@Failure		401	{object}	swaggerMessageResponse
+//	@Failure		404	{object}	swaggerMessageResponse
+//	@Failure		500	{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/invoices/{id}/receivable [get]
 func (h *InvoiceHandler) GetReceivable(c *gin.Context) {
 	documentID, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -250,6 +377,25 @@ func (h *InvoiceHandler) GetReceivable(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"receivable": receivable})
 }
 
+// ListReceivables godoc
+//
+//	@Summary		List receivables
+//	@Description	Returns paginated receivable summary records filtered by customer, department, and due-date window.
+//	@Tags			Invoice
+//	@Accept			json
+//	@Produce		json
+//	@Param			customer_id		query		int		false	"Customer ID"
+//	@Param			department_id	query		int		false	"Department ID"
+//	@Param			due_date_start	query		string	false	"Due date start (YYYY-MM-DD)"
+//	@Param			due_date_end	query		string	false	"Due date end (YYYY-MM-DD)"
+//	@Param			page			query		int		false	"Page number"
+//	@Param			page_size		query		int		false	"Page size"
+//	@Success		200				{object}	swaggerEnvelope{items=[]invoice.ReceivableListItem,total=int,page=int,page_size=int}
+//	@Failure		400				{object}	swaggerMessageResponse
+//	@Failure		401				{object}	swaggerMessageResponse
+//	@Failure		500				{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/receivables [get]
 func (h *InvoiceHandler) ListReceivables(c *gin.Context) {
 	filter := invoice.ReceivableFilter{}
 	if customerIDText := c.Query("customer_id"); customerIDText != "" {

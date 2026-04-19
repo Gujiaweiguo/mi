@@ -60,6 +60,21 @@ type terminateLeaseRequest struct {
 	TerminatedAt string `json:"terminated_at" binding:"required"`
 }
 
+// Create godoc
+//
+//	@Summary		Create lease draft
+//	@Description	Creates a draft lease contract with units and billing terms.
+//	@Tags			Lease
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		createLeaseRequest	true	"Lease create request"
+//	@Success		201		{object}	swaggerEnvelope{lease=lease.Contract}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/leases [post]
 func (h *LeaseHandler) Create(c *gin.Context) {
 	var request createLeaseRequest
 	if err := c.ShouldBindJSON(&request); err != nil {
@@ -87,6 +102,22 @@ func (h *LeaseHandler) Create(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"lease": contract})
 }
 
+// Amend godoc
+//
+//	@Summary		Create lease amendment
+//	@Description	Creates an amended lease draft from an existing lease contract.
+//	@Tags			Lease
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		int					true	"Lease ID"
+//	@Param			request	body		createLeaseRequest	true	"Lease amendment request"
+//	@Success		201		{object}	swaggerEnvelope{lease=lease.Contract}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/leases/{id}/amend [post]
 func (h *LeaseHandler) Amend(c *gin.Context) {
 	leaseID, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -120,6 +151,21 @@ func (h *LeaseHandler) Amend(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"lease": contract})
 }
 
+// Get godoc
+//
+//	@Summary		Get lease
+//	@Description	Returns a lease contract with units and terms by ID.
+//	@Tags			Lease
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path		int	true	"Lease ID"
+//	@Success		200	{object}	swaggerEnvelope{lease=lease.Contract}
+//	@Failure		400	{object}	swaggerMessageResponse
+//	@Failure		401	{object}	swaggerMessageResponse
+//	@Failure		404	{object}	swaggerMessageResponse
+//	@Failure		500	{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/leases/{id} [get]
 func (h *LeaseHandler) Get(c *gin.Context) {
 	leaseID, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -135,6 +181,24 @@ func (h *LeaseHandler) Get(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"lease": contract})
 }
 
+// List godoc
+//
+//	@Summary		List leases
+//	@Description	Returns paginated lease summaries filtered by lease number, status, and store.
+//	@Tags			Lease
+//	@Accept			json
+//	@Produce		json
+//	@Param			lease_no	query		string	false	"Lease number"
+//	@Param			status		query		string	false	"Lease status"
+//	@Param			store_id	query		int		false	"Store ID"
+//	@Param			page		query		int		false	"Page number"
+//	@Param			page_size	query		int		false	"Page size"
+//	@Success		200			{object}	swaggerEnvelope{items=[]lease.Summary,total=int,page=int,page_size=int}
+//	@Failure		400			{object}	swaggerMessageResponse
+//	@Failure		401			{object}	swaggerMessageResponse
+//	@Failure		500			{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/leases [get]
 func (h *LeaseHandler) List(c *gin.Context) {
 	filter := lease.ListFilter{LeaseNo: c.Query("lease_no")}
 	if status := c.Query("status"); status != "" {
@@ -180,6 +244,22 @@ func (h *LeaseHandler) List(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"items": result.Items, "total": result.Total, "page": result.Page, "page_size": result.PageSize})
 }
 
+// Submit godoc
+//
+//	@Summary		Submit lease for approval
+//	@Description	Submits a draft lease contract into the workflow approval process.
+//	@Tags			Lease
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		int					true	"Lease ID"
+//	@Param			request	body		submitLeaseRequest	true	"Lease submit request"
+//	@Success		200		{object}	swaggerEnvelope{lease=lease.Contract}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/leases/{id}/submit [post]
 func (h *LeaseHandler) Submit(c *gin.Context) {
 	leaseID, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -214,6 +294,22 @@ func (h *LeaseHandler) Submit(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"lease": contract})
 }
 
+// Terminate godoc
+//
+//	@Summary		Terminate lease
+//	@Description	Terminates an active lease contract on the supplied termination date.
+//	@Tags			Lease
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		int						true	"Lease ID"
+//	@Param			request	body		terminateLeaseRequest	true	"Lease termination request"
+//	@Success		200		{object}	swaggerEnvelope{lease=lease.Contract}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/leases/{id}/terminate [post]
 func (h *LeaseHandler) Terminate(c *gin.Context) {
 	leaseID, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {

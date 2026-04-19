@@ -22,6 +22,19 @@ type loginRequest struct {
 	Password string `json:"password" binding:"required"`
 }
 
+// Login godoc
+//
+//	@Summary		Log in user
+//	@Description	Authenticates a user and returns a bearer token plus the current user profile.
+//	@Tags			Auth
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		loginRequest	true	"Login request"
+//	@Success		200		{object}	swaggerEnvelope{token=string,user=auth.User}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Router			/auth/login [post]
 func (h *AuthHandler) Login(c *gin.Context) {
 	var request loginRequest
 	if err := c.ShouldBindJSON(&request); err != nil {
@@ -42,6 +55,18 @@ func (h *AuthHandler) Login(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"token": token, "user": user})
 }
 
+// Me godoc
+//
+//	@Summary		Get current user
+//	@Description	Returns the authenticated session user resolved from the bearer token.
+//	@Tags			Auth
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	swaggerEnvelope{user=auth.SessionUser}
+//	@Failure		401	{object}	swaggerMessageResponse
+//	@Failure		500	{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/auth/me [get]
 func (h *AuthHandler) Me(c *gin.Context) {
 	sessionUser, ok := middleware.CurrentSessionUser(c)
 	if !ok {

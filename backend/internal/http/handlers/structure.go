@@ -72,6 +72,18 @@ type structureUnitRequest struct {
 	Status     string  `json:"status"`
 }
 
+// ListStores godoc
+//
+//	@Summary		List stores
+//	@Description	Returns all structure stores.
+//	@Tags			Structure
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	swaggerEnvelope{stores=[]structure.Store}
+//	@Failure		401	{object}	swaggerMessageResponse
+//	@Failure		500	{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/structure/stores [get]
 func (h *StructureHandler) ListStores(c *gin.Context) {
 	items, err := h.service.ListStores(c.Request.Context())
 	if err != nil {
@@ -81,10 +93,41 @@ func (h *StructureHandler) ListStores(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"stores": items})
 }
 
+// CreateStore godoc
+//
+//	@Summary		Create store
+//	@Description	Creates a new structure store record.
+//	@Tags			Structure
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		structureStoreRequest	true	"Store request"
+//	@Success		201		{object}	swaggerEnvelope{store=structure.Store}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/structure/stores [post]
 func (h *StructureHandler) CreateStore(c *gin.Context) {
 	h.createStore(c, h.service.CreateStore)
 }
 
+// UpdateStore godoc
+//
+//	@Summary		Update store
+//	@Description	Updates an existing structure store record.
+//	@Tags			Structure
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		int						true	"Store ID"
+//	@Param			request	body		structureStoreRequest	true	"Store request"
+//	@Success		200		{object}	swaggerEnvelope{store=structure.Store}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/structure/stores/{id} [put]
 func (h *StructureHandler) UpdateStore(c *gin.Context) {
 	id, ok := parsePathID(c, "invalid store id")
 	if !ok {
@@ -93,6 +136,20 @@ func (h *StructureHandler) UpdateStore(c *gin.Context) {
 	h.updateStore(c, id, h.service.UpdateStore)
 }
 
+// ListBuildings godoc
+//
+//	@Summary		List buildings
+//	@Description	Returns buildings filtered by store.
+//	@Tags			Structure
+//	@Accept			json
+//	@Produce		json
+//	@Param			store_id	query		int	false	"Store ID"
+//	@Success		200			{object}	swaggerEnvelope{buildings=[]structure.Building}
+//	@Failure		400			{object}	swaggerMessageResponse
+//	@Failure		401			{object}	swaggerMessageResponse
+//	@Failure		500			{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/structure/buildings [get]
 func (h *StructureHandler) ListBuildings(c *gin.Context) {
 	storeID, ok := parseOptionalInt64(c, "store_id")
 	if !ok {
@@ -106,6 +163,21 @@ func (h *StructureHandler) ListBuildings(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"buildings": items})
 }
 
+// CreateBuilding godoc
+//
+//	@Summary		Create building
+//	@Description	Creates a new building record.
+//	@Tags			Structure
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		structureBuildingRequest	true	"Building request"
+//	@Success		201		{object}	swaggerEnvelope{building=structure.Building}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/structure/buildings [post]
 func (h *StructureHandler) CreateBuilding(c *gin.Context) {
 	var request structureBuildingRequest
 	if err := c.ShouldBindJSON(&request); err != nil {
@@ -120,6 +192,22 @@ func (h *StructureHandler) CreateBuilding(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"building": item})
 }
 
+// UpdateBuilding godoc
+//
+//	@Summary		Update building
+//	@Description	Updates an existing building record.
+//	@Tags			Structure
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		int							true	"Building ID"
+//	@Param			request	body		structureBuildingRequest	true	"Building request"
+//	@Success		200		{object}	swaggerEnvelope{building=structure.Building}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/structure/buildings/{id} [put]
 func (h *StructureHandler) UpdateBuilding(c *gin.Context) {
 	id, ok := parsePathID(c, "invalid building id")
 	if !ok {
@@ -138,6 +226,20 @@ func (h *StructureHandler) UpdateBuilding(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"building": item})
 }
 
+// ListFloors godoc
+//
+//	@Summary		List floors
+//	@Description	Returns floors filtered by building.
+//	@Tags			Structure
+//	@Accept			json
+//	@Produce		json
+//	@Param			building_id	query		int	false	"Building ID"
+//	@Success		200			{object}	swaggerEnvelope{floors=[]structure.Floor}
+//	@Failure		400			{object}	swaggerMessageResponse
+//	@Failure		401			{object}	swaggerMessageResponse
+//	@Failure		500			{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/structure/floors [get]
 func (h *StructureHandler) ListFloors(c *gin.Context) {
 	buildingID, ok := parseOptionalInt64(c, "building_id")
 	if !ok {
@@ -151,6 +253,21 @@ func (h *StructureHandler) ListFloors(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"floors": items})
 }
 
+// CreateFloor godoc
+//
+//	@Summary		Create floor
+//	@Description	Creates a new floor record.
+//	@Tags			Structure
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		structureFloorRequest	true	"Floor request"
+//	@Success		201		{object}	swaggerEnvelope{floor=structure.Floor}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/structure/floors [post]
 func (h *StructureHandler) CreateFloor(c *gin.Context) {
 	var request structureFloorRequest
 	if err := c.ShouldBindJSON(&request); err != nil {
@@ -165,6 +282,22 @@ func (h *StructureHandler) CreateFloor(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"floor": item})
 }
 
+// UpdateFloor godoc
+//
+//	@Summary		Update floor
+//	@Description	Updates an existing floor record.
+//	@Tags			Structure
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		int						true	"Floor ID"
+//	@Param			request	body		structureFloorRequest	true	"Floor request"
+//	@Success		200		{object}	swaggerEnvelope{floor=structure.Floor}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/structure/floors/{id} [put]
 func (h *StructureHandler) UpdateFloor(c *gin.Context) {
 	id, ok := parsePathID(c, "invalid floor id")
 	if !ok {
@@ -183,6 +316,20 @@ func (h *StructureHandler) UpdateFloor(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"floor": item})
 }
 
+// ListAreas godoc
+//
+//	@Summary		List areas
+//	@Description	Returns areas filtered by store.
+//	@Tags			Structure
+//	@Accept			json
+//	@Produce		json
+//	@Param			store_id	query		int	false	"Store ID"
+//	@Success		200			{object}	swaggerEnvelope{areas=[]structure.Area}
+//	@Failure		400			{object}	swaggerMessageResponse
+//	@Failure		401			{object}	swaggerMessageResponse
+//	@Failure		500			{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/structure/areas [get]
 func (h *StructureHandler) ListAreas(c *gin.Context) {
 	storeID, ok := parseOptionalInt64(c, "store_id")
 	if !ok {
@@ -196,6 +343,21 @@ func (h *StructureHandler) ListAreas(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"areas": items})
 }
 
+// CreateArea godoc
+//
+//	@Summary		Create area
+//	@Description	Creates a new area record.
+//	@Tags			Structure
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		structureAreaRequest	true	"Area request"
+//	@Success		201		{object}	swaggerEnvelope{area=structure.Area}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/structure/areas [post]
 func (h *StructureHandler) CreateArea(c *gin.Context) {
 	var request structureAreaRequest
 	if err := c.ShouldBindJSON(&request); err != nil {
@@ -210,6 +372,22 @@ func (h *StructureHandler) CreateArea(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"area": item})
 }
 
+// UpdateArea godoc
+//
+//	@Summary		Update area
+//	@Description	Updates an existing area record.
+//	@Tags			Structure
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		int						true	"Area ID"
+//	@Param			request	body		structureAreaRequest	true	"Area request"
+//	@Success		200		{object}	swaggerEnvelope{area=structure.Area}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/structure/areas/{id} [put]
 func (h *StructureHandler) UpdateArea(c *gin.Context) {
 	id, ok := parsePathID(c, "invalid area id")
 	if !ok {
@@ -228,6 +406,21 @@ func (h *StructureHandler) UpdateArea(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"area": item})
 }
 
+// ListLocations godoc
+//
+//	@Summary		List locations
+//	@Description	Returns locations filtered by store and floor.
+//	@Tags			Structure
+//	@Accept			json
+//	@Produce		json
+//	@Param			store_id	query		int	false	"Store ID"
+//	@Param			floor_id	query		int	false	"Floor ID"
+//	@Success		200			{object}	swaggerEnvelope{locations=[]structure.Location}
+//	@Failure		400			{object}	swaggerMessageResponse
+//	@Failure		401			{object}	swaggerMessageResponse
+//	@Failure		500			{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/structure/locations [get]
 func (h *StructureHandler) ListLocations(c *gin.Context) {
 	storeID, ok := parseOptionalInt64(c, "store_id")
 	if !ok {
@@ -245,6 +438,21 @@ func (h *StructureHandler) ListLocations(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"locations": items})
 }
 
+// CreateLocation godoc
+//
+//	@Summary		Create location
+//	@Description	Creates a new location record.
+//	@Tags			Structure
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		structureLocationRequest	true	"Location request"
+//	@Success		201		{object}	swaggerEnvelope{location=structure.Location}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/structure/locations [post]
 func (h *StructureHandler) CreateLocation(c *gin.Context) {
 	var request structureLocationRequest
 	if err := c.ShouldBindJSON(&request); err != nil {
@@ -259,6 +467,22 @@ func (h *StructureHandler) CreateLocation(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"location": item})
 }
 
+// UpdateLocation godoc
+//
+//	@Summary		Update location
+//	@Description	Updates an existing location record.
+//	@Tags			Structure
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		int							true	"Location ID"
+//	@Param			request	body		structureLocationRequest	true	"Location request"
+//	@Success		200		{object}	swaggerEnvelope{location=structure.Location}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/structure/locations/{id} [put]
 func (h *StructureHandler) UpdateLocation(c *gin.Context) {
 	id, ok := parsePathID(c, "invalid location id")
 	if !ok {
@@ -277,6 +501,23 @@ func (h *StructureHandler) UpdateLocation(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"location": item})
 }
 
+// ListUnits godoc
+//
+//	@Summary		List units
+//	@Description	Returns units filtered by building, floor, location, and area.
+//	@Tags			Structure
+//	@Accept			json
+//	@Produce		json
+//	@Param			building_id	query		int	false	"Building ID"
+//	@Param			floor_id	query		int	false	"Floor ID"
+//	@Param			location_id	query		int	false	"Location ID"
+//	@Param			area_id		query		int	false	"Area ID"
+//	@Success		200			{object}	swaggerEnvelope{units=[]structure.Unit}
+//	@Failure		400			{object}	swaggerMessageResponse
+//	@Failure		401			{object}	swaggerMessageResponse
+//	@Failure		500			{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/structure/units [get]
 func (h *StructureHandler) ListUnits(c *gin.Context) {
 	buildingID, ok := parseOptionalInt64(c, "building_id")
 	if !ok {
@@ -302,6 +543,21 @@ func (h *StructureHandler) ListUnits(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"units": items})
 }
 
+// CreateUnit godoc
+//
+//	@Summary		Create unit
+//	@Description	Creates a new unit record.
+//	@Tags			Structure
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		structureUnitRequest	true	"Unit request"
+//	@Success		201		{object}	swaggerEnvelope{unit=structure.Unit}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/structure/units [post]
 func (h *StructureHandler) CreateUnit(c *gin.Context) {
 	var request structureUnitRequest
 	if err := c.ShouldBindJSON(&request); err != nil {
@@ -316,6 +572,22 @@ func (h *StructureHandler) CreateUnit(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"unit": item})
 }
 
+// UpdateUnit godoc
+//
+//	@Summary		Update unit
+//	@Description	Updates an existing unit record.
+//	@Tags			Structure
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		int						true	"Unit ID"
+//	@Param			request	body		structureUnitRequest	true	"Unit request"
+//	@Success		200		{object}	swaggerEnvelope{unit=structure.Unit}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/structure/units/{id} [put]
 func (h *StructureHandler) UpdateUnit(c *gin.Context) {
 	id, ok := parsePathID(c, "invalid unit id")
 	if !ok {
