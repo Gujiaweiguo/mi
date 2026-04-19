@@ -6,28 +6,27 @@ This summary refreshes release posture for the current repository head after cur
 
 ## Current validated head
 
-- Current repository head: `c99fc7554703d87c91396a1f8fda85b33ae7cd62`
+- Current repository head: `dd3094889794cb3bcbcaa50e60eff131e6264bb4`
 
 ## Working-tree status
 
-- The repository currently contains additional uncommitted changes beyond HEAD.
-- Therefore the commit-scoped verification and rehearsal artifacts listed below still describe the validated base commit, not the entire current working tree snapshot.
-- A final unconditional `GO` for the newly edited working tree requires a new commit and a fresh rerun of the commit-scoped gates.
+- The working tree is clean for the validated commit.
+- The commit-scoped verification and rehearsal artifacts below now describe the current release candidate commit directly.
 
 ## Current-head verification status
 
 - `CI Ready: YES`
 - `Archive Ready: YES`
-- Verification root: `artifacts/verification/c99fc7554703d87c91396a1f8fda85b33ae7cd62/`
+- Verification root: `artifacts/verification/dd3094889794cb3bcbcaa50e60eff131e6264bb4/`
   - `unit.json` — PASS (`582/582`)
   - `integration.json` — PASS (`395/395`)
   - `e2e.json` — PASS (`41/41`)
 
 ## Current-head production rehearsal status
 
-- Production rehearsal artifact: `artifacts/rehearsal/c99fc7554703d87c91396a1f8fda85b33ae7cd62/cutover-rehearsal-production-20260419T025257Z.json`
-- Production rehearsal log: `artifacts/rehearsal/c99fc7554703d87c91396a1f8fda85b33ae7cd62/cutover-rehearsal-production-20260419T025257Z.log`
-- Backup artifact: `artifacts/backups/production/mi-production-backup-20260419T025343Z.tar.gz`
+- Production rehearsal artifact: `artifacts/rehearsal/dd3094889794cb3bcbcaa50e60eff131e6264bb4/cutover-rehearsal-production-20260419T045231Z.json`
+- Production rehearsal log: `artifacts/rehearsal/dd3094889794cb3bcbcaa50e60eff131e6264bb4/cutover-rehearsal-production-20260419T045231Z.log`
+- Backup artifact: `artifacts/backups/production/mi-production-backup-20260419T045331Z.tar.gz`
 - Rehearsal result: `GO`
 
 Per-gate status:
@@ -76,13 +75,7 @@ Per-gate status:
 
 ## Remaining unresolved blockers
 
-No blocker-class gaps remain in the current audit **for the governed scope itself**.
-
-However, one release-process blocker remains:
-
-1. **Working tree is ahead of validated HEAD**
-   - The repository now contains uncommitted code/documentation changes.
-   - Current commit-scoped artifacts still validate the base commit `c99fc755...`, not the full modified working tree.
+No blocker-class gaps remain in the current audit for the governed scope, and no process-level blocker remains for the validated release candidate commit.
 
 ## Top-line posture
 
@@ -91,8 +84,8 @@ However, one release-process blocker remains:
 - **R01-R19 report/query/export evidence**: complete for the currently governed scope
 - **R19 visual UI evidence**: complete
 - **Full first-release preserve/output closure**: complete for the currently governed scope
-- **Commit-scoped release package for the full modified working tree**: not yet complete
+- **Commit-scoped release package for the validated release candidate**: complete
 
 ## Conclusion
 
-The current repository head `c99fc7554703d87c91396a1f8fda85b33ae7cd62` is technically validated with `Archive Ready: YES` and a production cutover rehearsal `GO`. After the current capability/output evidence refresh and redesign-boundary corrections in the governing artifacts, no blocker-class scope gaps remain. However, because the repository now has additional uncommitted changes, a final unconditional release-ready claim for the full working tree still requires a commit and a fresh rerun of the commit-scoped gates.
+The current repository head `dd3094889794cb3bcbcaa50e60eff131e6264bb4` is technically validated with `Archive Ready: YES` and a production cutover rehearsal `GO`. After the current capability/output evidence refresh and redesign-boundary corrections in the governing artifacts, no blocker-class scope gaps remain for the currently governed first-release scope.
