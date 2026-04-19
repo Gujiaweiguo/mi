@@ -41,6 +41,8 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version-file: backend/go.mod
+          cache: true
+          cache-dependency-path: backend/go.sum
 
       - name: Install golangci-lint
         uses: golangci/golangci-lint-action@v7
@@ -78,6 +80,8 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version-file: backend/go.mod
+          cache: true
+          cache-dependency-path: backend/go.sum
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -120,6 +124,8 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version-file: backend/go.mod
+          cache: true
+          cache-dependency-path: backend/go.sum
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -163,6 +169,8 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version-file: backend/go.mod
+          cache: true
+          cache-dependency-path: backend/go.sum
 
       - name: Setup Node
         uses: actions/setup-node@v4
