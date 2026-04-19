@@ -108,6 +108,7 @@ func NewRouter(cfg *config.Config, db *sql.DB, logger *zap.Logger) *gin.Engine {
 	router.GET("/healthz", healthHandler.Get)
 
 	api := router.Group("/api")
+	api.Use(middleware.RateLimitMiddleware())
 	api.GET("/health", healthHandler.Get)
 	api.GET("/healthz", healthHandler.Get)
 	authGroup := api.Group("/auth")
