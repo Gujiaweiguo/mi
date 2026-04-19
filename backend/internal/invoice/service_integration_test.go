@@ -4,7 +4,6 @@ package invoice_test
 
 import (
 	"context"
-	"database/sql"
 	"errors"
 	"os"
 	"testing"

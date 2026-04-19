@@ -4,9 +4,7 @@ package workflow_test
 
 import (
 	"context"
-	"database/sql"
 	"os"
-	"sync"
 	"testing"
 	"time"
 

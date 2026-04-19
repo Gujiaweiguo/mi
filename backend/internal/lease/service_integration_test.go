@@ -4,7 +4,6 @@ package lease_test
 
 import (
 	"context"
-	"database/sql"
 	"errors"
 	"os"
 	"testing"
