@@ -160,8 +160,8 @@ require_production_secrets_hygiene() {
   done <<'EOF'
 MYSQL_PASSWORD|change-me
 MYSQL_ROOT_PASSWORD|change-me-root
-MI_DB_PASSWORD|change-me
-MI_JWT_SECRET|change-me-production-secret
+MI_DATABASE_PASSWORD|change-me
+MI_AUTH_JWT_SECRET|change-me-production-secret
 EOF
 
   if (( ${#failures[@]} > 0 )); then
