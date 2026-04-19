@@ -35,11 +35,24 @@ const attachReportingMocks = async (page: Page) => {
     })
   })
 
-  await page.route('**/api/auth/login', async (route) => {
+  await page.route('**/api/auth/login', async (route) => { await route.fulfill({
+    status: 200,
+    contentType: 'application/json',
+    body: JSON.stringify({ token: 'playwright-token' }),
+  }) })
+  
+  await page.route('**/api/dashboard/summary', async (route) => {
     await route.fulfill({
       status: 200,
       contentType: 'application/json',
-      body: JSON.stringify({ token: 'playwright-token' }),
+      body: JSON.stringify({
+        activeLeases: 0,
+        pendingLeaseApprovals: 0,
+        pendingInvoiceApprovals: 0,
+        openReceivables: 0,
+        overdueReceivables: 0,
+        pendingWorkflows: 0,
+      }),
     })
   })
 
@@ -173,6 +186,39 @@ test('queries and exports the visual shop analysis report (R19)', async ({ page 
   await expect(detailPanel.getByTestId('visual-shop-selected-unit-code')).toHaveText('A-102')
   await expect(detailPanel.getByText('vacant')).toBeVisible()
 
+  await page.screenshot({ path: '../.sisyphus/evidence/task-5-r19-visual.png', fullPage: true })
+
   await page.getByTestId('visual-shop-export-button').click()
   await expect.poll(() => latestExportPayload).toEqual({ store_id: 101, floor_id: 8, area_id: 3 })
+})
+
+test('shows an actionable error state when the visual report query fails', async ({ page }) => {
+  await attachReportingMocks(page)
+
+  await page.route('**/api/reports/r19/query', async (route) => {
+    await route.fulfill({
+      status: 500,
+      contentType: 'application/json',
+      body: JSON.stringify({ message: 'visual data unavailable' }),
+    })
+  })
+
+  await page.goto('/login')
+  await page.getByTestId('login-username-input').fill('reporter')
+  await page.getByTestId('login-password-input').fill('password')
+  await page.getByTestId('login-submit-button').click()
+
+  await expect(page).toHaveURL(/\/dashboard/)
+  await page.getByTestId('nav--reports-visual-shop').click()
+  await expect(page).toHaveURL(/\/reports\/visual-shop/)
+
+  await page.getByTestId('visual-shop-store-input').fill('101')
+  await page.getByTestId('visual-shop-query-button').click()
+
+  await expect(page.getByText('请求失败')).toBeVisible()
+  await expect(page.locator('.visual-shop-analysis-view__alert')).toContainText('visual data unavailable')
+  await expect(page.getByTestId('visual-shop-canvas')).toBeVisible()
+  await expect(page.getByText('尚未选中单元。请先查询报表，再点击标记查看租赁详情。')).toBeVisible()
+
+  await page.screenshot({ path: '../.sisyphus/evidence/task-5-r19-visual-error.png', fullPage: true })
 })

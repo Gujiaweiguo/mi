@@ -37,11 +37,24 @@ const attachReportingMocks = async (page: Page) => {
     })
   })
 
-  await page.route('**/api/auth/login', async (route) => {
+  await page.route('**/api/auth/login', async (route) => { await route.fulfill({
+    status: 200,
+    contentType: 'application/json',
+    body: JSON.stringify({ token: 'playwright-token' }),
+  }) })
+  
+  await page.route('**/api/dashboard/summary', async (route) => {
     await route.fulfill({
       status: 200,
       contentType: 'application/json',
-      body: JSON.stringify({ token: 'playwright-token' }),
+      body: JSON.stringify({
+        activeLeases: 0,
+        pendingLeaseApprovals: 0,
+        pendingInvoiceApprovals: 0,
+        openReceivables: 0,
+        overdueReceivables: 0,
+        pendingWorkflows: 0,
+      }),
     })
   })
 
@@ -86,7 +99,7 @@ const loginAndOpenGeneralize = async (page: Page) => {
   await page.getByTestId('login-password-input').fill('password')
   await page.getByTestId('login-submit-button').click()
 
-  await expect(page).toHaveURL(/\/health/)
+  await expect(page).toHaveURL(/\/dashboard/)
   await page.getByTestId('nav--reports-generalize').click()
   await expect(page).toHaveURL(/\/reports\/generalize/)
 }
@@ -1333,7 +1346,7 @@ test('queries and exports the traffic annual/monthly summary (R10)', async ({ pa
   await page.getByTestId('login-password-input').fill('password')
   await page.getByTestId('login-submit-button').click()
 
-  await expect(page).toHaveURL(/\/health/)
+  await expect(page).toHaveURL(/\/dashboard/)
   await page.getByTestId('nav--reports-generalize').click()
   await expect(page).toHaveURL(/\/reports\/generalize/)
 
@@ -1402,7 +1415,7 @@ test('queries and exports the brand annual sales distribution (R07)', async ({ p
   await page.getByTestId('login-password-input').fill('password')
   await page.getByTestId('login-submit-button').click()
 
-  await expect(page).toHaveURL(/\/health/)
+  await expect(page).toHaveURL(/\/dashboard/)
   await page.getByTestId('nav--reports-generalize').click()
   await expect(page).toHaveURL(/\/reports\/generalize/)
 
@@ -1472,7 +1485,7 @@ test('queries AR aging by charge type (R09) with department, customer, trade, an
   await page.getByTestId('login-password-input').fill('password')
   await page.getByTestId('login-submit-button').click()
 
-  await expect(page).toHaveURL(/\/health/)
+  await expect(page).toHaveURL(/\/dashboard/)
   await page.getByTestId('nav--reports-generalize').click()
   await expect(page).toHaveURL(/\/reports\/generalize/)
 
@@ -1542,7 +1555,7 @@ test('queries the unit budget comparison report (R05) using year, store, floor, 
   await page.getByTestId('login-password-input').fill('password')
   await page.getByTestId('login-submit-button').click()
 
-  await expect(page).toHaveURL(/\/health/)
+  await expect(page).toHaveURL(/\/dashboard/)
   await page.getByTestId('nav--reports-generalize').click()
   await expect(page).toHaveURL(/\/reports\/generalize/)
 
@@ -1602,7 +1615,7 @@ test('queries the store rent budget execution report (R06)', async ({ page }) =>
   await page.getByTestId('login-password-input').fill('password')
   await page.getByTestId('login-submit-button').click()
 
-  await expect(page).toHaveURL(/\/health/)
+  await expect(page).toHaveURL(/\/dashboard/)
   await page.getByTestId('nav--reports-generalize').click()
   await expect(page).toHaveURL(/\/reports\/generalize/)
 
@@ -1657,7 +1670,7 @@ test('queries the sales vs rent income report (R15)', async ({ page }) => {
   await page.getByTestId('login-password-input').fill('password')
   await page.getByTestId('login-submit-button').click()
 
-  await expect(page).toHaveURL(/\/health/)
+  await expect(page).toHaveURL(/\/dashboard/)
   await page.getByTestId('nav--reports-generalize').click()
   await expect(page).toHaveURL(/\/reports\/generalize/)
 
@@ -1713,7 +1726,7 @@ test('queries the customer/store/brand composite report (R18)', async ({ page })
   await page.getByTestId('login-password-input').fill('password')
   await page.getByTestId('login-submit-button').click()
 
-  await expect(page).toHaveURL(/\/health/)
+  await expect(page).toHaveURL(/\/dashboard/)
   await page.getByTestId('nav--reports-generalize').click()
   await expect(page).toHaveURL(/\/reports\/generalize/)
 
