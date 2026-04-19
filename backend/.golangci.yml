@@ -1,0 +1,48 @@
+run:
+  timeout: 5m
+  modules-download-mode: readonly
+
+linters:
+  enable:
+    - errcheck
+    - govet
+    - revive
+    - unused
+    - gosimple
+    - ineffassign
+    - typecheck
+    - staticcheck
+    - gocritic
+  disable:
+    - exhaustruct
+    - wrapcheck
+
+linters-settings:
+  revive:
+    rules:
+      - name: unused-parameter
+        severity: warning
+  gocritic:
+    enabled-tags:
+      - diagnostic
+      - style
+    disabled-checks:
+      - hugeParam
+      - rangeValCopy
+
+issues:
+  max-issues-per-linter: 50
+  max-same-issues: 5
+  exclude-rules:
+    - linters:
+        - revive
+      text: "unused-parameter"
+      source: "func .*\\(.*\\) .*\\{"
+    # Allow unchecked errors in test files
+    - linters:
+        - errcheck
+      path: _test\.go
+    # Allow unchecked errors in Gorm model methods
+    - linters:
+        - errcheck
+      text: ".*\\.Error"

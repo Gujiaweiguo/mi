@@ -30,6 +30,12 @@ jobs:
         with:
           go-version-file: backend/go.mod
 
+      - name: Install golangci-lint
+        uses: golangci/golangci-lint-action@v7
+        with:
+          version: latest
+          working-directory: backend
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
