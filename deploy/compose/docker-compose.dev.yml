@@ -1,0 +1,135 @@
+# =============================================================================
+# MI Development Docker Compose
+# =============================================================================
+# Usage:
+#   MySQL only (most common — run backend/frontend natively):
+#     docker compose --env-file deploy/env/dev.env \
+#       -f deploy/compose/docker-compose.dev.yml up mysql
+#
+#   Full stack (all services with hot-reload):
+#     docker compose --env-file deploy/env/dev.env \
+#       -f deploy/compose/docker-compose.dev.yml --profile fullstack up
+#
+#   Run backend migrate against dev database:
+#     docker compose --env-file deploy/env/dev.env \
+#       -f deploy/compose/docker-compose.dev.yml run --rm migrate
+# =============================================================================
+
+services:
+  # ---------------------------------------------------------------------------
+  # MySQL 8 — always started, no profile needed
+  # ---------------------------------------------------------------------------
+  mysql:
+    image: mysql:8.0
+    restart: unless-stopped
+    networks: [mi-dev-net]
+    ports:
+      - "${MI_DB_PORT:-3306}:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MI_DB_PASSWORD:-devpassword}
+      MYSQL_DATABASE: ${MI_DB_NAME:-mi_dev}
+      MYSQL_USER: ${MI_DB_USER:-mi_dev}
+      MYSQL_PASSWORD: ${MI_DB_PASSWORD:-devpassword}
+    volumes:
+      - mi-dev-mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    command: >
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+      --default-authentication-plugin=mysql_native_password
+
+  # ---------------------------------------------------------------------------
+  # Database migration runner — use `docker compose run --rm migrate`
+  # ---------------------------------------------------------------------------
+  migrate:
+    build:
+      context: ../..
+      dockerfile: deploy/docker/backend.Dockerfile
+    profiles: ["fullstack"]
+    restart: "no"
+    networks: [mi-dev-net]
+    entrypoint: ["/app/dbops"]
+    command: ["migrate"]
+    environment:
+      MI_DATABASE_HOST: mysql
+      MI_DATABASE_PORT: "3306"
+      MI_DATABASE_NAME: ${MI_DB_NAME:-mi_dev}
+      MI_DATABASE_USER: ${MI_DB_USER:-mi_dev}
+      MI_DATABASE_PASSWORD: ${MI_DB_PASSWORD:-devpassword}
+      MI_CONFIG_FILE: /app/config/development.yaml
+    volumes:
+      - ../../backend/config:/app/config:ro
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  # ---------------------------------------------------------------------------
+  # Backend with hot-reload (air) — fullstack profile only
+  # Source is bind-mounted; air rebuilds on change.
+  # ---------------------------------------------------------------------------
+  backend:
+    image: cosmtrek/air:v1.52.3
+    profiles: ["fullstack"]
+    restart: unless-stopped
+    networks: [mi-dev-net]
+    working_dir: /app
+    environment:
+      MI_CONFIG_FILE: /app/config/development.yaml
+      MI_DATABASE_HOST: mysql
+      MI_DATABASE_PORT: "3306"
+      MI_DATABASE_NAME: ${MI_DB_NAME:-mi_dev}
+      MI_DATABASE_USER: ${MI_DB_USER:-mi_dev}
+      MI_DATABASE_PASSWORD: ${MI_DB_PASSWORD:-devpassword}
+      MI_AUTH_JWT_SECRET: ${MI_JWT_SECRET:-dev-secret-change-in-production}
+    ports:
+      - "${MI_HTTP_PORT:-5180}:5180"
+    volumes:
+      - ../../backend:/app
+      - ../../backend/config:/app/config:ro
+      - go-module-cache:/go/pkg/mod
+    depends_on:
+      mysql:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:5180/healthz || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+  # ---------------------------------------------------------------------------
+  # Frontend with Vite dev server + HMR — fullstack profile only
+  # Source is bind-mounted; Vite rebuilds on change.
+  # ---------------------------------------------------------------------------
+  frontend:
+    image: node:20-alpine
+    profiles: ["fullstack"]
+    restart: unless-stopped
+    networks: [mi-dev-net]
+    working_dir: /app
+    environment:
+      - VITE_API_BASE_URL=http://localhost:${MI_HTTP_PORT:-5180}
+    ports:
+      - "${MI_FRONTEND_PORT:-5173}:5173"
+    volumes:
+      - ../../frontend:/app
+      - frontend-node-modules:/app/node_modules
+    command: ["sh", "-c", "npm install && npm run dev -- --host 0.0.0.0"]
+    depends_on:
+      - backend
+
+volumes:
+  mi-dev-mysql-data:
+    name: mi-dev-mysql-data
+  go-module-cache:
+    name: mi-dev-go-modules
+  frontend-node-modules:
+    name: mi-dev-frontend-node-modules
+
+networks:
+  mi-dev-net:
+    driver: bridge
