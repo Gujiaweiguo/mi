@@ -1,0 +1,37 @@
+groups:
+  - name: mi-backend
+    rules:
+      - alert: BackendHighErrorRate
+        expr: |
+          (
+            sum(rate(http_requests_total{status=~"5.."}[5m]))
+            /
+            sum(rate(http_requests_total[5m]))
+          ) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "MI Backend high error rate"
+          description: "5xx error rate is {{ $value | humanizePercentage }} (threshold: 5%) over the last 5 minutes."
+
+      - alert: BackendHighLatency
+        expr: |
+          histogram_quantile(0.95,
+            sum(rate(http_request_duration_seconds_bucket[5m])) by (le)
+          ) > 2
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "MI Backend high latency"
+          description: "p95 latency is {{ $value }}s (threshold: 2s) over the last 5 minutes."
+
+      - alert: BackendNoMetrics
+        expr: up{job="mi-backend"} == 0
+        for: 3m
+        labels:
+          severity: critical
+        annotations:
+          summary: "MI Backend metrics unavailable"
+          description: "Prometheus has been unable to scrape the MI backend for over 3 minutes."

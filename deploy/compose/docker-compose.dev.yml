@@ -13,6 +13,10 @@
 #   Run backend migrate against dev database:
 #     docker compose --env-file deploy/env/dev.env \
 #       -f deploy/compose/docker-compose.dev.yml run --rm migrate
+#
+#   Monitoring (Prometheus + Grafana):
+#     docker compose --env-file deploy/env/dev.env \
+#       -f deploy/compose/docker-compose.dev.yml --profile fullstack --profile monitoring up
 # =============================================================================
 
 services:
@@ -122,6 +126,38 @@ services:
     depends_on:
       - backend
 
+  # ---------------------------------------------------------------------------
+  # Prometheus — monitoring profile only
+  # ---------------------------------------------------------------------------
+  prometheus:
+    image: prom/prometheus:v2.54.1
+    profiles: ["monitoring"]
+    restart: unless-stopped
+    networks: [mi-dev-net]
+    ports:
+      - "9090:9090"
+    volumes:
+      - ../monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ../monitoring/alerts.yml:/etc/prometheus/alerts.yml:ro
+      - mi-dev-prometheus-data:/prometheus
+
+  # ---------------------------------------------------------------------------
+  # Grafana — monitoring profile only
+  # ---------------------------------------------------------------------------
+  grafana:
+    image: grafana/grafana:11.3.0
+    profiles: ["monitoring"]
+    restart: unless-stopped
+    networks: [mi-dev-net]
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    volumes:
+      - ../monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ../monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - mi-dev-grafana-data:/var/lib/grafana
+
 volumes:
   mi-dev-mysql-data:
     name: mi-dev-mysql-data
@@ -129,6 +165,10 @@ volumes:
     name: mi-dev-go-modules
   frontend-node-modules:
     name: mi-dev-frontend-node-modules
+  mi-dev-prometheus-data:
+    name: mi-dev-prometheus-data
+  mi-dev-grafana-data:
+    name: mi-dev-grafana-data
 
 networks:
   mi-dev-net:
