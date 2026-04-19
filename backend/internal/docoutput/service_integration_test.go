@@ -103,6 +103,36 @@ func TestDocOutputServiceRendersInvoiceDetailGoldenHTML(t *testing.T) {
 	}
 }
 
+func TestDocOutputServiceSupportsConfiguredPrintVariants(t *testing.T) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+	defer cancel()
+	db := platformdb.NewTestDB(t, ctx, os.DirFS("../platform/database"))
+	service, invoiceID, _, _ := newDocOutputHarness(t, ctx, db)
+
+	variantCases := []docoutput.UpsertTemplateInput{
+		{Code: "invoice-batch-area", Name: "Invoice Batch Area", DocumentType: "invoice", OutputMode: docoutput.OutputModeInvoiceBatch, Title: "Lease Invoice Batch Print (Area)", Subtitle: "Area-oriented invoice batch layout", HeaderLines: []string{"Sunshine Commercial MI"}, FooterLines: []string{"Area invoice batch output"}, ActorUserID: 101},
+		{Code: "invoice-batch-ad-board", Name: "Invoice Batch Ad Board", DocumentType: "invoice", OutputMode: docoutput.OutputModeInvoiceBatch, Title: "Lease Invoice Batch Print (Ad Board)", Subtitle: "Ad-board invoice batch layout", HeaderLines: []string{"Sunshine Commercial MI"}, FooterLines: []string{"Ad-board invoice batch output"}, ActorUserID: 101},
+		{Code: "invoice-batch-jv", Name: "Invoice Batch JV", DocumentType: "invoice", OutputMode: docoutput.OutputModeInvoiceBatch, Title: "JV / Unit Invoice Batch Print", Subtitle: "JV invoice batch layout", HeaderLines: []string{"Sunshine Commercial MI"}, FooterLines: []string{"JV invoice batch output"}, ActorUserID: 101},
+		{Code: "invoice-reprint-default", Name: "Invoice Reprint Default", DocumentType: "invoice", OutputMode: docoutput.OutputModeInvoiceDetail, Title: "Lease Invoice Reprint", Subtitle: "Reprint invoice detail layout", HeaderLines: []string{"Sunshine Commercial MI"}, FooterLines: []string{"Invoice reprint output"}, ActorUserID: 101},
+		{Code: "invoice-reprint-jv", Name: "Invoice Reprint JV", DocumentType: "invoice", OutputMode: docoutput.OutputModeInvoiceDetail, Title: "JV / Unit Invoice Reprint", Subtitle: "JV invoice reprint layout", HeaderLines: []string{"Sunshine Commercial MI"}, FooterLines: []string{"JV invoice reprint output"}, ActorUserID: 101},
+		{Code: "interest-invoice-default", Name: "Interest Invoice Default", DocumentType: "invoice", OutputMode: docoutput.OutputModeInvoiceDetail, Title: "Interest Invoice Print", Subtitle: "Printable interest invoice detail", HeaderLines: []string{"Sunshine Commercial MI"}, FooterLines: []string{"Interest invoice output"}, ActorUserID: 101},
+	}
+
+	for _, variant := range variantCases {
+		if _, err := service.UpsertTemplate(ctx, variant); err != nil {
+			t.Fatalf("upsert variant template %s: %v", variant.Code, err)
+		}
+
+		htmlArtifact, err := service.RenderHTML(ctx, docoutput.RenderInput{TemplateCode: variant.Code, DocumentIDs: []int64{invoiceID}, ActorUserID: 101})
+		if err != nil {
+			t.Fatalf("render variant template %s: %v", variant.Code, err)
+		}
+		if !strings.Contains(string(htmlArtifact.Body), variant.Title) || !strings.Contains(string(htmlArtifact.Body), "INV-") {
+			t.Fatalf("expected rendered html for %s to contain title and invoice number, got %s", variant.Code, string(htmlArtifact.Body))
+		}
+	}
+}
+
 func newDocOutputHarness(t *testing.T, ctx context.Context, db *sql.DB) (*docoutput.Service, int64, int64, string) {
 	t.Helper()
 	workflowService := workflow.NewService(db, workflow.NewRepositoryWithNowFunc(db, docOutputWorkflowNow))
