@@ -61,12 +61,14 @@ services:
     entrypoint: ["/app/dbops"]
     command: ["migrate"]
     environment:
-      MI_DATABASE_HOST: mysql
+      MI_DATABASE_HOST: ${MI_DATABASE_HOST:-mysql}
       MI_DATABASE_PORT: "3306"
       MI_DATABASE_NAME: ${MYSQL_DATABASE:-mi_prod}
       MI_DATABASE_USER: ${MYSQL_USER:-mi_prod}
       MI_DATABASE_PASSWORD: ${MYSQL_PASSWORD:-change-me}
-      MI_CONFIG_FILE: /dev/null
+      MI_CONFIG_FILE: ${MI_BACKEND_CONFIG_FILE:-/app/config/production.yaml}
+    volumes:
+      - ${MI_RUNTIME_CONFIG:-../../backend/config}:/app/config:ro
     depends_on:
       mysql:
         condition: service_healthy
@@ -80,7 +82,7 @@ services:
     networks: [mi-net]
     environment:
       MI_CONFIG_FILE: ${MI_BACKEND_CONFIG_FILE:-/app/config/production.yaml}
-      MI_DATABASE_HOST: mysql
+      MI_DATABASE_HOST: ${MI_DATABASE_HOST:-mysql}
       MI_DATABASE_PORT: "3306"
       MI_DATABASE_NAME: ${MYSQL_DATABASE:-mi_prod}
       MI_DATABASE_USER: ${MYSQL_USER:-mi_prod}

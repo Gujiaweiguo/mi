@@ -20,7 +20,8 @@ WORKDIR /app
 
 COPY --from=builder /out/server /app/server
 COPY --from=builder /out/dbops /app/dbops
-COPY backend/internal/platform/database/migrations /app/migrations
+COPY backend/internal/platform/database/migrations /app/internal/platform/database/migrations
+COPY backend/internal/platform/database/verify /app/internal/platform/database/verify
 
 RUN mkdir -p /app/config /app/logs /app/generated-documents /app/uploads \
     && chown -R appuser:appuser /app \
