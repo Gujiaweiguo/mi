@@ -102,7 +102,7 @@ teardown() {
 }
 trap teardown EXIT
 
-docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" up -d "${BUILD_ARG[@]}"
+docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" up -d mysql
 
 wait_for_health() {
   local service=$1
@@ -128,7 +128,19 @@ wait_for_health() {
   return 1
 }
 
-for service in mysql backend frontend nginx; do
+wait_for_health mysql
+
+MYSQL_CONTAINER_ID=$(docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" ps -q mysql)
+MI_DATABASE_HOST=$(docker inspect --format '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$MYSQL_CONTAINER_ID")
+if [[ -z "$MI_DATABASE_HOST" ]]; then
+  printf 'Unable to determine MySQL container IP for smoke test\n' >&2
+  exit 1
+fi
+export MI_DATABASE_HOST
+
+docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" up -d "${BUILD_ARG[@]}" migrate backend frontend nginx
+
+for service in backend frontend nginx; do
   wait_for_health "$service"
 done
 

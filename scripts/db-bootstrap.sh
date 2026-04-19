@@ -46,7 +46,6 @@ esac
 COMPOSE_FILE="$ROOT_DIR/deploy/compose/docker-compose.$ENVIRONMENT.yml"
 ENV_FILE="${MI_COMPOSE_ENV_FILE:-$ROOT_DIR/deploy/env/$ENVIRONMENT.env}"
 CONFIG_FILE="${MI_DBOPS_CONFIG_FILE:-$ROOT_DIR/backend/config/$ENVIRONMENT.yaml}"
-MYSQL_PORT=${MI_MYSQL_PORT:-$DEFAULT_MYSQL_PORT}
 
 docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" up -d mysql >/dev/null
 
@@ -66,26 +65,50 @@ if [[ ${STATUS:-} != "healthy" ]]; then
   exit 1
 fi
 
+MYSQL_CONTAINER_IP=$(docker inspect --format '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$CONTAINER_ID")
+if [[ -z "$MYSQL_CONTAINER_IP" ]]; then
+  printf 'Unable to resolve MySQL container IP for %s\n' "$ENVIRONMENT" >&2
+  exit 1
+fi
+
+source "$ENV_FILE"
+
+DB_NAME=${MI_DATABASE_NAME:-${MYSQL_DATABASE:-mi_prod}}
+DB_USER=${MI_DATABASE_USER:-${MYSQL_USER:-mi_prod}}
+DB_PASSWORD=${MI_DATABASE_PASSWORD:-${MI_DB_PASSWORD:-${MYSQL_PASSWORD:-}}}
+
 (
   cd "$ROOT_DIR/backend"
   MI_CONFIG_FILE="$CONFIG_FILE" \
-  MI_DATABASE_HOST=127.0.0.1 \
-  MI_DATABASE_PORT="$MYSQL_PORT" \
+  MI_DATABASE_HOST="$MYSQL_CONTAINER_IP" \
+  MI_DATABASE_PORT=3306 \
+  MI_DATABASE_NAME="$DB_NAME" \
+  MI_DATABASE_USER="$DB_USER" \
+  MI_DATABASE_PASSWORD="$DB_PASSWORD" \
   go run ./cmd/dbops migrate
 
   MI_CONFIG_FILE="$CONFIG_FILE" \
-  MI_DATABASE_HOST=127.0.0.1 \
-  MI_DATABASE_PORT="$MYSQL_PORT" \
+  MI_DATABASE_HOST="$MYSQL_CONTAINER_IP" \
+  MI_DATABASE_PORT=3306 \
+  MI_DATABASE_NAME="$DB_NAME" \
+  MI_DATABASE_USER="$DB_USER" \
+  MI_DATABASE_PASSWORD="$DB_PASSWORD" \
   go run ./cmd/dbops bootstrap --seed-set="$SEED_SET"
 
   MI_CONFIG_FILE="$CONFIG_FILE" \
-  MI_DATABASE_HOST=127.0.0.1 \
-  MI_DATABASE_PORT="$MYSQL_PORT" \
+  MI_DATABASE_HOST="$MYSQL_CONTAINER_IP" \
+  MI_DATABASE_PORT=3306 \
+  MI_DATABASE_NAME="$DB_NAME" \
+  MI_DATABASE_USER="$DB_USER" \
+  MI_DATABASE_PASSWORD="$DB_PASSWORD" \
   go run ./cmd/dbops verify --profile=migrate
 
   MI_CONFIG_FILE="$CONFIG_FILE" \
-  MI_DATABASE_HOST=127.0.0.1 \
-  MI_DATABASE_PORT="$MYSQL_PORT" \
+  MI_DATABASE_HOST="$MYSQL_CONTAINER_IP" \
+  MI_DATABASE_PORT=3306 \
+  MI_DATABASE_NAME="$DB_NAME" \
+  MI_DATABASE_USER="$DB_USER" \
+  MI_DATABASE_PASSWORD="$DB_PASSWORD" \
   go run ./cmd/dbops verify --profile=bootstrap
 )
 
@@ -93,8 +116,11 @@ if [[ "$SEED_SET" == "cutover" ]]; then
   (
     cd "$ROOT_DIR/backend"
     MI_CONFIG_FILE="$CONFIG_FILE" \
-    MI_DATABASE_HOST=127.0.0.1 \
-    MI_DATABASE_PORT="$MYSQL_PORT" \
+    MI_DATABASE_HOST="$MYSQL_CONTAINER_IP" \
+    MI_DATABASE_PORT=3306 \
+    MI_DATABASE_NAME="$DB_NAME" \
+    MI_DATABASE_USER="$DB_USER" \
+    MI_DATABASE_PASSWORD="$DB_PASSWORD" \
     go run ./cmd/dbops verify --profile=fresh-start
   )
 fi

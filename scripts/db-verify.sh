@@ -42,14 +42,48 @@ case "$PROFILE" in
     ;;
 esac
 
+COMPOSE_FILE="$ROOT_DIR/deploy/compose/docker-compose.$ENVIRONMENT.yml"
+ENV_FILE="${MI_COMPOSE_ENV_FILE:-$ROOT_DIR/deploy/env/$ENVIRONMENT.env}"
 CONFIG_FILE="$ROOT_DIR/backend/config/$ENVIRONMENT.yaml"
-MYSQL_PORT=${MI_MYSQL_PORT:-$DEFAULT_MYSQL_PORT}
+
+docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" up -d mysql >/dev/null
+
+for _ in $(seq 1 60); do
+  CONTAINER_ID=$(docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" ps -q mysql)
+  if [[ -n "$CONTAINER_ID" ]]; then
+    STATUS=$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}{{.State.Status}}{{end}}' "$CONTAINER_ID")
+    if [[ "$STATUS" == "healthy" ]]; then
+      break
+    fi
+  fi
+  sleep 2
+done
+
+if [[ ${STATUS:-} != "healthy" ]]; then
+  printf 'MySQL did not become healthy for %s\n' "$ENVIRONMENT" >&2
+  exit 1
+fi
+
+MYSQL_CONTAINER_IP=$(docker inspect --format '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$CONTAINER_ID")
+if [[ -z "$MYSQL_CONTAINER_IP" ]]; then
+  printf 'Unable to resolve MySQL container IP for %s\n' "$ENVIRONMENT" >&2
+  exit 1
+fi
+
+source "$ENV_FILE"
+
+DB_NAME=${MI_DATABASE_NAME:-${MYSQL_DATABASE:-mi_prod}}
+DB_USER=${MI_DATABASE_USER:-${MYSQL_USER:-mi_prod}}
+DB_PASSWORD=${MI_DATABASE_PASSWORD:-${MI_DB_PASSWORD:-${MYSQL_PASSWORD:-}}}
 
 (
   cd "$ROOT_DIR/backend"
   MI_CONFIG_FILE="$CONFIG_FILE" \
-  MI_DATABASE_HOST=127.0.0.1 \
-  MI_DATABASE_PORT="$MYSQL_PORT" \
+  MI_DATABASE_HOST="$MYSQL_CONTAINER_IP" \
+  MI_DATABASE_PORT=3306 \
+  MI_DATABASE_NAME="$DB_NAME" \
+  MI_DATABASE_USER="$DB_USER" \
+  MI_DATABASE_PASSWORD="$DB_PASSWORD" \
   go run ./cmd/dbops verify --profile="$PROFILE"
 )
 
