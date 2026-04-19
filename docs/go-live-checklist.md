@@ -38,7 +38,7 @@ artifacts/rehearsal/<commit-sha>/cutover-rehearsal-production-<timestamp>.json
 
 - [ ] Current commit is archive-ready.
 - [ ] CI-ready evidence for the current commit (`unit` + `integration`) passed before archive/go-live validation.
-- [ ] Production env validation passed with no blocked placeholder secrets for `MYSQL_PASSWORD`, `MYSQL_ROOT_PASSWORD`, `MI_DB_PASSWORD`, or `MI_JWT_SECRET`.
+- [ ] Production env validation passed with no blocked placeholder secrets for `MYSQL_PASSWORD`, `MYSQL_ROOT_PASSWORD`, `MI_DATABASE_PASSWORD`, or `MI_AUTH_JWT_SECRET`.
 - [ ] Production-topology rehearsal used a clean runtime directory and fresh-start bootstrap data only.
 - [ ] Production-topology rehearsal used the supported isolated host-port/runtime/config path rather than reusing contaminated repository runtime state.
 - [ ] Migrations applied successfully.
@@ -61,6 +61,8 @@ artifacts/rehearsal/<commit-sha>/cutover-rehearsal-production-<timestamp>.json
 - Bootstrap admin baseline: `backend/internal/platform/database/bootstrap/access_seed.go`
 - Tax/voucher configuration baseline: `backend/internal/platform/database/bootstrap/commercial_seed.go`
 - Final cutover bootstrap pack: `backend/internal/platform/database/bootstrap/seed.go`
+
+The committed `deploy/env/production.env` file is a template only. Rehearsal and go-live must use reviewed non-placeholder secret values, whether via the real env file or an isolated temporary copy prepared specifically for the rehearsal run.
 
 ## Binary Decision Rule
 

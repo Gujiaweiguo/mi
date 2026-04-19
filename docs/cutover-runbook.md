@@ -102,6 +102,16 @@ The following items must be prepared, reviewed, and loaded before the production
 - [ ] tax/voucher export configuration
 - [ ] Excel import/export template configuration
 
+Repository bootstrap sources for these items are anchored in:
+
+- `backend/internal/platform/database/bootstrap/seed.go`
+- `backend/internal/platform/database/bootstrap/org_seed.go`
+- `backend/internal/platform/database/bootstrap/access_seed.go`
+- `backend/internal/platform/database/bootstrap/workflow_seed.go`
+- `backend/internal/platform/database/bootstrap/commercial_seed.go`
+
+The committed `deploy/env/production.env` file remains a template. Production rehearsal and go-live must use reviewed non-placeholder secret values for MySQL and JWT settings.
+
 ## Release Gates
 
 ### CI Ready

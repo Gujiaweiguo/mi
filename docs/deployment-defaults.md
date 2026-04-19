@@ -110,10 +110,24 @@ The following placeholders must be replaced before production use:
 
 - `MYSQL_PASSWORD=change-me`
 - `MYSQL_ROOT_PASSWORD=change-me-root`
-- `MI_DB_PASSWORD=change-me`
-- `MI_JWT_SECRET=change-me-production-secret`
+- `MI_DATABASE_PASSWORD=change-me`
+- `MI_AUTH_JWT_SECRET=change-me-production-secret`
 
 The supported production preflight now enforces this blocked-value contract automatically. `scripts/compose-preflight.sh production` fails before container startup when the evaluated production env file still contains any of these placeholder values. This enforcement is production-scoped and does not apply to local development defaults.
+
+The committed `deploy/env/production.env` file is a repository template, not a deploy-safe secret source. For rehearsal and go-live, operators must supply a reviewed env file whose secret values have been replaced. During release validation, an isolated temporary env-file copy may be used to inject non-placeholder rehearsal secrets without mutating the committed template.
+
+## Production bootstrap sources
+
+The repository artifacts that define the bootstrap baseline for go-live are:
+
+- `backend/internal/platform/database/bootstrap/seed.go`
+- `backend/internal/platform/database/bootstrap/org_seed.go`
+- `backend/internal/platform/database/bootstrap/access_seed.go`
+- `backend/internal/platform/database/bootstrap/workflow_seed.go`
+- `backend/internal/platform/database/bootstrap/commercial_seed.go`
+
+These sources must be reviewed together with `docs/cutover-runbook.md` and `docs/go-live-checklist.md` before a real production deployment.
 
 ## Consistency rule
 
