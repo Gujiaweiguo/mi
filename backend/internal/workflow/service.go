@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"strings"
 	"time"
+
+	"github.com/Gujiaweiguo/mi/backend/internal/notification"
 )
 
 var (
@@ -17,10 +19,15 @@ var (
 type Service struct {
 	repository *Repository
 	db         *sql.DB
+	notifier   notification.Notifier
 }
 
-func NewService(db *sql.DB, repository *Repository) *Service {
-	return &Service{db: db, repository: repository}
+func NewService(db *sql.DB, repository *Repository, notifiers ...notification.Notifier) *Service {
+	service := &Service{db: db, repository: repository}
+	if len(notifiers) > 0 {
+		service.notifier = notifiers[0]
+	}
+	return service
 }
 
 func (s *Service) ListDefinitions(ctx context.Context) ([]Definition, error) {
@@ -88,6 +95,7 @@ func (s *Service) Start(ctx context.Context, input StartInput) (*Instance, error
 	if err := s.repository.InsertOutbox(ctx, tx, OutboxMessage{AggregateType: "workflow_instance", AggregateID: instance.ID, EventType: "workflow.submitted", DedupeKey: outboxKey(instance.ID, ActionSubmit, input.IdempotencyKey), Payload: payload, Status: OutboxStatusPending, AttemptCount: 0}); err != nil {
 		return nil, err
 	}
+	s.enqueueApprovalRequestSafely(ctx, tx, instance, input.DocumentType, input.DocumentID, input.ActorUserID, input.DepartmentID, &firstNode)
 
 	if err := tx.Commit(); err != nil {
 		return nil, fmt.Errorf("commit workflow start transaction: %w", err)
@@ -205,6 +213,7 @@ func (s *Service) transition(ctx context.Context, action Action, input Transitio
 	nextStatus := InstanceStatusPending
 	nextStepOrder := (*int)(nil)
 	nextNodeID := (*int64)(nil)
+	var nextNode *Node
 	completed := false
 	if action == ActionReject {
 		stepStatus = StepStatusRejected
@@ -220,11 +229,12 @@ func (s *Service) transition(ctx context.Context, action Action, input Transitio
 		}
 		if transition := nextTransition(definition.Transitions, step.WorkflowNodeID, ActionApprove); transition != nil {
 			nodes := indexNodes(definition.Nodes)
-			nextNode := nodes[transition.ToNodeID]
-			nextStepOrder = &nextNode.StepOrder
-			nodeID := nextNode.ID
+			nextNodeValue := nodes[transition.ToNodeID]
+			nextNode = &nextNodeValue
+			nextStepOrder = &nextNodeValue.StepOrder
+			nodeID := nextNodeValue.ID
 			nextNodeID = &nodeID
-			if err := s.repository.SetStepPending(ctx, tx, instance.ID, instance.CurrentCycle, nextNode.ID); err != nil {
+			if err := s.repository.SetStepPending(ctx, tx, instance.ID, instance.CurrentCycle, nextNodeValue.ID); err != nil {
 				return nil, err
 			}
 		} else {
@@ -262,6 +272,9 @@ func (s *Service) transition(ctx context.Context, action Action, input Transitio
 	}
 	if err := s.repository.InsertOutbox(ctx, tx, OutboxMessage{AggregateType: "workflow_instance", AggregateID: instance.ID, EventType: eventType, DedupeKey: outboxKey(instance.ID, action, input.IdempotencyKey), Payload: payload, Status: OutboxStatusPending}); err != nil {
 		return nil, err
+	}
+	if action == ActionApprove && nextNode != nil && nextStatus == InstanceStatusPending {
+		s.enqueueApprovalRequestSafely(ctx, tx, &updatedInstance, updatedInstance.DocumentType, updatedInstance.DocumentID, updatedInstance.SubmittedBy, input.DepartmentID, nextNode)
 	}
 
 	if err := tx.Commit(); err != nil {
@@ -408,4 +421,57 @@ func reminderAuditKey(instanceID int64, reminderType string, windowStart time.Ti
 func reminderReasonPointer(reason ReminderReasonCode) *string {
 	value := string(reason)
 	return &value
+}
+
+func (s *Service) enqueueApprovalRequestSafely(ctx context.Context, tx *sql.Tx, instance *Instance, documentType string, documentID int64, submitterUserID int64, departmentID int64, node *Node) {
+	defer func() {
+		_ = recover()
+	}()
+	if s == nil || tx == nil || instance == nil || node == nil || s.notifier == nil {
+		return
+	}
+	recipients, err := s.repository.ListRoleRecipientEmails(ctx, tx, node.RoleID, departmentID)
+	if err != nil {
+		return
+	}
+	recipients = normalizeEmailRecipients(recipients)
+	if len(recipients) == 0 {
+		return
+	}
+	submitterName, err := s.repository.FindUserDisplayName(ctx, submitterUserID)
+	if err != nil {
+		submitterName = ""
+	}
+	_ = s.notifier.Enqueue(ctx, tx, notification.NotificationEvent{
+		EventType:     "workflow.approval_requested",
+		AggregateType: "workflow_instance",
+		AggregateID:   instance.ID,
+		RecipientTo:   recipients,
+		TemplateName:  "workflow_approval_request",
+		TemplateData: notification.WorkflowApprovalData{
+			DocumentType:     documentType,
+			DocumentNumber:   fmt.Sprintf("%d", documentID),
+			SubmitterName:    submitterName,
+			ApprovalStepName: node.Name,
+			ApprovalLink:     fmt.Sprintf("/workflow/instances/%d", instance.ID),
+		},
+	})
+}
+
+func normalizeEmailRecipients(candidates []string) []string {
+	unique := make(map[string]struct{}, len(candidates))
+	recipients := make([]string, 0, len(candidates))
+	for _, candidate := range candidates {
+		email := strings.TrimSpace(candidate)
+		if email == "" || !strings.Contains(email, "@") {
+			continue
+		}
+		email = strings.ToLower(email)
+		if _, exists := unique[email]; exists {
+			continue
+		}
+		unique[email] = struct{}{}
+		recipients = append(recipients, email)
+	}
+	return recipients
 }

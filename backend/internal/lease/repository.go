@@ -15,6 +15,14 @@ type Repository struct {
 	db *sql.DB
 }
 
+type ExpirationReminderCandidate struct {
+	LeaseID        int64
+	ContractNumber string
+	TenantName     string
+	ExpirationDate time.Time
+	DaysRemaining  int
+}
+
 func NewRepository(db *sql.DB) *Repository {
 	return &Repository{db: db}
 }
@@ -331,4 +339,82 @@ func (r *Repository) listTerms(ctx context.Context, db queryer, leaseID int64) (
 	return terms, rows.Err()
 }
 
+func (r *Repository) ListExpirationReminderCandidates(ctx context.Context, asOf time.Time, thresholdDays int) ([]ExpirationReminderCandidate, error) {
+	endDate := asOf.UTC().AddDate(0, 0, thresholdDays)
+	rows, err := r.db.QueryContext(ctx, `
+		SELECT id, lease_no, tenant_name, end_date, DATEDIFF(end_date, ?) AS days_remaining
+		FROM lease_contracts
+		WHERE status = ?
+		  AND end_date >= ?
+		  AND end_date <= ?
+		ORDER BY end_date ASC, id ASC
+	`, asOf.UTC(), StatusActive, asOf.UTC(), endDate)
+	if err != nil {
+		return nil, fmt.Errorf("query lease expiration reminder candidates: %w", err)
+	}
+	defer rows.Close()
 
+	items := make([]ExpirationReminderCandidate, 0)
+	for rows.Next() {
+		var item ExpirationReminderCandidate
+		if err := rows.Scan(&item.LeaseID, &item.ContractNumber, &item.TenantName, &item.ExpirationDate, &item.DaysRemaining); err != nil {
+			return nil, fmt.Errorf("scan lease expiration reminder candidate: %w", err)
+		}
+		items = append(items, item)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("iterate lease expiration reminder candidates: %w", err)
+	}
+	return items, nil
+}
+
+func (r *Repository) HasReminderQueuedSince(ctx context.Context, tx *sql.Tx, eventType, aggregateType string, aggregateID int64, since time.Time) (bool, error) {
+	if tx == nil {
+		return false, fmt.Errorf("query queued lease reminder: nil transaction")
+	}
+	var count int
+	if err := tx.QueryRowContext(ctx, `
+		SELECT COUNT(*)
+		FROM notification_outbox
+		WHERE event_type = ?
+		  AND aggregate_type = ?
+		  AND aggregate_id = ?
+		  AND created_at >= ?
+	`, eventType, aggregateType, aggregateID, since.UTC()).Scan(&count); err != nil {
+		return false, fmt.Errorf("query queued lease reminder: %w", err)
+	}
+	return count > 0, nil
+}
+
+func (r *Repository) ListOperationsRecipientEmails(ctx context.Context, tx *sql.Tx) ([]string, error) {
+	if tx == nil {
+		return nil, fmt.Errorf("query operations recipient emails: nil transaction")
+	}
+	rows, err := tx.QueryContext(ctx, `
+		SELECT DISTINCT u.username
+		FROM users u
+		INNER JOIN user_roles ur ON ur.user_id = u.id
+		INNER JOIN role_permissions rp ON rp.role_id = ur.role_id
+		INNER JOIN functions f ON f.id = rp.function_id
+		WHERE u.status = 'active'
+		  AND f.code = 'lease.contract'
+		ORDER BY u.id
+	`)
+	if err != nil {
+		return nil, fmt.Errorf("query operations recipient emails: %w", err)
+	}
+	defer rows.Close()
+
+	recipients := make([]string, 0)
+	for rows.Next() {
+		var username string
+		if err := rows.Scan(&username); err != nil {
+			return nil, fmt.Errorf("scan operations recipient email: %w", err)
+		}
+		recipients = append(recipients, username)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("iterate operations recipient emails: %w", err)
+	}
+	return recipients, nil
+}

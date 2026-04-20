@@ -7,10 +7,12 @@ import (
 	"fmt"
 	"math"
 	"sort"
+	"strings"
 	"time"
 
 	"github.com/Gujiaweiguo/mi/backend/internal/billing"
 	"github.com/Gujiaweiguo/mi/backend/internal/lease"
+	"github.com/Gujiaweiguo/mi/backend/internal/notification"
 	"github.com/Gujiaweiguo/mi/backend/internal/pagination"
 	"github.com/Gujiaweiguo/mi/backend/internal/workflow"
 )
@@ -33,11 +35,18 @@ type Service struct {
 	billingRepo     *billing.Repository
 	workflowService *workflow.Service
 	db              *sql.DB
+	notifier        notification.Notifier
 }
 
-func NewService(db *sql.DB, repository *Repository, billingRepo *billing.Repository, workflowService *workflow.Service) *Service {
-	return &Service{db: db, repository: repository, billingRepo: billingRepo, workflowService: workflowService}
+func NewService(db *sql.DB, repository *Repository, billingRepo *billing.Repository, workflowService *workflow.Service, notifiers ...notification.Notifier) *Service {
+	service := &Service{db: db, repository: repository, billingRepo: billingRepo, workflowService: workflowService}
+	if len(notifiers) > 0 {
+		service.notifier = notifiers[0]
+	}
+	return service
 }
+
+const paymentReminderLeadDays = 7
 
 func (s *Service) CreateFromCharges(ctx context.Context, input CreateInput) (*Document, error) {
 	normalizedChargeLineIDs := normalizeChargeLineIDs(input.BillingChargeLineIDs)
@@ -430,6 +439,23 @@ func (s *Service) RecordPayment(ctx context.Context, input RecordPaymentInput) (
 	return s.GetReceivable(ctx, input.DocumentID)
 }
 
+func (s *Service) CheckPaymentReminders(ctx context.Context) error {
+	if s == nil || s.repository == nil || s.notifier == nil {
+		return nil
+	}
+	asOf := time.Now().UTC()
+	candidates, err := s.repository.ListPaymentReminderCandidates(ctx, asOf, paymentReminderLeadDays)
+	if err != nil {
+		return err
+	}
+	for _, candidate := range candidates {
+		if err := s.enqueuePaymentReminder(ctx, asOf, candidate); err != nil {
+			continue
+		}
+	}
+	return nil
+}
+
 func roundMoney(value float64) float64 {
 	rounded := math.Round(value*100) / 100
 	if math.Abs(rounded) < 0.000001 {
@@ -495,4 +521,63 @@ func mapWorkflowState(instance *workflow.Instance) (Status, *time.Time) {
 	default:
 		return StatusPendingApproval, nil
 	}
+}
+
+func (s *Service) enqueuePaymentReminder(ctx context.Context, asOf time.Time, candidate PaymentReminderCandidate) error {
+	recipient := normalizeReminderRecipient(candidate.ContactCandidate)
+	if recipient == "" {
+		return nil
+	}
+	tx, err := s.db.BeginTx(ctx, nil)
+	if err != nil {
+		return fmt.Errorf("begin payment reminder transaction: %w", err)
+	}
+	defer func() { _ = tx.Rollback() }()
+
+	alreadyQueued, err := s.repository.HasReminderQueuedSince(ctx, tx, "invoice.payment_reminder", "billing_document", candidate.DocumentID, asOf.Truncate(24*time.Hour))
+	if err != nil {
+		return err
+	}
+	if alreadyQueued {
+		if err := tx.Commit(); err != nil {
+			return fmt.Errorf("commit duplicate payment reminder transaction: %w", err)
+		}
+		return nil
+	}
+
+	daysOverdue := int(asOf.Truncate(24*time.Hour).Sub(candidate.DueDate.UTC()).Hours() / 24)
+	if daysOverdue < 0 {
+		daysOverdue = 0
+	}
+	if err := s.notifier.Enqueue(ctx, tx, notification.NotificationEvent{
+		EventType:     "invoice.payment_reminder",
+		AggregateType: "billing_document",
+		AggregateID:   candidate.DocumentID,
+		RecipientTo:   []string{recipient},
+		TemplateName:  "invoice_payment_reminder",
+		TemplateData: notification.InvoiceReminderData{
+			InvoiceNumber: candidate.InvoiceNumber,
+			CustomerName:  candidate.CustomerName,
+			AmountDue:     fmt.Sprintf("%.2f", roundMoney(candidate.OutstandingAmount)),
+			DueDate:       candidate.DueDate.UTC().Format(DateLayout),
+			DaysOverdue:   daysOverdue,
+		},
+	}); err != nil {
+		if commitErr := tx.Commit(); commitErr != nil {
+			return fmt.Errorf("commit failed payment reminder transaction: %w", commitErr)
+		}
+		return err
+	}
+	if err := tx.Commit(); err != nil {
+		return fmt.Errorf("commit payment reminder transaction: %w", err)
+	}
+	return nil
+}
+
+func normalizeReminderRecipient(candidate string) string {
+	trimmed := strings.TrimSpace(candidate)
+	if trimmed == "" || !strings.Contains(trimmed, "@") {
+		return ""
+	}
+	return strings.ToLower(trimmed)
 }

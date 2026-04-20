@@ -16,6 +16,15 @@ type Repository struct {
 	db *sql.DB
 }
 
+type PaymentReminderCandidate struct {
+	DocumentID        int64
+	InvoiceNumber     string
+	CustomerName      string
+	ContactCandidate  string
+	DueDate           time.Time
+	OutstandingAmount float64
+}
+
 func NewRepository(db *sql.DB) *Repository {
 	return &Repository{db: db}
 }
@@ -295,4 +304,61 @@ func normalizeChargeLineIDs(ids []int64) []int64 {
 	return result
 }
 
+func (r *Repository) ListPaymentReminderCandidates(ctx context.Context, asOf time.Time, leadDays int) ([]PaymentReminderCandidate, error) {
+	dueBy := asOf.UTC().AddDate(0, 0, leadDays)
+	rows, err := r.db.QueryContext(ctx, `
+		SELECT
+			bd.id,
+			COALESCE(bd.document_no, CAST(bd.id AS CHAR)) AS invoice_number,
+			bd.tenant_name,
+			COALESCE(c.code, '') AS contact_candidate,
+			MIN(ai.due_date) AS due_date,
+			SUM(ai.outstanding_amount) AS outstanding_amount
+		FROM billing_documents bd
+		INNER JOIN ar_open_items ai ON ai.billing_document_id = bd.id
+		INNER JOIN lease_contracts lc ON lc.id = bd.lease_contract_id
+		LEFT JOIN customers c ON c.id = lc.customer_id
+		WHERE bd.document_type = ?
+		  AND bd.status = ?
+		  AND ai.is_deposit = FALSE
+		  AND ai.outstanding_amount > 0
+		  AND ai.due_date <= ?
+		GROUP BY bd.id, invoice_number, bd.tenant_name, contact_candidate
+		ORDER BY due_date ASC, bd.id ASC
+	`, DocumentTypeInvoice, StatusApproved, dueBy)
+	if err != nil {
+		return nil, fmt.Errorf("query payment reminder candidates: %w", err)
+	}
+	defer rows.Close()
 
+	items := make([]PaymentReminderCandidate, 0)
+	for rows.Next() {
+		var item PaymentReminderCandidate
+		if err := rows.Scan(&item.DocumentID, &item.InvoiceNumber, &item.CustomerName, &item.ContactCandidate, &item.DueDate, &item.OutstandingAmount); err != nil {
+			return nil, fmt.Errorf("scan payment reminder candidate: %w", err)
+		}
+		items = append(items, item)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("iterate payment reminder candidates: %w", err)
+	}
+	return items, nil
+}
+
+func (r *Repository) HasReminderQueuedSince(ctx context.Context, tx *sql.Tx, eventType, aggregateType string, aggregateID int64, since time.Time) (bool, error) {
+	if tx == nil {
+		return false, fmt.Errorf("query queued payment reminder: nil transaction")
+	}
+	var count int
+	if err := tx.QueryRowContext(ctx, `
+		SELECT COUNT(*)
+		FROM notification_outbox
+		WHERE event_type = ?
+		  AND aggregate_type = ?
+		  AND aggregate_id = ?
+		  AND created_at >= ?
+	`, eventType, aggregateType, aggregateID, since.UTC()).Scan(&count); err != nil {
+		return false, fmt.Errorf("query queued payment reminder: %w", err)
+	}
+	return count > 0, nil
+}

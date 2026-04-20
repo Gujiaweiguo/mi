@@ -40,6 +40,50 @@ func (r *Repository) FindDefinitionByID(ctx context.Context, id int64) (*Definit
 	return r.findDefinition(ctx, definitionQuery, id)
 }
 
+func (r *Repository) FindUserDisplayName(ctx context.Context, userID int64) (string, error) {
+	const query = `SELECT display_name FROM users WHERE id = ?`
+	var displayName string
+	if err := r.db.QueryRowContext(ctx, query, userID).Scan(&displayName); err != nil {
+		if err == sql.ErrNoRows {
+			return "", nil
+		}
+		return "", fmt.Errorf("query workflow user display name: %w", err)
+	}
+	return strings.TrimSpace(displayName), nil
+}
+
+func (r *Repository) ListRoleRecipientEmails(ctx context.Context, tx *sql.Tx, roleID int64, departmentID int64) ([]string, error) {
+	if tx == nil {
+		return nil, errors.New("list workflow role recipient emails: nil transaction")
+	}
+	rows, err := tx.QueryContext(ctx, `
+		SELECT DISTINCT u.username
+		FROM users u
+		INNER JOIN user_roles ur ON ur.user_id = u.id
+		WHERE ur.role_id = ?
+		  AND ur.department_id = ?
+		  AND u.status = 'active'
+		ORDER BY u.id
+	`, roleID, departmentID)
+	if err != nil {
+		return nil, fmt.Errorf("query workflow role recipient emails: %w", err)
+	}
+	defer rows.Close()
+
+	recipients := make([]string, 0)
+	for rows.Next() {
+		var username string
+		if err := rows.Scan(&username); err != nil {
+			return nil, fmt.Errorf("scan workflow role recipient email: %w", err)
+		}
+		recipients = append(recipients, username)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("iterate workflow role recipient emails: %w", err)
+	}
+	return recipients, nil
+}
+
 func (r *Repository) findDefinition(ctx context.Context, query string, arg any) (*Definition, error) {
 	var definition Definition
 	if err := r.db.QueryRowContext(ctx, query, arg).Scan(&definition.ID, &definition.Code, &definition.Name, &definition.ProcessClass); err != nil {

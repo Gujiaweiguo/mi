@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Gujiaweiguo/mi/backend/internal/notification"
 	"github.com/Gujiaweiguo/mi/backend/internal/pagination"
 	"github.com/Gujiaweiguo/mi/backend/internal/workflow"
 	mysql "github.com/go-sql-driver/mysql"
@@ -26,11 +27,18 @@ type Service struct {
 	repository      *Repository
 	db              *sql.DB
 	workflowService *workflow.Service
+	notifier        notification.Notifier
 }
 
-func NewService(db *sql.DB, repository *Repository, workflowService *workflow.Service) *Service {
-	return &Service{db: db, repository: repository, workflowService: workflowService}
+func NewService(db *sql.DB, repository *Repository, workflowService *workflow.Service, notifiers ...notification.Notifier) *Service {
+	service := &Service{db: db, repository: repository, workflowService: workflowService}
+	if len(notifiers) > 0 {
+		service.notifier = notifiers[0]
+	}
+	return service
 }
+
+const expirationReminderThresholdDays = 30
 
 func (s *Service) CreateDraft(ctx context.Context, input CreateDraftInput) (*Contract, error) {
 	contract, err := contractFromCreateInput(input)
@@ -370,4 +378,91 @@ func mapWorkflowState(instance *workflow.Instance) (Status, *time.Time, *time.Ti
 func isDuplicateEntry(err error) bool {
 	var mysqlErr *mysql.MySQLError
 	return errors.As(err, &mysqlErr) && mysqlErr.Number == 1062
+}
+
+func (s *Service) CheckExpirationReminders(ctx context.Context) error {
+	if s == nil || s.repository == nil || s.notifier == nil {
+		return nil
+	}
+	asOf := time.Now().UTC()
+	candidates, err := s.repository.ListExpirationReminderCandidates(ctx, asOf, expirationReminderThresholdDays)
+	if err != nil {
+		return err
+	}
+	for _, candidate := range candidates {
+		if err := s.enqueueExpirationReminder(ctx, asOf, candidate); err != nil {
+			continue
+		}
+	}
+	return nil
+}
+
+func (s *Service) enqueueExpirationReminder(ctx context.Context, asOf time.Time, candidate ExpirationReminderCandidate) error {
+	tx, err := s.db.BeginTx(ctx, nil)
+	if err != nil {
+		return fmt.Errorf("begin lease expiration reminder transaction: %w", err)
+	}
+	defer func() { _ = tx.Rollback() }()
+
+	alreadyQueued, err := s.repository.HasReminderQueuedSince(ctx, tx, "lease.expiration_reminder", "lease_contract", candidate.LeaseID, asOf.Truncate(24*time.Hour))
+	if err != nil {
+		return err
+	}
+	if alreadyQueued {
+		if err := tx.Commit(); err != nil {
+			return fmt.Errorf("commit duplicate lease expiration reminder transaction: %w", err)
+		}
+		return nil
+	}
+	recipients, err := s.repository.ListOperationsRecipientEmails(ctx, tx)
+	if err != nil {
+		return err
+	}
+	recipients = normalizeLeaseReminderRecipients(recipients)
+	if len(recipients) == 0 {
+		if err := tx.Commit(); err != nil {
+			return fmt.Errorf("commit lease expiration reminder skip transaction: %w", err)
+		}
+		return nil
+	}
+	if err := s.notifier.Enqueue(ctx, tx, notification.NotificationEvent{
+		EventType:     "lease.expiration_reminder",
+		AggregateType: "lease_contract",
+		AggregateID:   candidate.LeaseID,
+		RecipientTo:   recipients,
+		TemplateName:  "lease_expiration_reminder",
+		TemplateData: notification.LeaseExpirationData{
+			ContractNumber: candidate.ContractNumber,
+			TenantName:     candidate.TenantName,
+			ExpirationDate: candidate.ExpirationDate.UTC().Format(DateLayout),
+			DaysRemaining:  candidate.DaysRemaining,
+		},
+	}); err != nil {
+		if commitErr := tx.Commit(); commitErr != nil {
+			return fmt.Errorf("commit failed lease expiration reminder transaction: %w", commitErr)
+		}
+		return err
+	}
+	if err := tx.Commit(); err != nil {
+		return fmt.Errorf("commit lease expiration reminder transaction: %w", err)
+	}
+	return nil
+}
+
+func normalizeLeaseReminderRecipients(candidates []string) []string {
+	unique := make(map[string]struct{}, len(candidates))
+	recipients := make([]string, 0, len(candidates))
+	for _, candidate := range candidates {
+		email := strings.TrimSpace(candidate)
+		if email == "" || !strings.Contains(email, "@") {
+			continue
+		}
+		email = strings.ToLower(email)
+		if _, exists := unique[email]; exists {
+			continue
+		}
+		unique[email] = struct{}{}
+		recipients = append(recipients, email)
+	}
+	return recipients
 }

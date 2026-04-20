@@ -17,6 +17,7 @@ import (
 	"github.com/Gujiaweiguo/mi/backend/internal/invoice"
 	"github.com/Gujiaweiguo/mi/backend/internal/lease"
 	"github.com/Gujiaweiguo/mi/backend/internal/masterdata"
+	"github.com/Gujiaweiguo/mi/backend/internal/notification"
 	"github.com/Gujiaweiguo/mi/backend/internal/reporting"
 	"github.com/Gujiaweiguo/mi/backend/internal/sales"
 	"github.com/Gujiaweiguo/mi/backend/internal/structure"
@@ -66,14 +67,24 @@ func NewRouter(cfg *config.Config, db *sql.DB, logger *zap.Logger) *gin.Engine {
 	authService := auth.NewService(authRepository, cfg.Auth)
 	authHandler := handlers.NewAuthHandler(authService)
 	orgHandler := handlers.NewOrgHandler(authRepository)
+	notificationRepository := notification.NewRepository(db)
+	var notifier notification.Notifier = notification.NoopNotifier{}
+	if cfg != nil && cfg.Email.Enabled {
+		renderer, err := notification.NewRenderer(cfg.Email.TemplateDir)
+		if err == nil {
+			sender := notification.NewSMTPSender(cfg.Email, logger)
+			notifier = notification.NewServiceNotifier(notification.NewService(db, notificationRepository, sender, renderer, cfg.Email, logger))
+		}
+	}
+	notificationHandler := notification.NewHandler(notificationRepository)
 	workflowRepository := workflow.NewRepository(db)
-	workflowService := workflow.NewService(db, workflowRepository)
+	workflowService := workflow.NewService(db, workflowRepository, notifier)
 	leaseRepository := lease.NewRepository(db)
-	leaseService := lease.NewService(db, leaseRepository, workflowService)
+	leaseService := lease.NewService(db, leaseRepository, workflowService, notifier)
 	billingRepository := billing.NewRepository(db)
 	billingService := billing.NewService(db, billingRepository)
 	invoiceRepository := invoice.NewRepository(db)
-	invoiceService := invoice.NewService(db, invoiceRepository, billingRepository, workflowService)
+	invoiceService := invoice.NewService(db, invoiceRepository, billingRepository, workflowService, notifier)
 	docOutputRepository := docoutput.NewRepository(db)
 	docOutputService := docoutput.NewService(docOutputRepository, invoiceService, cfg.Storage)
 	excelIORepository := excelio.NewRepository(db)
@@ -114,6 +125,9 @@ func NewRouter(cfg *config.Config, db *sql.DB, logger *zap.Logger) *gin.Engine {
 	authGroup := api.Group("/auth")
 	authGroup.POST("/login", authHandler.Login)
 	authGroup.GET("/me", middleware.RequireAuth(authService, authRepository), authHandler.Me)
+	notificationGroup := api.Group("/notifications")
+	notificationGroup.Use(middleware.RequireAuth(authService, authRepository))
+	notificationGroup.GET("", middleware.RequirePermission("notification.admin", "view", authService), notificationHandler.ListNotifications)
 
 	dashboardGroup := api.Group("/dashboard")
 	dashboardGroup.Use(middleware.RequireAuth(authService, authRepository))
