@@ -13,7 +13,7 @@ database:
   port: 3306
   name: mi_dev
   user: mi_dev
-  password: mi_dev
+  password: devpassword
   ssl_mode: disable
 
 auth:
