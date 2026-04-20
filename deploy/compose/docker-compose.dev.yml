@@ -72,6 +72,29 @@ services:
         condition: service_healthy
 
   # ---------------------------------------------------------------------------
+  # Database seed runner — use `docker compose run --rm seed`
+  # Loads demo data after migration. Idempotent (INSERT IGNORE).
+  # ---------------------------------------------------------------------------
+  seed:
+    image: mysql:8.0
+    profiles: ["fullstack"]
+    restart: "no"
+    networks: [mi-dev-net]
+    entrypoint: ["mysql"]
+    command:
+      - "-h"
+      - "mysql"
+      - "-u"
+      - "${MI_DB_USER:-mi_dev}"
+      - "-p${MI_DB_PASSWORD:-devpassword}"
+      - "${MI_DB_NAME:-mi_dev}"
+    volumes:
+      - ../../backend/internal/platform/database/seed/seed_dev.sql:/docker-entrypoint-initdb.d/seed.sql:ro
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  # ---------------------------------------------------------------------------
   # Backend with hot-reload (air) — fullstack profile only
   # Source is bind-mounted; air rebuilds on change.
   # ---------------------------------------------------------------------------
