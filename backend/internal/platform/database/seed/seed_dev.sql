@@ -159,11 +159,11 @@ INSERT IGNORE INTO role_permissions (role_id, function_id, permission_level, can
 -- =========================================================
 
 INSERT IGNORE INTO users (id, department_id, username, display_name, password_hash, status) VALUES
-  (101, 101, 'admin', '系统管理员', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'active'),
-  (102, 211, 'manager', '租赁经理', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'active'),
-  (103, 212, 'finance', '财务经理', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'active'),
-  (104, 113, 'property', '物业经理', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'active'),
-  (105, 114, 'operator', '门店运营', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'active');
+  (101, 101, 'admin', '系统管理员', '$2a$10$mFb/CnxofdT/vPz6af1/H.Iu/JAjZHHKMLs8AA8a77Ihi2l9g8i.m', 'active'),
+  (102, 211, 'manager', '租赁经理', '$2a$10$mFb/CnxofdT/vPz6af1/H.Iu/JAjZHHKMLs8AA8a77Ihi2l9g8i.m', 'active'),
+  (103, 212, 'finance', '财务经理', '$2a$10$mFb/CnxofdT/vPz6af1/H.Iu/JAjZHHKMLs8AA8a77Ihi2l9g8i.m', 'active'),
+  (104, 113, 'property', '物业经理', '$2a$10$mFb/CnxofdT/vPz6af1/H.Iu/JAjZHHKMLs8AA8a77Ihi2l9g8i.m', 'active'),
+  (105, 114, 'operator', '门店运营', '$2a$10$mFb/CnxofdT/vPz6af1/H.Iu/JAjZHHKMLs8AA8a77Ihi2l9g8i.m', 'active');
 
 INSERT IGNORE INTO user_roles (user_id, role_id, department_id) VALUES
   (101, 101, 101),
