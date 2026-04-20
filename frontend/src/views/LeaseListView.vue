@@ -4,16 +4,20 @@ import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 
 import { listLeases, type LeaseSummary } from '../api/lease'
+import { listDepartments, listStores } from '../api/org'
 import FilterForm from '../components/platform/FilterForm.vue'
 import PageSection from '../components/platform/PageSection.vue'
 import { useFilterForm } from '../composables/useFilterForm'
 import { getErrorMessage } from '../composables/useErrorMessage'
 import { usePagination } from '../composables/usePagination'
+import { formatDate } from '../utils/format'
 
 const router = useRouter()
 const { t } = useI18n()
 
 const rows = ref<LeaseSummary[]>([])
+const deptMap = ref(new Map<number, string>())
+const storeMap = ref(new Map<number, string>())
 const { page, pageSize, total, paginationParams, resetPage, handlePageChange, handleSizeChange } = usePagination()
 const isLoading = ref(false)
 const errorMessage = ref('')
@@ -98,8 +102,13 @@ const handleRowClick = (row: LeaseSummary) => {
   void openLease(row.id)
 }
 
-onMounted(() => {
+onMounted(async () => {
   void loadLeases()
+  try {
+    const [deptResp, storeResp] = await Promise.all([listDepartments(), listStores()])
+    deptResp.data.departments?.forEach((d: any) => deptMap.value.set(d.id, d.name))
+    storeResp.data.stores?.forEach((s: any) => storeMap.value.set(s.id, s.name))
+  } catch { /* non-critical */ }
 })
 </script>
 
@@ -174,10 +183,18 @@ onMounted(() => {
         >
           <el-table-column prop="lease_no" :label="t('lease.columns.leaseNo')" min-width="180" />
           <el-table-column prop="tenant_name" :label="t('lease.columns.tenant')" min-width="220" />
-          <el-table-column prop="department_id" :label="t('lease.columns.department')" min-width="120" />
-          <el-table-column prop="store_id" :label="t('lease.columns.store')" min-width="120" />
-          <el-table-column prop="start_date" :label="t('lease.columns.startDate')" min-width="140" />
-          <el-table-column prop="end_date" :label="t('lease.columns.endDate')" min-width="140" />
+          <el-table-column :label="t('lease.columns.department')" min-width="120">
+            <template #default="scope">{{ deptMap.get(scope.row.department_id) ?? scope.row.department_id }}</template>
+          </el-table-column>
+          <el-table-column :label="t('lease.columns.store')" min-width="120">
+            <template #default="scope">{{ storeMap.get(scope.row.store_id) ?? scope.row.store_id }}</template>
+          </el-table-column>
+          <el-table-column :label="t('lease.columns.startDate')" min-width="120">
+            <template #default="scope">{{ formatDate(scope.row.start_date) }}</template>
+          </el-table-column>
+          <el-table-column :label="t('lease.columns.endDate')" min-width="120">
+            <template #default="scope">{{ formatDate(scope.row.end_date) }}</template>
+          </el-table-column>
           <el-table-column :label="t('common.columns.status')" min-width="140">
             <template #default="scope">
               {{ resolveStatusLabel(scope.row.status) }}

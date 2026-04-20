@@ -10,6 +10,7 @@ import { useFilterForm } from '../composables/useFilterForm'
 import { getErrorMessage } from '../composables/useErrorMessage'
 import { usePagination } from '../composables/usePagination'
 import { useAppStore } from '../stores/app'
+import { formatDate } from '../utils/format'
 
 const router = useRouter()
 const { t } = useI18n()
@@ -262,7 +263,7 @@ onMounted(() => {
         <el-table-column prop="tenant_name" :label="t('billingInvoices.fields.tenant')" min-width="220" />
         <el-table-column :label="t('billingInvoices.fields.period')" min-width="220">
           <template #default="scope">
-            {{ scope.row.period_start }} → {{ scope.row.period_end }}
+            {{ formatDate(scope.row.period_start) }} → {{ formatDate(scope.row.period_end) }}
           </template>
         </el-table-column>
         <el-table-column :label="t('billingInvoices.fields.total')" min-width="140" align="right" header-align="right">
