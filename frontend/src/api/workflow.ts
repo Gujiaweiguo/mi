@@ -48,6 +48,14 @@ export interface AuditEntry {
   created_at: string
 }
 
+export const startWorkflow = (data: {
+  definition_code: string
+  document_type: string
+  document_id: number
+  actor_user_id: number
+  department_id: number
+  idempotency_key: string
+}) => http.post<{ instance: WorkflowInstance }>('/workflow/instances', data)
 export const listWorkflowDefinitions = () => http.get<{ definitions: WorkflowDefinition[] }>('/workflow/definitions')
 export const listWorkflowInstances = (params?: ListWorkflowInstancesParams) =>
   http.get<{ instances: WorkflowInstanceListItem[] }>('/workflow/instances', { params })
@@ -55,9 +63,12 @@ export const getWorkflowInstance = (id: number) =>
   http.get<{ instance: WorkflowInstance }>(`/workflow/instances/${id}`)
 export const getWorkflowAuditHistory = (id: number) =>
   http.get<{ history: AuditEntry[] }>(`/workflow/instances/${id}/audit`)
+export const getReminderHistory = (instanceId: number) =>
+  http.get<{ reminders: any[] }>(`/workflow/instances/${instanceId}/reminders`)
 export const approveWorkflow = (id: number, data: IdempotencyRequest) =>
   http.post<{ instance: WorkflowInstance }>(`/workflow/instances/${id}/approve`, data)
 export const rejectWorkflow = (id: number, data: IdempotencyRequest) =>
   http.post<{ instance: WorkflowInstance }>(`/workflow/instances/${id}/reject`, data)
 export const resubmitWorkflow = (id: number, data: IdempotencyRequest) =>
   http.post<{ instance: WorkflowInstance }>(`/workflow/instances/${id}/resubmit`, data)
+export const runReminders = () => http.post('/workflow/reminders/run')
