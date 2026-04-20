@@ -10,9 +10,13 @@ import (
 	"sync"
 	"time"
 
+	"github.com/Gujiaweiguo/mi/backend/internal/billing"
 	"github.com/Gujiaweiguo/mi/backend/internal/config"
 	api "github.com/Gujiaweiguo/mi/backend/internal/http"
+	"github.com/Gujiaweiguo/mi/backend/internal/invoice"
+	"github.com/Gujiaweiguo/mi/backend/internal/lease"
 	"github.com/Gujiaweiguo/mi/backend/internal/logging"
+	"github.com/Gujiaweiguo/mi/backend/internal/notification"
 	platformdb "github.com/Gujiaweiguo/mi/backend/internal/platform/database"
 	"github.com/Gujiaweiguo/mi/backend/internal/workflow"
 	_ "github.com/go-sql-driver/mysql"
@@ -20,10 +24,11 @@ import (
 )
 
 type App struct {
-	config *config.Config
-	logger *zap.Logger
-	db     *sql.DB
-	server *http.Server
+	config              *config.Config
+	logger              *zap.Logger
+	db                  *sql.DB
+	server              *http.Server
+	notificationService *notification.Service
 }
 
 type workflowReminderSchedulerService interface {
@@ -96,6 +101,21 @@ func New() (*App, error) {
 	db.SetConnMaxIdleTime(1 * time.Minute)
 
 	router := api.NewRouter(cfg, db, logger)
+	var notificationService *notification.Service
+	if cfg.Email.Enabled {
+		renderer, err := notification.NewRenderer(cfg.Email.TemplateDir)
+		if err != nil {
+			return nil, err
+		}
+		notificationService = notification.NewService(
+			db,
+			notification.NewRepository(db),
+			notification.NewSMTPSender(cfg.Email, logger),
+			renderer,
+			cfg.Email,
+			logger,
+		)
+	}
 
 	server := &http.Server{
 		Addr:              fmt.Sprintf("%s:%d", cfg.Server.Host, cfg.Server.Port),
@@ -105,11 +125,12 @@ func New() (*App, error) {
 		WriteTimeout:      time.Duration(cfg.Server.WriteTimeoutSeconds) * time.Second,
 	}
 
-	return &App{config: cfg, logger: logger, db: db, server: server}, nil
+	return &App{config: cfg, logger: logger, db: db, server: server, notificationService: notificationService}, nil
 }
 
 func (a *App) Run(ctx context.Context) error {
 	stopReminderScheduler := a.startWorkflowReminderScheduler()
+	stopNotificationPoller := a.startNotificationPoller()
 
 	a.logger.Sugar().Infow(
 		"starting backend service",
@@ -130,10 +151,12 @@ func (a *App) Run(ctx context.Context) error {
 		a.logger.Sugar().Infow("received shutdown signal")
 	case err := <-serverErr:
 		stopReminderScheduler()
+		stopNotificationPoller()
 		return err
 	}
 
 	stopReminderScheduler()
+	stopNotificationPoller()
 
 	shutdownCtx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
@@ -160,6 +183,73 @@ func (a *App) Shutdown(ctx context.Context) error {
 
 func (a *App) Logger() *zap.Logger {
 	return a.logger
+}
+
+func (a *App) startNotificationPoller() func() {
+	if a.notificationService == nil {
+		a.logger.Sugar().Infow("notification poller disabled")
+		return func() {}
+	}
+	interval := time.Duration(a.config.Email.PollIntervalSeconds) * time.Second
+	if interval <= 0 {
+		interval = time.Minute
+	}
+	notifier := notification.NewServiceNotifier(a.notificationService)
+	invoiceService := invoice.NewService(a.db, invoice.NewRepository(a.db), billing.NewRepository(a.db), nil, notifier)
+	leaseService := lease.NewService(a.db, lease.NewRepository(a.db), nil, notifier)
+	pollerCtx, cancel := context.WithCancel(context.Background())
+	stopCh := make(chan struct{})
+	doneCh := make(chan struct{})
+	var stopOnce sync.Once
+	var runMutex sync.Mutex
+
+	a.logger.Sugar().Infow("notification poller enabled", "interval_seconds", int(interval.Seconds()))
+
+	go func() {
+		ticker := time.NewTicker(interval)
+		defer ticker.Stop()
+		defer close(doneCh)
+		for {
+			select {
+			case <-ticker.C:
+				if !tryLockMutex(&runMutex) {
+					a.logger.Sugar().Warnw("skip notification poll tick because previous run is still in progress")
+					continue
+				}
+				runErr := func() error {
+					defer runMutex.Unlock()
+					runCtx, cancelRun := context.WithTimeout(context.Background(), interval)
+					defer cancelRun()
+					if err := invoiceService.CheckPaymentReminders(runCtx); err != nil {
+						return err
+					}
+					if err := leaseService.CheckExpirationReminders(runCtx); err != nil {
+						return err
+					}
+					return a.notificationService.ProcessOutbox(runCtx)
+				}()
+				if runErr != nil {
+					a.logger.Sugar().Errorw("notification poll cycle failed", "error", runErr)
+					continue
+				}
+				a.logger.Sugar().Infow("notification poll cycle completed")
+			case <-pollerCtx.Done():
+				a.logger.Sugar().Infow("notification poller stopping")
+				return
+			case <-stopCh:
+				return
+			}
+		}
+	}()
+
+	return func() {
+		stopOnce.Do(func() {
+			cancel()
+			close(stopCh)
+			<-doneCh
+			a.logger.Sugar().Infow("notification poller stopped")
+		})
+	}
 }
 
 func (a *App) startWorkflowReminderScheduler() func() {
