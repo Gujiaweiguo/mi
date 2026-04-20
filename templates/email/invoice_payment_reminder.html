@@ -1,0 +1,15 @@
+{{define "subject"}}Payment Reminder: Invoice {{.InvoiceNumber}}{{end}}
+
+{{define "body"}}
+<!DOCTYPE html>
+<html lang="en">
+<body>
+  <h2>Invoice Payment Reminder</h2>
+  <p><strong>Invoice Number:</strong> {{.InvoiceNumber}}</p>
+  <p><strong>Customer Name:</strong> {{.CustomerName}}</p>
+  <p><strong>Amount Due:</strong> {{.AmountDue}}</p>
+  <p><strong>Due Date:</strong> {{.DueDate}}</p>
+  <p><strong>Days Overdue:</strong> {{.DaysOverdue}}</p>
+</body>
+</html>
+{{end}}

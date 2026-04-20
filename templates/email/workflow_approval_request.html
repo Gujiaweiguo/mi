@@ -1,0 +1,15 @@
+{{define "subject"}}Approval Request: {{.DocumentType}} {{.DocumentNumber}}{{end}}
+
+{{define "body"}}
+<!DOCTYPE html>
+<html lang="en">
+<body>
+  <h2>Approval Request</h2>
+  <p><strong>Document Type:</strong> {{.DocumentType}}</p>
+  <p><strong>Document Number:</strong> {{.DocumentNumber}}</p>
+  <p><strong>Submitter:</strong> {{.SubmitterName}}</p>
+  <p><strong>Approval Step:</strong> {{.ApprovalStepName}}</p>
+  <p><a href="{{.ApprovalLink}}">Open approval request</a></p>
+</body>
+</html>
+{{end}}

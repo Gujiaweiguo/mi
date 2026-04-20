@@ -1,0 +1,14 @@
+{{define "subject"}}Lease Expiration Reminder: {{.ContractNumber}}{{end}}
+
+{{define "body"}}
+<!DOCTYPE html>
+<html lang="en">
+<body>
+  <h2>Lease Expiration Reminder</h2>
+  <p><strong>Contract Number:</strong> {{.ContractNumber}}</p>
+  <p><strong>Tenant Name:</strong> {{.TenantName}}</p>
+  <p><strong>Expiration Date:</strong> {{.ExpirationDate}}</p>
+  <p><strong>Days Remaining:</strong> {{.DaysRemaining}}</p>
+</body>
+</html>
+{{end}}
