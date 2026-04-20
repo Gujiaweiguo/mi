@@ -36,3 +36,7 @@ Thumbs.db
 
 # Local logs
 *.log
+
+# Go workspace files (local IDE artifacts)
+go.work
+go.work.sum
