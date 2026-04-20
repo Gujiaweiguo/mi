@@ -51,3 +51,25 @@ type SessionUser struct {
 	Roles        []string     `json:"roles"`
 	Permissions  []Permission `json:"permissions"`
 }
+
+type UserSummary struct {
+	ID           int64  `json:"id"`
+	DepartmentID int64  `json:"department_id"`
+	Username     string `json:"username"`
+	DisplayName  string `json:"display_name"`
+	Status       string `json:"status"`
+}
+
+type CreateUserInput struct {
+	DepartmentID int64
+	Username     string
+	DisplayName  string
+	PasswordHash string
+	Status       string
+}
+
+type UpdateUserInput struct {
+	DepartmentID *int64
+	DisplayName  *string
+	Status       *string
+}

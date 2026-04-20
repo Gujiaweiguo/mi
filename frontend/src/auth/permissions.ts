@@ -112,6 +112,11 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
     labelKey: 'app.navigation.excelIo',
     functionCode: FUNCTION_CODES.excelIo,
   },
+  {
+    path: '/admin/users',
+    labelKey: 'app.navigation.userManagement',
+    functionCode: FUNCTION_CODES.baseinfoAdmin,
+  },
 ]
 
 const normalizePermissionLevel = (value: unknown): PermissionLevel => {

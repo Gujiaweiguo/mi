@@ -66,6 +66,7 @@ export const enUSMessages = {
       generalizeReports: 'Generalize reports',
       visualShopAnalysis: 'Visual shop analysis',
       excelIo: 'Excel import/export',
+  userManagement: 'User Management',
     },
     session: {
       signedIn: 'Signed in',

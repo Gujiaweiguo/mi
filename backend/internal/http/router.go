@@ -114,6 +114,7 @@ func NewRouter(cfg *config.Config, db *sql.DB, logger *zap.Logger) *gin.Engine {
 	taxExportHandler := handlers.NewTaxExportHandler(taxExportService)
 	dashboardService := dashboard.NewDashboardService(db)
 	dashboardHandler := handlers.NewDashboardHandler(dashboardService)
+	userHandler := handlers.NewUserHandler(authRepository)
 	workflowHandler := handlers.NewWorkflowHandler(workflowService, workflowSyncers{syncers: []handlers.WorkflowStateSyncer{leaseService, invoiceService}})
 	router.GET("/health", healthHandler.Get)
 	router.GET("/healthz", healthHandler.Get)
@@ -137,6 +138,19 @@ func NewRouter(cfg *config.Config, db *sql.DB, logger *zap.Logger) *gin.Engine {
 	orgGroup.Use(middleware.RequireAuth(authService, authRepository))
 	orgGroup.GET("/departments", middleware.RequirePermission("workflow.admin", "view", authService), orgHandler.Departments)
 	orgGroup.GET("/stores", middleware.RequirePermission("workflow.admin", "view", authService), orgHandler.Stores)
+
+	userGroup := api.Group("/users")
+	userGroup.Use(middleware.RequireAuth(authService, authRepository))
+	userGroup.GET("", middleware.RequirePermission("baseinfo.admin", "view", authService), userHandler.List)
+	userGroup.GET("/:id", middleware.RequirePermission("baseinfo.admin", "view", authService), userHandler.Get)
+	userGroup.POST("", middleware.RequirePermission("baseinfo.admin", "edit", authService), userHandler.Create)
+	userGroup.PUT("/:id", middleware.RequirePermission("baseinfo.admin", "edit", authService), userHandler.Update)
+	userGroup.POST("/:id/reset-password", middleware.RequirePermission("baseinfo.admin", "edit", authService), userHandler.ResetPassword)
+	userGroup.PUT("/:id/roles", middleware.RequirePermission("baseinfo.admin", "edit", authService), userHandler.SetRoles)
+
+	roleGroup := api.Group("/roles")
+	roleGroup.Use(middleware.RequireAuth(authService, authRepository))
+	roleGroup.GET("", middleware.RequirePermission("baseinfo.admin", "view", authService), userHandler.ListRoles)
 
 	masterDataGroup := api.Group("/master-data")
 	masterDataGroup.Use(middleware.RequireAuth(authService, authRepository))

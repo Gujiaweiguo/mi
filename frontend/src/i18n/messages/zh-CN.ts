@@ -66,6 +66,7 @@ export const zhCNMessages = {
       generalizeReports: '总务报表',
       visualShopAnalysis: '商铺视觉分析',
       excelIo: 'Excel 导入导出',
+  userManagement: '用户管理',
     },
     session: {
       signedIn: '已登录',

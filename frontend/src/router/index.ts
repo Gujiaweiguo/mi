@@ -224,6 +224,15 @@ const router = createRouter({
         requiresAuth: true,
       },
     },
+    {
+      path: '/admin/users',
+      name: 'user-management',
+      component: () => import('../views/UserManagementView.vue'),
+      meta: {
+        requiresAuth: true,
+        permissionCode: FUNCTION_CODES.baseinfoAdmin,
+      },
+    },
   ],
 })
 
