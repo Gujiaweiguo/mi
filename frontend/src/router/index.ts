@@ -64,6 +64,15 @@ const router = createRouter({
       },
     },
     {
+      path: '/notifications',
+      name: 'notifications',
+      component: () => import('../views/NotificationsView.vue'),
+      meta: {
+        requiresAuth: true,
+        permissionCode: FUNCTION_CODES.notificationAdmin,
+      },
+    },
+    {
       path: '/admin/master-data',
       name: 'masterdata-admin',
       component: () => import('../views/MasterDataAdminView.vue'),

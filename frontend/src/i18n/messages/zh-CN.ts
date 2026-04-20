@@ -52,6 +52,7 @@ export const zhCNMessages = {
       dashboard: '工作台概览',
       health: '平台健康',
       workflowAdmin: '工作流管理',
+      notifications: '通知记录',
       masterdataAdmin: '主数据管理',
       salesAdmin: '销售数据管理',
       baseinfoAdmin: '基础资料管理',
@@ -320,6 +321,49 @@ export const zhCNMessages = {
       unableToLoadInstances: '无法加载工作流实例。',
       actionFailed: '{action}操作失败',
       unableToAction: '无法对实例 #{id} 执行{action}操作。',
+    },
+  },
+  notifications: {
+    eyebrow: '通知审计',
+    title: '通知记录',
+    summary: '查看通知出站历史，按事件、状态和创建时间筛选发送情况。',
+    filters: {
+      title: '通知筛选',
+    },
+    fields: {
+      eventType: '事件类型',
+      status: '状态',
+      createdAtRange: '创建时间范围',
+    },
+    placeholders: {
+      allEventTypes: '全部事件类型',
+      allStatuses: '全部状态',
+      createdAtStart: '开始日期',
+      createdAtEnd: '结束日期',
+    },
+    columns: {
+      eventType: '事件类型',
+      aggregateType: '聚合类型',
+      subject: '主题',
+      recipientTo: '收件人',
+      status: '状态',
+      createdAt: '创建时间',
+      sentAt: '发送时间',
+    },
+    table: {
+      title: '通知历史',
+      empty: '暂无通知记录。',
+    },
+    statuses: {
+      pending: '待发送',
+      sending: '发送中',
+      sent: '已发送',
+      failed: '发送失败',
+      dead: '停止重试',
+    },
+    errors: {
+      recordsUnavailable: '通知记录不可用',
+      unableToLoad: '无法加载通知记录。',
     },
   },
   masterdataAdmin: {

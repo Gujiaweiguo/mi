@@ -2,6 +2,7 @@ import type { PermissionAction, PermissionLevel, SessionPermission, SessionUser 
 
 export const FUNCTION_CODES = {
   workflowAdmin: 'workflow.admin',
+  notificationAdmin: 'notification.admin',
   masterdataAdmin: 'masterdata.admin',
   salesAdmin: 'sales.admin',
   baseinfoAdmin: 'baseinfo.admin',
@@ -40,6 +41,11 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
     path: '/workflow/admin',
     labelKey: 'app.navigation.workflowAdmin',
     functionCode: FUNCTION_CODES.workflowAdmin,
+  },
+  {
+    path: '/notifications',
+    labelKey: 'app.navigation.notifications',
+    functionCode: FUNCTION_CODES.notificationAdmin,
   },
   {
     path: '/admin/master-data',

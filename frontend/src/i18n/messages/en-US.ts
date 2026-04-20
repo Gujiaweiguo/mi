@@ -52,6 +52,7 @@ export const enUSMessages = {
       dashboard: 'Dashboard',
       health: 'Platform health',
       workflowAdmin: 'Workflow administration',
+      notifications: 'Notification History',
       masterdataAdmin: 'Master data admin',
       salesAdmin: 'Sales data admin',
       baseinfoAdmin: 'Base info admin',
@@ -320,6 +321,49 @@ export const enUSMessages = {
       unableToLoadInstances: 'Unable to load workflow instances.',
       actionFailed: '{action} action failed',
       unableToAction: 'Unable to {action} instance #{id}.',
+    },
+  },
+  notifications: {
+    eyebrow: 'Notification audit',
+    title: 'Notification history',
+    summary: 'Review outbound notification history and filter delivery activity by event, status, and created date.',
+    filters: {
+      title: 'Notification filters',
+    },
+    fields: {
+      eventType: 'Event type',
+      status: 'Status',
+      createdAtRange: 'Created date range',
+    },
+    placeholders: {
+      allEventTypes: 'All event types',
+      allStatuses: 'All statuses',
+      createdAtStart: 'Start date',
+      createdAtEnd: 'End date',
+    },
+    columns: {
+      eventType: 'Event type',
+      aggregateType: 'Aggregate type',
+      subject: 'Subject',
+      recipientTo: 'Recipient',
+      status: 'Status',
+      createdAt: 'Created at',
+      sentAt: 'Sent at',
+    },
+    table: {
+      title: 'Notification history',
+      empty: 'No notifications found.',
+    },
+    statuses: {
+      pending: 'Pending',
+      sending: 'Sending',
+      sent: 'Sent',
+      failed: 'Failed',
+      dead: 'Dead',
+    },
+    errors: {
+      recordsUnavailable: 'Notification history unavailable',
+      unableToLoad: 'Unable to load notification history.',
     },
   },
   masterdataAdmin: {
