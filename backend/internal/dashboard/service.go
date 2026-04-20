@@ -64,14 +64,14 @@ func (s *DashboardService) GetSummary(ctx context.Context) (*DashboardSummary, e
 	g.Go(func() error {
 		var err error
 		openReceivables, err = countQuery(ctx, s.db,
-			"SELECT COUNT(*) FROM ar_open_items WHERE settlement_status = 'outstanding'")
+			"SELECT COUNT(*) FROM ar_open_items WHERE outstanding_amount > 0")
 		return err
 	})
 
 	g.Go(func() error {
 		var err error
 		overdueReceivables, err = countQuery(ctx, s.db,
-			"SELECT COUNT(*) FROM ar_open_items WHERE settlement_status = 'outstanding' AND due_date < CURDATE()")
+			"SELECT COUNT(*) FROM ar_open_items WHERE outstanding_amount > 0 AND due_date < CURDATE()")
 		return err
 	})
 
