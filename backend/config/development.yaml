@@ -20,6 +20,20 @@ auth:
   jwt_secret: change-me-development-secret
   token_expiry_seconds: 3600
 
+# email:
+#   smtp_host: smtp.example.com
+#   smtp_port: 587
+#   smtp_username: username
+#   smtp_password: password
+#   from_address: no-reply@example.com
+#   from_name: MI Notifications
+#   template_dir: ./templates/email
+#   enabled: false
+#   max_retry_attempts: 5
+#   retry_interval_seconds: 300
+#   poll_interval_seconds: 60
+#   batch_size: 20
+
 log:
   level: debug
 

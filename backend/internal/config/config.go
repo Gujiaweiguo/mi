@@ -16,6 +16,7 @@ type Config struct {
 	Server                    ServerConfig                    `mapstructure:"server"`
 	Database                  DatabaseConfig                  `mapstructure:"database"`
 	Auth                      AuthConfig                      `mapstructure:"auth"`
+	Email                     EmailConfig                     `mapstructure:"email"`
 	Log                       LogConfig                       `mapstructure:"log"`
 	Storage                   StorageConfig                   `mapstructure:"storage"`
 	WorkflowReminderScheduler WorkflowReminderSchedulerConfig `mapstructure:"workflow_reminder_scheduler"`
@@ -45,6 +46,22 @@ type DatabaseConfig struct {
 type AuthConfig struct {
 	JWTSecret          string `mapstructure:"jwt_secret"`
 	TokenExpirySeconds int    `mapstructure:"token_expiry_seconds"`
+}
+
+// EmailConfig stores SMTP and notification outbox settings.
+type EmailConfig struct {
+	SMTPHost             string `mapstructure:"smtp_host"`
+	SMTPPort             int    `mapstructure:"smtp_port"`
+	SMTPUsername         string `mapstructure:"smtp_username"`
+	SMTPPassword         string `mapstructure:"smtp_password"`
+	FromAddress          string `mapstructure:"from_address"`
+	FromName             string `mapstructure:"from_name"`
+	TemplateDir          string `mapstructure:"template_dir"`
+	Enabled              bool   `mapstructure:"enabled"`
+	MaxRetryAttempts     int    `mapstructure:"max_retry_attempts"`
+	RetryIntervalSeconds int    `mapstructure:"retry_interval_seconds"`
+	PollIntervalSeconds  int    `mapstructure:"poll_interval_seconds"`
+	BatchSize            int    `mapstructure:"batch_size"`
 }
 
 type LogConfig struct {

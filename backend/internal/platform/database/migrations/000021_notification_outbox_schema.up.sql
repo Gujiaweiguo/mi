@@ -1,0 +1,21 @@
+CREATE TABLE notification_outbox (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  event_type VARCHAR(100) NOT NULL,
+  aggregate_type VARCHAR(50) NOT NULL,
+  aggregate_id BIGINT NOT NULL,
+  recipient_to TEXT NOT NULL,
+  recipient_cc TEXT NULL,
+  subject VARCHAR(500) NOT NULL,
+  template_name VARCHAR(100) NOT NULL,
+  template_data JSON NOT NULL,
+  status ENUM('pending', 'sending', 'sent', 'failed', 'dead') NOT NULL DEFAULT 'pending',
+  attempt_count INT NOT NULL DEFAULT 0,
+  max_attempts INT NOT NULL DEFAULT 5,
+  next_attempt_at DATETIME NULL,
+  sent_at DATETIME NULL,
+  last_error TEXT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  KEY idx_notification_outbox_status_next (status, next_attempt_at),
+  KEY idx_notification_outbox_aggregate (aggregate_type, aggregate_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
