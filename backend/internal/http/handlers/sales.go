@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/Gujiaweiguo/mi/backend/internal/http/handlers/errutil"
 	"github.com/Gujiaweiguo/mi/backend/internal/sales"
 	"github.com/gin-gonic/gin"
 )
@@ -87,7 +88,7 @@ func (h *SalesHandler) CreateDailySale(c *gin.Context) {
 	}
 	item, err := h.service.CreateDailySale(c.Request.Context(), sales.CreateDailySaleInput{StoreID: request.StoreID, UnitID: request.UnitID, SaleDate: saleDate, SalesAmount: request.SalesAmount})
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"message": errutil.SafeMessage(err)})
 		return
 	}
 	c.JSON(http.StatusCreated, gin.H{"daily_sale": item})
@@ -149,7 +150,7 @@ func (h *SalesHandler) CreateTraffic(c *gin.Context) {
 	}
 	item, err := h.service.CreateTraffic(c.Request.Context(), sales.CreateTrafficInput{StoreID: request.StoreID, TrafficDate: trafficDate, InboundCount: request.InboundCount})
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"message": errutil.SafeMessage(err)})
 		return
 	}
 	c.JSON(http.StatusCreated, gin.H{"traffic": item})

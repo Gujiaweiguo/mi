@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/Gujiaweiguo/mi/backend/internal/http/handlers/errutil"
 	"github.com/Gujiaweiguo/mi/backend/internal/http/middleware"
 	"github.com/Gujiaweiguo/mi/backend/internal/invoice"
 	"github.com/Gujiaweiguo/mi/backend/internal/pagination"
@@ -470,5 +471,5 @@ func (h *InvoiceHandler) renderInvoiceError(c *gin.Context, err error) {
 	case errors.Is(err, invoice.ErrInvalidDocumentState), errors.Is(err, invoice.ErrDocumentAlreadySubmitted), errors.Is(err, invoice.ErrPaymentNotAllowed), errors.Is(err, invoice.ErrPaymentOverApplication), errors.Is(err, invoice.ErrDocumentHasRecordedPayments):
 		status = http.StatusConflict
 	}
-	c.JSON(status, gin.H{"message": err.Error()})
+	c.JSON(status, gin.H{"message": errutil.SafeMessage(err)})
 }

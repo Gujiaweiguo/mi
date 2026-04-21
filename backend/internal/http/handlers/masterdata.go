@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/Gujiaweiguo/mi/backend/internal/http/handlers/errutil"
 	"github.com/Gujiaweiguo/mi/backend/internal/masterdata"
 	"github.com/gin-gonic/gin"
 )
@@ -476,7 +477,7 @@ func (h *MasterDataHandler) renderMasterDataError(c *gin.Context, err error) {
 	if errors.Is(err, masterdata.ErrMasterDataNotFound) {
 		status = http.StatusNotFound
 	}
-	c.JSON(status, gin.H{"message": err.Error()})
+	c.JSON(status, gin.H{"message": errutil.SafeMessage(err)})
 }
 
 func parseIntQuery(c *gin.Context, key string, fallback int) int {

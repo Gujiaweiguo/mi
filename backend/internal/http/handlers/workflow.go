@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/Gujiaweiguo/mi/backend/internal/http/handlers/errutil"
 	"github.com/Gujiaweiguo/mi/backend/internal/http/middleware"
 	"github.com/Gujiaweiguo/mi/backend/internal/workflow"
 	"github.com/gin-gonic/gin"
@@ -155,7 +156,7 @@ func (h *WorkflowHandler) Start(c *gin.Context) {
 		if err == workflow.ErrDefinitionNotFound || err == workflow.ErrInvalidState {
 			status = http.StatusBadRequest
 		}
-		c.JSON(status, gin.H{"message": err.Error()})
+		c.JSON(status, gin.H{"message": errutil.SafeMessage(err)})
 		return
 	}
 
@@ -257,7 +258,7 @@ func (h *WorkflowHandler) transition(c *gin.Context, action workflow.Action) {
 		if err == workflow.ErrInvalidState || err == workflow.ErrDefinitionNotFound {
 			status = http.StatusBadRequest
 		}
-		c.JSON(status, gin.H{"message": err.Error()})
+		c.JSON(status, gin.H{"message": errutil.SafeMessage(err)})
 		return
 	}
 	if h.syncer != nil {

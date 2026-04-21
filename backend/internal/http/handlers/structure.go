@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/Gujiaweiguo/mi/backend/internal/http/handlers/errutil"
 	"github.com/Gujiaweiguo/mi/backend/internal/structure"
 	"github.com/gin-gonic/gin"
 )
@@ -669,5 +670,5 @@ func (h *StructureHandler) renderStructureError(c *gin.Context, err error) {
 	case errors.Is(err, structure.ErrDuplicateCode):
 		status = http.StatusConflict
 	}
-	c.JSON(status, gin.H{"message": err.Error()})
+	c.JSON(status, gin.H{"message": errutil.SafeMessage(err)})
 }

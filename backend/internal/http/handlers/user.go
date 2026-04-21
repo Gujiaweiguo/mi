@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/Gujiaweiguo/mi/backend/internal/auth"
+	"github.com/Gujiaweiguo/mi/backend/internal/http/handlers/errutil"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -44,7 +45,7 @@ type setUserRolesRequest struct {
 func (h *UserHandler) List(c *gin.Context) {
 	users, err := h.repo.ListUsers(c.Request.Context())
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": errutil.SafeMessage(err)})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"users": users})
@@ -59,7 +60,7 @@ func (h *UserHandler) Get(c *gin.Context) {
 	}
 	user, err := h.repo.GetUserByID(c.Request.Context(), id)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": errutil.SafeMessage(err)})
 		return
 	}
 	if user == nil {
@@ -79,7 +80,7 @@ func (h *UserHandler) Create(c *gin.Context) {
 
 	exists, err := h.repo.UsernameExists(c.Request.Context(), req.Username, 0)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": errutil.SafeMessage(err)})
 		return
 	}
 	if exists {
@@ -101,7 +102,7 @@ func (h *UserHandler) Create(c *gin.Context) {
 		Status:       "active",
 	})
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": errutil.SafeMessage(err)})
 		return
 	}
 
@@ -131,7 +132,7 @@ func (h *UserHandler) Update(c *gin.Context) {
 		DisplayName:  req.DisplayName,
 		Status:       req.Status,
 	}); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": errutil.SafeMessage(err)})
 		return
 	}
 
@@ -159,7 +160,7 @@ func (h *UserHandler) ResetPassword(c *gin.Context) {
 	}
 
 	if err := h.repo.SetUserPassword(c.Request.Context(), id, string(hash)); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": errutil.SafeMessage(err)})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"message": "password reset successful"})
@@ -179,7 +180,7 @@ func (h *UserHandler) SetRoles(c *gin.Context) {
 	}
 
 	if err := h.repo.SetUserRoles(c.Request.Context(), id, req.RoleIDs, req.DepartmentID); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": errutil.SafeMessage(err)})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"message": "roles updated"})
@@ -189,7 +190,7 @@ func (h *UserHandler) SetRoles(c *gin.Context) {
 func (h *UserHandler) ListRoles(c *gin.Context) {
 	roles, err := h.repo.ListRoles(c.Request.Context())
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": errutil.SafeMessage(err)})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"roles": roles})

@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/Gujiaweiguo/mi/backend/internal/billing"
+	"github.com/Gujiaweiguo/mi/backend/internal/http/handlers/errutil"
 	"github.com/Gujiaweiguo/mi/backend/internal/http/middleware"
 	"github.com/Gujiaweiguo/mi/backend/internal/pagination"
 	"github.com/gin-gonic/gin"
@@ -149,5 +150,5 @@ func (h *BillingHandler) renderBillingError(c *gin.Context, err error) {
 	if errors.Is(err, billing.ErrInvalidBillingWindow) {
 		status = http.StatusBadRequest
 	}
-	c.JSON(status, gin.H{"message": err.Error()})
+	c.JSON(status, gin.H{"message": errutil.SafeMessage(err)})
 }

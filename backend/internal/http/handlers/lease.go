@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/Gujiaweiguo/mi/backend/internal/http/handlers/errutil"
 	"github.com/Gujiaweiguo/mi/backend/internal/http/middleware"
 	"github.com/Gujiaweiguo/mi/backend/internal/lease"
 	"github.com/Gujiaweiguo/mi/backend/internal/pagination"
@@ -406,5 +407,5 @@ func (h *LeaseHandler) renderLeaseError(c *gin.Context, err error) {
 	case errors.Is(err, lease.ErrLeaseIncompleteForSubmission), errors.Is(err, workflow.ErrDefinitionNotFound), errors.Is(err, workflow.ErrInvalidState):
 		status = http.StatusBadRequest
 	}
-	c.JSON(status, gin.H{"message": err.Error()})
+	c.JSON(status, gin.H{"message": errutil.SafeMessage(err)})
 }

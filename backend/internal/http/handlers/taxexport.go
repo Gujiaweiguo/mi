@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/Gujiaweiguo/mi/backend/internal/http/handlers/errutil"
 	"github.com/Gujiaweiguo/mi/backend/internal/http/middleware"
 	"github.com/Gujiaweiguo/mi/backend/internal/pagination"
 	"github.com/Gujiaweiguo/mi/backend/internal/taxexport"
@@ -178,5 +179,5 @@ func (h *TaxExportHandler) renderTaxExportError(c *gin.Context, err error) {
 	case errors.Is(err, taxexport.ErrInvalidRuleSet), errors.Is(err, taxexport.ErrInvalidExportWindow), errors.Is(err, taxexport.ErrInvalidTaxSetup):
 		status = http.StatusBadRequest
 	}
-	c.JSON(status, gin.H{"message": err.Error()})
+	c.JSON(status, gin.H{"message": errutil.SafeMessage(err)})
 }

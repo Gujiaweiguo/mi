@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/Gujiaweiguo/mi/backend/internal/docoutput"
+	"github.com/Gujiaweiguo/mi/backend/internal/http/handlers/errutil"
 	"github.com/Gujiaweiguo/mi/backend/internal/http/middleware"
 	"github.com/Gujiaweiguo/mi/backend/internal/pagination"
 	"github.com/gin-gonic/gin"
@@ -197,5 +198,5 @@ func (h *DocOutputHandler) renderDocOutputError(c *gin.Context, err error) {
 	case errors.Is(err, docoutput.ErrInvalidTemplate), errors.Is(err, docoutput.ErrInvalidRenderInput), errors.Is(err, docoutput.ErrChromeUnavailable):
 		status = http.StatusBadRequest
 	}
-	c.JSON(status, gin.H{"message": err.Error()})
+	c.JSON(status, gin.H{"message": errutil.SafeMessage(err)})
 }

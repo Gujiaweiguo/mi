@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/Gujiaweiguo/mi/backend/internal/excelio"
+	"github.com/Gujiaweiguo/mi/backend/internal/http/handlers/errutil"
 	"github.com/Gujiaweiguo/mi/backend/internal/http/middleware"
 	"github.com/gin-gonic/gin"
 )
@@ -112,7 +113,7 @@ func (h *ExcelIOHandler) ImportUnits(c *gin.Context) {
 			c.JSON(http.StatusBadRequest, gin.H{"imported_count": result.ImportedCount, "diagnostics": result.Diagnostics})
 			return
 		}
-		c.JSON(http.StatusInternalServerError, gin.H{"message": importErr.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": errutil.SafeMessage(importErr)})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"imported_count": result.ImportedCount, "diagnostics": result.Diagnostics})
@@ -213,7 +214,7 @@ func (h *ExcelIOHandler) ExportOperationalDataset(c *gin.Context) {
 		if errors.Is(err, excelio.ErrInvalidDataset) {
 			status = http.StatusBadRequest
 		}
-		c.JSON(status, gin.H{"message": err.Error()})
+		c.JSON(status, gin.H{"message": errutil.SafeMessage(err)})
 		return
 	}
 	c.Header("Content-Disposition", "attachment; filename="+artifact.FileName)

@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	"github.com/Gujiaweiguo/mi/backend/internal/baseinfo"
+	"github.com/Gujiaweiguo/mi/backend/internal/http/handlers/errutil"
 	"github.com/gin-gonic/gin"
 )
 
@@ -501,5 +502,5 @@ func (h *BaseInfoHandler) renderBaseInfoError(c *gin.Context, err error) {
 	case errors.Is(err, baseinfo.ErrDuplicateCode):
 		status = http.StatusConflict
 	}
-	c.JSON(status, gin.H{"message": err.Error()})
+	c.JSON(status, gin.H{"message": errutil.SafeMessage(err)})
 }

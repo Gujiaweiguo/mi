@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/Gujiaweiguo/mi/backend/internal/http/handlers/errutil"
 	"github.com/Gujiaweiguo/mi/backend/internal/http/middleware"
 	"github.com/Gujiaweiguo/mi/backend/internal/reporting"
 	"github.com/gin-gonic/gin"
@@ -108,7 +109,7 @@ func (h *ReportingHandler) buildInput(c *gin.Context) (reporting.QueryInput, boo
 		var err error
 		periodStart, periodEnd, periodLabel, err = reporting.ParsePeriod(request.Period)
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+			c.JSON(http.StatusBadRequest, gin.H{"message": errutil.SafeMessage(err)})
 			return reporting.QueryInput{}, false
 		}
 	}
@@ -138,5 +139,5 @@ func (h *ReportingHandler) renderReportingError(c *gin.Context, err error) {
 	if errors.Is(err, reporting.ErrInvalidPeriod) || errors.Is(err, reporting.ErrUnsupportedReport) {
 		status = http.StatusBadRequest
 	}
-	c.JSON(status, gin.H{"message": err.Error()})
+	c.JSON(status, gin.H{"message": errutil.SafeMessage(err)})
 }

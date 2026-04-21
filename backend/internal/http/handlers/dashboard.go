@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/Gujiaweiguo/mi/backend/internal/dashboard"
+	"github.com/Gujiaweiguo/mi/backend/internal/http/handlers/errutil"
 	"github.com/gin-gonic/gin"
 )
 
@@ -30,7 +31,7 @@ func NewDashboardHandler(svc *dashboard.DashboardService) *DashboardHandler {
 func (h *DashboardHandler) Summary(c *gin.Context) {
 	result, err := h.dashboardSvc.GetSummary(c.Request.Context())
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": errutil.SafeMessage(err)})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"summary": result})

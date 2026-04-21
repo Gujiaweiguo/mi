@@ -1,12 +1,12 @@
 package auth
 
 type User struct {
-	ID           int64
-	DepartmentID int64
-	Username     string
-	DisplayName  string
-	PasswordHash string
-	Status       string
+	ID           int64  `json:"id"`
+	DepartmentID int64  `json:"department_id"`
+	Username     string `json:"username"`
+	DisplayName  string `json:"display_name"`
+	PasswordHash string `json:"-"`
+	Status       string `json:"status"`
 }
 
 type Role struct {
