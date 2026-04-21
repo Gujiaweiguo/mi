@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
+import type { FormInstance, FormRules } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 
 import {
@@ -46,6 +47,16 @@ const formModel = ref({
   header_lines: [] as string[],
   footer_lines: [] as string[],
 })
+const formRef = ref<FormInstance>()
+
+const formRules: FormRules = {
+  code: [{ required: true, message: '请输入模板代码', trigger: 'blur' }],
+  name: [{ required: true, message: '请输入模板名称', trigger: 'blur' }],
+  document_type: [{ required: true, message: '请选择文档类型', trigger: 'change' }],
+  output_mode: [{ required: true, message: '请选择输出模式', trigger: 'change' }],
+  title: [{ required: true, message: '请输入标题', trigger: 'blur' }],
+  subtitle: [{ required: true, message: '请输入副标题', trigger: 'blur' }],
+}
 
 const documentTypeOptions = [
   { value: 'invoice', labelKey: 'printPreview.dialog.documentTypeOptions.invoice' },
@@ -61,17 +72,6 @@ const outputModeOptions = [
 const dialogTitle = computed(() =>
   t(isEditMode.value ? 'printPreview.dialog.title.edit' : 'printPreview.dialog.title.create'),
 )
-
-const canSubmitDialog = computed(() => {
-  return Boolean(
-    formModel.value.code.trim() &&
-      formModel.value.name.trim() &&
-      formModel.value.document_type &&
-      formModel.value.output_mode &&
-      formModel.value.title.trim() &&
-      formModel.value.subtitle.trim(),
-  )
-})
 
 const resetFormModel = () => {
   formModel.value = {
@@ -233,7 +233,8 @@ const handleRenderPdf = async () => {
 }
 
 const handleSubmit = async () => {
-  if (!canSubmitDialog.value) {
+  const valid = await formRef.value?.validate().catch(() => false)
+  if (!valid) {
     return
   }
 
@@ -396,17 +397,17 @@ onMounted(() => {
 
     <el-dialog v-model="dialogVisible" :title="dialogTitle" width="52rem">
       <div class="print-preview-view__dialog-body">
-        <el-form label-position="top" class="print-preview-view__dialog-form" @submit.prevent>
+        <el-form ref="formRef" :model="formModel" :rules="formRules" label-position="top" class="print-preview-view__dialog-form" @submit.prevent>
           <div class="print-preview-view__dialog-grid">
-            <el-form-item :label="t('printPreview.dialog.fields.code')">
+            <el-form-item :label="t('printPreview.dialog.fields.code')" prop="code">
               <el-input v-model="formModel.code" />
             </el-form-item>
 
-            <el-form-item :label="t('printPreview.dialog.fields.name')">
+            <el-form-item :label="t('printPreview.dialog.fields.name')" prop="name">
               <el-input v-model="formModel.name" />
             </el-form-item>
 
-            <el-form-item :label="t('printPreview.dialog.fields.documentType')">
+            <el-form-item :label="t('printPreview.dialog.fields.documentType')" prop="document_type">
               <el-select v-model="formModel.document_type">
                 <el-option
                   v-for="option in documentTypeOptions"
@@ -417,7 +418,7 @@ onMounted(() => {
               </el-select>
             </el-form-item>
 
-            <el-form-item :label="t('printPreview.dialog.fields.outputMode')">
+            <el-form-item :label="t('printPreview.dialog.fields.outputMode')" prop="output_mode">
               <el-select v-model="formModel.output_mode">
                 <el-option
                   v-for="option in outputModeOptions"
@@ -428,11 +429,11 @@ onMounted(() => {
               </el-select>
             </el-form-item>
 
-            <el-form-item :label="t('printPreview.dialog.fields.title')">
+            <el-form-item :label="t('printPreview.dialog.fields.title')" prop="title">
               <el-input v-model="formModel.title" />
             </el-form-item>
 
-            <el-form-item :label="t('printPreview.dialog.fields.subtitle')">
+            <el-form-item :label="t('printPreview.dialog.fields.subtitle')" prop="subtitle">
               <el-input v-model="formModel.subtitle" />
             </el-form-item>
           </div>
@@ -485,7 +486,7 @@ onMounted(() => {
 
       <template #footer>
         <el-button @click="dialogVisible = false">{{ t('common.actions.cancel') }}</el-button>
-        <el-button type="primary" :loading="isSubmitting" :disabled="!canSubmitDialog" @click="handleSubmit">
+        <el-button type="primary" :loading="isSubmitting" @click="handleSubmit">
           {{ t('printPreview.dialog.actions.submit') }}
         </el-button>
       </template>

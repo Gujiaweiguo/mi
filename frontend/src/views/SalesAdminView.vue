@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from 'vue'
+import type { FormInstance, FormRules } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 
 import {
@@ -88,12 +89,33 @@ const dailyForm = reactive<DailySaleCreateForm>({
   sale_date: '',
   sales_amount: undefined,
 })
+const dailyFormRef = ref<FormInstance>()
+
+const dailyFormRules: FormRules = {
+  store_id: [{ required: true, message: '请选择门店', trigger: 'change' }],
+  unit_id: [{ required: true, message: '请选择铺位', trigger: 'change' }],
+  sale_date: [{ required: true, message: '请选择日期', trigger: 'change' }],
+  sales_amount: [
+    { required: true, message: '请输入销售额', trigger: 'blur' },
+    { type: 'number', min: 0, message: '销售额不能为负', trigger: 'blur' },
+  ],
+}
 
 const trafficForm = reactive<TrafficCreateForm>({
   store_id: undefined,
   traffic_date: '',
   inbound_count: undefined,
 })
+const trafficFormRef = ref<FormInstance>()
+
+const trafficFormRules: FormRules = {
+  store_id: [{ required: true, message: '请选择门店', trigger: 'change' }],
+  traffic_date: [{ required: true, message: '请选择日期', trigger: 'change' }],
+  inbound_count: [
+    { required: true, message: '请输入客流量', trigger: 'blur' },
+    { type: 'number', min: 0, message: '客流量不能为负', trigger: 'blur' },
+  ],
+}
 
 const normalizeFilterValue = (value: string | null | undefined) => value?.trim() ?? ''
 
@@ -223,28 +245,6 @@ const resetTrafficForm = () => {
   trafficForm.traffic_date = ''
   trafficForm.inbound_count = undefined
 }
-
-const canCreateDailySale = computed(() => {
-  return (
-    typeof dailyForm.store_id === 'number' &&
-    dailyForm.store_id > 0 &&
-    typeof dailyForm.unit_id === 'number' &&
-    dailyForm.unit_id > 0 &&
-    Boolean(dailyForm.sale_date.trim()) &&
-    typeof dailyForm.sales_amount === 'number' &&
-    Number.isFinite(dailyForm.sales_amount)
-  )
-})
-
-const canCreateTraffic = computed(() => {
-  return (
-    typeof trafficForm.store_id === 'number' &&
-    trafficForm.store_id > 0 &&
-    Boolean(trafficForm.traffic_date.trim()) &&
-    typeof trafficForm.inbound_count === 'number' &&
-    Number.isFinite(trafficForm.inbound_count)
-  )
-})
 
 const handleResetDailyFilters = () => {
   resetDailyFilterState()
@@ -468,7 +468,8 @@ const handleImportTraffic = async () => {
 }
 
 const handleCreateDailySale = async () => {
-  if (!canCreateDailySale.value) {
+  const valid = await dailyFormRef.value?.validate().catch(() => false)
+  if (!valid) {
     dailyFeedback.value = {
       type: 'warning',
       title: t('salesAdmin.feedback.dailySaleDetailsRequiredTitle'),
@@ -523,7 +524,8 @@ const handleCreateDailySale = async () => {
 }
 
 const handleCreateTraffic = async () => {
-  if (!canCreateTraffic.value) {
+  const valid = await trafficFormRef.value?.validate().catch(() => false)
+  if (!valid) {
     trafficFeedback.value = {
       type: 'warning',
       title: t('salesAdmin.feedback.trafficDetailsRequiredTitle'),
@@ -755,9 +757,9 @@ onMounted(() => {
         </div>
       </FilterForm>
 
-      <el-form label-position="top" class="sales-admin-view__form" @submit.prevent>
+      <el-form ref="dailyFormRef" :model="dailyForm" :rules="dailyFormRules" label-position="top" class="sales-admin-view__form" @submit.prevent>
         <div class="sales-admin-view__form-grid">
-          <el-form-item :label="t('salesAdmin.fields.store')">
+          <el-form-item :label="t('salesAdmin.fields.store')" prop="store_id">
             <el-select
               v-model="dailyForm.store_id"
               filterable
@@ -769,7 +771,7 @@ onMounted(() => {
             </el-select>
           </el-form-item>
 
-          <el-form-item :label="t('salesAdmin.fields.unit')">
+          <el-form-item :label="t('salesAdmin.fields.unit')" prop="unit_id">
             <el-select
               v-model="dailyForm.unit_id"
               filterable
@@ -781,7 +783,7 @@ onMounted(() => {
             </el-select>
           </el-form-item>
 
-          <el-form-item :label="t('salesAdmin.fields.saleDate')">
+          <el-form-item :label="t('salesAdmin.fields.saleDate')" prop="sale_date">
             <div data-testid="sales-daily-date-input">
               <el-date-picker
                 v-model="dailyForm.sale_date"
@@ -792,7 +794,7 @@ onMounted(() => {
             </div>
           </el-form-item>
 
-          <el-form-item :label="t('salesAdmin.fields.salesAmount')">
+          <el-form-item :label="t('salesAdmin.fields.salesAmount')" prop="sales_amount">
             <el-input-number
               v-model="dailyForm.sales_amount"
               :min="0"
@@ -808,7 +810,6 @@ onMounted(() => {
           <el-button
             type="primary"
             :loading="isDailySaving"
-            :disabled="!canCreateDailySale"
             data-testid="sales-daily-create-button"
             @click="handleCreateDailySale"
           >
@@ -972,9 +973,9 @@ onMounted(() => {
         </div>
       </FilterForm>
 
-      <el-form label-position="top" class="sales-admin-view__form" @submit.prevent>
+      <el-form ref="trafficFormRef" :model="trafficForm" :rules="trafficFormRules" label-position="top" class="sales-admin-view__form" @submit.prevent>
         <div class="sales-admin-view__form-grid sales-admin-view__form-grid--traffic">
-          <el-form-item :label="t('salesAdmin.fields.store')">
+          <el-form-item :label="t('salesAdmin.fields.store')" prop="store_id">
             <el-select
               v-model="trafficForm.store_id"
               filterable
@@ -986,7 +987,7 @@ onMounted(() => {
             </el-select>
           </el-form-item>
 
-          <el-form-item :label="t('salesAdmin.fields.trafficDate')">
+          <el-form-item :label="t('salesAdmin.fields.trafficDate')" prop="traffic_date">
             <div data-testid="sales-traffic-date-input">
               <el-date-picker
                 v-model="trafficForm.traffic_date"
@@ -997,7 +998,7 @@ onMounted(() => {
             </div>
           </el-form-item>
 
-          <el-form-item :label="t('salesAdmin.fields.inboundCount')">
+          <el-form-item :label="t('salesAdmin.fields.inboundCount')" prop="inbound_count">
             <el-input-number
               v-model="trafficForm.inbound_count"
               :min="0"
@@ -1012,7 +1013,6 @@ onMounted(() => {
           <el-button
             type="primary"
             :loading="isTrafficSaving"
-            :disabled="!canCreateTraffic"
             data-testid="sales-traffic-create-button"
             @click="handleCreateTraffic"
           >

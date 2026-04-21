@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import type { FormInstance, FormRules } from 'element-plus'
 
 import { listShopTypes, listUnitTypes, type ReferenceCatalogItem } from '../api/baseinfo'
 import {
@@ -104,6 +105,15 @@ const unitEdit = reactive<UnitEditForm>({
   status: 'active',
 })
 
+const editFormRef = ref<FormInstance>()
+const editFormRules: FormRules = {
+  rent_area: [
+    { required: true, message: '请输入可租面积', trigger: 'blur' },
+    { type: 'number', min: 0, message: '面积不能为负', trigger: 'blur' },
+  ],
+  status: [{ required: true, message: '请选择状态', trigger: 'change' }],
+}
+
 const statusOptions = ['active', 'inactive'] as const
 
 const isPositiveInteger = (value: number | undefined): value is number =>
@@ -156,20 +166,7 @@ const isDirty = computed(() => {
 
 const selectedStore = computed(() => stores.value.find((item) => item.id === filters.storeId) ?? null)
 
-const canSaveEdit = computed(() => {
-  return (
-    unitEdit.id !== null &&
-    isPositiveInteger(unitEdit.building_id) &&
-    isPositiveInteger(unitEdit.floor_id) &&
-    isPositiveInteger(unitEdit.location_id) &&
-    isPositiveInteger(unitEdit.area_id) &&
-    isPositiveInteger(unitEdit.unit_type_id) &&
-    Boolean(unitEdit.code.trim()) &&
-    isFiniteNumber(unitEdit.floor_area) &&
-    isFiniteNumber(unitEdit.use_area) &&
-    isFiniteNumber(unitEdit.rent_area)
-  )
-})
+const canSaveEdit = computed(() => unitEdit.id !== null)
 
 const resolveBuildingLabel = (buildingId: number) => {
   const building = buildings.value.find((item) => item.id === buildingId)
@@ -466,7 +463,8 @@ const openEditDialog = (unit: StructureUnit) => {
 }
 
 const handleSave = async () => {
-  if (!canSaveEdit.value || unitEdit.id === null) {
+  const valid = await editFormRef.value?.validate().catch(() => false)
+  if (!valid || unitEdit.id === null) {
     return
   }
 
@@ -788,9 +786,9 @@ onMounted(async () => {
           </div>
         </div>
 
-        <el-form label-position="top" @submit.prevent>
+        <el-form ref="editFormRef" :model="unitEdit" :rules="editFormRules" label-position="top" @submit.prevent>
           <div class="rentable-area-admin-view__dialog-grid">
-            <el-form-item :label="t('rentableAreaAdmin.fields.rentArea')">
+            <el-form-item :label="t('rentableAreaAdmin.fields.rentArea')" prop="rent_area">
               <el-input-number
                 v-model="unitEdit.rent_area"
                 :min="0"
@@ -800,7 +798,7 @@ onMounted(async () => {
               />
             </el-form-item>
 
-            <el-form-item :label="t('rentableAreaAdmin.fields.status')">
+            <el-form-item :label="t('rentableAreaAdmin.fields.status')" prop="status">
               <el-select v-model="unitEdit.status" data-testid="rentable-area-unit-edit-status">
                 <el-option
                   v-for="option in statusOptions"
@@ -840,7 +838,6 @@ onMounted(async () => {
         <el-button @click="editDialogOpen = false">{{ t('common.actions.cancel') }}</el-button>
         <el-button
           type="primary"
-          :disabled="!canSaveEdit"
           :loading="isSaving"
           data-testid="rentable-area-unit-edit-save"
           @click="handleSave"

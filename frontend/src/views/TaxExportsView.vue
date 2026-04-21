@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
+import type { FormInstance, FormRules } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 
 import { exportTaxVouchers, listTaxRuleSets, upsertTaxRuleSet, type TaxRuleSet, type UpsertTaxRuleSetRequest } from '../api/tax'
@@ -47,6 +48,13 @@ const formModel = ref({
   document_type: '',
   rules: [] as RuleEntry[],
 })
+const formRef = ref<FormInstance>()
+
+const formRules: FormRules = {
+  code: [{ required: true, message: '请输入规则集代码', trigger: 'blur' }],
+  name: [{ required: true, message: '请输入规则集名称', trigger: 'blur' }],
+  document_type: [{ required: true, message: '请选择文档类型', trigger: 'change' }],
+}
 
 const { filters, isDirty, reset } = useFilterForm({
   search: '',
@@ -236,6 +244,11 @@ const handleExport = async () => {
 }
 
 const handleSubmit = async () => {
+  const valid = await formRef.value?.validate().catch(() => false)
+  if (!valid) {
+    return
+  }
+
   if (!canSubmitDialog.value) {
     return
   }
@@ -433,17 +446,17 @@ onMounted(() => {
 
     <el-dialog v-model="dialogVisible" :title="dialogTitle" width="80rem">
       <div class="tax-exports-view__dialog-body">
-        <el-form label-position="top" @submit.prevent>
+        <el-form ref="formRef" :model="formModel" :rules="formRules" label-position="top" @submit.prevent>
           <div class="tax-exports-view__dialog-grid">
-            <el-form-item :label="t('taxExports.dialog.fields.code')">
+            <el-form-item :label="t('taxExports.dialog.fields.code')" prop="code">
               <el-input v-model="formModel.code" />
             </el-form-item>
 
-            <el-form-item :label="t('taxExports.dialog.fields.name')">
+            <el-form-item :label="t('taxExports.dialog.fields.name')" prop="name">
               <el-input v-model="formModel.name" />
             </el-form-item>
 
-            <el-form-item :label="t('taxExports.dialog.fields.documentType')">
+            <el-form-item :label="t('taxExports.dialog.fields.documentType')" prop="document_type">
               <el-select v-model="formModel.document_type">
                 <el-option
                   v-for="option in documentTypeOptions"

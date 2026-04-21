@@ -2,6 +2,7 @@
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
+import type { FormInstance, FormRules } from 'element-plus'
 
 import { getLease, submitLease, terminateLease, type LeaseContract } from '../api/lease'
 import PageSection from '../components/platform/PageSection.vue'
@@ -24,6 +25,11 @@ const isTerminating = ref(false)
 const terminateForm = reactive({
   terminated_at: '',
 })
+
+const terminateFormRef = ref<FormInstance>()
+const terminateFormRules: FormRules = {
+  terminated_at: [{ required: true, message: '请选择终止日期', trigger: 'change' }],
+}
 
 const today = () => new Date().toISOString().slice(0, 10)
 
@@ -146,7 +152,8 @@ const handleSubmitForApproval = async () => {
 }
 
 const handleTerminate = async () => {
-  if (!lease.value || !terminateForm.terminated_at) {
+  const valid = await terminateFormRef.value?.validate().catch(() => false)
+  if (!valid || !lease.value) {
     return
   }
 
@@ -264,8 +271,8 @@ watch(
             </el-button>
 
             <div class="lease-detail-view__terminate-panel">
-              <el-form label-position="top">
-                <el-form-item :label="t('leaseDetail.fields.terminateOn')">
+              <el-form ref="terminateFormRef" :model="terminateForm" :rules="terminateFormRules" label-position="top">
+                <el-form-item :label="t('leaseDetail.fields.terminateOn')" prop="terminated_at">
                   <el-date-picker
                     v-model="terminateForm.terminated_at"
                     type="date"
@@ -280,7 +287,7 @@ watch(
                 type="danger"
                 plain
                 :loading="isTerminating"
-                :disabled="terminateDisabled || !terminateForm.terminated_at"
+                :disabled="terminateDisabled"
                 data-testid="lease-terminate-button"
                 @click="handleTerminate"
               >
