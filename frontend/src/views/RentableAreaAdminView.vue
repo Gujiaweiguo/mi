@@ -166,7 +166,7 @@ const isDirty = computed(() => {
 
 const selectedStore = computed(() => stores.value.find((item) => item.id === filters.storeId) ?? null)
 
-const canSaveEdit = computed(() => unitEdit.id !== null)
+// canSaveEdit removed — form validation via editFormRef.validate() now
 
 const resolveBuildingLabel = (buildingId: number) => {
   const building = buildings.value.find((item) => item.id === buildingId)
