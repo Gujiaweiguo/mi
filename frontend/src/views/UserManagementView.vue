@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { useI18n } from 'vue-i18n'
 import { ElMessage } from 'element-plus'
 
 import { listUsers, createUser, updateUser, resetPassword, listRoles, type UserItem, type RoleItem } from '../api/user'
 import { listDepartments } from '../api/org'
 import PageSection from '../components/platform/PageSection.vue'
-
-const { t } = useI18n()
 
 const users = ref<UserItem[]>([])
 const roles = ref<RoleItem[]>([])
