@@ -35,7 +35,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.loginRequest"
+                            "$ref": "#/definitions/internal_http_handlers.loginRequest"
                         }
                     }
                 ],
@@ -45,7 +45,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
@@ -54,7 +54,7 @@ const docTemplate = `{
                                             "type": "string"
                                         },
                                         "user": {
-                                            "$ref": "#/definitions/auth.User"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_auth.User"
                                         }
                                     }
                                 }
@@ -64,19 +64,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -106,13 +106,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "user": {
-                                            "$ref": "#/definitions/auth.SessionUser"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_auth.SessionUser"
                                         }
                                     }
                                 }
@@ -122,13 +122,13 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -158,7 +158,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
@@ -166,7 +166,7 @@ const docTemplate = `{
                                         "area_levels": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/baseinfo.ReferenceCatalogItem"
+                                                "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_baseinfo.ReferenceCatalogItem"
                                             }
                                         }
                                     }
@@ -177,13 +177,13 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -212,7 +212,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.baseInfoRequest"
+                            "$ref": "#/definitions/internal_http_handlers.baseInfoRequest"
                         }
                     }
                 ],
@@ -222,13 +222,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "area_level": {
-                                            "$ref": "#/definitions/baseinfo.ReferenceCatalogItem"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_baseinfo.ReferenceCatalogItem"
                                         }
                                     }
                                 }
@@ -238,25 +238,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -294,7 +294,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.baseInfoRequest"
+                            "$ref": "#/definitions/internal_http_handlers.baseInfoRequest"
                         }
                     }
                 ],
@@ -304,13 +304,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "area_level": {
-                                            "$ref": "#/definitions/baseinfo.ReferenceCatalogItem"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_baseinfo.ReferenceCatalogItem"
                                         }
                                     }
                                 }
@@ -320,25 +320,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -368,7 +368,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
@@ -376,7 +376,7 @@ const docTemplate = `{
                                         "currency_types": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/baseinfo.ReferenceCatalogItem"
+                                                "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_baseinfo.ReferenceCatalogItem"
                                             }
                                         }
                                     }
@@ -387,13 +387,13 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -422,7 +422,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.baseInfoRequest"
+                            "$ref": "#/definitions/internal_http_handlers.baseInfoRequest"
                         }
                     }
                 ],
@@ -432,13 +432,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "currency_type": {
-                                            "$ref": "#/definitions/baseinfo.ReferenceCatalogItem"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_baseinfo.ReferenceCatalogItem"
                                         }
                                     }
                                 }
@@ -448,25 +448,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -504,7 +504,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.baseInfoRequest"
+                            "$ref": "#/definitions/internal_http_handlers.baseInfoRequest"
                         }
                     }
                 ],
@@ -514,13 +514,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "currency_type": {
-                                            "$ref": "#/definitions/baseinfo.ReferenceCatalogItem"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_baseinfo.ReferenceCatalogItem"
                                         }
                                     }
                                 }
@@ -530,25 +530,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -578,7 +578,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
@@ -586,7 +586,7 @@ const docTemplate = `{
                                         "shop_types": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/baseinfo.ReferenceCatalogItem"
+                                                "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_baseinfo.ReferenceCatalogItem"
                                             }
                                         }
                                     }
@@ -597,13 +597,13 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -632,7 +632,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.baseInfoRequest"
+                            "$ref": "#/definitions/internal_http_handlers.baseInfoRequest"
                         }
                     }
                 ],
@@ -642,13 +642,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "shop_type": {
-                                            "$ref": "#/definitions/baseinfo.ReferenceCatalogItem"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_baseinfo.ReferenceCatalogItem"
                                         }
                                     }
                                 }
@@ -658,25 +658,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -714,7 +714,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.baseInfoRequest"
+                            "$ref": "#/definitions/internal_http_handlers.baseInfoRequest"
                         }
                     }
                 ],
@@ -724,13 +724,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "shop_type": {
-                                            "$ref": "#/definitions/baseinfo.ReferenceCatalogItem"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_baseinfo.ReferenceCatalogItem"
                                         }
                                     }
                                 }
@@ -740,25 +740,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -788,7 +788,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
@@ -796,7 +796,7 @@ const docTemplate = `{
                                         "store_management_types": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/baseinfo.ReferenceCatalogItem"
+                                                "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_baseinfo.ReferenceCatalogItem"
                                             }
                                         }
                                     }
@@ -807,13 +807,13 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -842,7 +842,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.baseInfoRequest"
+                            "$ref": "#/definitions/internal_http_handlers.baseInfoRequest"
                         }
                     }
                 ],
@@ -852,13 +852,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "store_management_type": {
-                                            "$ref": "#/definitions/baseinfo.ReferenceCatalogItem"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_baseinfo.ReferenceCatalogItem"
                                         }
                                     }
                                 }
@@ -868,25 +868,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -924,7 +924,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.baseInfoRequest"
+                            "$ref": "#/definitions/internal_http_handlers.baseInfoRequest"
                         }
                     }
                 ],
@@ -934,13 +934,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "store_management_type": {
-                                            "$ref": "#/definitions/baseinfo.ReferenceCatalogItem"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_baseinfo.ReferenceCatalogItem"
                                         }
                                     }
                                 }
@@ -950,25 +950,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -998,7 +998,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
@@ -1006,7 +1006,7 @@ const docTemplate = `{
                                         "store_types": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/baseinfo.ReferenceCatalogItem"
+                                                "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_baseinfo.ReferenceCatalogItem"
                                             }
                                         }
                                     }
@@ -1017,13 +1017,13 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -1052,7 +1052,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.baseInfoRequest"
+                            "$ref": "#/definitions/internal_http_handlers.baseInfoRequest"
                         }
                     }
                 ],
@@ -1062,13 +1062,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "store_type": {
-                                            "$ref": "#/definitions/baseinfo.ReferenceCatalogItem"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_baseinfo.ReferenceCatalogItem"
                                         }
                                     }
                                 }
@@ -1078,25 +1078,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -1134,7 +1134,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.baseInfoRequest"
+                            "$ref": "#/definitions/internal_http_handlers.baseInfoRequest"
                         }
                     }
                 ],
@@ -1144,13 +1144,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "store_type": {
-                                            "$ref": "#/definitions/baseinfo.ReferenceCatalogItem"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_baseinfo.ReferenceCatalogItem"
                                         }
                                     }
                                 }
@@ -1160,25 +1160,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -1208,7 +1208,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
@@ -1216,7 +1216,7 @@ const docTemplate = `{
                                         "trade_definitions": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/baseinfo.ReferenceCatalogItem"
+                                                "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_baseinfo.ReferenceCatalogItem"
                                             }
                                         }
                                     }
@@ -1227,13 +1227,13 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -1262,7 +1262,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.baseInfoRequest"
+                            "$ref": "#/definitions/internal_http_handlers.baseInfoRequest"
                         }
                     }
                 ],
@@ -1272,13 +1272,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "trade_definition": {
-                                            "$ref": "#/definitions/baseinfo.ReferenceCatalogItem"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_baseinfo.ReferenceCatalogItem"
                                         }
                                     }
                                 }
@@ -1288,25 +1288,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -1344,7 +1344,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.baseInfoRequest"
+                            "$ref": "#/definitions/internal_http_handlers.baseInfoRequest"
                         }
                     }
                 ],
@@ -1354,13 +1354,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "trade_definition": {
-                                            "$ref": "#/definitions/baseinfo.ReferenceCatalogItem"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_baseinfo.ReferenceCatalogItem"
                                         }
                                     }
                                 }
@@ -1370,25 +1370,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -1418,7 +1418,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
@@ -1426,7 +1426,7 @@ const docTemplate = `{
                                         "unit_types": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/baseinfo.ReferenceCatalogItem"
+                                                "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_baseinfo.ReferenceCatalogItem"
                                             }
                                         }
                                     }
@@ -1437,13 +1437,13 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -1472,7 +1472,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.baseInfoRequest"
+                            "$ref": "#/definitions/internal_http_handlers.baseInfoRequest"
                         }
                     }
                 ],
@@ -1482,13 +1482,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "unit_type": {
-                                            "$ref": "#/definitions/baseinfo.ReferenceCatalogItem"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_baseinfo.ReferenceCatalogItem"
                                         }
                                     }
                                 }
@@ -1498,25 +1498,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -1554,7 +1554,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.baseInfoRequest"
+                            "$ref": "#/definitions/internal_http_handlers.baseInfoRequest"
                         }
                     }
                 ],
@@ -1564,13 +1564,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "unit_type": {
-                                            "$ref": "#/definitions/baseinfo.ReferenceCatalogItem"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_baseinfo.ReferenceCatalogItem"
                                         }
                                     }
                                 }
@@ -1580,25 +1580,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -1660,7 +1660,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
@@ -1668,7 +1668,7 @@ const docTemplate = `{
                                         "items": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/billing.ChargeLine"
+                                                "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_billing.ChargeLine"
                                             }
                                         },
                                         "page": {
@@ -1688,19 +1688,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -1731,7 +1731,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.generateBillingRequest"
+                            "$ref": "#/definitions/internal_http_handlers.generateBillingRequest"
                         }
                     }
                 ],
@@ -1739,25 +1739,25 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/billing.GenerateResult"
+                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_billing.GenerateResult"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -1787,13 +1787,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "summary": {
-                                            "$ref": "#/definitions/dashboard.DashboardSummary"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_dashboard.DashboardSummary"
                                         }
                                     }
                                 }
@@ -1803,13 +1803,13 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -1852,19 +1852,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -1901,25 +1901,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/excelio.ImportResult"
+                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_excelio.ImportResult"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/excelio.ImportResult"
+                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_excelio.ImportResult"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -1956,25 +1956,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/excelio.ImportResult"
+                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_excelio.ImportResult"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/excelio.ImportResult"
+                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_excelio.ImportResult"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -2011,25 +2011,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/excelio.ImportResult"
+                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_excelio.ImportResult"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/excelio.ImportResult"
+                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_excelio.ImportResult"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -2063,13 +2063,13 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -2103,13 +2103,13 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -2143,13 +2143,13 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -2174,7 +2174,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
@@ -2196,7 +2196,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "503": {
@@ -2204,7 +2204,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
@@ -2288,7 +2288,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
@@ -2296,7 +2296,7 @@ const docTemplate = `{
                                         "items": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/invoice.Document"
+                                                "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.Document"
                                             }
                                         },
                                         "page": {
@@ -2316,19 +2316,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -2357,7 +2357,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.createInvoiceRequest"
+                            "$ref": "#/definitions/internal_http_handlers.createInvoiceRequest"
                         }
                     }
                 ],
@@ -2367,13 +2367,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "document": {
-                                            "$ref": "#/definitions/invoice.Document"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.Document"
                                         }
                                     }
                                 }
@@ -2383,25 +2383,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -2440,13 +2440,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "document": {
-                                            "$ref": "#/definitions/invoice.Document"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.Document"
                                         }
                                     }
                                 }
@@ -2456,25 +2456,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -2512,7 +2512,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.adjustInvoiceRequest"
+                            "$ref": "#/definitions/internal_http_handlers.adjustInvoiceRequest"
                         }
                     }
                 ],
@@ -2522,13 +2522,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "document": {
-                                            "$ref": "#/definitions/invoice.Document"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.Document"
                                         }
                                     }
                                 }
@@ -2538,25 +2538,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -2595,13 +2595,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "document": {
-                                            "$ref": "#/definitions/invoice.Document"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.Document"
                                         }
                                     }
                                 }
@@ -2611,25 +2611,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -2667,7 +2667,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.recordPaymentRequest"
+                            "$ref": "#/definitions/internal_http_handlers.recordPaymentRequest"
                         }
                     }
                 ],
@@ -2677,13 +2677,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "receivable": {
-                                            "$ref": "#/definitions/invoice.ReceivableSummary"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.ReceivableSummary"
                                         }
                                     }
                                 }
@@ -2693,25 +2693,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -2750,13 +2750,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "receivable": {
-                                            "$ref": "#/definitions/invoice.ReceivableSummary"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.ReceivableSummary"
                                         }
                                     }
                                 }
@@ -2766,25 +2766,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -2822,7 +2822,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.submitInvoiceRequest"
+                            "$ref": "#/definitions/internal_http_handlers.submitInvoiceRequest"
                         }
                     }
                 ],
@@ -2832,13 +2832,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "document": {
-                                            "$ref": "#/definitions/invoice.Document"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.Document"
                                         }
                                     }
                                 }
@@ -2848,25 +2848,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -2928,7 +2928,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
@@ -2936,7 +2936,7 @@ const docTemplate = `{
                                         "items": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/lease.Summary"
+                                                "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_lease.Summary"
                                             }
                                         },
                                         "page": {
@@ -2956,19 +2956,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -2997,7 +2997,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.createLeaseRequest"
+                            "$ref": "#/definitions/internal_http_handlers.createLeaseRequest"
                         }
                     }
                 ],
@@ -3007,13 +3007,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "lease": {
-                                            "$ref": "#/definitions/lease.Contract"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_lease.Contract"
                                         }
                                     }
                                 }
@@ -3023,25 +3023,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -3080,13 +3080,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "lease": {
-                                            "$ref": "#/definitions/lease.Contract"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_lease.Contract"
                                         }
                                     }
                                 }
@@ -3096,25 +3096,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -3152,7 +3152,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.createLeaseRequest"
+                            "$ref": "#/definitions/internal_http_handlers.createLeaseRequest"
                         }
                     }
                 ],
@@ -3162,13 +3162,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "lease": {
-                                            "$ref": "#/definitions/lease.Contract"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_lease.Contract"
                                         }
                                     }
                                 }
@@ -3178,25 +3178,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -3234,7 +3234,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.submitLeaseRequest"
+                            "$ref": "#/definitions/internal_http_handlers.submitLeaseRequest"
                         }
                     }
                 ],
@@ -3244,13 +3244,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "lease": {
-                                            "$ref": "#/definitions/lease.Contract"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_lease.Contract"
                                         }
                                     }
                                 }
@@ -3260,25 +3260,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -3316,7 +3316,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.terminateLeaseRequest"
+                            "$ref": "#/definitions/internal_http_handlers.terminateLeaseRequest"
                         }
                     }
                 ],
@@ -3326,13 +3326,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "lease": {
-                                            "$ref": "#/definitions/lease.Contract"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_lease.Contract"
                                         }
                                     }
                                 }
@@ -3342,25 +3342,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -3410,7 +3410,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
@@ -3418,7 +3418,7 @@ const docTemplate = `{
                                         "brands": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/masterdata.Brand"
+                                                "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_masterdata.Brand"
                                             }
                                         },
                                         "page": {
@@ -3438,13 +3438,13 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -3473,7 +3473,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.createBrandRequest"
+                            "$ref": "#/definitions/internal_http_handlers.createBrandRequest"
                         }
                     }
                 ],
@@ -3483,13 +3483,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "brand": {
-                                            "$ref": "#/definitions/masterdata.Brand"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_masterdata.Brand"
                                         }
                                     }
                                 }
@@ -3499,25 +3499,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -3555,7 +3555,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.updateBrandRequest"
+                            "$ref": "#/definitions/internal_http_handlers.updateBrandRequest"
                         }
                     }
                 ],
@@ -3565,13 +3565,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "brand": {
-                                            "$ref": "#/definitions/masterdata.Brand"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_masterdata.Brand"
                                         }
                                     }
                                 }
@@ -3581,25 +3581,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -3649,7 +3649,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
@@ -3657,7 +3657,7 @@ const docTemplate = `{
                                         "customers": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/masterdata.Customer"
+                                                "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_masterdata.Customer"
                                             }
                                         },
                                         "page": {
@@ -3677,13 +3677,13 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -3712,7 +3712,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.createCustomerRequest"
+                            "$ref": "#/definitions/internal_http_handlers.createCustomerRequest"
                         }
                     }
                 ],
@@ -3722,13 +3722,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "customer": {
-                                            "$ref": "#/definitions/masterdata.Customer"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_masterdata.Customer"
                                         }
                                     }
                                 }
@@ -3738,25 +3738,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -3794,7 +3794,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.updateCustomerRequest"
+                            "$ref": "#/definitions/internal_http_handlers.updateCustomerRequest"
                         }
                     }
                 ],
@@ -3804,13 +3804,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "customer": {
-                                            "$ref": "#/definitions/masterdata.Customer"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_masterdata.Customer"
                                         }
                                     }
                                 }
@@ -3820,25 +3820,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -3868,7 +3868,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
@@ -3876,7 +3876,7 @@ const docTemplate = `{
                                         "store_rent_budgets": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/masterdata.StoreRentBudget"
+                                                "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_masterdata.StoreRentBudget"
                                             }
                                         }
                                     }
@@ -3887,13 +3887,13 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -3922,7 +3922,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.upsertStoreRentBudgetRequest"
+                            "$ref": "#/definitions/internal_http_handlers.upsertStoreRentBudgetRequest"
                         }
                     }
                 ],
@@ -3932,13 +3932,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "store_rent_budget": {
-                                            "$ref": "#/definitions/masterdata.StoreRentBudget"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_masterdata.StoreRentBudget"
                                         }
                                     }
                                 }
@@ -3948,25 +3948,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -4018,7 +4018,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.upsertStoreRentBudgetRequest"
+                            "$ref": "#/definitions/internal_http_handlers.upsertStoreRentBudgetRequest"
                         }
                     }
                 ],
@@ -4028,13 +4028,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "store_rent_budget": {
-                                            "$ref": "#/definitions/masterdata.StoreRentBudget"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_masterdata.StoreRentBudget"
                                         }
                                     }
                                 }
@@ -4044,25 +4044,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -4092,7 +4092,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
@@ -4100,7 +4100,7 @@ const docTemplate = `{
                                         "unit_prospects": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/masterdata.UnitProspect"
+                                                "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_masterdata.UnitProspect"
                                             }
                                         }
                                     }
@@ -4111,13 +4111,13 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -4146,7 +4146,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.upsertUnitProspectRequest"
+                            "$ref": "#/definitions/internal_http_handlers.upsertUnitProspectRequest"
                         }
                     }
                 ],
@@ -4156,13 +4156,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "unit_prospect": {
-                                            "$ref": "#/definitions/masterdata.UnitProspect"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_masterdata.UnitProspect"
                                         }
                                     }
                                 }
@@ -4172,25 +4172,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -4235,7 +4235,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.upsertUnitProspectRequest"
+                            "$ref": "#/definitions/internal_http_handlers.upsertUnitProspectRequest"
                         }
                     }
                 ],
@@ -4245,13 +4245,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "unit_prospect": {
-                                            "$ref": "#/definitions/masterdata.UnitProspect"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_masterdata.UnitProspect"
                                         }
                                     }
                                 }
@@ -4261,25 +4261,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -4309,7 +4309,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
@@ -4317,7 +4317,7 @@ const docTemplate = `{
                                         "unit_rent_budgets": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/masterdata.UnitRentBudget"
+                                                "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_masterdata.UnitRentBudget"
                                             }
                                         }
                                     }
@@ -4328,13 +4328,13 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -4363,7 +4363,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.upsertUnitRentBudgetRequest"
+                            "$ref": "#/definitions/internal_http_handlers.upsertUnitRentBudgetRequest"
                         }
                     }
                 ],
@@ -4373,13 +4373,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "unit_rent_budget": {
-                                            "$ref": "#/definitions/masterdata.UnitRentBudget"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_masterdata.UnitRentBudget"
                                         }
                                     }
                                 }
@@ -4389,25 +4389,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -4452,7 +4452,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.upsertUnitRentBudgetRequest"
+                            "$ref": "#/definitions/internal_http_handlers.upsertUnitRentBudgetRequest"
                         }
                     }
                 ],
@@ -4462,13 +4462,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "unit_rent_budget": {
-                                            "$ref": "#/definitions/masterdata.UnitRentBudget"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_masterdata.UnitRentBudget"
                                         }
                                     }
                                 }
@@ -4478,25 +4478,109 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/notifications": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Returns paginated notification outbox entries with optional filters.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "List notification history",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Page number (default 1)",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page size (default 20)",
+                        "name": "page_size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by event type",
+                        "name": "event_type",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by aggregate type",
+                        "name": "aggregate_type",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Filter by aggregate ID",
+                        "name": "aggregate_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by status",
+                        "name": "status",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/internal_notification.notificationListResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/internal_notification.notificationMessageResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/internal_notification.notificationMessageResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/internal_notification.notificationMessageResponse"
                         }
                     }
                 }
@@ -4526,7 +4610,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
@@ -4534,7 +4618,7 @@ const docTemplate = `{
                                         "departments": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/auth.Department"
+                                                "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_auth.Department"
                                             }
                                         }
                                     }
@@ -4545,13 +4629,13 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -4581,7 +4665,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
@@ -4589,7 +4673,7 @@ const docTemplate = `{
                                         "stores": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/auth.Store"
+                                                "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_auth.Store"
                                             }
                                         }
                                     }
@@ -4600,13 +4684,13 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -4637,7 +4721,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.renderDocumentRequest"
+                            "$ref": "#/definitions/internal_http_handlers.renderDocumentRequest"
                         }
                     }
                 ],
@@ -4651,25 +4735,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -4700,7 +4784,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.renderDocumentRequest"
+                            "$ref": "#/definitions/internal_http_handlers.renderDocumentRequest"
                         }
                     }
                 ],
@@ -4714,25 +4798,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -4776,7 +4860,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
@@ -4784,7 +4868,7 @@ const docTemplate = `{
                                         "items": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/docoutput.Template"
+                                                "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_docoutput.Template"
                                             }
                                         },
                                         "page": {
@@ -4804,19 +4888,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -4845,7 +4929,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.upsertPrintTemplateRequest"
+                            "$ref": "#/definitions/internal_http_handlers.upsertPrintTemplateRequest"
                         }
                     }
                 ],
@@ -4855,13 +4939,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "template": {
-                                            "$ref": "#/definitions/docoutput.Template"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_docoutput.Template"
                                         }
                                     }
                                 }
@@ -4871,25 +4955,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -4957,7 +5041,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
@@ -4965,7 +5049,7 @@ const docTemplate = `{
                                         "items": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/invoice.ReceivableListItem"
+                                                "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.ReceivableListItem"
                                             }
                                         },
                                         "page": {
@@ -4985,19 +5069,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -5035,7 +5119,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.reportRequest"
+                            "$ref": "#/definitions/internal_http_handlers.reportRequest"
                         }
                     }
                 ],
@@ -5049,25 +5133,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -5105,7 +5189,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.reportRequest"
+                            "$ref": "#/definitions/internal_http_handlers.reportRequest"
                         }
                     }
                 ],
@@ -5115,13 +5199,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "report": {
-                                            "$ref": "#/definitions/reporting.Result"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_reporting.Result"
                                         }
                                     }
                                 }
@@ -5131,25 +5215,80 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/roles": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Returns all available roles in the system.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "List roles",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "roles": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_auth.Role"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -5205,7 +5344,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
@@ -5213,7 +5352,7 @@ const docTemplate = `{
                                         "daily_sales": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/sales.DailySale"
+                                                "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_sales.DailySale"
                                             }
                                         }
                                     }
@@ -5224,19 +5363,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -5265,7 +5404,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.createDailySaleRequest"
+                            "$ref": "#/definitions/internal_http_handlers.createDailySaleRequest"
                         }
                     }
                 ],
@@ -5275,13 +5414,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "daily_sale": {
-                                            "$ref": "#/definitions/sales.DailySale"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_sales.DailySale"
                                         }
                                     }
                                 }
@@ -5291,19 +5430,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -5353,7 +5492,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
@@ -5361,7 +5500,7 @@ const docTemplate = `{
                                         "customer_traffic": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/sales.CustomerTraffic"
+                                                "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_sales.CustomerTraffic"
                                             }
                                         }
                                     }
@@ -5372,19 +5511,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -5413,7 +5552,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.createTrafficRequest"
+                            "$ref": "#/definitions/internal_http_handlers.createTrafficRequest"
                         }
                     }
                 ],
@@ -5423,13 +5562,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "traffic": {
-                                            "$ref": "#/definitions/sales.CustomerTraffic"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_sales.CustomerTraffic"
                                         }
                                     }
                                 }
@@ -5439,19 +5578,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -5489,7 +5628,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
@@ -5497,7 +5636,7 @@ const docTemplate = `{
                                         "areas": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/structure.Area"
+                                                "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_structure.Area"
                                             }
                                         }
                                     }
@@ -5508,19 +5647,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -5549,7 +5688,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.structureAreaRequest"
+                            "$ref": "#/definitions/internal_http_handlers.structureAreaRequest"
                         }
                     }
                 ],
@@ -5559,13 +5698,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "area": {
-                                            "$ref": "#/definitions/structure.Area"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_structure.Area"
                                         }
                                     }
                                 }
@@ -5575,25 +5714,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -5631,7 +5770,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.structureAreaRequest"
+                            "$ref": "#/definitions/internal_http_handlers.structureAreaRequest"
                         }
                     }
                 ],
@@ -5641,13 +5780,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "area": {
-                                            "$ref": "#/definitions/structure.Area"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_structure.Area"
                                         }
                                     }
                                 }
@@ -5657,25 +5796,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -5713,7 +5852,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
@@ -5721,7 +5860,7 @@ const docTemplate = `{
                                         "buildings": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/structure.Building"
+                                                "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_structure.Building"
                                             }
                                         }
                                     }
@@ -5732,19 +5871,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -5773,7 +5912,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.structureBuildingRequest"
+                            "$ref": "#/definitions/internal_http_handlers.structureBuildingRequest"
                         }
                     }
                 ],
@@ -5783,13 +5922,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "building": {
-                                            "$ref": "#/definitions/structure.Building"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_structure.Building"
                                         }
                                     }
                                 }
@@ -5799,25 +5938,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -5855,7 +5994,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.structureBuildingRequest"
+                            "$ref": "#/definitions/internal_http_handlers.structureBuildingRequest"
                         }
                     }
                 ],
@@ -5865,13 +6004,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "building": {
-                                            "$ref": "#/definitions/structure.Building"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_structure.Building"
                                         }
                                     }
                                 }
@@ -5881,25 +6020,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -5937,7 +6076,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
@@ -5945,7 +6084,7 @@ const docTemplate = `{
                                         "floors": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/structure.Floor"
+                                                "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_structure.Floor"
                                             }
                                         }
                                     }
@@ -5956,19 +6095,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -5997,7 +6136,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.structureFloorRequest"
+                            "$ref": "#/definitions/internal_http_handlers.structureFloorRequest"
                         }
                     }
                 ],
@@ -6007,13 +6146,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "floor": {
-                                            "$ref": "#/definitions/structure.Floor"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_structure.Floor"
                                         }
                                     }
                                 }
@@ -6023,25 +6162,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -6079,7 +6218,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.structureFloorRequest"
+                            "$ref": "#/definitions/internal_http_handlers.structureFloorRequest"
                         }
                     }
                 ],
@@ -6089,13 +6228,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "floor": {
-                                            "$ref": "#/definitions/structure.Floor"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_structure.Floor"
                                         }
                                     }
                                 }
@@ -6105,25 +6244,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -6167,7 +6306,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
@@ -6175,7 +6314,7 @@ const docTemplate = `{
                                         "locations": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/structure.Location"
+                                                "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_structure.Location"
                                             }
                                         }
                                     }
@@ -6186,19 +6325,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -6227,7 +6366,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.structureLocationRequest"
+                            "$ref": "#/definitions/internal_http_handlers.structureLocationRequest"
                         }
                     }
                 ],
@@ -6237,13 +6376,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "location": {
-                                            "$ref": "#/definitions/structure.Location"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_structure.Location"
                                         }
                                     }
                                 }
@@ -6253,25 +6392,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -6309,7 +6448,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.structureLocationRequest"
+                            "$ref": "#/definitions/internal_http_handlers.structureLocationRequest"
                         }
                     }
                 ],
@@ -6319,13 +6458,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "location": {
-                                            "$ref": "#/definitions/structure.Location"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_structure.Location"
                                         }
                                     }
                                 }
@@ -6335,25 +6474,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -6383,7 +6522,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
@@ -6391,7 +6530,7 @@ const docTemplate = `{
                                         "stores": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/structure.Store"
+                                                "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_structure.Store"
                                             }
                                         }
                                     }
@@ -6402,13 +6541,13 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -6437,7 +6576,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.structureStoreRequest"
+                            "$ref": "#/definitions/internal_http_handlers.structureStoreRequest"
                         }
                     }
                 ],
@@ -6447,13 +6586,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "store": {
-                                            "$ref": "#/definitions/structure.Store"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_structure.Store"
                                         }
                                     }
                                 }
@@ -6463,25 +6602,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -6519,7 +6658,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.structureStoreRequest"
+                            "$ref": "#/definitions/internal_http_handlers.structureStoreRequest"
                         }
                     }
                 ],
@@ -6529,13 +6668,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "store": {
-                                            "$ref": "#/definitions/structure.Store"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_structure.Store"
                                         }
                                     }
                                 }
@@ -6545,25 +6684,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -6619,7 +6758,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
@@ -6627,7 +6766,7 @@ const docTemplate = `{
                                         "units": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/structure.Unit"
+                                                "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_structure.Unit"
                                             }
                                         }
                                     }
@@ -6638,19 +6777,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -6679,7 +6818,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.structureUnitRequest"
+                            "$ref": "#/definitions/internal_http_handlers.structureUnitRequest"
                         }
                     }
                 ],
@@ -6689,13 +6828,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "unit": {
-                                            "$ref": "#/definitions/structure.Unit"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_structure.Unit"
                                         }
                                     }
                                 }
@@ -6705,25 +6844,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -6761,7 +6900,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.structureUnitRequest"
+                            "$ref": "#/definitions/internal_http_handlers.structureUnitRequest"
                         }
                     }
                 ],
@@ -6771,13 +6910,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "unit": {
-                                            "$ref": "#/definitions/structure.Unit"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_structure.Unit"
                                         }
                                     }
                                 }
@@ -6787,25 +6926,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -6836,7 +6975,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.exportVoucherRequest"
+                            "$ref": "#/definitions/internal_http_handlers.exportVoucherRequest"
                         }
                     }
                 ],
@@ -6850,25 +6989,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -6912,7 +7051,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
@@ -6920,7 +7059,7 @@ const docTemplate = `{
                                         "items": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/taxexport.RuleSet"
+                                                "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_taxexport.RuleSet"
                                             }
                                         },
                                         "page": {
@@ -6940,19 +7079,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -6981,7 +7120,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.upsertTaxRuleSetRequest"
+                            "$ref": "#/definitions/internal_http_handlers.upsertTaxRuleSetRequest"
                         }
                     }
                 ],
@@ -6991,13 +7130,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "rule_set": {
-                                            "$ref": "#/definitions/taxexport.RuleSet"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_taxexport.RuleSet"
                                         }
                                     }
                                 }
@@ -7007,25 +7146,428 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/users": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Returns all registered users.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "List users",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "users": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_auth.User"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Creates a new user account with the provided credentials and role assignments.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Create user",
+                "parameters": [
+                    {
+                        "description": "Create user request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.createUserRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "user": {
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_auth.User"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Returns a single user by their unique identifier.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get user by ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "user": {
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_auth.User"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Updates display name, department, or status of an existing user.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Update user",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update user request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.updateUserRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "user": {
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_auth.User"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}/reset-password": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Resets a user's password to the provided new value.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Reset user password",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Reset password request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.resetPasswordRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}/roles": {
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Assigns roles to a user within a department context.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Set user roles",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Set roles request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.setUserRolesRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -7055,7 +7597,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
@@ -7063,7 +7605,7 @@ const docTemplate = `{
                                         "definitions": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/workflow.Definition"
+                                                "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_workflow.Definition"
                                             }
                                         }
                                     }
@@ -7074,13 +7616,13 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -7130,7 +7672,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
@@ -7138,7 +7680,7 @@ const docTemplate = `{
                                         "instances": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/workflow.Instance"
+                                                "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_workflow.Instance"
                                             }
                                         }
                                     }
@@ -7149,19 +7691,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -7190,7 +7732,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.startWorkflowRequest"
+                            "$ref": "#/definitions/internal_http_handlers.startWorkflowRequest"
                         }
                     }
                 ],
@@ -7200,13 +7742,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "instance": {
-                                            "$ref": "#/definitions/workflow.Instance"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_workflow.Instance"
                                         }
                                     }
                                 }
@@ -7216,25 +7758,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -7273,13 +7815,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "instance": {
-                                            "$ref": "#/definitions/workflow.Instance"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_workflow.Instance"
                                         }
                                     }
                                 }
@@ -7289,25 +7831,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -7345,7 +7887,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.workflowActionRequest"
+                            "$ref": "#/definitions/internal_http_handlers.workflowActionRequest"
                         }
                     }
                 ],
@@ -7355,13 +7897,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "instance": {
-                                            "$ref": "#/definitions/workflow.Instance"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_workflow.Instance"
                                         }
                                     }
                                 }
@@ -7371,25 +7913,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -7428,7 +7970,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
@@ -7436,7 +7978,7 @@ const docTemplate = `{
                                         "history": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/workflow.AuditEntry"
+                                                "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_workflow.AuditEntry"
                                             }
                                         }
                                     }
@@ -7447,25 +7989,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -7503,7 +8045,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.workflowActionRequest"
+                            "$ref": "#/definitions/internal_http_handlers.workflowActionRequest"
                         }
                     }
                 ],
@@ -7513,13 +8055,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "instance": {
-                                            "$ref": "#/definitions/workflow.Instance"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_workflow.Instance"
                                         }
                                     }
                                 }
@@ -7529,25 +8071,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -7586,7 +8128,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
@@ -7594,7 +8136,7 @@ const docTemplate = `{
                                         "reminders": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/workflow.ReminderAuditRecord"
+                                                "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_workflow.ReminderAuditRecord"
                                             }
                                         }
                                     }
@@ -7605,25 +8147,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -7661,7 +8203,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.workflowActionRequest"
+                            "$ref": "#/definitions/internal_http_handlers.workflowActionRequest"
                         }
                     }
                 ],
@@ -7671,13 +8213,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "instance": {
-                                            "$ref": "#/definitions/workflow.Instance"
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_workflow.Instance"
                                         }
                                     }
                                 }
@@ -7687,25 +8229,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -7735,7 +8277,7 @@ const docTemplate = `{
                         "name": "request",
                         "in": "body",
                         "schema": {
-                            "$ref": "#/definitions/handlers.runRemindersRequest"
+                            "$ref": "#/definitions/internal_http_handlers.runRemindersRequest"
                         }
                     }
                 ],
@@ -7745,7 +8287,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/handlers.swaggerEnvelope"
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
                                 },
                                 {
                                     "type": "object",
@@ -7753,7 +8295,7 @@ const docTemplate = `{
                                         "reminders": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/workflow.ReminderAuditRecord"
+                                                "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_workflow.ReminderAuditRecord"
                                             }
                                         }
                                     }
@@ -7764,19 +8306,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.swaggerMessageResponse"
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
                     }
                 }
@@ -7784,7 +8326,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "auth.Department": {
+        "github_com_Gujiaweiguo_mi_backend_internal_auth.Department": {
             "type": "object",
             "properties": {
                 "code": {
@@ -7810,7 +8352,7 @@ const docTemplate = `{
                 }
             }
         },
-        "auth.Permission": {
+        "github_com_Gujiaweiguo_mi_backend_internal_auth.Permission": {
             "type": "object",
             "properties": {
                 "can_export": {
@@ -7827,7 +8369,28 @@ const docTemplate = `{
                 }
             }
         },
-        "auth.SessionUser": {
+        "github_com_Gujiaweiguo_mi_backend_internal_auth.Role": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "isLeader": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_Gujiaweiguo_mi_backend_internal_auth.SessionUser": {
             "type": "object",
             "properties": {
                 "department_id": {
@@ -7842,7 +8405,7 @@ const docTemplate = `{
                 "permissions": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/auth.Permission"
+                        "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_auth.Permission"
                     }
                 },
                 "roles": {
@@ -7856,7 +8419,7 @@ const docTemplate = `{
                 }
             }
         },
-        "auth.Store": {
+        "github_com_Gujiaweiguo_mi_backend_internal_auth.Store": {
             "type": "object",
             "properties": {
                 "code": {
@@ -7879,22 +8442,17 @@ const docTemplate = `{
                 }
             }
         },
-        "auth.User": {
+        "github_com_Gujiaweiguo_mi_backend_internal_auth.User": {
             "type": "object",
             "properties": {
-                "departmentID": {
-                    "type": "integer",
-                    "format": "int64"
+                "department_id": {
+                    "type": "integer"
                 },
-                "displayName": {
+                "display_name": {
                     "type": "string"
                 },
                 "id": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "passwordHash": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "status": {
                     "type": "string"
@@ -7904,7 +8462,7 @@ const docTemplate = `{
                 }
             }
         },
-        "baseinfo.ReferenceCatalogItem": {
+        "github_com_Gujiaweiguo_mi_backend_internal_baseinfo.ReferenceCatalogItem": {
             "type": "object",
             "properties": {
                 "code": {
@@ -7939,7 +8497,7 @@ const docTemplate = `{
                 }
             }
         },
-        "billing.ChargeLine": {
+        "github_com_Gujiaweiguo_mi_backend_internal_billing.ChargeLine": {
             "type": "object",
             "properties": {
                 "amount": {
@@ -7989,24 +8547,24 @@ const docTemplate = `{
                 }
             }
         },
-        "billing.GenerateResult": {
+        "github_com_Gujiaweiguo_mi_backend_internal_billing.GenerateResult": {
             "type": "object",
             "properties": {
                 "lines": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/billing.ChargeLine"
+                        "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_billing.ChargeLine"
                     }
                 },
                 "run": {
-                    "$ref": "#/definitions/billing.Run"
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_billing.Run"
                 },
                 "totals": {
-                    "$ref": "#/definitions/billing.Totals"
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_billing.Totals"
                 }
             }
         },
-        "billing.Run": {
+        "github_com_Gujiaweiguo_mi_backend_internal_billing.Run": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -8028,7 +8586,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "status": {
-                    "$ref": "#/definitions/billing.RunStatus"
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_billing.RunStatus"
                 },
                 "triggered_by": {
                     "type": "integer"
@@ -8038,7 +8596,7 @@ const docTemplate = `{
                 }
             }
         },
-        "billing.RunStatus": {
+        "github_com_Gujiaweiguo_mi_backend_internal_billing.RunStatus": {
             "type": "string",
             "enum": [
                 "completed"
@@ -8047,7 +8605,7 @@ const docTemplate = `{
                 "RunStatusCompleted"
             ]
         },
-        "billing.Totals": {
+        "github_com_Gujiaweiguo_mi_backend_internal_billing.Totals": {
             "type": "object",
             "properties": {
                 "generated": {
@@ -8058,7 +8616,7 @@ const docTemplate = `{
                 }
             }
         },
-        "dashboard.DashboardSummary": {
+        "github_com_Gujiaweiguo_mi_backend_internal_dashboard.DashboardSummary": {
             "type": "object",
             "properties": {
                 "active_leases": {
@@ -8081,7 +8639,7 @@ const docTemplate = `{
                 }
             }
         },
-        "docoutput.OutputMode": {
+        "github_com_Gujiaweiguo_mi_backend_internal_docoutput.OutputMode": {
             "type": "string",
             "enum": [
                 "invoice_batch",
@@ -8094,7 +8652,7 @@ const docTemplate = `{
                 "OutputModeBillState"
             ]
         },
-        "docoutput.Template": {
+        "github_com_Gujiaweiguo_mi_backend_internal_docoutput.Template": {
             "type": "object",
             "properties": {
                 "code": {
@@ -8128,10 +8686,10 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "output_mode": {
-                    "$ref": "#/definitions/docoutput.OutputMode"
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_docoutput.OutputMode"
                 },
                 "status": {
-                    "$ref": "#/definitions/docoutput.TemplateStatus"
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_docoutput.TemplateStatus"
                 },
                 "subtitle": {
                     "type": "string"
@@ -8147,7 +8705,7 @@ const docTemplate = `{
                 }
             }
         },
-        "docoutput.TemplateStatus": {
+        "github_com_Gujiaweiguo_mi_backend_internal_docoutput.TemplateStatus": {
             "type": "string",
             "enum": [
                 "active"
@@ -8156,7 +8714,7 @@ const docTemplate = `{
                 "TemplateStatusActive"
             ]
         },
-        "excelio.Diagnostic": {
+        "github_com_Gujiaweiguo_mi_backend_internal_excelio.Diagnostic": {
             "type": "object",
             "properties": {
                 "field": {
@@ -8170,13 +8728,13 @@ const docTemplate = `{
                 }
             }
         },
-        "excelio.ImportResult": {
+        "github_com_Gujiaweiguo_mi_backend_internal_excelio.ImportResult": {
             "type": "object",
             "properties": {
                 "diagnostics": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/excelio.Diagnostic"
+                        "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_excelio.Diagnostic"
                     }
                 },
                 "imported_count": {
@@ -8184,909 +8742,7 @@ const docTemplate = `{
                 }
             }
         },
-        "handlers.adjustInvoiceRequest": {
-            "type": "object",
-            "properties": {
-                "lines": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "required": [
-                            "amount",
-                            "billing_charge_line_id"
-                        ],
-                        "properties": {
-                            "amount": {
-                                "type": "number"
-                            },
-                            "billing_charge_line_id": {
-                                "type": "integer"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "handlers.baseInfoRequest": {
-            "type": "object",
-            "required": [
-                "code",
-                "name"
-            ],
-            "properties": {
-                "code": {
-                    "type": "string"
-                },
-                "color_hex": {
-                    "type": "string"
-                },
-                "is_local": {
-                    "type": "boolean"
-                },
-                "level": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "parent_id": {
-                    "type": "integer"
-                },
-                "status": {
-                    "type": "string"
-                }
-            }
-        },
-        "handlers.createBrandRequest": {
-            "type": "object",
-            "required": [
-                "code",
-                "name"
-            ],
-            "properties": {
-                "code": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "string"
-                }
-            }
-        },
-        "handlers.createCustomerRequest": {
-            "type": "object",
-            "required": [
-                "code",
-                "name"
-            ],
-            "properties": {
-                "code": {
-                    "type": "string"
-                },
-                "department_id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "string"
-                },
-                "trade_id": {
-                    "type": "integer"
-                }
-            }
-        },
-        "handlers.createDailySaleRequest": {
-            "type": "object",
-            "required": [
-                "sale_date",
-                "sales_amount",
-                "store_id",
-                "unit_id"
-            ],
-            "properties": {
-                "sale_date": {
-                    "type": "string"
-                },
-                "sales_amount": {
-                    "type": "number"
-                },
-                "store_id": {
-                    "type": "integer"
-                },
-                "unit_id": {
-                    "type": "integer"
-                }
-            }
-        },
-        "handlers.createInvoiceRequest": {
-            "type": "object",
-            "required": [
-                "billing_charge_line_ids",
-                "document_type"
-            ],
-            "properties": {
-                "billing_charge_line_ids": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "document_type": {
-                    "$ref": "#/definitions/invoice.DocumentType"
-                }
-            }
-        },
-        "handlers.createLeaseRequest": {
-            "type": "object",
-            "required": [
-                "department_id",
-                "end_date",
-                "lease_no",
-                "start_date",
-                "store_id",
-                "tenant_name",
-                "terms",
-                "units"
-            ],
-            "properties": {
-                "brand_id": {
-                    "type": "integer"
-                },
-                "building_id": {
-                    "type": "integer"
-                },
-                "customer_id": {
-                    "type": "integer"
-                },
-                "department_id": {
-                    "type": "integer"
-                },
-                "end_date": {
-                    "type": "string"
-                },
-                "lease_no": {
-                    "type": "string"
-                },
-                "management_type_id": {
-                    "type": "integer"
-                },
-                "start_date": {
-                    "type": "string"
-                },
-                "store_id": {
-                    "type": "integer"
-                },
-                "tenant_name": {
-                    "type": "string"
-                },
-                "terms": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/handlers.createLeaseTermRequest"
-                    }
-                },
-                "trade_id": {
-                    "type": "integer"
-                },
-                "units": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/handlers.createLeaseUnitRequest"
-                    }
-                }
-            }
-        },
-        "handlers.createLeaseTermRequest": {
-            "type": "object",
-            "required": [
-                "amount",
-                "billing_cycle",
-                "currency_type_id",
-                "effective_from",
-                "effective_to",
-                "term_type"
-            ],
-            "properties": {
-                "amount": {
-                    "type": "number"
-                },
-                "billing_cycle": {
-                    "$ref": "#/definitions/lease.BillingCycle"
-                },
-                "currency_type_id": {
-                    "type": "integer"
-                },
-                "effective_from": {
-                    "type": "string"
-                },
-                "effective_to": {
-                    "type": "string"
-                },
-                "term_type": {
-                    "$ref": "#/definitions/lease.TermType"
-                }
-            }
-        },
-        "handlers.createLeaseUnitRequest": {
-            "type": "object",
-            "required": [
-                "rent_area",
-                "unit_id"
-            ],
-            "properties": {
-                "rent_area": {
-                    "type": "number"
-                },
-                "unit_id": {
-                    "type": "integer"
-                }
-            }
-        },
-        "handlers.createTrafficRequest": {
-            "type": "object",
-            "required": [
-                "inbound_count",
-                "store_id",
-                "traffic_date"
-            ],
-            "properties": {
-                "inbound_count": {
-                    "type": "integer"
-                },
-                "store_id": {
-                    "type": "integer"
-                },
-                "traffic_date": {
-                    "type": "string"
-                }
-            }
-        },
-        "handlers.exportVoucherRequest": {
-            "type": "object",
-            "required": [
-                "from_date",
-                "rule_set_code",
-                "to_date"
-            ],
-            "properties": {
-                "from_date": {
-                    "type": "string"
-                },
-                "rule_set_code": {
-                    "type": "string"
-                },
-                "to_date": {
-                    "type": "string"
-                }
-            }
-        },
-        "handlers.generateBillingRequest": {
-            "type": "object",
-            "required": [
-                "period_end",
-                "period_start"
-            ],
-            "properties": {
-                "period_end": {
-                    "type": "string"
-                },
-                "period_start": {
-                    "type": "string"
-                }
-            }
-        },
-        "handlers.loginRequest": {
-            "type": "object",
-            "required": [
-                "password",
-                "username"
-            ],
-            "properties": {
-                "password": {
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
-                }
-            }
-        },
-        "handlers.recordPaymentRequest": {
-            "type": "object",
-            "required": [
-                "amount",
-                "idempotency_key"
-            ],
-            "properties": {
-                "amount": {
-                    "type": "number"
-                },
-                "idempotency_key": {
-                    "type": "string"
-                },
-                "note": {
-                    "type": "string"
-                },
-                "payment_date": {
-                    "type": "string"
-                }
-            }
-        },
-        "handlers.renderDocumentRequest": {
-            "type": "object",
-            "required": [
-                "document_ids",
-                "template_code"
-            ],
-            "properties": {
-                "document_ids": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "template_code": {
-                    "type": "string"
-                }
-            }
-        },
-        "handlers.reportRequest": {
-            "type": "object",
-            "properties": {
-                "area_id": {
-                    "type": "integer"
-                },
-                "brand_id": {
-                    "type": "integer"
-                },
-                "charge_type": {
-                    "type": "string"
-                },
-                "customer_id": {
-                    "type": "integer"
-                },
-                "department_id": {
-                    "type": "integer"
-                },
-                "floor_id": {
-                    "type": "integer"
-                },
-                "management_type_id": {
-                    "type": "integer"
-                },
-                "period": {
-                    "type": "string"
-                },
-                "shop_type_id": {
-                    "type": "integer"
-                },
-                "status": {
-                    "type": "string"
-                },
-                "store_id": {
-                    "type": "integer"
-                },
-                "trade_id": {
-                    "type": "integer"
-                },
-                "unit_id": {
-                    "type": "integer"
-                }
-            }
-        },
-        "handlers.runRemindersRequest": {
-            "type": "object",
-            "properties": {
-                "min_pending_age_sec": {
-                    "type": "integer"
-                },
-                "reminder_type": {
-                    "type": "string"
-                },
-                "window_truncation_sec": {
-                    "type": "integer"
-                }
-            }
-        },
-        "handlers.startWorkflowRequest": {
-            "type": "object",
-            "required": [
-                "definition_code",
-                "document_id",
-                "document_type"
-            ],
-            "properties": {
-                "comment": {
-                    "type": "string"
-                },
-                "definition_code": {
-                    "type": "string"
-                },
-                "document_id": {
-                    "type": "integer"
-                },
-                "document_type": {
-                    "type": "string"
-                }
-            }
-        },
-        "handlers.structureAreaRequest": {
-            "type": "object",
-            "required": [
-                "area_level_id",
-                "code",
-                "name",
-                "store_id"
-            ],
-            "properties": {
-                "area_level_id": {
-                    "type": "integer"
-                },
-                "code": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "string"
-                },
-                "store_id": {
-                    "type": "integer"
-                }
-            }
-        },
-        "handlers.structureBuildingRequest": {
-            "type": "object",
-            "required": [
-                "code",
-                "name",
-                "store_id"
-            ],
-            "properties": {
-                "code": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "string"
-                },
-                "store_id": {
-                    "type": "integer"
-                }
-            }
-        },
-        "handlers.structureFloorRequest": {
-            "type": "object",
-            "required": [
-                "building_id",
-                "code",
-                "name"
-            ],
-            "properties": {
-                "building_id": {
-                    "type": "integer"
-                },
-                "code": {
-                    "type": "string"
-                },
-                "floor_plan_image_url": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "string"
-                }
-            }
-        },
-        "handlers.structureLocationRequest": {
-            "type": "object",
-            "required": [
-                "code",
-                "floor_id",
-                "name",
-                "store_id"
-            ],
-            "properties": {
-                "code": {
-                    "type": "string"
-                },
-                "floor_id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "string"
-                },
-                "store_id": {
-                    "type": "integer"
-                }
-            }
-        },
-        "handlers.structureStoreRequest": {
-            "type": "object",
-            "required": [
-                "code",
-                "department_id",
-                "management_type_id",
-                "name",
-                "short_name",
-                "store_type_id"
-            ],
-            "properties": {
-                "code": {
-                    "type": "string"
-                },
-                "department_id": {
-                    "type": "integer"
-                },
-                "management_type_id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "short_name": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "string"
-                },
-                "store_type_id": {
-                    "type": "integer"
-                }
-            }
-        },
-        "handlers.structureUnitRequest": {
-            "type": "object",
-            "required": [
-                "area_id",
-                "building_id",
-                "code",
-                "floor_area",
-                "floor_id",
-                "location_id",
-                "rent_area",
-                "unit_type_id",
-                "use_area"
-            ],
-            "properties": {
-                "area_id": {
-                    "type": "integer"
-                },
-                "building_id": {
-                    "type": "integer"
-                },
-                "code": {
-                    "type": "string"
-                },
-                "floor_area": {
-                    "type": "number"
-                },
-                "floor_id": {
-                    "type": "integer"
-                },
-                "is_rentable": {
-                    "type": "boolean"
-                },
-                "location_id": {
-                    "type": "integer"
-                },
-                "rent_area": {
-                    "type": "number"
-                },
-                "shop_type_id": {
-                    "type": "integer"
-                },
-                "status": {
-                    "type": "string"
-                },
-                "unit_type_id": {
-                    "type": "integer"
-                },
-                "use_area": {
-                    "type": "number"
-                }
-            }
-        },
-        "handlers.submitInvoiceRequest": {
-            "type": "object",
-            "required": [
-                "idempotency_key"
-            ],
-            "properties": {
-                "comment": {
-                    "type": "string"
-                },
-                "idempotency_key": {
-                    "type": "string"
-                }
-            }
-        },
-        "handlers.submitLeaseRequest": {
-            "type": "object",
-            "required": [
-                "idempotency_key"
-            ],
-            "properties": {
-                "comment": {
-                    "type": "string"
-                },
-                "idempotency_key": {
-                    "type": "string"
-                }
-            }
-        },
-        "handlers.swaggerEnvelope": {
-            "type": "object"
-        },
-        "handlers.swaggerMessageResponse": {
-            "type": "object",
-            "properties": {
-                "error": {
-                    "type": "string"
-                },
-                "message": {
-                    "type": "string"
-                }
-            }
-        },
-        "handlers.terminateLeaseRequest": {
-            "type": "object",
-            "required": [
-                "terminated_at"
-            ],
-            "properties": {
-                "terminated_at": {
-                    "type": "string"
-                }
-            }
-        },
-        "handlers.updateBrandRequest": {
-            "type": "object",
-            "required": [
-                "code",
-                "name"
-            ],
-            "properties": {
-                "code": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "string"
-                }
-            }
-        },
-        "handlers.updateCustomerRequest": {
-            "type": "object",
-            "required": [
-                "code",
-                "name"
-            ],
-            "properties": {
-                "code": {
-                    "type": "string"
-                },
-                "department_id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "string"
-                },
-                "trade_id": {
-                    "type": "integer"
-                }
-            }
-        },
-        "handlers.upsertPrintTemplateRequest": {
-            "type": "object",
-            "required": [
-                "code",
-                "document_type",
-                "name",
-                "output_mode",
-                "title"
-            ],
-            "properties": {
-                "code": {
-                    "type": "string"
-                },
-                "document_type": {
-                    "type": "string"
-                },
-                "footer_lines": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "header_lines": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "name": {
-                    "type": "string"
-                },
-                "output_mode": {
-                    "type": "string"
-                },
-                "subtitle": {
-                    "type": "string"
-                },
-                "title": {
-                    "type": "string"
-                }
-            }
-        },
-        "handlers.upsertStoreRentBudgetRequest": {
-            "type": "object",
-            "required": [
-                "fiscal_month",
-                "fiscal_year",
-                "monthly_budget",
-                "store_id"
-            ],
-            "properties": {
-                "fiscal_month": {
-                    "type": "integer"
-                },
-                "fiscal_year": {
-                    "type": "integer"
-                },
-                "monthly_budget": {
-                    "type": "number"
-                },
-                "store_id": {
-                    "type": "integer"
-                }
-            }
-        },
-        "handlers.upsertTaxRuleSetRequest": {
-            "type": "object",
-            "required": [
-                "code",
-                "document_type",
-                "name",
-                "rules"
-            ],
-            "properties": {
-                "code": {
-                    "type": "string"
-                },
-                "document_type": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "rules": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "required": [
-                            "account_name",
-                            "account_number",
-                            "entry_side",
-                            "explanation_template",
-                            "sequence_no"
-                        ],
-                        "properties": {
-                            "account_name": {
-                                "type": "string"
-                            },
-                            "account_number": {
-                                "type": "string"
-                            },
-                            "charge_type_filter": {
-                                "type": "string"
-                            },
-                            "entry_side": {
-                                "type": "string"
-                            },
-                            "explanation_template": {
-                                "type": "string"
-                            },
-                            "is_balancing_entry": {
-                                "type": "boolean"
-                            },
-                            "sequence_no": {
-                                "type": "integer"
-                            },
-                            "use_tenant_name": {
-                                "type": "boolean"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "handlers.upsertUnitProspectRequest": {
-            "type": "object",
-            "required": [
-                "fiscal_year",
-                "unit_id"
-            ],
-            "properties": {
-                "avg_transaction": {
-                    "type": "number"
-                },
-                "fiscal_year": {
-                    "type": "integer"
-                },
-                "potential_customer_id": {
-                    "type": "integer"
-                },
-                "prospect_brand_id": {
-                    "type": "integer"
-                },
-                "prospect_rent_price": {
-                    "type": "number"
-                },
-                "prospect_term_months": {
-                    "type": "integer"
-                },
-                "prospect_trade_id": {
-                    "type": "integer"
-                },
-                "rent_increment": {
-                    "type": "string"
-                },
-                "unit_id": {
-                    "type": "integer"
-                }
-            }
-        },
-        "handlers.upsertUnitRentBudgetRequest": {
-            "type": "object",
-            "required": [
-                "budget_price",
-                "fiscal_year",
-                "unit_id"
-            ],
-            "properties": {
-                "budget_price": {
-                    "type": "number"
-                },
-                "fiscal_year": {
-                    "type": "integer"
-                },
-                "unit_id": {
-                    "type": "integer"
-                }
-            }
-        },
-        "handlers.workflowActionRequest": {
-            "type": "object",
-            "required": [
-                "idempotency_key"
-            ],
-            "properties": {
-                "comment": {
-                    "type": "string"
-                },
-                "idempotency_key": {
-                    "type": "string"
-                }
-            }
-        },
-        "invoice.Document": {
+        "github_com_Gujiaweiguo_mi_backend_internal_invoice.Document": {
             "type": "object",
             "properties": {
                 "adjusted_from_id": {
@@ -9114,7 +8770,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "document_type": {
-                    "$ref": "#/definitions/invoice.DocumentType"
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.DocumentType"
                 },
                 "id": {
                     "type": "integer"
@@ -9125,7 +8781,7 @@ const docTemplate = `{
                 "lines": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/invoice.Line"
+                        "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.Line"
                     }
                 },
                 "period_end": {
@@ -9135,7 +8791,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "status": {
-                    "$ref": "#/definitions/invoice.Status"
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.Status"
                 },
                 "submitted_at": {
                     "type": "string"
@@ -9157,7 +8813,7 @@ const docTemplate = `{
                 }
             }
         },
-        "invoice.DocumentType": {
+        "github_com_Gujiaweiguo_mi_backend_internal_invoice.DocumentType": {
             "type": "string",
             "enum": [
                 "bill",
@@ -9168,7 +8824,7 @@ const docTemplate = `{
                 "DocumentTypeInvoice"
             ]
         },
-        "invoice.Line": {
+        "github_com_Gujiaweiguo_mi_backend_internal_invoice.Line": {
             "type": "object",
             "properties": {
                 "amount": {
@@ -9203,7 +8859,7 @@ const docTemplate = `{
                 }
             }
         },
-        "invoice.OpenItem": {
+        "github_com_Gujiaweiguo_mi_backend_internal_invoice.OpenItem": {
             "type": "object",
             "properties": {
                 "billing_document_id": {
@@ -9250,7 +8906,7 @@ const docTemplate = `{
                 }
             }
         },
-        "invoice.PaymentEntry": {
+        "github_com_Gujiaweiguo_mi_backend_internal_invoice.PaymentEntry": {
             "type": "object",
             "properties": {
                 "amount": {
@@ -9282,7 +8938,7 @@ const docTemplate = `{
                 }
             }
         },
-        "invoice.ReceivableListItem": {
+        "github_com_Gujiaweiguo_mi_backend_internal_invoice.ReceivableListItem": {
             "type": "object",
             "properties": {
                 "billing_document_id": {
@@ -9298,10 +8954,10 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "document_status": {
-                    "$ref": "#/definitions/invoice.Status"
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.Status"
                 },
                 "document_type": {
-                    "$ref": "#/definitions/invoice.DocumentType"
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.DocumentType"
                 },
                 "earliest_due_date": {
                     "type": "string"
@@ -9316,7 +8972,7 @@ const docTemplate = `{
                     "type": "number"
                 },
                 "settlement_status": {
-                    "$ref": "#/definitions/invoice.SettlementStatus"
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.SettlementStatus"
                 },
                 "tenant_name": {
                     "type": "string"
@@ -9326,7 +8982,7 @@ const docTemplate = `{
                 }
             }
         },
-        "invoice.ReceivableSummary": {
+        "github_com_Gujiaweiguo_mi_backend_internal_invoice.ReceivableSummary": {
             "type": "object",
             "properties": {
                 "billing_document_id": {
@@ -9336,12 +8992,12 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "document_type": {
-                    "$ref": "#/definitions/invoice.DocumentType"
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.DocumentType"
                 },
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/invoice.OpenItem"
+                        "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.OpenItem"
                     }
                 },
                 "lease_contract_id": {
@@ -9353,18 +9009,18 @@ const docTemplate = `{
                 "payment_history": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/invoice.PaymentEntry"
+                        "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.PaymentEntry"
                     }
                 },
                 "settlement_status": {
-                    "$ref": "#/definitions/invoice.SettlementStatus"
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.SettlementStatus"
                 },
                 "tenant_name": {
                     "type": "string"
                 }
             }
         },
-        "invoice.SettlementStatus": {
+        "github_com_Gujiaweiguo_mi_backend_internal_invoice.SettlementStatus": {
             "type": "string",
             "enum": [
                 "outstanding",
@@ -9375,7 +9031,7 @@ const docTemplate = `{
                 "SettlementStatusSettled"
             ]
         },
-        "invoice.Status": {
+        "github_com_Gujiaweiguo_mi_backend_internal_invoice.Status": {
             "type": "string",
             "enum": [
                 "draft",
@@ -9394,7 +9050,7 @@ const docTemplate = `{
                 "StatusAdjusted"
             ]
         },
-        "lease.BillingCycle": {
+        "github_com_Gujiaweiguo_mi_backend_internal_lease.BillingCycle": {
             "type": "string",
             "enum": [
                 "monthly"
@@ -9403,7 +9059,7 @@ const docTemplate = `{
                 "BillingCycleMonthly"
             ]
         },
-        "lease.Contract": {
+        "github_com_Gujiaweiguo_mi_backend_internal_lease.Contract": {
             "type": "object",
             "properties": {
                 "amended_from_id": {
@@ -9452,7 +9108,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "status": {
-                    "$ref": "#/definitions/lease.Status"
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_lease.Status"
                 },
                 "store_id": {
                     "type": "integer"
@@ -9469,7 +9125,7 @@ const docTemplate = `{
                 "terms": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/lease.Term"
+                        "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_lease.Term"
                     }
                 },
                 "trade_id": {
@@ -9478,7 +9134,7 @@ const docTemplate = `{
                 "units": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/lease.Unit"
+                        "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_lease.Unit"
                     }
                 },
                 "updated_at": {
@@ -9492,7 +9148,7 @@ const docTemplate = `{
                 }
             }
         },
-        "lease.Status": {
+        "github_com_Gujiaweiguo_mi_backend_internal_lease.Status": {
             "type": "string",
             "enum": [
                 "draft",
@@ -9509,7 +9165,7 @@ const docTemplate = `{
                 "StatusTerminated"
             ]
         },
-        "lease.Summary": {
+        "github_com_Gujiaweiguo_mi_backend_internal_lease.Summary": {
             "type": "object",
             "properties": {
                 "billing_effective_at": {
@@ -9543,7 +9199,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "status": {
-                    "$ref": "#/definitions/lease.Status"
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_lease.Status"
                 },
                 "store_id": {
                     "type": "integer"
@@ -9562,14 +9218,14 @@ const docTemplate = `{
                 }
             }
         },
-        "lease.Term": {
+        "github_com_Gujiaweiguo_mi_backend_internal_lease.Term": {
             "type": "object",
             "properties": {
                 "amount": {
                     "type": "number"
                 },
                 "billing_cycle": {
-                    "$ref": "#/definitions/lease.BillingCycle"
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_lease.BillingCycle"
                 },
                 "created_at": {
                     "type": "string"
@@ -9590,14 +9246,14 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "term_type": {
-                    "$ref": "#/definitions/lease.TermType"
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_lease.TermType"
                 },
                 "updated_at": {
                     "type": "string"
                 }
             }
         },
-        "lease.TermType": {
+        "github_com_Gujiaweiguo_mi_backend_internal_lease.TermType": {
             "type": "string",
             "enum": [
                 "rent",
@@ -9608,7 +9264,7 @@ const docTemplate = `{
                 "TermTypeDeposit"
             ]
         },
-        "lease.Unit": {
+        "github_com_Gujiaweiguo_mi_backend_internal_lease.Unit": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -9631,7 +9287,7 @@ const docTemplate = `{
                 }
             }
         },
-        "masterdata.Brand": {
+        "github_com_Gujiaweiguo_mi_backend_internal_masterdata.Brand": {
             "type": "object",
             "properties": {
                 "code": {
@@ -9654,7 +9310,7 @@ const docTemplate = `{
                 }
             }
         },
-        "masterdata.Customer": {
+        "github_com_Gujiaweiguo_mi_backend_internal_masterdata.Customer": {
             "type": "object",
             "properties": {
                 "code": {
@@ -9683,7 +9339,7 @@ const docTemplate = `{
                 }
             }
         },
-        "masterdata.StoreRentBudget": {
+        "github_com_Gujiaweiguo_mi_backend_internal_masterdata.StoreRentBudget": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -9706,7 +9362,7 @@ const docTemplate = `{
                 }
             }
         },
-        "masterdata.UnitProspect": {
+        "github_com_Gujiaweiguo_mi_backend_internal_masterdata.UnitProspect": {
             "type": "object",
             "properties": {
                 "avg_transaction": {
@@ -9744,7 +9400,7 @@ const docTemplate = `{
                 }
             }
         },
-        "masterdata.UnitRentBudget": {
+        "github_com_Gujiaweiguo_mi_backend_internal_masterdata.UnitRentBudget": {
             "type": "object",
             "properties": {
                 "budget_price": {
@@ -9764,7 +9420,7 @@ const docTemplate = `{
                 }
             }
         },
-        "reporting.Column": {
+        "github_com_Gujiaweiguo_mi_backend_internal_reporting.Column": {
             "type": "object",
             "properties": {
                 "key": {
@@ -9775,7 +9431,7 @@ const docTemplate = `{
                 }
             }
         },
-        "reporting.R19Floor": {
+        "github_com_Gujiaweiguo_mi_backend_internal_reporting.R19Floor": {
             "type": "object",
             "properties": {
                 "floor_plan_image_url": {
@@ -9789,7 +9445,7 @@ const docTemplate = `{
                 }
             }
         },
-        "reporting.R19LegendEntry": {
+        "github_com_Gujiaweiguo_mi_backend_internal_reporting.R19LegendEntry": {
             "type": "object",
             "properties": {
                 "color_hex": {
@@ -9800,27 +9456,27 @@ const docTemplate = `{
                 }
             }
         },
-        "reporting.R19Result": {
+        "github_com_Gujiaweiguo_mi_backend_internal_reporting.R19Result": {
             "type": "object",
             "properties": {
                 "floor": {
-                    "$ref": "#/definitions/reporting.R19Floor"
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_reporting.R19Floor"
                 },
                 "legend": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/reporting.R19LegendEntry"
+                        "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_reporting.R19LegendEntry"
                     }
                 },
                 "units": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/reporting.R19Unit"
+                        "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_reporting.R19Unit"
                     }
                 }
             }
         },
-        "reporting.R19Unit": {
+        "github_com_Gujiaweiguo_mi_backend_internal_reporting.R19Unit": {
             "type": "object",
             "properties": {
                 "brand_name": {
@@ -9861,7 +9517,7 @@ const docTemplate = `{
                 }
             }
         },
-        "reporting.ReportID": {
+        "github_com_Gujiaweiguo_mi_backend_internal_reporting.ReportID": {
             "type": "string",
             "enum": [
                 "r02",
@@ -9906,20 +9562,20 @@ const docTemplate = `{
                 "ReportR19"
             ]
         },
-        "reporting.Result": {
+        "github_com_Gujiaweiguo_mi_backend_internal_reporting.Result": {
             "type": "object",
             "properties": {
                 "columns": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/reporting.Column"
+                        "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_reporting.Column"
                     }
                 },
                 "generated_at": {
                     "type": "string"
                 },
                 "report_id": {
-                    "$ref": "#/definitions/reporting.ReportID"
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_reporting.ReportID"
                 },
                 "rows": {
                     "type": "array",
@@ -9929,11 +9585,11 @@ const docTemplate = `{
                     }
                 },
                 "visual": {
-                    "$ref": "#/definitions/reporting.R19Result"
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_reporting.R19Result"
                 }
             }
         },
-        "sales.CustomerTraffic": {
+        "github_com_Gujiaweiguo_mi_backend_internal_sales.CustomerTraffic": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -9956,7 +9612,7 @@ const docTemplate = `{
                 }
             }
         },
-        "sales.DailySale": {
+        "github_com_Gujiaweiguo_mi_backend_internal_sales.DailySale": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -9982,7 +9638,7 @@ const docTemplate = `{
                 }
             }
         },
-        "structure.Area": {
+        "github_com_Gujiaweiguo_mi_backend_internal_structure.Area": {
             "type": "object",
             "properties": {
                 "area_level_id": {
@@ -10011,7 +9667,7 @@ const docTemplate = `{
                 }
             }
         },
-        "structure.Building": {
+        "github_com_Gujiaweiguo_mi_backend_internal_structure.Building": {
             "type": "object",
             "properties": {
                 "code": {
@@ -10037,7 +9693,7 @@ const docTemplate = `{
                 }
             }
         },
-        "structure.Floor": {
+        "github_com_Gujiaweiguo_mi_backend_internal_structure.Floor": {
             "type": "object",
             "properties": {
                 "building_id": {
@@ -10066,7 +9722,7 @@ const docTemplate = `{
                 }
             }
         },
-        "structure.Location": {
+        "github_com_Gujiaweiguo_mi_backend_internal_structure.Location": {
             "type": "object",
             "properties": {
                 "code": {
@@ -10095,7 +9751,7 @@ const docTemplate = `{
                 }
             }
         },
-        "structure.Store": {
+        "github_com_Gujiaweiguo_mi_backend_internal_structure.Store": {
             "type": "object",
             "properties": {
                 "code": {
@@ -10130,7 +9786,7 @@ const docTemplate = `{
                 }
             }
         },
-        "structure.Unit": {
+        "github_com_Gujiaweiguo_mi_backend_internal_structure.Unit": {
             "type": "object",
             "properties": {
                 "area_id": {
@@ -10180,7 +9836,7 @@ const docTemplate = `{
                 }
             }
         },
-        "taxexport.EntrySide": {
+        "github_com_Gujiaweiguo_mi_backend_internal_taxexport.EntrySide": {
             "type": "string",
             "enum": [
                 "debit",
@@ -10191,7 +9847,7 @@ const docTemplate = `{
                 "EntrySideCredit"
             ]
         },
-        "taxexport.Rule": {
+        "github_com_Gujiaweiguo_mi_backend_internal_taxexport.Rule": {
             "type": "object",
             "properties": {
                 "account_name": {
@@ -10207,7 +9863,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "entry_side": {
-                    "$ref": "#/definitions/taxexport.EntrySide"
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_taxexport.EntrySide"
                 },
                 "explanation_template": {
                     "type": "string"
@@ -10232,7 +9888,7 @@ const docTemplate = `{
                 }
             }
         },
-        "taxexport.RuleSet": {
+        "github_com_Gujiaweiguo_mi_backend_internal_taxexport.RuleSet": {
             "type": "object",
             "properties": {
                 "code": {
@@ -10256,11 +9912,11 @@ const docTemplate = `{
                 "rules": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/taxexport.Rule"
+                        "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_taxexport.Rule"
                     }
                 },
                 "status": {
-                    "$ref": "#/definitions/taxexport.RuleSetStatus"
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_taxexport.RuleSetStatus"
                 },
                 "updated_at": {
                     "type": "string"
@@ -10270,7 +9926,7 @@ const docTemplate = `{
                 }
             }
         },
-        "taxexport.RuleSetStatus": {
+        "github_com_Gujiaweiguo_mi_backend_internal_taxexport.RuleSetStatus": {
             "type": "string",
             "enum": [
                 "active"
@@ -10279,7 +9935,7 @@ const docTemplate = `{
                 "RuleSetStatusActive"
             ]
         },
-        "workflow.Action": {
+        "github_com_Gujiaweiguo_mi_backend_internal_workflow.Action": {
             "type": "string",
             "enum": [
                 "submit",
@@ -10294,11 +9950,11 @@ const docTemplate = `{
                 "ActionResubmit"
             ]
         },
-        "workflow.AuditEntry": {
+        "github_com_Gujiaweiguo_mi_backend_internal_workflow.AuditEntry": {
             "type": "object",
             "properties": {
                 "action": {
-                    "$ref": "#/definitions/workflow.Action"
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_workflow.Action"
                 },
                 "actor_user_id": {
                     "type": "integer"
@@ -10310,7 +9966,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "from_status": {
-                    "$ref": "#/definitions/workflow.InstanceStatus"
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_workflow.InstanceStatus"
                 },
                 "from_step_order": {
                     "type": "integer"
@@ -10322,7 +9978,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "to_status": {
-                    "$ref": "#/definitions/workflow.InstanceStatus"
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_workflow.InstanceStatus"
                 },
                 "to_step_order": {
                     "type": "integer"
@@ -10332,7 +9988,7 @@ const docTemplate = `{
                 }
             }
         },
-        "workflow.Definition": {
+        "github_com_Gujiaweiguo_mi_backend_internal_workflow.Definition": {
             "type": "object",
             "properties": {
                 "code": {
@@ -10348,7 +10004,7 @@ const docTemplate = `{
                 "nodes": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/workflow.Node"
+                        "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_workflow.Node"
                     }
                 },
                 "processClass": {
@@ -10357,12 +10013,12 @@ const docTemplate = `{
                 "transitions": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/workflow.Transition"
+                        "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_workflow.Transition"
                     }
                 }
             }
         },
-        "workflow.Instance": {
+        "github_com_Gujiaweiguo_mi_backend_internal_workflow.Instance": {
             "type": "object",
             "properties": {
                 "completed_at": {
@@ -10387,7 +10043,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "status": {
-                    "$ref": "#/definitions/workflow.InstanceStatus"
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_workflow.InstanceStatus"
                 },
                 "submitted_at": {
                     "type": "string"
@@ -10403,7 +10059,7 @@ const docTemplate = `{
                 }
             }
         },
-        "workflow.InstanceStatus": {
+        "github_com_Gujiaweiguo_mi_backend_internal_workflow.InstanceStatus": {
             "type": "string",
             "enum": [
                 "pending",
@@ -10416,7 +10072,7 @@ const docTemplate = `{
                 "InstanceStatusRejected"
             ]
         },
-        "workflow.Node": {
+        "github_com_Gujiaweiguo_mi_backend_internal_workflow.Node": {
             "type": "object",
             "properties": {
                 "canSubmitToManager": {
@@ -10458,7 +10114,7 @@ const docTemplate = `{
                 }
             }
         },
-        "workflow.ReminderAuditRecord": {
+        "github_com_Gujiaweiguo_mi_backend_internal_workflow.ReminderAuditRecord": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -10468,7 +10124,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "outcome": {
-                    "$ref": "#/definitions/workflow.ReminderOutcome"
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_workflow.ReminderOutcome"
                 },
                 "reason_code": {
                     "type": "string"
@@ -10487,7 +10143,7 @@ const docTemplate = `{
                 }
             }
         },
-        "workflow.ReminderOutcome": {
+        "github_com_Gujiaweiguo_mi_backend_internal_workflow.ReminderOutcome": {
             "type": "string",
             "enum": [
                 "emitted",
@@ -10498,11 +10154,11 @@ const docTemplate = `{
                 "ReminderOutcomeSkipped"
             ]
         },
-        "workflow.Transition": {
+        "github_com_Gujiaweiguo_mi_backend_internal_workflow.Transition": {
             "type": "object",
             "properties": {
                 "action": {
-                    "$ref": "#/definitions/workflow.Action"
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_workflow.Action"
                 },
                 "fromNodeID": {
                     "type": "integer",
@@ -10519,6 +10175,1313 @@ const docTemplate = `{
                 "workflowDefinitionID": {
                     "type": "integer",
                     "format": "int64"
+                }
+            }
+        },
+        "internal_http_handlers.adjustInvoiceRequest": {
+            "type": "object",
+            "required": [
+                "lines"
+            ],
+            "properties": {
+                "lines": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "amount",
+                            "billing_charge_line_id"
+                        ],
+                        "properties": {
+                            "amount": {
+                                "type": "number"
+                            },
+                            "billing_charge_line_id": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "internal_http_handlers.baseInfoRequest": {
+            "type": "object",
+            "required": [
+                "code",
+                "name"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 1
+                },
+                "color_hex": {
+                    "type": "string",
+                    "maxLength": 7
+                },
+                "is_local": {
+                    "type": "boolean"
+                },
+                "level": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                },
+                "parent_id": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "active",
+                        "inactive",
+                        "disabled"
+                    ]
+                }
+            }
+        },
+        "internal_http_handlers.createBrandRequest": {
+            "type": "object",
+            "required": [
+                "code",
+                "name"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 1
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "active",
+                        "inactive",
+                        "disabled"
+                    ]
+                }
+            }
+        },
+        "internal_http_handlers.createCustomerRequest": {
+            "type": "object",
+            "required": [
+                "code",
+                "name"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 1
+                },
+                "department_id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "active",
+                        "inactive",
+                        "disabled"
+                    ]
+                },
+                "trade_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "internal_http_handlers.createDailySaleRequest": {
+            "type": "object",
+            "required": [
+                "sale_date",
+                "sales_amount",
+                "store_id",
+                "unit_id"
+            ],
+            "properties": {
+                "sale_date": {
+                    "type": "string"
+                },
+                "sales_amount": {
+                    "type": "number"
+                },
+                "store_id": {
+                    "type": "integer"
+                },
+                "unit_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "internal_http_handlers.createInvoiceRequest": {
+            "type": "object",
+            "required": [
+                "billing_charge_line_ids",
+                "document_type"
+            ],
+            "properties": {
+                "billing_charge_line_ids": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "document_type": {
+                    "enum": [
+                        "invoice",
+                        "bill"
+                    ],
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.DocumentType"
+                        }
+                    ]
+                }
+            }
+        },
+        "internal_http_handlers.createLeaseRequest": {
+            "type": "object",
+            "required": [
+                "department_id",
+                "end_date",
+                "lease_no",
+                "start_date",
+                "store_id",
+                "tenant_name",
+                "terms",
+                "units"
+            ],
+            "properties": {
+                "brand_id": {
+                    "type": "integer"
+                },
+                "building_id": {
+                    "type": "integer"
+                },
+                "customer_id": {
+                    "type": "integer"
+                },
+                "department_id": {
+                    "type": "integer"
+                },
+                "end_date": {
+                    "type": "string"
+                },
+                "lease_no": {
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 1
+                },
+                "management_type_id": {
+                    "type": "integer"
+                },
+                "start_date": {
+                    "type": "string"
+                },
+                "store_id": {
+                    "type": "integer"
+                },
+                "tenant_name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                },
+                "terms": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "$ref": "#/definitions/internal_http_handlers.createLeaseTermRequest"
+                    }
+                },
+                "trade_id": {
+                    "type": "integer"
+                },
+                "units": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "$ref": "#/definitions/internal_http_handlers.createLeaseUnitRequest"
+                    }
+                }
+            }
+        },
+        "internal_http_handlers.createLeaseTermRequest": {
+            "type": "object",
+            "required": [
+                "amount",
+                "billing_cycle",
+                "currency_type_id",
+                "effective_from",
+                "effective_to",
+                "term_type"
+            ],
+            "properties": {
+                "amount": {
+                    "type": "number"
+                },
+                "billing_cycle": {
+                    "enum": [
+                        "monthly",
+                        "quarterly",
+                        "yearly"
+                    ],
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_lease.BillingCycle"
+                        }
+                    ]
+                },
+                "currency_type_id": {
+                    "type": "integer"
+                },
+                "effective_from": {
+                    "type": "string"
+                },
+                "effective_to": {
+                    "type": "string"
+                },
+                "term_type": {
+                    "enum": [
+                        "rent",
+                        "deposit",
+                        "utility",
+                        "other"
+                    ],
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_lease.TermType"
+                        }
+                    ]
+                }
+            }
+        },
+        "internal_http_handlers.createLeaseUnitRequest": {
+            "type": "object",
+            "required": [
+                "rent_area",
+                "unit_id"
+            ],
+            "properties": {
+                "rent_area": {
+                    "type": "number"
+                },
+                "unit_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "internal_http_handlers.createTrafficRequest": {
+            "type": "object",
+            "required": [
+                "inbound_count",
+                "store_id",
+                "traffic_date"
+            ],
+            "properties": {
+                "inbound_count": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "store_id": {
+                    "type": "integer"
+                },
+                "traffic_date": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_http_handlers.createUserRequest": {
+            "type": "object",
+            "required": [
+                "department_id",
+                "display_name",
+                "password",
+                "username"
+            ],
+            "properties": {
+                "department_id": {
+                    "type": "integer"
+                },
+                "display_name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                },
+                "password": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 6
+                },
+                "role_ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "username": {
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 2
+                }
+            }
+        },
+        "internal_http_handlers.exportVoucherRequest": {
+            "type": "object",
+            "required": [
+                "from_date",
+                "rule_set_code",
+                "to_date"
+            ],
+            "properties": {
+                "from_date": {
+                    "type": "string"
+                },
+                "rule_set_code": {
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 1
+                },
+                "to_date": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_http_handlers.generateBillingRequest": {
+            "type": "object",
+            "required": [
+                "period_end",
+                "period_start"
+            ],
+            "properties": {
+                "period_end": {
+                    "type": "string"
+                },
+                "period_start": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_http_handlers.loginRequest": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 6
+                },
+                "username": {
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 2
+                }
+            }
+        },
+        "internal_http_handlers.recordPaymentRequest": {
+            "type": "object",
+            "required": [
+                "amount",
+                "idempotency_key"
+            ],
+            "properties": {
+                "amount": {
+                    "type": "number"
+                },
+                "idempotency_key": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                },
+                "note": {
+                    "type": "string",
+                    "maxLength": 500
+                },
+                "payment_date": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_http_handlers.renderDocumentRequest": {
+            "type": "object",
+            "required": [
+                "document_ids",
+                "template_code"
+            ],
+            "properties": {
+                "document_ids": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "template_code": {
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 1
+                }
+            }
+        },
+        "internal_http_handlers.reportRequest": {
+            "type": "object",
+            "properties": {
+                "area_id": {
+                    "type": "integer"
+                },
+                "brand_id": {
+                    "type": "integer"
+                },
+                "charge_type": {
+                    "type": "string"
+                },
+                "customer_id": {
+                    "type": "integer"
+                },
+                "department_id": {
+                    "type": "integer"
+                },
+                "floor_id": {
+                    "type": "integer"
+                },
+                "management_type_id": {
+                    "type": "integer"
+                },
+                "period": {
+                    "type": "string"
+                },
+                "shop_type_id": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "store_id": {
+                    "type": "integer"
+                },
+                "trade_id": {
+                    "type": "integer"
+                },
+                "unit_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "internal_http_handlers.resetPasswordRequest": {
+            "type": "object",
+            "required": [
+                "new_password"
+            ],
+            "properties": {
+                "new_password": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 6
+                }
+            }
+        },
+        "internal_http_handlers.runRemindersRequest": {
+            "type": "object",
+            "properties": {
+                "min_pending_age_sec": {
+                    "type": "integer"
+                },
+                "reminder_type": {
+                    "type": "string"
+                },
+                "window_truncation_sec": {
+                    "type": "integer"
+                }
+            }
+        },
+        "internal_http_handlers.setUserRolesRequest": {
+            "type": "object",
+            "required": [
+                "department_id",
+                "role_ids"
+            ],
+            "properties": {
+                "department_id": {
+                    "type": "integer"
+                },
+                "role_ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "internal_http_handlers.startWorkflowRequest": {
+            "type": "object",
+            "required": [
+                "definition_code",
+                "document_id",
+                "document_type"
+            ],
+            "properties": {
+                "comment": {
+                    "type": "string",
+                    "maxLength": 500
+                },
+                "definition_code": {
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 1
+                },
+                "document_id": {
+                    "type": "integer"
+                },
+                "document_type": {
+                    "type": "string",
+                    "enum": [
+                        "lease_contract",
+                        "invoice",
+                        "bill"
+                    ]
+                }
+            }
+        },
+        "internal_http_handlers.structureAreaRequest": {
+            "type": "object",
+            "required": [
+                "area_level_id",
+                "code",
+                "name",
+                "store_id"
+            ],
+            "properties": {
+                "area_level_id": {
+                    "type": "integer"
+                },
+                "code": {
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 1
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "active",
+                        "inactive",
+                        "disabled"
+                    ]
+                },
+                "store_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "internal_http_handlers.structureBuildingRequest": {
+            "type": "object",
+            "required": [
+                "code",
+                "name",
+                "store_id"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 1
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "active",
+                        "inactive",
+                        "disabled"
+                    ]
+                },
+                "store_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "internal_http_handlers.structureFloorRequest": {
+            "type": "object",
+            "required": [
+                "building_id",
+                "code",
+                "name"
+            ],
+            "properties": {
+                "building_id": {
+                    "type": "integer"
+                },
+                "code": {
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 1
+                },
+                "floor_plan_image_url": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "active",
+                        "inactive",
+                        "disabled"
+                    ]
+                }
+            }
+        },
+        "internal_http_handlers.structureLocationRequest": {
+            "type": "object",
+            "required": [
+                "code",
+                "floor_id",
+                "name",
+                "store_id"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 1
+                },
+                "floor_id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "active",
+                        "inactive",
+                        "disabled"
+                    ]
+                },
+                "store_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "internal_http_handlers.structureStoreRequest": {
+            "type": "object",
+            "required": [
+                "code",
+                "department_id",
+                "management_type_id",
+                "name",
+                "short_name",
+                "store_type_id"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 1
+                },
+                "department_id": {
+                    "type": "integer"
+                },
+                "management_type_id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                },
+                "short_name": {
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 1
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "active",
+                        "inactive",
+                        "disabled"
+                    ]
+                },
+                "store_type_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "internal_http_handlers.structureUnitRequest": {
+            "type": "object",
+            "required": [
+                "area_id",
+                "building_id",
+                "code",
+                "floor_area",
+                "floor_id",
+                "location_id",
+                "rent_area",
+                "unit_type_id",
+                "use_area"
+            ],
+            "properties": {
+                "area_id": {
+                    "type": "integer"
+                },
+                "building_id": {
+                    "type": "integer"
+                },
+                "code": {
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 1
+                },
+                "floor_area": {
+                    "type": "number"
+                },
+                "floor_id": {
+                    "type": "integer"
+                },
+                "is_rentable": {
+                    "type": "boolean"
+                },
+                "location_id": {
+                    "type": "integer"
+                },
+                "rent_area": {
+                    "type": "number"
+                },
+                "shop_type_id": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "active",
+                        "inactive",
+                        "disabled"
+                    ]
+                },
+                "unit_type_id": {
+                    "type": "integer"
+                },
+                "use_area": {
+                    "type": "number"
+                }
+            }
+        },
+        "internal_http_handlers.submitInvoiceRequest": {
+            "type": "object",
+            "required": [
+                "idempotency_key"
+            ],
+            "properties": {
+                "comment": {
+                    "type": "string",
+                    "maxLength": 500
+                },
+                "idempotency_key": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                }
+            }
+        },
+        "internal_http_handlers.submitLeaseRequest": {
+            "type": "object",
+            "required": [
+                "idempotency_key"
+            ],
+            "properties": {
+                "comment": {
+                    "type": "string",
+                    "maxLength": 500
+                },
+                "idempotency_key": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                }
+            }
+        },
+        "internal_http_handlers.swaggerEnvelope": {
+            "type": "object"
+        },
+        "internal_http_handlers.swaggerMessageResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_http_handlers.terminateLeaseRequest": {
+            "type": "object",
+            "required": [
+                "terminated_at"
+            ],
+            "properties": {
+                "terminated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_http_handlers.updateBrandRequest": {
+            "type": "object",
+            "required": [
+                "code",
+                "name"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 1
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "active",
+                        "inactive",
+                        "disabled"
+                    ]
+                }
+            }
+        },
+        "internal_http_handlers.updateCustomerRequest": {
+            "type": "object",
+            "required": [
+                "code",
+                "name"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 1
+                },
+                "department_id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "active",
+                        "inactive",
+                        "disabled"
+                    ]
+                },
+                "trade_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "internal_http_handlers.updateUserRequest": {
+            "type": "object",
+            "properties": {
+                "department_id": {
+                    "type": "integer"
+                },
+                "display_name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "active",
+                        "inactive",
+                        "disabled"
+                    ]
+                }
+            }
+        },
+        "internal_http_handlers.upsertPrintTemplateRequest": {
+            "type": "object",
+            "required": [
+                "code",
+                "document_type",
+                "name",
+                "output_mode",
+                "title"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 1
+                },
+                "document_type": {
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 1
+                },
+                "footer_lines": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "header_lines": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                },
+                "output_mode": {
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 1
+                },
+                "subtitle": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 1
+                }
+            }
+        },
+        "internal_http_handlers.upsertStoreRentBudgetRequest": {
+            "type": "object",
+            "required": [
+                "fiscal_month",
+                "fiscal_year",
+                "monthly_budget",
+                "store_id"
+            ],
+            "properties": {
+                "fiscal_month": {
+                    "type": "integer",
+                    "maximum": 12,
+                    "minimum": 1
+                },
+                "fiscal_year": {
+                    "type": "integer",
+                    "maximum": 2100,
+                    "minimum": 2000
+                },
+                "monthly_budget": {
+                    "type": "number"
+                },
+                "store_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "internal_http_handlers.upsertTaxRuleSetRequest": {
+            "type": "object",
+            "required": [
+                "code",
+                "document_type",
+                "name",
+                "rules"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 1
+                },
+                "document_type": {
+                    "type": "string",
+                    "enum": [
+                        "invoice",
+                        "bill"
+                    ]
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                },
+                "rules": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "account_name",
+                            "account_number",
+                            "charge_type_filter",
+                            "entry_side",
+                            "explanation_template",
+                            "sequence_no"
+                        ],
+                        "properties": {
+                            "account_name": {
+                                "type": "string",
+                                "maxLength": 100,
+                                "minLength": 1
+                            },
+                            "account_number": {
+                                "type": "string",
+                                "maxLength": 50,
+                                "minLength": 1
+                            },
+                            "charge_type_filter": {
+                                "type": "string",
+                                "enum": [
+                                    "rent",
+                                    "deposit",
+                                    "utility",
+                                    "other"
+                                ]
+                            },
+                            "entry_side": {
+                                "type": "string",
+                                "enum": [
+                                    "debit",
+                                    "credit"
+                                ]
+                            },
+                            "explanation_template": {
+                                "type": "string",
+                                "maxLength": 200,
+                                "minLength": 1
+                            },
+                            "is_balancing_entry": {
+                                "type": "boolean"
+                            },
+                            "sequence_no": {
+                                "type": "integer",
+                                "minimum": 1
+                            },
+                            "use_tenant_name": {
+                                "type": "boolean"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "internal_http_handlers.upsertUnitProspectRequest": {
+            "type": "object",
+            "required": [
+                "fiscal_year",
+                "unit_id"
+            ],
+            "properties": {
+                "avg_transaction": {
+                    "type": "number"
+                },
+                "fiscal_year": {
+                    "type": "integer",
+                    "maximum": 2100,
+                    "minimum": 2000
+                },
+                "potential_customer_id": {
+                    "type": "integer"
+                },
+                "prospect_brand_id": {
+                    "type": "integer"
+                },
+                "prospect_rent_price": {
+                    "type": "number"
+                },
+                "prospect_term_months": {
+                    "type": "integer"
+                },
+                "prospect_trade_id": {
+                    "type": "integer"
+                },
+                "rent_increment": {
+                    "type": "string"
+                },
+                "unit_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "internal_http_handlers.upsertUnitRentBudgetRequest": {
+            "type": "object",
+            "required": [
+                "budget_price",
+                "fiscal_year",
+                "unit_id"
+            ],
+            "properties": {
+                "budget_price": {
+                    "type": "number"
+                },
+                "fiscal_year": {
+                    "type": "integer",
+                    "maximum": 2100,
+                    "minimum": 2000
+                },
+                "unit_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "internal_http_handlers.workflowActionRequest": {
+            "type": "object",
+            "required": [
+                "idempotency_key"
+            ],
+            "properties": {
+                "comment": {
+                    "type": "string",
+                    "maxLength": 500
+                },
+                "idempotency_key": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                }
+            }
+        },
+        "internal_notification.OutboxEntry": {
+            "type": "object",
+            "properties": {
+                "aggregate_id": {
+                    "type": "integer"
+                },
+                "aggregate_type": {
+                    "type": "string"
+                },
+                "attempt_count": {
+                    "type": "integer"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "event_type": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "last_error": {
+                    "type": "string"
+                },
+                "max_attempts": {
+                    "type": "integer"
+                },
+                "next_attempt_at": {
+                    "type": "string"
+                },
+                "recipient_cc": {
+                    "type": "string"
+                },
+                "recipient_to": {
+                    "type": "string"
+                },
+                "sent_at": {
+                    "type": "string"
+                },
+                "status": {
+                    "$ref": "#/definitions/internal_notification.Status"
+                },
+                "subject": {
+                    "type": "string"
+                },
+                "template_data": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "template_name": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_notification.Status": {
+            "type": "string",
+            "enum": [
+                "pending",
+                "sending",
+                "sent",
+                "failed",
+                "dead"
+            ],
+            "x-enum-varnames": [
+                "StatusPending",
+                "StatusSending",
+                "StatusSent",
+                "StatusFailed",
+                "StatusDead"
+            ]
+        },
+        "internal_notification.notificationListResponse": {
+            "type": "object",
+            "properties": {
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/internal_notification.OutboxEntry"
+                    }
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "page_size": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "internal_notification.notificationMessageResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
                 }
             }
         }

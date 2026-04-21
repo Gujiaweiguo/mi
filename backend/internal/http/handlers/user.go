@@ -41,7 +41,18 @@ type setUserRolesRequest struct {
 	DepartmentID int64   `json:"department_id" binding:"required,gt=0"`
 }
 
-// List returns all users.
+// List godoc
+//
+//	@Summary		List users
+//	@Description	Returns all registered users.
+//	@Tags			Users
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	swaggerEnvelope{users=[]auth.User}
+//	@Failure		401	{object}	swaggerMessageResponse
+//	@Failure		500	{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/users [get]
 func (h *UserHandler) List(c *gin.Context) {
 	users, err := h.repo.ListUsers(c.Request.Context())
 	if err != nil {
@@ -51,7 +62,21 @@ func (h *UserHandler) List(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"users": users})
 }
 
-// Get returns a single user by ID.
+// Get godoc
+//
+//	@Summary		Get user by ID
+//	@Description	Returns a single user by their unique identifier.
+//	@Tags			Users
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path		int	true	"User ID"
+//	@Success		200	{object}	swaggerEnvelope{user=auth.User}
+//	@Failure		400	{object}	swaggerMessageResponse
+//	@Failure		401	{object}	swaggerMessageResponse
+//	@Failure		404	{object}	swaggerMessageResponse
+//	@Failure		500	{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/users/{id} [get]
 func (h *UserHandler) Get(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -70,7 +95,21 @@ func (h *UserHandler) Get(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"user": user})
 }
 
-// Create creates a new user.
+// Create godoc
+//
+//	@Summary		Create user
+//	@Description	Creates a new user account with the provided credentials and role assignments.
+//	@Tags			Users
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		createUserRequest	true	"Create user request"
+//	@Success		201		{object}	swaggerEnvelope{user=auth.User}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		409		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/users [post]
 func (h *UserHandler) Create(c *gin.Context) {
 	var req createUserRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -114,7 +153,21 @@ func (h *UserHandler) Create(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"user": user})
 }
 
-// Update updates user fields.
+// Update godoc
+//
+//	@Summary		Update user
+//	@Description	Updates display name, department, or status of an existing user.
+//	@Tags			Users
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		int					true	"User ID"
+//	@Param			request	body		updateUserRequest	true	"Update user request"
+//	@Success		200		{object}	swaggerEnvelope{user=auth.User}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/users/{id} [put]
 func (h *UserHandler) Update(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -140,7 +193,21 @@ func (h *UserHandler) Update(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"user": user})
 }
 
-// ResetPassword resets a user's password.
+// ResetPassword godoc
+//
+//	@Summary		Reset user password
+//	@Description	Resets a user's password to the provided new value.
+//	@Tags			Users
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		int						true	"User ID"
+//	@Param			request	body		resetPasswordRequest	true	"Reset password request"
+//	@Success		200		{object}	swaggerMessageResponse
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/users/{id}/reset-password [post]
 func (h *UserHandler) ResetPassword(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -166,7 +233,21 @@ func (h *UserHandler) ResetPassword(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "password reset successful"})
 }
 
-// SetRoles assigns roles to a user.
+// SetRoles godoc
+//
+//	@Summary		Set user roles
+//	@Description	Assigns roles to a user within a department context.
+//	@Tags			Users
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		int						true	"User ID"
+//	@Param			request	body		setUserRolesRequest	true	"Set roles request"
+//	@Success		200		{object}	swaggerMessageResponse
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/users/{id}/roles [put]
 func (h *UserHandler) SetRoles(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -186,7 +267,18 @@ func (h *UserHandler) SetRoles(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "roles updated"})
 }
 
-// ListRoles returns all roles.
+// ListRoles godoc
+//
+//	@Summary		List roles
+//	@Description	Returns all available roles in the system.
+//	@Tags			Users
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	swaggerEnvelope{roles=[]auth.Role}
+//	@Failure		401	{object}	swaggerMessageResponse
+//	@Failure		500	{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/roles [get]
 func (h *UserHandler) ListRoles(c *gin.Context) {
 	roles, err := h.repo.ListRoles(c.Request.Context())
 	if err != nil {

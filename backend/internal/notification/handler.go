@@ -18,7 +18,41 @@ func NewHandler(repository *Repository) *NotificationHandler {
 	return &NotificationHandler{repository: repository}
 }
 
-// ListNotifications returns paginated notification history.
+type notificationListResponse struct {
+	Items    []*OutboxEntry `json:"items"`
+	Total    int            `json:"total"`
+	Page     int            `json:"page"`
+	PageSize int            `json:"page_size"`
+}
+
+type notificationMessageResponse struct {
+	Message string `json:"message,omitempty"`
+}
+
+var (
+	_ = notificationListResponse{}
+	_ = notificationMessageResponse{}
+)
+
+// ListNotifications godoc
+//
+//	@Summary		List notification history
+//	@Description	Returns paginated notification outbox entries with optional filters.
+//	@Tags			Notifications
+//	@Accept			json
+//	@Produce		json
+//	@Param			page			query		int		false	"Page number (default 1)"
+//	@Param			page_size		query		int		false	"Page size (default 20)"
+//	@Param			event_type		query		string	false	"Filter by event type"
+//	@Param			aggregate_type	query		string	false	"Filter by aggregate type"
+//	@Param			aggregate_id	query		int		false	"Filter by aggregate ID"
+//	@Param			status			query		string	false	"Filter by status"
+//	@Success		200				{object}	notificationListResponse
+//	@Failure		400				{object}	notificationMessageResponse
+//	@Failure		401				{object}	notificationMessageResponse
+//	@Failure		500				{object}	notificationMessageResponse
+//	@Security		BearerAuth
+//	@Router			/notifications [get]
 func (h *NotificationHandler) ListNotifications(c *gin.Context) {
 	if h == nil || h.repository == nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "notification repository unavailable"})
