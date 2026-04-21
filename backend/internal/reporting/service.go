@@ -34,19 +34,23 @@ func ParsePeriod(value string) (time.Time, time.Time, string, error) {
 
 func (s *Service) QueryReport(ctx context.Context, input QueryInput) (*Result, error) {
 	if input.ReportID == ReportR19 {
-		visual, err := s.repository.QueryR19(ctx, input)
+		resolvedInput, err := s.resolveR19Input(ctx, input)
+		if err != nil {
+			return nil, err
+		}
+		visual, err := s.repository.QueryR19(ctx, resolvedInput)
 		if err != nil {
 			return nil, err
 		}
 		columns, rows := flattenR19Visual(visual)
 		result := &Result{
-			ReportID:    input.ReportID,
+			ReportID:    resolvedInput.ReportID,
 			Columns:     columns,
 			Rows:        rows,
 			Visual:      visual,
 			GeneratedAt: time.Now().UTC(),
 		}
-		if err := s.repository.InsertReportAudit(ctx, ReportAuditActionQuery, input, len(result.Rows), 0); err != nil {
+		if err := s.repository.InsertReportAudit(ctx, ReportAuditActionQuery, resolvedInput, len(result.Rows), 0); err != nil {
 			return nil, err
 		}
 		return result, nil
@@ -69,16 +73,20 @@ func (s *Service) QueryReport(ctx context.Context, input QueryInput) (*Result, e
 
 func (s *Service) ExportReport(ctx context.Context, input QueryInput) (*ExportArtifact, error) {
 	if input.ReportID == ReportR19 {
-		visual, err := s.repository.QueryR19(ctx, input)
+		resolvedInput, err := s.resolveR19Input(ctx, input)
+		if err != nil {
+			return nil, err
+		}
+		visual, err := s.repository.QueryR19(ctx, resolvedInput)
 		if err != nil {
 			return nil, err
 		}
 		columns, rows := flattenR19Visual(visual)
-		artifact, err := exportWorkbook(input, columns, rows)
+		artifact, err := exportWorkbook(resolvedInput, columns, rows)
 		if err != nil {
 			return nil, err
 		}
-		if err := s.repository.InsertReportAudit(ctx, ReportAuditActionExport, input, len(rows), len(artifact.Bytes)); err != nil {
+		if err := s.repository.InsertReportAudit(ctx, ReportAuditActionExport, resolvedInput, len(rows), len(artifact.Bytes)); err != nil {
 			return nil, err
 		}
 		return artifact, nil
@@ -319,6 +327,22 @@ func flattenR19Visual(visual *R19Result) ([]Column, []map[string]any) {
 		rows = append(rows, item.ToMap())
 	}
 	return columns, rows
+}
+
+func (s *Service) resolveR19Input(ctx context.Context, input QueryInput) (QueryInput, error) {
+	resolved := input
+	if resolved.PeriodLabel == "" {
+		resolved.PeriodLabel = "visual"
+	}
+	if resolved.FloorID != nil {
+		return resolved, nil
+	}
+	floorID, err := s.repository.ResolveR19FloorID(ctx, resolved)
+	if err != nil {
+		return QueryInput{}, err
+	}
+	resolved.FloorID = floorID
+	return resolved, nil
 }
 
 func (r R04Row) DayValue(day int) float64 {

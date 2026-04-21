@@ -1233,6 +1233,18 @@ func TestIntegrationAuthAndOrgRoutes(t *testing.T) {
 		t.Fatalf("expected R19 response to include visual payload, got body=%s", r19Recorder.Body.String())
 	}
 
+	r19DefaultRecorder := httptest.NewRecorder()
+	r19DefaultRequest := httptest.NewRequest(http.MethodPost, "/api/reports/r19/query", bytes.NewBufferString(`{}`))
+	r19DefaultRequest.Header.Set("Content-Type", "application/json")
+	r19DefaultRequest.Header.Set("Authorization", "Bearer "+loginBody.Token)
+	router.ServeHTTP(r19DefaultRecorder, r19DefaultRequest)
+	if r19DefaultRecorder.Code != http.StatusOK {
+		t.Fatalf("expected 200 from default R19 query endpoint, got %d body=%s", r19DefaultRecorder.Code, r19DefaultRecorder.Body.String())
+	}
+	if !bytes.Contains(r19DefaultRecorder.Body.Bytes(), []byte(`"visual"`)) {
+		t.Fatalf("expected default R19 response to include visual payload, got body=%s", r19DefaultRecorder.Body.String())
+	}
+
 	r19ExportRecorder := httptest.NewRecorder()
 	r19ExportRequest := httptest.NewRequest(http.MethodPost, "/api/reports/r19/export", bytes.NewBufferString(`{"store_id":101,"floor_id":101,"area_id":101}`))
 	r19ExportRequest.Header.Set("Content-Type", "application/json")

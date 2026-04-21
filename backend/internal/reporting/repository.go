@@ -976,6 +976,26 @@ func (r *Repository) QueryR19(ctx context.Context, input QueryInput) (*R19Result
 	return &R19Result{Floor: floor, Units: units, Legend: legend}, nil
 }
 
+func (r *Repository) ResolveR19FloorID(ctx context.Context, input QueryInput) (*int64, error) {
+	var floorID int64
+	if err := r.db.QueryRowContext(ctx, `
+		SELECT u.floor_id
+		FROM units u
+		INNER JOIN buildings b ON b.id = u.building_id
+		WHERE (? IS NULL OR b.store_id = ?)
+		  AND (? IS NULL OR u.area_id = ?)
+		GROUP BY u.floor_id
+		ORDER BY u.floor_id
+		LIMIT 1
+	`, input.StoreID, input.StoreID, input.AreaID, input.AreaID).Scan(&floorID); err != nil {
+		if err == sql.ErrNoRows {
+			return nil, fmt.Errorf("resolve R19 floor: %w", ErrUnsupportedReport)
+		}
+		return nil, fmt.Errorf("resolve R19 floor: %w", err)
+	}
+	return &floorID, nil
+}
+
 func dailySalesPivotSelect() string {
 	parts := make([]string, 0, 31)
 	for day := 1; day <= 31; day++ {
@@ -1005,8 +1025,6 @@ func nilInt64() *int64 { return nil }
 func timeDate(year, month, day int) string {
 	return fmt.Sprintf("%04d-%02d-%02d", year, month, day)
 }
-
-
 
 func daysInMonth(value time.Time) int {
 	start := time.Date(value.Year(), value.Month(), 1, 0, 0, 0, 0, time.UTC)
@@ -1311,4 +1329,3 @@ func agingBucketSelectSQL(alias string) string {
 		fmt.Sprintf("COALESCE(SUM(CASE WHEN %sis_deposit = FALSE THEN %soutstanding_amount ELSE 0 END), 0) AS total", prefix, prefix),
 	}, ",\n\t\t\t")
 }
-

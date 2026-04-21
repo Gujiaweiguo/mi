@@ -102,8 +102,9 @@ func (h *ReportingHandler) buildInput(c *gin.Context) (reporting.QueryInput, boo
 		c.JSON(http.StatusUnauthorized, gin.H{"message": "missing session user"})
 		return reporting.QueryInput{}, false
 	}
+	reportID := reporting.ReportID(c.Param("reportId"))
 	periodStart, periodEnd, periodLabel := time.Time{}, time.Time{}, "visual"
-	if reporting.ReportID(c.Param("reportId")) != reporting.ReportID("r19") {
+	if reportID != reporting.ReportR19 {
 		var err error
 		periodStart, periodEnd, periodLabel, err = reporting.ParsePeriod(request.Period)
 		if err != nil {
@@ -112,7 +113,7 @@ func (h *ReportingHandler) buildInput(c *gin.Context) (reporting.QueryInput, boo
 		}
 	}
 	return reporting.QueryInput{
-		ReportID:         reporting.ReportID(c.Param("reportId")),
+		ReportID:         reportID,
 		PeriodStart:      periodStart,
 		PeriodEnd:        periodEnd,
 		PeriodLabel:      periodLabel,

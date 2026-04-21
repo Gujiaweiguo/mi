@@ -65,3 +65,29 @@ func TestReportingQueryRejectsInvalidPeriod(t *testing.T) {
 		t.Fatalf("expected 400, got %d", recorder.Code)
 	}
 }
+
+func TestReportingBuildInputAllowsR19WithoutPeriod(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	handler := NewReportingHandler(nil)
+
+	recorder := httptest.NewRecorder()
+	ctx, _ := gin.CreateTestContext(recorder)
+	ctx.Params = gin.Params{{Key: "reportId", Value: "r19"}}
+	setReportingSessionUser(ctx)
+	ctx.Request = httptest.NewRequest(http.MethodPost, "/api/reports/r19/query", bytes.NewBufferString(`{}`))
+	ctx.Request.Header.Set("Content-Type", "application/json")
+
+	input, ok := handler.buildInput(ctx)
+	if !ok {
+		t.Fatalf("expected R19 buildInput to accept an empty body, got status=%d body=%s", recorder.Code, recorder.Body.String())
+	}
+	if input.ReportID != "r19" {
+		t.Fatalf("expected report ID r19, got %q", input.ReportID)
+	}
+	if input.PeriodLabel != "visual" {
+		t.Fatalf("expected visual period label, got %q", input.PeriodLabel)
+	}
+	if !input.PeriodStart.IsZero() || !input.PeriodEnd.IsZero() {
+		t.Fatalf("expected R19 to skip period parsing, got start=%v end=%v", input.PeriodStart, input.PeriodEnd)
+	}
+}

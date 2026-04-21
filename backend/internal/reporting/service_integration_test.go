@@ -92,6 +92,23 @@ func TestReportingServiceQueryAndExportCoreReports(t *testing.T) {
 		assertWorkbookHeadersMatchColumns(t, result.Columns, rows[0])
 	}
 
+	t.Run("R19 resolves a default floor when filters are empty", func(t *testing.T) {
+		queryInput := reporting.QueryInput{ReportID: reporting.ReportR19, RequestedByID: 101}
+		result, err := service.QueryReport(ctx, queryInput)
+		if err != nil {
+			t.Fatalf("query R19 without explicit floor: %v", err)
+		}
+		if result.Visual == nil {
+			t.Fatal("expected R19 visual payload")
+		}
+		if result.Visual.Floor.ID == 0 {
+			t.Fatalf("expected resolved floor, got %#v", result.Visual.Floor)
+		}
+		if len(result.Visual.Units) == 0 {
+			t.Fatal("expected resolved floor to include visual units")
+		}
+	})
+
 	t.Run("localized report headers follow accepted terminology", func(t *testing.T) {
 		cases := []struct {
 			name     string
