@@ -8,10 +8,9 @@ import PageSection from '../components/platform/PageSection.vue'
 import { useFilterForm } from '../composables/useFilterForm'
 import { getErrorMessage } from '../composables/useErrorMessage'
 import { usePagination } from '../composables/usePagination'
-import { useAppStore } from '../stores/app'
+import { formatDate } from '../utils/format'
 
 const { t } = useI18n()
-const appStore = useAppStore()
 
 const rows = ref<NotificationOutboxEntry[]>([])
 const createdAtRange = ref<[string, string] | null>(null)
@@ -40,17 +39,6 @@ const statusOptions = computed(() => [
   { label: t('notifications.statuses.failed'), value: 'failed' },
   { label: t('notifications.statuses.dead'), value: 'dead' },
 ])
-
-const formatTimestamp = (value: string | null | undefined) => {
-  if (!value) {
-    return t('common.emptyValue')
-  }
-
-  return new Intl.DateTimeFormat(appStore.locale, {
-    dateStyle: 'medium',
-    timeStyle: 'short',
-  }).format(new Date(value))
-}
 
 const resolveStatusLabel = (status: string) => {
   switch (status) {
@@ -87,7 +75,7 @@ const statusTagType = (status: string) => {
 }
 
 const isWithinCreatedAtRange = (value: string) => {
-  if (!createdAtRange.value) {
+  if (!value || !createdAtRange.value) {
     return true
   }
 
@@ -248,12 +236,12 @@ onMounted(() => {
         </el-table-column>
         <el-table-column :label="t('notifications.columns.createdAt')" min-width="200">
           <template #default="scope">
-            {{ formatTimestamp(scope.row.created_at) }}
+            {{ formatDate(scope.row.created_at) }}
           </template>
         </el-table-column>
         <el-table-column :label="t('notifications.columns.sentAt')" min-width="200">
           <template #default="scope">
-            {{ formatTimestamp(scope.row.sent_at) }}
+            {{ formatDate(scope.row.sent_at) }}
           </template>
         </el-table-column>
       </el-table>

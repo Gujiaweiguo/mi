@@ -38,6 +38,7 @@ import {
 } from '../api/baseinfo'
 import PageSection from '../components/platform/PageSection.vue'
 import { getErrorMessage } from '../composables/useErrorMessage'
+import { formatDate } from '../utils/format'
 
 type Feedback = {
   type: 'success' | 'error' | 'warning'
@@ -100,7 +101,7 @@ const floors = ref<StructureFloor[]>([])
 const areas = ref<StructureArea[]>([])
 const locations = ref<StructureLocation[]>([])
 const units = ref<StructureUnit[]>([])
-const { t, locale } = useI18n()
+const { t } = useI18n()
 
 const departments = ref<Department[]>([])
 const storeTypes = ref<ReferenceCatalogItem[]>([])
@@ -341,14 +342,6 @@ const validateForm = async (formRef: { value?: { validate?: () => Promise<unknow
   } catch {
     return false
   }
-}
-
-const formatDate = (value: string) => {
-  if (!value) {
-    return t('common.emptyValue')
-  }
-
-  return new Intl.DateTimeFormat(locale.value, { dateStyle: 'medium' }).format(new Date(value))
 }
 
 const resolveStatusLabel = (status: string) => {

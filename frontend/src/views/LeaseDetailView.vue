@@ -7,6 +7,7 @@ import { getLease, submitLease, terminateLease, type LeaseContract } from '../ap
 import PageSection from '../components/platform/PageSection.vue'
 import { getErrorMessage } from '../composables/useErrorMessage'
 import { useAppStore } from '../stores/app'
+import { formatDate } from '../utils/format'
 
 const route = useRoute()
 const router = useRouter()
@@ -45,27 +46,6 @@ const submitDisabled = computed(() => {
 })
 
 const terminateDisabled = computed(() => !lease.value || isTerminating.value || lease.value.status !== 'active')
-
-const formatDate = (value: string | null) => {
-  if (!value) {
-    return t('common.emptyValue')
-  }
-
-  return new Intl.DateTimeFormat(appStore.locale, {
-    dateStyle: 'medium',
-  }).format(new Date(`${value}T00:00:00`))
-}
-
-const formatTimestamp = (value: string | null) => {
-  if (!value) {
-    return t('common.emptyValue')
-  }
-
-  return new Intl.DateTimeFormat(appStore.locale, {
-    dateStyle: 'medium',
-    timeStyle: 'short',
-  }).format(new Date(value))
-}
 
 const formatDecimal = (value: number) =>
   new Intl.NumberFormat(appStore.locale, {
@@ -256,12 +236,12 @@ watch(
             <el-descriptions-item :label="t('leaseDetail.fields.workflowInstance')">
               {{ lease.workflow_instance_id ?? t('leaseDetail.defaults.notCreatedYet') }}
             </el-descriptions-item>
-            <el-descriptions-item :label="t('leaseDetail.fields.submittedAt')">{{ formatTimestamp(lease.submitted_at) }}</el-descriptions-item>
-            <el-descriptions-item :label="t('leaseDetail.fields.approvedAt')">{{ formatTimestamp(lease.approved_at) }}</el-descriptions-item>
+            <el-descriptions-item :label="t('leaseDetail.fields.submittedAt')">{{ formatDate(lease.submitted_at) }}</el-descriptions-item>
+            <el-descriptions-item :label="t('leaseDetail.fields.approvedAt')">{{ formatDate(lease.approved_at) }}</el-descriptions-item>
             <el-descriptions-item :label="t('leaseDetail.fields.billingEffectiveAt')">
-              {{ formatTimestamp(lease.billing_effective_at) }}
+              {{ formatDate(lease.billing_effective_at) }}
             </el-descriptions-item>
-            <el-descriptions-item :label="t('leaseDetail.fields.terminatedAt')">{{ formatTimestamp(lease.terminated_at) }}</el-descriptions-item>
+            <el-descriptions-item :label="t('leaseDetail.fields.terminatedAt')">{{ formatDate(lease.terminated_at) }}</el-descriptions-item>
           </el-descriptions>
         </el-card>
 

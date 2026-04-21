@@ -8,7 +8,7 @@ import PageSection from '../components/platform/PageSection.vue'
 import { downloadBlob } from '../composables/useDownload'
 import { useFilterForm } from '../composables/useFilterForm'
 import { getErrorMessage } from '../composables/useErrorMessage'
-import { useAppStore } from '../stores/app'
+import { formatDate } from '../utils/format'
 
 type Feedback = {
   type: 'success' | 'error' | 'warning'
@@ -27,7 +27,6 @@ interface RuleEntry {
   is_balancing_entry: boolean
 }
 
-const appStore = useAppStore()
 const { t } = useI18n()
 
 const ruleSets = ref<TaxRuleSet[]>([])
@@ -279,14 +278,6 @@ const handleSubmit = async () => {
   } finally {
     isSubmitting.value = false
   }
-}
-
-const formatDate = (value: string) => {
-  if (!value) {
-    return t('common.emptyValue')
-  }
-
-  return new Intl.DateTimeFormat(appStore.locale, { dateStyle: 'medium' }).format(new Date(value))
 }
 
 onMounted(() => {

@@ -14,7 +14,7 @@ import FilterForm from '../components/platform/FilterForm.vue'
 import PageSection from '../components/platform/PageSection.vue'
 import { useFilterForm } from '../composables/useFilterForm'
 import { getErrorMessage } from '../composables/useErrorMessage'
-import { useAppStore } from '../stores/app'
+import { formatDate } from '../utils/format'
 
 type Feedback = {
   type: 'success' | 'error' | 'warning'
@@ -24,7 +24,6 @@ type Feedback = {
 
 const definitions = ref<WorkflowDefinition[]>([])
 const { t } = useI18n()
-const appStore = useAppStore()
 const instances = ref<WorkflowInstanceListItem[]>([])
 const isDefinitionsLoading = ref(false)
 const isInstancesLoading = ref(false)
@@ -115,17 +114,6 @@ const filteredDefinitions = computed(() => {
       d.ProcessClass.toLowerCase().includes(search),
   )
 })
-
-const formatTimestamp = (value: string | null | undefined) => {
-  if (!value) {
-    return t('common.emptyValue')
-  }
-
-  return new Intl.DateTimeFormat(appStore.locale, {
-    dateStyle: 'medium',
-    timeStyle: 'short',
-  }).format(new Date(value))
-}
 
 const resolveCurrentNodeCode = (instance: WorkflowInstanceListItem) => {
   if (instance.current_node_code?.trim()) {
@@ -330,7 +318,7 @@ onMounted(() => {
         </el-table-column>
         <el-table-column :label="t('common.columns.createdAt')" min-width="200">
           <template #default="scope">
-            {{ formatTimestamp(scope.row.created_at ?? scope.row.submitted_at) }}
+            {{ formatDate(scope.row.created_at ?? scope.row.submitted_at) }}
           </template>
         </el-table-column>
         <el-table-column :label="t('common.columns.actions')" min-width="220" fixed="right">

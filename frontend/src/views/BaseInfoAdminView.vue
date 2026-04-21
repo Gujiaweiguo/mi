@@ -20,6 +20,7 @@ import {
 } from '../api/baseinfo'
 import PageSection from '../components/platform/PageSection.vue'
 import { getErrorMessage } from '../composables/useErrorMessage'
+import { formatDate } from '../utils/format'
 
 type Feedback = {
   type: 'success' | 'error' | 'warning'
@@ -58,7 +59,7 @@ const storeTypes = ref<ReferenceCatalogItem[]>([])
 const shopTypes = ref<ReferenceCatalogItem[]>([])
 const currencyTypes = ref<ReferenceCatalogItem[]>([])
 const tradeDefinitions = ref<ReferenceCatalogItem[]>([])
-const { t, locale } = useI18n()
+const { t } = useI18n()
 
 const pageFeedback = ref<Feedback | null>(null)
 const storeTypeFeedback = ref<Feedback | null>(null)
@@ -167,14 +168,6 @@ const validateForm = async (formRef: { value?: { validate?: () => Promise<unknow
   } catch {
     return false
   }
-}
-
-const formatDate = (value: string) => {
-  if (!value) {
-    return t('common.emptyValue')
-  }
-
-  return new Intl.DateTimeFormat(locale.value, { dateStyle: 'medium' }).format(new Date(value))
 }
 
 const resolveStatusLabel = (status: string | undefined) => {

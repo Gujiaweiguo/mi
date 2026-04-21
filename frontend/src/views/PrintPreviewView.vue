@@ -12,7 +12,7 @@ import {
 import PageSection from '../components/platform/PageSection.vue'
 import { downloadBlob } from '../composables/useDownload'
 import { getErrorMessage } from '../composables/useErrorMessage'
-import { useAppStore } from '../stores/app'
+import { formatDate } from '../utils/format'
 
 type Feedback = {
   type: 'success' | 'error' | 'warning'
@@ -20,7 +20,6 @@ type Feedback = {
   description: string
 }
 
-const appStore = useAppStore()
 const { t } = useI18n()
 
 const templates = ref<PrintTemplate[]>([])
@@ -193,14 +192,6 @@ const parseDocumentIds = () => {
 }
 
 const canRender = () => Boolean(selectedTemplateCode.value && parseDocumentIds().length > 0)
-
-const formatDate = (value: string) => {
-  if (!value) {
-    return t('common.emptyValue')
-  }
-
-  return new Intl.DateTimeFormat(appStore.locale, { dateStyle: 'medium' }).format(new Date(value))
-}
 
 const handleRenderPdf = async () => {
   const ids = parseDocumentIds()

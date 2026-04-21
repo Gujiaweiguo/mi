@@ -9,6 +9,7 @@ import { useFilterForm } from '../composables/useFilterForm'
 import { getErrorMessage } from '../composables/useErrorMessage'
 import { usePagination } from '../composables/usePagination'
 import { useAppStore } from '../stores/app'
+import { formatDate } from '../utils/format'
 
 type Feedback = {
   type: 'success' | 'error' | 'warning'
@@ -73,17 +74,6 @@ const formatAmount = (value: number) =>
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(value)
-
-const formatTimestamp = (value: string) => {
-  if (!value) {
-    return t('common.emptyValue')
-  }
-
-  return new Intl.DateTimeFormat(appStore.locale, {
-    dateStyle: 'medium',
-    timeStyle: 'short',
-  }).format(new Date(value))
-}
 
 const loadCharges = async () => {
   if (isPeriodRangeInvalid.value) {
@@ -271,8 +261,8 @@ onMounted(() => {
         <el-descriptions-item :label="t('billingCharges.fields.periodEnd')">{{ lastGeneratedRun.period_end }}</el-descriptions-item>
         <el-descriptions-item :label="t('billingCharges.fields.generatedLines')">{{ lastGeneratedRun.generated_count }}</el-descriptions-item>
         <el-descriptions-item :label="t('billingCharges.fields.skippedLines')">{{ lastGeneratedRun.skipped_count }}</el-descriptions-item>
-        <el-descriptions-item :label="t('common.columns.createdAt')">{{ formatTimestamp(lastGeneratedRun.created_at) }}</el-descriptions-item>
-        <el-descriptions-item :label="t('billingCharges.fields.updatedAt')">{{ formatTimestamp(lastGeneratedRun.updated_at) }}</el-descriptions-item>
+        <el-descriptions-item :label="t('common.columns.createdAt')">{{ formatDate(lastGeneratedRun.created_at) }}</el-descriptions-item>
+        <el-descriptions-item :label="t('billingCharges.fields.updatedAt')">{{ formatDate(lastGeneratedRun.updated_at) }}</el-descriptions-item>
       </el-descriptions>
     </el-card>
 
@@ -313,7 +303,7 @@ onMounted(() => {
         </el-table-column>
           <el-table-column :label="t('common.columns.createdAt')" min-width="180">
             <template #default="scope">
-              {{ formatTimestamp(scope.row.created_at) }}
+              {{ formatDate(scope.row.created_at) }}
             </template>
         </el-table-column>
       </el-table>

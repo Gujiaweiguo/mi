@@ -15,6 +15,7 @@ import {
 import PageSection from '../components/platform/PageSection.vue'
 import { getErrorMessage } from '../composables/useErrorMessage'
 import { useAppStore } from '../stores/app'
+import { formatDate } from '../utils/format'
 
 const route = useRoute()
 const router = useRouter()
@@ -56,17 +57,6 @@ const formatAmount = (value: number) =>
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(value)
-
-const formatTimestamp = (value: string | null) => {
-  if (!value) {
-    return t('common.emptyValue')
-  }
-
-  return new Intl.DateTimeFormat(appStore.locale, {
-    dateStyle: 'medium',
-    timeStyle: 'short',
-  }).format(new Date(value))
-}
 
 const resolveDocumentTypeLabel = (type: string) => {
   switch (type) {
@@ -354,16 +344,16 @@ watch(
               {{ invoice.workflow_instance_id ?? t('invoiceDetail.defaults.notCreatedYet') }}
             </el-descriptions-item>
             <el-descriptions-item :label="t('invoiceDetail.fields.submittedAt')">
-              {{ formatTimestamp(invoice.submitted_at) }}
+              {{ formatDate(invoice.submitted_at) }}
             </el-descriptions-item>
             <el-descriptions-item :label="t('invoiceDetail.fields.approvedAt')">
-              {{ formatTimestamp(invoice.approved_at) }}
+              {{ formatDate(invoice.approved_at) }}
             </el-descriptions-item>
             <el-descriptions-item :label="t('invoiceDetail.fields.cancelledAt')">
-              {{ formatTimestamp(invoice.cancelled_at) }}
+              {{ formatDate(invoice.cancelled_at) }}
             </el-descriptions-item>
             <el-descriptions-item :label="t('common.columns.createdAt')">
-              {{ formatTimestamp(invoice.created_at) }}
+              {{ formatDate(invoice.created_at) }}
             </el-descriptions-item>
           </el-descriptions>
         </el-card>
@@ -581,7 +571,7 @@ watch(
             <el-table-column prop="note" :label="t('invoiceDetail.fields.paymentNote')" min-width="220" />
             <el-table-column :label="t('common.columns.createdAt')" min-width="180">
               <template #default="scope">
-                {{ formatTimestamp(scope.row.created_at) }}
+                {{ formatDate(scope.row.created_at) }}
               </template>
             </el-table-column>
           </el-table>

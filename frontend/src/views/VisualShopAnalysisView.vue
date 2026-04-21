@@ -155,12 +155,16 @@ const generatedAtLabel = computed(() => {
     return ''
   }
 
-  const value = new Intl.DateTimeFormat(appStore.locale, {
-    dateStyle: 'medium',
-    timeStyle: 'short',
-  }).format(new Date(result.value.generated_at))
+  try {
+    const value = new Intl.DateTimeFormat(appStore.locale, {
+      dateStyle: 'medium',
+      timeStyle: 'short',
+    }).format(new Date(result.value.generated_at))
 
-  return t('visualShopAnalysis.meta.generatedAt', { value })
+    return t('visualShopAnalysis.meta.generatedAt', { value })
+  } catch {
+    return ''
+  }
 })
 
 const inferFileExtension = (contentType: string | undefined) => {
