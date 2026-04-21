@@ -254,6 +254,7 @@ test('supports receivable review, payment entry, settlement updates, and over-ap
   const paymentAmountInput = page.getByTestId('invoice-payment-amount-input').locator('input')
   await paymentAmountInput.fill('7000')
   await page.getByTestId('invoice-payment-note-input').fill('first payment')
+  await page.getByTestId('invoice-payment-date-input').locator('input').fill('2026-04-21')
   await page.getByTestId('invoice-payment-submit-button').click()
 
   await expect(page.getByTestId('invoice-detail-success-alert')).toBeVisible()
@@ -261,6 +262,7 @@ test('supports receivable review, payment entry, settlement updates, and over-ap
   await expect(page.getByTestId('invoice-cancel-button')).toBeDisabled()
 
   await paymentAmountInput.fill('6000')
+  await page.getByTestId('invoice-payment-date-input').locator('input').fill('2026-04-21')
   await page.getByTestId('invoice-payment-submit-button').click()
 
   await expect(page.getByTestId('invoice-detail-error-alert')).toContainText(
@@ -269,6 +271,7 @@ test('supports receivable review, payment entry, settlement updates, and over-ap
   await expect(page.getByTestId('invoice-receivable-summary')).toContainText('5,000.00')
 
   await paymentAmountInput.fill('5000')
+  await page.getByTestId('invoice-payment-date-input').locator('input').fill('2026-04-21')
   await page.getByTestId('invoice-payment-submit-button').click()
 
   await expect(page.getByTestId('invoice-receivable-settled-tag')).toBeVisible()
