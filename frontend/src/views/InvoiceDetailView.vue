@@ -63,7 +63,7 @@ const paymentRules: FormRules = {
     { required: true, message: '请输入金额', trigger: 'blur' },
     { type: 'number', min: 0.01, message: '金额必须大于 0', trigger: 'blur' },
   ],
-  paymentDate: [{ required: true, message: '请选择日期', trigger: 'change' }],
+
 }
 
 const invoiceId = computed(() => {
