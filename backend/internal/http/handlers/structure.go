@@ -18,59 +18,59 @@ func NewStructureHandler(service *structure.Service) *StructureHandler {
 }
 
 type structureStoreRequest struct {
-	DepartmentID     int64  `json:"department_id" binding:"required"`
-	StoreTypeID      int64  `json:"store_type_id" binding:"required"`
-	ManagementTypeID int64  `json:"management_type_id" binding:"required"`
-	Code             string `json:"code" binding:"required"`
-	Name             string `json:"name" binding:"required"`
-	ShortName        string `json:"short_name" binding:"required"`
-	Status           string `json:"status"`
+	DepartmentID     int64  `json:"department_id" binding:"required,gt=0"`
+	StoreTypeID      int64  `json:"store_type_id" binding:"required,gt=0"`
+	ManagementTypeID int64  `json:"management_type_id" binding:"required,gt=0"`
+	Code             string `json:"code" binding:"required,min=1,max=50"`
+	Name             string `json:"name" binding:"required,min=1,max=100"`
+	ShortName        string `json:"short_name" binding:"required,min=1,max=50"`
+	Status           string `json:"status" binding:"omitempty,oneof=active inactive disabled"`
 }
 
 type structureBuildingRequest struct {
-	StoreID int64  `json:"store_id" binding:"required"`
-	Code    string `json:"code" binding:"required"`
-	Name    string `json:"name" binding:"required"`
-	Status  string `json:"status"`
+	StoreID int64  `json:"store_id" binding:"required,gt=0"`
+	Code    string `json:"code" binding:"required,min=1,max=50"`
+	Name    string `json:"name" binding:"required,min=1,max=100"`
+	Status  string `json:"status" binding:"omitempty,oneof=active inactive disabled"`
 }
 
 type structureFloorRequest struct {
-	BuildingID        int64   `json:"building_id" binding:"required"`
-	Code              string  `json:"code" binding:"required"`
-	Name              string  `json:"name" binding:"required"`
-	Status            string  `json:"status"`
+	BuildingID        int64   `json:"building_id" binding:"required,gt=0"`
+	Code              string  `json:"code" binding:"required,min=1,max=50"`
+	Name              string  `json:"name" binding:"required,min=1,max=100"`
+	Status            string  `json:"status" binding:"omitempty,oneof=active inactive disabled"`
 	FloorPlanImageURL *string `json:"floor_plan_image_url"`
 }
 
 type structureAreaRequest struct {
-	StoreID     int64  `json:"store_id" binding:"required"`
-	AreaLevelID int64  `json:"area_level_id" binding:"required"`
-	Code        string `json:"code" binding:"required"`
-	Name        string `json:"name" binding:"required"`
-	Status      string `json:"status"`
+	StoreID     int64  `json:"store_id" binding:"required,gt=0"`
+	AreaLevelID int64  `json:"area_level_id" binding:"required,gt=0"`
+	Code        string `json:"code" binding:"required,min=1,max=50"`
+	Name        string `json:"name" binding:"required,min=1,max=100"`
+	Status      string `json:"status" binding:"omitempty,oneof=active inactive disabled"`
 }
 
 type structureLocationRequest struct {
-	StoreID int64  `json:"store_id" binding:"required"`
-	FloorID int64  `json:"floor_id" binding:"required"`
-	Code    string `json:"code" binding:"required"`
-	Name    string `json:"name" binding:"required"`
-	Status  string `json:"status"`
+	StoreID int64  `json:"store_id" binding:"required,gt=0"`
+	FloorID int64  `json:"floor_id" binding:"required,gt=0"`
+	Code    string `json:"code" binding:"required,min=1,max=50"`
+	Name    string `json:"name" binding:"required,min=1,max=100"`
+	Status  string `json:"status" binding:"omitempty,oneof=active inactive disabled"`
 }
 
 type structureUnitRequest struct {
-	BuildingID int64   `json:"building_id" binding:"required"`
-	FloorID    int64   `json:"floor_id" binding:"required"`
-	LocationID int64   `json:"location_id" binding:"required"`
-	AreaID     int64   `json:"area_id" binding:"required"`
-	UnitTypeID int64   `json:"unit_type_id" binding:"required"`
-	ShopTypeID *int64  `json:"shop_type_id"`
-	Code       string  `json:"code" binding:"required"`
-	FloorArea  float64 `json:"floor_area" binding:"required"`
-	UseArea    float64 `json:"use_area" binding:"required"`
-	RentArea   float64 `json:"rent_area" binding:"required"`
+	BuildingID int64   `json:"building_id" binding:"required,gt=0"`
+	FloorID    int64   `json:"floor_id" binding:"required,gt=0"`
+	LocationID int64   `json:"location_id" binding:"required,gt=0"`
+	AreaID     int64   `json:"area_id" binding:"required,gt=0"`
+	UnitTypeID int64   `json:"unit_type_id" binding:"required,gt=0"`
+	ShopTypeID *int64  `json:"shop_type_id" binding:"omitempty,gt=0"`
+	Code       string  `json:"code" binding:"required,min=1,max=50"`
+	FloorArea  float64 `json:"floor_area" binding:"required,gt=0"`
+	UseArea    float64 `json:"use_area" binding:"required,gt=0"`
+	RentArea   float64 `json:"rent_area" binding:"required,gt=0"`
 	IsRentable bool    `json:"is_rentable"`
-	Status     string  `json:"status"`
+	Status     string  `json:"status" binding:"omitempty,oneof=active inactive disabled"`
 }
 
 // ListStores godoc

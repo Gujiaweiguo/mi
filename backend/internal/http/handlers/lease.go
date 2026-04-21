@@ -23,38 +23,38 @@ func NewLeaseHandler(service *lease.Service) *LeaseHandler {
 }
 
 type createLeaseRequest struct {
-	LeaseNo          string                   `json:"lease_no" binding:"required"`
-	DepartmentID     int64                    `json:"department_id" binding:"required"`
-	StoreID          int64                    `json:"store_id" binding:"required"`
-	BuildingID       *int64                   `json:"building_id"`
-	CustomerID       *int64                   `json:"customer_id"`
-	BrandID          *int64                   `json:"brand_id"`
-	TradeID          *int64                   `json:"trade_id"`
-	ManagementTypeID *int64                   `json:"management_type_id"`
-	TenantName       string                   `json:"tenant_name" binding:"required"`
+	LeaseNo          string                   `json:"lease_no" binding:"required,min=1,max=50"`
+	DepartmentID     int64                    `json:"department_id" binding:"required,gt=0"`
+	StoreID          int64                    `json:"store_id" binding:"required,gt=0"`
+	BuildingID       *int64                   `json:"building_id" binding:"omitempty,gt=0"`
+	CustomerID       *int64                   `json:"customer_id" binding:"omitempty,gt=0"`
+	BrandID          *int64                   `json:"brand_id" binding:"omitempty,gt=0"`
+	TradeID          *int64                   `json:"trade_id" binding:"omitempty,gt=0"`
+	ManagementTypeID *int64                   `json:"management_type_id" binding:"omitempty,gt=0"`
+	TenantName       string                   `json:"tenant_name" binding:"required,min=1,max=100"`
 	StartDate        string                   `json:"start_date" binding:"required"`
 	EndDate          string                   `json:"end_date" binding:"required"`
-	Units            []createLeaseUnitRequest `json:"units" binding:"required"`
-	Terms            []createLeaseTermRequest `json:"terms" binding:"required"`
+	Units            []createLeaseUnitRequest `json:"units" binding:"required,min=1,dive"`
+	Terms            []createLeaseTermRequest `json:"terms" binding:"required,min=1,dive"`
 }
 
 type createLeaseUnitRequest struct {
-	UnitID   int64   `json:"unit_id" binding:"required"`
-	RentArea float64 `json:"rent_area" binding:"required"`
+	UnitID   int64   `json:"unit_id" binding:"required,gt=0"`
+	RentArea float64 `json:"rent_area" binding:"required,gt=0"`
 }
 
 type createLeaseTermRequest struct {
-	TermType       lease.TermType     `json:"term_type" binding:"required"`
-	BillingCycle   lease.BillingCycle `json:"billing_cycle" binding:"required"`
-	CurrencyTypeID int64              `json:"currency_type_id" binding:"required"`
-	Amount         float64            `json:"amount" binding:"required"`
+	TermType       lease.TermType     `json:"term_type" binding:"required,oneof=rent deposit utility other"`
+	BillingCycle   lease.BillingCycle `json:"billing_cycle" binding:"required,oneof=monthly quarterly yearly"`
+	CurrencyTypeID int64              `json:"currency_type_id" binding:"required,gt=0"`
+	Amount         float64            `json:"amount" binding:"required,gt=0"`
 	EffectiveFrom  string             `json:"effective_from" binding:"required"`
 	EffectiveTo    string             `json:"effective_to" binding:"required"`
 }
 
 type submitLeaseRequest struct {
-	Comment        string `json:"comment"`
-	IdempotencyKey string `json:"idempotency_key" binding:"required"`
+	Comment        string `json:"comment" binding:"omitempty,max=500"`
+	IdempotencyKey string `json:"idempotency_key" binding:"required,min=1,max=100"`
 }
 
 type terminateLeaseRequest struct {

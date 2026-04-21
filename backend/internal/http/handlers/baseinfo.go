@@ -18,13 +18,13 @@ func NewBaseInfoHandler(service *baseinfo.Service) *BaseInfoHandler {
 }
 
 type baseInfoRequest struct {
-	Code     string  `json:"code" binding:"required"`
-	Name     string  `json:"name" binding:"required"`
-	Status   string  `json:"status"`
-	ColorHex *string `json:"color_hex"`
+	Code     string  `json:"code" binding:"required,min=1,max=50"`
+	Name     string  `json:"name" binding:"required,min=1,max=100"`
+	Status   string  `json:"status" binding:"omitempty,oneof=active inactive disabled"`
+	ColorHex *string `json:"color_hex" binding:"omitempty,max=7"`
 	IsLocal  *bool   `json:"is_local"`
-	ParentID *int64  `json:"parent_id"`
-	Level    *int    `json:"level"`
+	ParentID *int64  `json:"parent_id" binding:"omitempty,gt=0"`
+	Level    *int    `json:"level" binding:"omitempty,min=1"`
 }
 
 // ListStoreTypes godoc

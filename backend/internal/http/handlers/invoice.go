@@ -21,27 +21,27 @@ func NewInvoiceHandler(service *invoice.Service) *InvoiceHandler {
 }
 
 type createInvoiceRequest struct {
-	DocumentType         invoice.DocumentType `json:"document_type" binding:"required"`
-	BillingChargeLineIDs []int64              `json:"billing_charge_line_ids" binding:"required"`
+	DocumentType         invoice.DocumentType `json:"document_type" binding:"required,oneof=invoice bill"`
+	BillingChargeLineIDs []int64              `json:"billing_charge_line_ids" binding:"required,min=1,dive,gt=0"`
 }
 
 type submitInvoiceRequest struct {
-	IdempotencyKey string `json:"idempotency_key" binding:"required"`
-	Comment        string `json:"comment"`
+	IdempotencyKey string `json:"idempotency_key" binding:"required,min=1,max=100"`
+	Comment        string `json:"comment" binding:"omitempty,max=500"`
 }
 
 type adjustInvoiceRequest struct {
 	Lines []struct {
-		BillingChargeLineID int64   `json:"billing_charge_line_id" binding:"required"`
-		Amount              float64 `json:"amount" binding:"required"`
-	} `json:"lines"`
+		BillingChargeLineID int64   `json:"billing_charge_line_id" binding:"required,gt=0"`
+		Amount              float64 `json:"amount" binding:"required,gt=0"`
+	} `json:"lines" binding:"required,min=1,dive"`
 }
 
 type recordPaymentRequest struct {
-	Amount         float64 `json:"amount" binding:"required"`
+	Amount         float64 `json:"amount" binding:"required,gt=0"`
 	PaymentDate    string  `json:"payment_date"`
-	IdempotencyKey string  `json:"idempotency_key" binding:"required"`
-	Note           string  `json:"note"`
+	IdempotencyKey string  `json:"idempotency_key" binding:"required,min=1,max=100"`
+	Note           string  `json:"note" binding:"omitempty,max=500"`
 }
 
 // Create godoc

@@ -19,26 +19,26 @@ func NewUserHandler(repo *auth.Repository) *UserHandler {
 }
 
 type createUserRequest struct {
-	Username     string  `json:"username" binding:"required"`
-	DisplayName  string  `json:"display_name" binding:"required"`
-	Password     string  `json:"password" binding:"required,min=6"`
-	DepartmentID int64   `json:"department_id" binding:"required"`
+	Username     string  `json:"username" binding:"required,min=2,max=50"`
+	DisplayName  string  `json:"display_name" binding:"required,min=1,max=100"`
+	Password     string  `json:"password" binding:"required,min=6,max=100"`
+	DepartmentID int64   `json:"department_id" binding:"required,gt=0"`
 	RoleIDs      []int64 `json:"role_ids"`
 }
 
 type updateUserRequest struct {
-	DisplayName  *string `json:"display_name"`
-	DepartmentID *int64  `json:"department_id"`
-	Status       *string `json:"status"`
+	DisplayName  *string `json:"display_name" binding:"omitempty,min=1,max=100"`
+	DepartmentID *int64  `json:"department_id" binding:"omitempty,gt=0"`
+	Status       *string `json:"status" binding:"omitempty,oneof=active inactive disabled"`
 }
 
 type resetPasswordRequest struct {
-	NewPassword string `json:"new_password" binding:"required,min=6"`
+	NewPassword string `json:"new_password" binding:"required,min=6,max=100"`
 }
 
 type setUserRolesRequest struct {
 	RoleIDs      []int64 `json:"role_ids" binding:"required"`
-	DepartmentID int64   `json:"department_id" binding:"required"`
+	DepartmentID int64   `json:"department_id" binding:"required,gt=0"`
 }
 
 // List returns all users.

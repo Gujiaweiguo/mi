@@ -17,41 +17,41 @@ func NewMasterDataHandler(service *masterdata.Service) *MasterDataHandler {
 }
 
 type createCustomerRequest struct {
-	Code         string `json:"code" binding:"required"`
-	Name         string `json:"name" binding:"required"`
-	TradeID      *int64 `json:"trade_id"`
-	DepartmentID *int64 `json:"department_id"`
-	Status       string `json:"status"`
+	Code         string `json:"code" binding:"required,min=1,max=50"`
+	Name         string `json:"name" binding:"required,min=1,max=100"`
+	TradeID      *int64 `json:"trade_id" binding:"omitempty,gt=0"`
+	DepartmentID *int64 `json:"department_id" binding:"omitempty,gt=0"`
+	Status       string `json:"status" binding:"omitempty,oneof=active inactive disabled"`
 }
 
 type createBrandRequest struct {
-	Code   string `json:"code" binding:"required"`
-	Name   string `json:"name" binding:"required"`
-	Status string `json:"status"`
+	Code   string `json:"code" binding:"required,min=1,max=50"`
+	Name   string `json:"name" binding:"required,min=1,max=100"`
+	Status string `json:"status" binding:"omitempty,oneof=active inactive disabled"`
 }
 
 type updateCustomerRequest = createCustomerRequest
 type updateBrandRequest = createBrandRequest
 
 type upsertUnitRentBudgetRequest struct {
-	UnitID      int64   `json:"unit_id" binding:"required"`
-	FiscalYear  int     `json:"fiscal_year" binding:"required"`
-	BudgetPrice float64 `json:"budget_price" binding:"required"`
+	UnitID      int64   `json:"unit_id" binding:"required,gt=0"`
+	FiscalYear  int     `json:"fiscal_year" binding:"required,min=2000,max=2100"`
+	BudgetPrice float64 `json:"budget_price" binding:"required,gt=0"`
 }
 
 type upsertStoreRentBudgetRequest struct {
-	StoreID       int64   `json:"store_id" binding:"required"`
-	FiscalYear    int     `json:"fiscal_year" binding:"required"`
-	FiscalMonth   int     `json:"fiscal_month" binding:"required"`
-	MonthlyBudget float64 `json:"monthly_budget" binding:"required"`
+	StoreID       int64   `json:"store_id" binding:"required,gt=0"`
+	FiscalYear    int     `json:"fiscal_year" binding:"required,min=2000,max=2100"`
+	FiscalMonth   int     `json:"fiscal_month" binding:"required,min=1,max=12"`
+	MonthlyBudget float64 `json:"monthly_budget" binding:"required,gt=0"`
 }
 
 type upsertUnitProspectRequest struct {
-	UnitID              int64    `json:"unit_id" binding:"required"`
-	FiscalYear          int      `json:"fiscal_year" binding:"required"`
-	PotentialCustomerID *int64   `json:"potential_customer_id"`
-	ProspectBrandID     *int64   `json:"prospect_brand_id"`
-	ProspectTradeID     *int64   `json:"prospect_trade_id"`
+	UnitID              int64    `json:"unit_id" binding:"required,gt=0"`
+	FiscalYear          int      `json:"fiscal_year" binding:"required,min=2000,max=2100"`
+	PotentialCustomerID *int64   `json:"potential_customer_id" binding:"omitempty,gt=0"`
+	ProspectBrandID     *int64   `json:"prospect_brand_id" binding:"omitempty,gt=0"`
+	ProspectTradeID     *int64   `json:"prospect_trade_id" binding:"omitempty,gt=0"`
 	AvgTransaction      *float64 `json:"avg_transaction"`
 	ProspectRentPrice   *float64 `json:"prospect_rent_price"`
 	RentIncrement       *string  `json:"rent_increment"`

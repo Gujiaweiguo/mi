@@ -19,16 +19,16 @@ func NewSalesHandler(service *sales.Service) *SalesHandler {
 }
 
 type createDailySaleRequest struct {
-	StoreID     int64   `json:"store_id" binding:"required"`
-	UnitID      int64   `json:"unit_id" binding:"required"`
+	StoreID     int64   `json:"store_id" binding:"required,gt=0"`
+	UnitID      int64   `json:"unit_id" binding:"required,gt=0"`
 	SaleDate    string  `json:"sale_date" binding:"required"`
-	SalesAmount float64 `json:"sales_amount" binding:"required"`
+	SalesAmount float64 `json:"sales_amount" binding:"required,gt=0"`
 }
 
 type createTrafficRequest struct {
-	StoreID      int64  `json:"store_id" binding:"required"`
+	StoreID      int64  `json:"store_id" binding:"required,gt=0"`
 	TrafficDate  string `json:"traffic_date" binding:"required"`
-	InboundCount int    `json:"inbound_count" binding:"required"`
+	InboundCount int    `json:"inbound_count" binding:"required,gte=0"`
 }
 
 // ListDailySales godoc

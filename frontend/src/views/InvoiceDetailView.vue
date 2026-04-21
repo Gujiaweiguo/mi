@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
+import type { FormInstance, FormRules } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -35,6 +36,35 @@ const isRecordingPayment = ref(false)
 const paymentAmount = ref<number | null>(null)
 const paymentDate = ref('')
 const paymentNote = ref('')
+const paymentFormRef = ref<FormInstance>()
+const paymentForm = reactive({
+  get paymentAmount() {
+    return paymentAmount.value
+  },
+  set paymentAmount(value: number | null) {
+    paymentAmount.value = value
+  },
+  get paymentDate() {
+    return paymentDate.value
+  },
+  set paymentDate(value: string) {
+    paymentDate.value = value
+  },
+  get paymentNote() {
+    return paymentNote.value
+  },
+  set paymentNote(value: string) {
+    paymentNote.value = value
+  },
+})
+
+const paymentRules: FormRules = {
+  paymentAmount: [
+    { required: true, message: '请输入金额', trigger: 'blur' },
+    { type: 'number', min: 0.01, message: '金额必须大于 0', trigger: 'blur' },
+  ],
+  paymentDate: [{ required: true, message: '请选择日期', trigger: 'change' }],
+}
 
 const invoiceId = computed(() => {
   const rawId = route.params.id
@@ -141,6 +171,7 @@ const resetPaymentForm = () => {
   paymentAmount.value = null
   paymentDate.value = ''
   paymentNote.value = ''
+  paymentFormRef.value?.clearValidate()
 }
 
 const loadReceivable = async () => {
@@ -237,6 +268,12 @@ const handleCancel = async () => {
 }
 
 const handleRecordPayment = async () => {
+  const valid = await paymentFormRef.value?.validate().catch(() => false)
+
+  if (!valid) {
+    return
+  }
+
   if (!invoice.value || !receivable.value || paymentAmount.value === null || paymentAmount.value <= 0) {
     return
   }
@@ -500,9 +537,9 @@ watch(
           <div class="invoice-detail-view__payment-entry">
             <h3 class="invoice-detail-view__payment-title">{{ t('invoiceDetail.cards.paymentEntry') }}</h3>
 
-            <el-form label-position="top">
+            <el-form ref="paymentFormRef" :model="paymentForm" :rules="paymentRules" label-position="top">
               <div class="invoice-detail-view__payment-grid">
-                <el-form-item :label="t('invoiceDetail.fields.paymentAmount')">
+                <el-form-item :label="t('invoiceDetail.fields.paymentAmount')" prop="paymentAmount">
                   <el-input-number
                     v-model="paymentAmount"
                     :min="0.01"
@@ -514,7 +551,7 @@ watch(
                   />
                 </el-form-item>
 
-                <el-form-item :label="t('invoiceDetail.fields.paymentDate')">
+                <el-form-item :label="t('invoiceDetail.fields.paymentDate')" prop="paymentDate">
                   <el-date-picker
                     v-model="paymentDate"
                     type="date"
@@ -526,7 +563,7 @@ watch(
                   />
                 </el-form-item>
 
-                <el-form-item :label="t('invoiceDetail.fields.paymentNote')">
+                <el-form-item :label="t('invoiceDetail.fields.paymentNote')" prop="paymentNote">
                   <el-input
                     v-model="paymentNote"
                     maxlength="120"

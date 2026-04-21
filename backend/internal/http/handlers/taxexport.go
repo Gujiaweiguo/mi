@@ -20,23 +20,23 @@ func NewTaxExportHandler(service *taxexport.Service) *TaxExportHandler {
 }
 
 type upsertTaxRuleSetRequest struct {
-	Code         string `json:"code" binding:"required"`
-	Name         string `json:"name" binding:"required"`
-	DocumentType string `json:"document_type" binding:"required"`
+	Code         string `json:"code" binding:"required,min=1,max=50"`
+	Name         string `json:"name" binding:"required,min=1,max=100"`
+	DocumentType string `json:"document_type" binding:"required,oneof=invoice bill"`
 	Rules        []struct {
-		SequenceNo          int    `json:"sequence_no" binding:"required"`
-		EntrySide           string `json:"entry_side" binding:"required"`
-		ChargeTypeFilter    string `json:"charge_type_filter"`
-		AccountNumber       string `json:"account_number" binding:"required"`
-		AccountName         string `json:"account_name" binding:"required"`
-		ExplanationTemplate string `json:"explanation_template" binding:"required"`
+		SequenceNo          int    `json:"sequence_no" binding:"required,min=1"`
+		EntrySide           string `json:"entry_side" binding:"required,oneof=debit credit"`
+		ChargeTypeFilter    string `json:"charge_type_filter" binding:"required,oneof=rent deposit utility other"`
+		AccountNumber       string `json:"account_number" binding:"required,min=1,max=50"`
+		AccountName         string `json:"account_name" binding:"required,min=1,max=100"`
+		ExplanationTemplate string `json:"explanation_template" binding:"required,min=1,max=200"`
 		UseTenantName       bool   `json:"use_tenant_name"`
 		IsBalancingEntry    bool   `json:"is_balancing_entry"`
-	} `json:"rules" binding:"required"`
+	} `json:"rules" binding:"required,min=1,dive"`
 }
 
 type exportVoucherRequest struct {
-	RuleSetCode string `json:"rule_set_code" binding:"required"`
+	RuleSetCode string `json:"rule_set_code" binding:"required,min=1,max=50"`
 	FromDate    string `json:"from_date" binding:"required"`
 	ToDate      string `json:"to_date" binding:"required"`
 }

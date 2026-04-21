@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { ElMessage } from 'element-plus'
+import type { FormInstance, FormRules } from 'element-plus'
 
 import { listUsers, createUser, updateUser, resetPassword, listRoles, type UserItem, type RoleItem } from '../api/user'
 import { listDepartments } from '../api/org'
@@ -18,6 +19,25 @@ const resetDialogVisible = ref(false)
 const createForm = ref({ username: '', display_name: '', password: '', department_id: 0, role_ids: [] as number[] })
 const editForm = ref<{ id: number; display_name: string; department_id: number; status: string }>({ id: 0, display_name: '', department_id: 0, status: '' })
 const resetForm = ref<{ id: number; new_password: string }>({ id: 0, new_password: '' })
+const createFormRef = ref<FormInstance>()
+const editFormRef = ref<FormInstance>()
+const resetFormRef = ref<FormInstance>()
+
+const createRules: FormRules = {
+  username: [{ required: true, message: '请输入用户名', trigger: 'blur' }, { min: 2, max: 50, message: '长度 2-50 个字符', trigger: 'blur' }],
+  display_name: [{ required: true, message: '请输入显示名称', trigger: 'blur' }],
+  password: [{ required: true, message: '请输入密码', trigger: 'blur' }, { min: 6, message: '至少 6 个字符', trigger: 'blur' }],
+  department_id: [{ required: true, message: '请选择部门', trigger: 'change' }],
+}
+
+const editRules: FormRules = {
+  display_name: [{ required: true, message: '请输入显示名称', trigger: 'blur' }],
+  status: [{ required: true, message: '请选择状态', trigger: 'change' }],
+}
+
+const resetRules: FormRules = {
+  new_password: [{ required: true, message: '请输入新密码', trigger: 'blur' }, { min: 6, message: '至少 6 个字符', trigger: 'blur' }],
+}
 
 const loadUsers = async () => {
   loading.value = true
@@ -43,6 +63,9 @@ const openCreate = () => {
 }
 
 const handleCreate = async () => {
+  const valid = await createFormRef.value?.validate().catch(() => false)
+  if (!valid) return
+
   try {
     await createUser(createForm.value)
     ElMessage.success('创建用户成功')
@@ -59,6 +82,9 @@ const openEdit = (row: UserItem) => {
 }
 
 const handleEdit = async () => {
+  const valid = await editFormRef.value?.validate().catch(() => false)
+  if (!valid) return
+
   try {
     await updateUser(editForm.value.id, { display_name: editForm.value.display_name, department_id: editForm.value.department_id, status: editForm.value.status })
     ElMessage.success('更新用户成功')
@@ -75,6 +101,9 @@ const openReset = (row: UserItem) => {
 }
 
 const handleReset = async () => {
+  const valid = await resetFormRef.value?.validate().catch(() => false)
+  if (!valid) return
+
   try {
     await resetPassword(resetForm.value.id, { new_password: resetForm.value.new_password })
     ElMessage.success('重置密码成功')
@@ -129,16 +158,16 @@ onMounted(async () => {
     </el-card>
 
     <el-dialog v-model="createDialogVisible" title="新建用户" width="520px" destroy-on-close>
-      <el-form label-width="80px">
-        <el-form-item label="用户名"><el-input v-model="createForm.username" /></el-form-item>
-        <el-form-item label="显示名称"><el-input v-model="createForm.display_name" /></el-form-item>
-        <el-form-item label="密码"><el-input v-model="createForm.password" type="password" show-password /></el-form-item>
-        <el-form-item label="部门">
+      <el-form ref="createFormRef" :model="createForm" :rules="createRules" label-width="80px">
+        <el-form-item label="用户名" prop="username"><el-input v-model="createForm.username" /></el-form-item>
+        <el-form-item label="显示名称" prop="display_name"><el-input v-model="createForm.display_name" /></el-form-item>
+        <el-form-item label="密码" prop="password"><el-input v-model="createForm.password" type="password" show-password /></el-form-item>
+        <el-form-item label="部门" prop="department_id">
           <el-select v-model="createForm.department_id" placeholder="请选择部门">
             <el-option v-for="[id, name] of deptMap" :key="id" :label="name" :value="id" />
           </el-select>
         </el-form-item>
-        <el-form-item label="角色">
+        <el-form-item label="角色" prop="role_ids">
           <el-select v-model="createForm.role_ids" multiple placeholder="请选择角色">
             <el-option v-for="r in roles" :key="r.ID" :label="r.Name" :value="r.ID" />
           </el-select>
@@ -151,14 +180,14 @@ onMounted(async () => {
     </el-dialog>
 
     <el-dialog v-model="editDialogVisible" title="编辑用户" width="520px" destroy-on-close>
-      <el-form label-width="80px">
-        <el-form-item label="显示名称"><el-input v-model="editForm.display_name" /></el-form-item>
-        <el-form-item label="部门">
+      <el-form ref="editFormRef" :model="editForm" :rules="editRules" label-width="80px">
+        <el-form-item label="显示名称" prop="display_name"><el-input v-model="editForm.display_name" /></el-form-item>
+        <el-form-item label="部门" prop="department_id">
           <el-select v-model="editForm.department_id" placeholder="请选择部门">
             <el-option v-for="[id, name] of deptMap" :key="id" :label="name" :value="id" />
           </el-select>
         </el-form-item>
-        <el-form-item label="状态">
+        <el-form-item label="状态" prop="status">
           <el-select v-model="editForm.status">
             <el-option label="启用" value="active" />
             <el-option label="停用" value="inactive" />
@@ -172,8 +201,8 @@ onMounted(async () => {
     </el-dialog>
 
     <el-dialog v-model="resetDialogVisible" title="重置密码" width="420px" destroy-on-close>
-      <el-form label-width="80px">
-        <el-form-item label="新密码"><el-input v-model="resetForm.new_password" type="password" show-password /></el-form-item>
+      <el-form ref="resetFormRef" :model="resetForm" :rules="resetRules" label-width="80px">
+        <el-form-item label="新密码" prop="new_password"><el-input v-model="resetForm.new_password" type="password" show-password /></el-form-item>
       </el-form>
       <template #footer>
         <el-button @click="resetDialogVisible = false">取消</el-button>

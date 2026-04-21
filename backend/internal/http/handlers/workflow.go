@@ -39,15 +39,15 @@ func NewWorkflowHandler(service workflowService, syncer WorkflowStateSyncer) *Wo
 }
 
 type startWorkflowRequest struct {
-	DefinitionCode string `json:"definition_code" binding:"required"`
-	DocumentType   string `json:"document_type" binding:"required"`
-	DocumentID     int64  `json:"document_id" binding:"required"`
-	Comment        string `json:"comment"`
+	DefinitionCode string `json:"definition_code" binding:"required,min=1,max=50"`
+	DocumentType   string `json:"document_type" binding:"required,oneof=lease_contract invoice bill"`
+	DocumentID     int64  `json:"document_id" binding:"required,gt=0"`
+	Comment        string `json:"comment" binding:"omitempty,max=500"`
 }
 
 type workflowActionRequest struct {
-	Comment        string `json:"comment"`
-	IdempotencyKey string `json:"idempotency_key" binding:"required"`
+	Comment        string `json:"comment" binding:"omitempty,max=500"`
+	IdempotencyKey string `json:"idempotency_key" binding:"required,min=1,max=100"`
 }
 
 // ListDefinitions godoc

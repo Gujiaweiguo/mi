@@ -19,19 +19,19 @@ func NewDocOutputHandler(service *docoutput.Service) *DocOutputHandler {
 }
 
 type upsertPrintTemplateRequest struct {
-	Code         string   `json:"code" binding:"required"`
-	Name         string   `json:"name" binding:"required"`
-	DocumentType string   `json:"document_type" binding:"required"`
-	OutputMode   string   `json:"output_mode" binding:"required"`
-	Title        string   `json:"title" binding:"required"`
+	Code         string   `json:"code" binding:"required,min=1,max=50"`
+	Name         string   `json:"name" binding:"required,min=1,max=100"`
+	DocumentType string   `json:"document_type" binding:"required,min=1,max=50"`
+	OutputMode   string   `json:"output_mode" binding:"required,min=1,max=50"`
+	Title        string   `json:"title" binding:"required,min=1,max=200"`
 	Subtitle     string   `json:"subtitle"`
 	HeaderLines  []string `json:"header_lines"`
 	FooterLines  []string `json:"footer_lines"`
 }
 
 type renderDocumentRequest struct {
-	TemplateCode string  `json:"template_code" binding:"required"`
-	DocumentIDs  []int64 `json:"document_ids" binding:"required"`
+	TemplateCode string  `json:"template_code" binding:"required,min=1,max=50"`
+	DocumentIDs  []int64 `json:"document_ids" binding:"required,min=1,dive,gt=0"`
 }
 
 // UpsertTemplate godoc
