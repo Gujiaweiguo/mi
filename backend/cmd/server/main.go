@@ -10,15 +10,23 @@ import (
 )
 
 func main() {
+	if err := run(); err != nil {
+		log.Fatal(err)
+	}
+}
+
+func run() error {
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
 
 	application, err := app.New()
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	if err := application.Run(ctx); err != nil {
-		log.Fatal(err)
+		return err
 	}
+
+	return nil
 }

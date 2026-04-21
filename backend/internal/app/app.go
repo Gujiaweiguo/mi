@@ -429,10 +429,7 @@ func summarizeReminderOutcomes(records []workflow.ReminderAuditRecord) (int, int
 }
 
 func tryLockMutex(mu *sync.Mutex) bool {
-	if !mu.TryLock() {
-		return false
-	}
-	return true
+	return mu.TryLock()
 }
 
 func newWorkflowReminderSchedulerObservability() *workflowReminderSchedulerObservability {

@@ -9,7 +9,6 @@ import (
 )
 
 func strPtr(s string) *string { return &s }
-func int64Ptr(i int64) *int64 { return &i }
 
 func TestNormalizeStatus_Empty(t *testing.T) {
 	if got := normalizeStatus(""); got != "active" {

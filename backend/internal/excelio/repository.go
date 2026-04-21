@@ -70,8 +70,7 @@ func (r *Repository) UpsertUnits(ctx context.Context, rows []UnitImportRow, refs
 			if err != nil {
 				return fmt.Errorf("insert unit %s: %w", row.Code, err)
 			}
-			unitID, err = result.LastInsertId()
-			if err != nil {
+			if _, err := result.LastInsertId(); err != nil {
 				return fmt.Errorf("last insert id for unit %s: %w", row.Code, err)
 			}
 		} else {

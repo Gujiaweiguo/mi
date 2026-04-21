@@ -1,6 +1,7 @@
 package excelio
 
 import (
+	"context"
 	"testing"
 )
 
@@ -125,7 +126,7 @@ func TestIsEmptyRow(t *testing.T) {
 
 func TestExportOperationalDatasetInvalid(t *testing.T) {
 	svc := &Service{repository: nil, salesImporter: nil}
-	_, err := svc.ExportOperationalDataset(nil, ExportInput{Dataset: "nonexistent"})
+	_, err := svc.ExportOperationalDataset(context.TODO(), ExportInput{Dataset: "nonexistent"})
 	if err != ErrInvalidDataset {
 		t.Fatalf("expected ErrInvalidDataset, got %v", err)
 	}

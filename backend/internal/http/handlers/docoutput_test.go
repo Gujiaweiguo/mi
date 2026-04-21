@@ -6,13 +6,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/Gujiaweiguo/mi/backend/internal/auth"
 	"github.com/gin-gonic/gin"
 )
-
-func setDocOutputSessionUser(ctx *gin.Context) {
-	ctx.Set("session_user", &auth.SessionUser{ID: 1, Username: "test", DepartmentID: 1})
-}
 
 func TestDocOutputUpsertTemplateRejectsInvalidJSON(t *testing.T) {
 	gin.SetMode(gin.TestMode)

@@ -1,6 +1,7 @@
 package docoutput
 
 import (
+	"context"
 	"testing"
 )
 
@@ -115,7 +116,7 @@ func TestNormalizeDocumentIDsEmpty(t *testing.T) {
 
 func TestRenderHTMLInvalidInput(t *testing.T) {
 	svc := &Service{repository: nil, invoiceService: nil}
-	_, err := svc.RenderHTML(nil, RenderInput{TemplateCode: "", ActorUserID: 0})
+	_, err := svc.RenderHTML(context.TODO(), RenderInput{TemplateCode: "", ActorUserID: 0})
 	if err != ErrInvalidRenderInput {
 		t.Fatalf("expected ErrInvalidRenderInput, got %v", err)
 	}

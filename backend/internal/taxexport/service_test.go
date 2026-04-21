@@ -1,6 +1,7 @@
 package taxexport
 
 import (
+	"context"
 	"testing"
 	"time"
 )
@@ -139,7 +140,7 @@ func TestRoundCurrency(t *testing.T) {
 
 func TestExportVoucherWorkbookInvalidWindow(t *testing.T) {
 	svc := &Service{repository: nil}
-	_, err := svc.ExportVoucherWorkbook(nil, ExportInput{RuleSetCode: "", ActorUserID: 0})
+	_, err := svc.ExportVoucherWorkbook(context.TODO(), ExportInput{RuleSetCode: "", ActorUserID: 0})
 	if err != ErrInvalidExportWindow {
 		t.Fatalf("expected ErrInvalidExportWindow, got %v", err)
 	}

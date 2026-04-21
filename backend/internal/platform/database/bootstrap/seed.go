@@ -33,12 +33,8 @@ func New(name string, run func(context.Context, *sql.Tx) error) Bootstrapper {
 func All() []Bootstrapper {
 	all := make([]Bootstrapper, 0)
 
-	for _, seed := range Cutover() {
-		all = append(all, seed)
-	}
-	for _, seed := range []Bootstrapper{seedDailySales(), seedCustomerTraffic(), seedUnitRentBudgets(), seedStoreRentBudgets(), seedUnitProspects()} {
-		all = append(all, seed)
-	}
+	all = append(all, Cutover()...)
+	all = append(all, []Bootstrapper{seedDailySales(), seedCustomerTraffic(), seedUnitRentBudgets(), seedStoreRentBudgets(), seedUnitProspects()}...)
 
 	return all
 }

@@ -9,9 +9,8 @@ import (
 
 func strPtr(s string) *string { return &s }
 
-func intPtr(i int) *int { return &i }
+func intPtr(i int) *int       { return &i }
 func int64Ptr(i int64) *int64 { return &i }
-func boolPtr(b bool) *bool { return &b }
 
 func TestTrimStringPointer_Nil(t *testing.T) {
 	if got := trimStringPointer(nil); got != nil {

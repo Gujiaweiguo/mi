@@ -52,6 +52,10 @@ func (w workflowSyncers) SyncWorkflowState(ctx context.Context, instance *workfl
 }
 
 func NewRouter(cfg *config.Config, db *sql.DB, logger *zap.Logger) *gin.Engine {
+	if cfg == nil {
+		cfg = &config.Config{}
+	}
+
 	router := gin.New()
 	router.Use(
 		middleware.RequestID(),

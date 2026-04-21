@@ -1,6 +1,7 @@
 package reporting
 
 import (
+	"context"
 	"testing"
 	"time"
 )
@@ -46,7 +47,7 @@ func TestParsePeriodWhitespace(t *testing.T) {
 
 func TestRunReportUnsupportedID(t *testing.T) {
 	svc := &Service{repository: nil}
-	_, _, err := svc.runReport(nil, QueryInput{ReportID: "r99"})
+	_, _, err := svc.runReport(context.TODO(), QueryInput{ReportID: "r99"})
 	if err != ErrUnsupportedReport {
 		t.Fatalf("expected ErrUnsupportedReport, got %v", err)
 	}

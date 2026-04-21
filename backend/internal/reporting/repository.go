@@ -295,9 +295,8 @@ func (r *Repository) QueryR04(ctx context.Context, input QueryInput) ([]R04Row, 
 		GROUP BY u.id, u.code, u.name, u.rent_area, st.name
 		ORDER BY u.code
 	`, dailySalesPivotSelect())
+	_ = input.CustomerID // reserved for future filter expansion
 	rows, err := r.db.QueryContext(ctx, query, input.PeriodStart, input.PeriodEnd, input.StoreID, input.StoreID, nilInt64(), nilInt64())
-	if input.CustomerID != nil { // no-op guard to preserve arg count if future expansion happens
-	}
 	if err != nil {
 		return nil, fmt.Errorf("query R04 rows: %w", err)
 	}

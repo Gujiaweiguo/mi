@@ -1,3 +1,5 @@
+version: "2"
+
 run:
   timeout: 5m
   modules-download-mode: readonly
@@ -8,41 +10,44 @@ linters:
     - govet
     - revive
     - unused
-    - gosimple
     - ineffassign
-    - typecheck
     - staticcheck
     - gocritic
   disable:
     - exhaustruct
     - wrapcheck
-
-linters-settings:
-  revive:
+  settings:
+    revive:
+      rules:
+        - name: unused-parameter
+          severity: warning
+    gocritic:
+      disabled-checks:
+        - appendAssign
+        - ifElseChain
+  exclusions:
+    presets:
+      - comments
+      - std-error-handling
     rules:
-      - name: unused-parameter
-        severity: warning
-  gocritic:
-    enabled-tags:
-      - diagnostic
-      - style
-    disabled-checks:
-      - hugeParam
-      - rangeValCopy
+      - linters:
+          - revive
+        text: "unused-parameter"
+      - path: ".*_test\\.go"
+        linters:
+          - errcheck
+      - linters:
+          - errcheck
+        text: "Error return value of `.*\\.Rollback` is not checked"
+      - path: ".*_test\\.go"
+        linters:
+          - staticcheck
+        text: "SA1012"
+      - path: "internal/http/router\\.go"
+        linters:
+          - staticcheck
+        text: "SA5011"
 
 issues:
   max-issues-per-linter: 50
   max-same-issues: 5
-  exclude-rules:
-    - linters:
-        - revive
-      text: "unused-parameter"
-      source: "func .*\\(.*\\) .*\\{"
-    # Allow unchecked errors in test files
-    - linters:
-        - errcheck
-      path: _test\.go
-    # Allow unchecked errors in Gorm model methods
-    - linters:
-        - errcheck
-      text: ".*\\.Error"

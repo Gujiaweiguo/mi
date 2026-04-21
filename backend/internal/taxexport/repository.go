@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"strings"
 	"time"
 
 	"github.com/Gujiaweiguo/mi/backend/internal/pagination"
@@ -182,5 +181,3 @@ func (r *Repository) loadRules(ctx context.Context, ruleSetID int64) ([]Rule, er
 	}
 	return rules, nil
 }
-
-func normalizeCode(code string) string { return strings.TrimSpace(code) }
