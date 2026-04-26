@@ -1,6 +1,7 @@
 ## Purpose
 
-TBD: Canonical billing and invoicing spec for the replacement MI system.
+Define the deterministic charge-generation, bill and invoice lifecycle, receivable, and payment behaviors that complete the first-release financial chain from approved Lease state through settlement.
+
 ## Requirements
 ### Requirement: The system SHALL generate billable charges from approved Lease state
 The billing subsystem SHALL convert approved, billing-effective Lease contracts and supported rule definitions into deterministic charge lines for an accounting window. Charge generation SHALL ignore Lease records that are not yet billable under the Lease lifecycle contract, and reruns SHALL remain duplicate-safe for already generated accounting windows. The system SHALL reject stale or invalid generation requests whose source Lease state no longer matches billing-eligible conditions, and SHALL preserve existing generated results without creating duplicate charge lines.

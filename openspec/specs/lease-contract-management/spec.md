@@ -1,6 +1,7 @@
 ## Purpose
 
-TBD: Canonical lease contract management spec for the replacement MI system.
+Define the first-release Lease contract lifecycle, billing-effective state rules, and replay-safe mutations that drive downstream workflow and billing behavior.
+
 ## Requirements
 ### Requirement: The system SHALL support Lease contract lifecycle management
 The first release SHALL support creation, submission, approval, activation, amendment, termination, and querying of Lease contracts needed by the operational business flow. Lifecycle commands SHALL validate the current Lease state before mutating the contract, and duplicate submissions or other replayed actions SHALL preserve the existing valid state instead of creating duplicate downstream effects. The system SHALL reject lifecycle mutations that are requested from stale or no-longer-eligible states and SHALL preserve the latest valid Lease state without generating duplicate workflow or billing-trigger side effects.
@@ -35,4 +36,3 @@ Amendments, terminations, and other supported Lease lifecycle changes SHALL upda
 #### Scenario: Stale lifecycle transition request is rejected
 - **WHEN** a lifecycle mutation is requested using an outdated source state after a newer valid state has already been persisted
 - **THEN** the system SHALL reject the stale mutation and SHALL preserve the latest valid billing-effective Lease state
-

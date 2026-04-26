@@ -1,6 +1,6 @@
 ## Purpose
 
-TBD: Canonical supporting-domain management spec for the replacement MI system.
+Define the first-release non-membership supporting domains that keep operational master data, sales and traffic ingestion, customer and brand administration, payment and receivable support, and frozen Generalize outputs usable without direct database edits.
 
 ## Requirements
 

@@ -1,6 +1,6 @@
 ## Purpose
 
-TBD: Canonical organization and access-control spec for the replacement MI system.
+Define the fresh-start organization, user, role, department, and permission model required to bootstrap and enforce scoped operational access in the replacement system.
 
 ## Requirements
 
