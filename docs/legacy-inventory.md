@@ -7,9 +7,10 @@ This document freezes the legacy behavior inventory for the first-release migrat
 - `legacy_code/` and `legacy_docs/` are **behavior references only**.
 - This inventory identifies **first-release capabilities by business outcome**.
 - Membership/Associator is explicitly excluded from first release.
+- Cross-reference implementation and acceptance status in `docs/capability-traceability-matrix.md`.
 - Reporting scope is bounded separately by:
-  - `openspec/changes/legacy-system-migration/report-inventory.md`
-  - `openspec/changes/legacy-system-migration/report-acceptance-matrix.md`
+  - `openspec/changes/archive/2026-04-04-legacy-system-migration/report-inventory.md`
+  - `openspec/changes/archive/2026-04-04-legacy-system-migration/report-acceptance-matrix.md`
 
 ## First-Release Capability Slices
 
@@ -200,7 +201,7 @@ This document freezes the legacy behavior inventory for the first-release migrat
 - `legacy_code/Web/ReportM/RptTraf/` — traffic reports
 - `legacy_code/Web/VisualAnalysis/` — visual analysis, floor-plan/graphic outputs
 - `legacy_code/REPORTWEB/` — additional Crystal Reports web app and template store
-- `openspec/changes/legacy-system-migration/report-inventory.md` — first-release report set `R01-R19`
+- `openspec/changes/archive/2026-04-04-legacy-system-migration/report-inventory.md` — first-release report set `R01-R19`
 
 **First-release notes**
 - Only `R01-R19` are authoritative for first release
