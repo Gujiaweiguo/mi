@@ -111,7 +111,7 @@ The cutover model is now explicitly a fresh start: no legacy data of any kind wi
   - Accept an implicit or evolving report scope: rejected because first release needs a frozen, enumerable output set.
 
 ### 10.1 First-release Generalize inventory source
-- **Decision**: The operational report list for first release is frozen in `openspec/changes/legacy-system-migration/report-inventory.md`, derived from the extractable report SQL/content in `阳光商业MI.net系统设计.doc`.
+- **Decision**: The operational report list for first release is frozen in `openspec/changes/archive/2026-04-04-legacy-system-migration/report-inventory.md`, derived from the extractable report SQL/content in `阳光商业MI.net系统设计.doc`.
 - **Why**: The binary `.doc` does not preserve all display titles cleanly in this environment, so the most reliable bounded inventory is the normalized list reconstructed from the document's report queries and structures.
 - **Alternatives considered**:
   - Leave report names informal: rejected because implementation and acceptance need a stable inventory.

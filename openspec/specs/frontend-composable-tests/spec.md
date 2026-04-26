@@ -1,4 +1,8 @@
-## ADDED Requirements
+## Purpose
+
+Canonical frontend composable test spec for shared Vue helpers in the replacement MI system.
+
+## Requirements
 
 ### Requirement: Shared frontend composables SHALL have executable unit tests
 Shared frontend composables that are reused across multiple views SHALL have unit tests covering their expected behavior and edge cases.

@@ -8,7 +8,7 @@ The first release SHALL provide the supporting domain capabilities required for 
 - **THEN** the updated data SHALL become selectable in downstream Lease and billing operations without direct database edits
 
 ### Requirement: The system SHALL limit Generalize reporting to documented first-release reports
-The first release SHALL include only the `Generalize` reports enumerated in `openspec/changes/legacy-system-migration/report-inventory.md`, which is derived from `阳光商业MI.net系统设计.doc`.
+The first release SHALL include only the `Generalize` reports enumerated in `openspec/changes/archive/2026-04-04-legacy-system-migration/report-inventory.md`, which is derived from `阳光商业MI.net系统设计.doc`.
 
 #### Scenario: Non-documented report is out of scope
 - **WHEN** a report request is raised for a `Generalize` report not listed in `report-inventory.md`
@@ -22,7 +22,7 @@ The first release SHALL implement the Generalize report inventory frozen for thi
 - **THEN** only the reports listed in `report-inventory.md` SHALL be considered required for Generalize delivery
 
 ### Requirement: The system SHALL satisfy the frozen Generalize report acceptance matrix
-Each first-release Generalize report SHALL satisfy the minimum field set, filters, output form, and acceptance checks defined in `openspec/changes/legacy-system-migration/report-acceptance-matrix.md`.
+Each first-release Generalize report SHALL satisfy the minimum field set, filters, output form, and acceptance checks defined in `openspec/changes/archive/2026-04-04-legacy-system-migration/report-acceptance-matrix.md`.
 
 #### Scenario: Report acceptance baseline is enforced
 - **WHEN** a Generalize report is implemented or accepted
