@@ -1,6 +1,6 @@
 ## Purpose
 
-TBD: Canonical tax, document, and Excel output spec for the replacement MI system.
+Define the mandatory first-release tax exports, print and document artifacts, and Excel import/export flows that operators need to produce compliant financial and reporting outputs without legacy desktop integration.
 
 ## Requirements
 

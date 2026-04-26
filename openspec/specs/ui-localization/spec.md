@@ -1,6 +1,6 @@
 ## Purpose
 
-TBD: Canonical UI localization spec for the replacement MI frontend.
+Define the frontend language defaults, runtime language switching, persistence, and locale-managed UI copy coverage required for the first-release operator experience.
 
 ## Requirements
 
