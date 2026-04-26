@@ -1,6 +1,7 @@
 ## Purpose
 
-TBD: Canonical platform foundation spec for the replacement MI system.
+Define the shared runtime, migration, configuration, testing, verification, and delivery foundations that every first-release feature slice depends on in the replacement stack.
+
 ## Requirements
 ### Requirement: The system SHALL provide a modular monolith foundation for the new stack
 The change SHALL introduce a Vue 3 frontend, a Go modular monolith backend, and a MySQL 8 database as the first-release runtime foundation. The foundation SHALL support local development for frontend/backend with an existing Docker MySQL 8 instance and SHALL support Docker Compose-based test and production topologies.
@@ -390,4 +391,3 @@ Every backend package SHALL have at least one test file covering exported functi
 #### Scenario: Each package has unit tests
 - **WHEN** a package contains exported functions or constructors
 - **THEN** it SHALL have test coverage for those exports
-

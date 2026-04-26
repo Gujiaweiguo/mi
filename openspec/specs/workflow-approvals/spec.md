@@ -1,6 +1,7 @@
 ## Purpose
 
-TBD: Canonical workflow approvals spec for the replacement MI system.
+Define the configurable approval workflows, idempotent side-effect handling, reminder behavior, and first-release automation boundaries required for Lease and billing documents.
+
 ## Requirements
 ### Requirement: The system SHALL provide configurable approval workflows
 The first release SHALL support configurable workflow templates, transitions, assignee resolution, and document-specific approval flows for supported business objects. Workflow submission and action handling SHALL enforce valid source-state transitions for supported Lease and billing documents before any downstream side effect is dispatched.

@@ -1,6 +1,7 @@
 ## Purpose
 
-TBD: Canonical deployment and cutover operations spec for the replacement MI system.
+Define the Compose-based environments, production runtime safeguards, and fresh-start cutover workflows required to bring up, validate, rehearse, and operate the replacement system reliably.
+
 ## Requirements
 ### Requirement: The system SHALL provide Compose-based test and production operations
 The change SHALL provide Docker Compose definitions for test and production that include nginx, frontend, backend, and MySQL 8 with explicit health checks, mounted runtime paths, rendered environment-specific configuration, and executable bring-up validation for the documented runtime assumptions. Production-oriented operational validation SHALL additionally fail fast when runtime mount hygiene, container runtime assumptions, or blocked placeholder production secrets would make rehearsal outcomes unreliable or insecure. The production backend Docker image SHALL include Chromium for PDF generation. The repository SHALL have a `.dockerignore` file that excludes non-runtime paths from Docker build context. All production Compose services SHALL have `restart: unless-stopped` restart policies. Backend and MySQL production services SHALL have memory limits. All production services SHALL have JSON-file logging with `max-size` and `max-file` constraints. MySQL SHALL NOT expose ports to the host in the production Compose configuration. The frontend container SHALL run nginx worker processes as a non-root user. Production nginx SHALL set security headers (X-Content-Type-Options, X-Frame-Options, Content-Security-Policy, Strict-Transport-Security, X-XSS-Protection, Referrer-Policy), SHALL enable gzip for text-based content types, SHALL configure proxy timeouts for the backend, and SHALL set `client_max_body_size`.
@@ -117,4 +118,3 @@ The production environment file SHALL use env var names that match Viper's autom
 #### Scenario: Env vars override YAML config
 - **WHEN** `MI_DATABASE_HOST=mysql` is set in the environment
 - **THEN** the backend SHALL use `mysql` as the database host, overriding any value in the YAML config file
-
