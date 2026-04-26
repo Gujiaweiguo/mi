@@ -29,6 +29,7 @@ backend/config/*.local.yaml
 
 # test outputs
 *.out
+.playwright-mcp/
 
 # OS/editor noise
 .DS_Store
