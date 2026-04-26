@@ -21,9 +21,10 @@ This repository is the **replacement migration workspace** for the legacy MI.NET
 
 When files disagree, use this order:
 
-1. `openspec/changes/legacy-system-migration/`
-2. `AGENTS.md`
-3. `legacy_code/` and `legacy_docs/` as legacy reference only
+1. Current canonical specs in `openspec/specs/`
+2. Archived migration baseline in `openspec/changes/archive/2026-04-04-legacy-system-migration/`
+3. `AGENTS.md`
+4. `legacy_code/` and `legacy_docs/` as legacy reference only
 
 If the repository scan suggests “old .NET app”, treat that as **legacy input**, not the target architecture.
 
@@ -58,16 +59,27 @@ Excluded:
 - Workflow timeout/escalation automation
 - WebForms page-by-page cloning
 
+Membership / `Associator` is intentionally not migrated. This excludes member cards, points/bonus, gifts/redeem, member activities, member CRM flows, and membership reports.
+
+## Legacy capability coverage notes
+
+The current OpenSpec scope covers the non-membership migration by business capability rather than by legacy page count:
+
+- Lease: standard leases, union/joint-operation contracts, ad-board contracts, area/ground contracts, amendments, termination, overtime billing, charge formulas, charge generation, and approval flows.
+- Bill / Invoice: invoice lifecycle, charge confirmation, adjustments, discounts, cancellation, deposits/surplus, interest, bank-card payment records, other/union charges, receivables, and accounting/tax/export outputs where covered by active specs.
+- Supporting domains: BaseInfo/admin data, Shop, Sell/POS data ingestion, RentableArea, customer/brand/prospect/budget administration, payment/receivable operations, and frozen Generalize report outputs.
+- Reporting: first-release Generalize scope is frozen to report IDs `R01-R19`; extra legacy reports and VisualAnalysis/POS/reporting pages are out of scope unless OpenSpec is updated.
+
 ## OpenSpec change to follow
 
 Primary change:
 
-- `openspec/changes/legacy-system-migration/proposal.md` — why this migration exists
-- `openspec/changes/legacy-system-migration/design.md` — architecture and major decisions
-- `openspec/changes/legacy-system-migration/tasks.md` — ordered execution checklist
-- `openspec/changes/legacy-system-migration/specs/` — capability requirements
-- `openspec/changes/legacy-system-migration/report-inventory.md` — frozen Generalize report list (`R01-R19`)
-- `openspec/changes/legacy-system-migration/report-acceptance-matrix.md` — report acceptance baseline
+- `openspec/specs/` — current canonical capability requirements
+- `openspec/changes/archive/2026-04-04-legacy-system-migration/proposal.md` — why this migration exists
+- `openspec/changes/archive/2026-04-04-legacy-system-migration/design.md` — architecture and major decisions
+- `openspec/changes/archive/2026-04-04-legacy-system-migration/tasks.md` — ordered execution checklist
+- `openspec/changes/archive/2026-04-04-legacy-system-migration/report-inventory.md` — frozen Generalize report list (`R01-R19`)
+- `openspec/changes/archive/2026-04-04-legacy-system-migration/report-acceptance-matrix.md` — report acceptance baseline
 
 ## How to start work
 
@@ -76,10 +88,10 @@ Recommended order for any developer or coding agent:
 1. Read `README.md`
 2. Read `AGENTS.md`
 3. Read:
-   - `openspec/changes/legacy-system-migration/proposal.md`
-   - `openspec/changes/legacy-system-migration/design.md`
-   - `openspec/changes/legacy-system-migration/tasks.md`
-4. Find the relevant capability under `openspec/changes/legacy-system-migration/specs/`
+   - `openspec/changes/archive/2026-04-04-legacy-system-migration/proposal.md`
+   - `openspec/changes/archive/2026-04-04-legacy-system-migration/design.md`
+   - `openspec/changes/archive/2026-04-04-legacy-system-migration/tasks.md`
+4. Find the relevant capability under `openspec/specs/`
 5. Start from the OpenSpec acceptance criteria, not from legacy screens
 6. Use `legacy_code/` only to recover business rules, workflow semantics, print/export behavior, and data relationships
 

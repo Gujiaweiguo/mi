@@ -14,9 +14,10 @@ If repository scanning conflicts with these instructions, **prefer this file and
 
 When deciding intent, scope, or architecture, use this order:
 
-1. `openspec/changes/legacy-system-migration/`
-2. `AGENTS.md`
-3. `legacy_code/` and `legacy_docs/` as legacy behavior reference only
+1. Current canonical specs in `openspec/specs/`
+2. Archived migration baseline in `openspec/changes/archive/2026-04-04-legacy-system-migration/`
+3. `AGENTS.md`
+4. `legacy_code/` and `legacy_docs/` as legacy behavior reference only
 
 The legacy ASP.NET WebForms + SQL Server codebase is **not** the intended implementation target.
 
@@ -49,12 +50,18 @@ The legacy ASP.NET WebForms + SQL Server codebase is **not** the intended implem
 - Generalize reports bounded by the current OpenSpec inventory
 
 ### First Release Excludes
-- Membership / `Associator`
+- Membership / `Associator` — explicit product decision: do not migrate the membership system, member cards, points/bonus, gifts/redeem, member activities, or membership reports
 - Email delivery
 - Device/client tax integration
 - Historical transaction migration
 - Workflow timeout/escalation automation
 - Page-for-page WebForms cloning
+
+### Legacy Capability Coverage Notes
+- Lease scope includes standard leases, union/joint-operation contracts, ad-board contracts, area/ground contracts, amendments, termination, overtime billing, charge generation, formulas, and lease approval flows.
+- Bill / Invoice scope includes invoices, charge confirmation, adjustments, discounts, cancellation, deposits/surplus, interest, bank-card payment records, other/union charges, receivable tracking, and accounting/tax/export outputs where covered by active specs.
+- Supporting-domain scope includes BaseInfo/admin data, Shop, Sell/POS data ingestion, RentableArea, customer/brand/prospect/budget administration, payment/receivable operations, and frozen Generalize report outputs.
+- Generalize reporting remains bounded to the frozen `R01-R19` first-release report inventory. Legacy reports outside that inventory, including extra VisualAnalysis/POS/reporting pages, are not included unless OpenSpec is updated.
 
 ## Data and Cutover Rules
 
@@ -74,8 +81,8 @@ When reading `legacy_code/`:
 ## Reporting Rules
 
 - Generalize reporting scope is frozen in:
-  - `openspec/changes/legacy-system-migration/report-inventory.md`
-  - `openspec/changes/legacy-system-migration/report-acceptance-matrix.md`
+  - `openspec/changes/archive/2026-04-04-legacy-system-migration/report-inventory.md`
+  - `openspec/changes/archive/2026-04-04-legacy-system-migration/report-acceptance-matrix.md`
 - Treat report IDs `R01-R19` as the authoritative first-release report set.
 - Do not add extra reporting scope unless OpenSpec is updated.
 
@@ -83,10 +90,10 @@ When reading `legacy_code/`:
 
 Primary change:
 
-- `openspec/changes/legacy-system-migration/proposal.md`
-- `openspec/changes/legacy-system-migration/design.md`
-- `openspec/changes/legacy-system-migration/tasks.md`
-- `openspec/changes/legacy-system-migration/specs/**`
+- Current canonical specs: `openspec/specs/**`
+- Archived migration proposal: `openspec/changes/archive/2026-04-04-legacy-system-migration/proposal.md`
+- Archived migration design: `openspec/changes/archive/2026-04-04-legacy-system-migration/design.md`
+- Archived migration tasks: `openspec/changes/archive/2026-04-04-legacy-system-migration/tasks.md`
 
 If codebase evidence and OpenSpec disagree, assume:
 
@@ -104,6 +111,7 @@ If codebase evidence and OpenSpec disagree, assume:
 ## Quick Path Reference
 
 - Legacy solution: `legacy_code/MI_net.sln`
-- Target migration change: `openspec/changes/legacy-system-migration/`
-- Report inventory: `openspec/changes/legacy-system-migration/report-inventory.md`
-- Report acceptance matrix: `openspec/changes/legacy-system-migration/report-acceptance-matrix.md`
+- Current specs: `openspec/specs/`
+- Archived target migration change: `openspec/changes/archive/2026-04-04-legacy-system-migration/`
+- Report inventory: `openspec/changes/archive/2026-04-04-legacy-system-migration/report-inventory.md`
+- Report acceptance matrix: `openspec/changes/archive/2026-04-04-legacy-system-migration/report-acceptance-matrix.md`
