@@ -241,9 +241,9 @@ These decisions must be treated as blocking until explicitly resolved in impleme
 
 ## Required References
 
-- `openspec/changes/legacy-system-migration/design.md`
-- `openspec/changes/legacy-system-migration/tasks.md`
-- `openspec/changes/legacy-system-migration/test-evidence-contract.md`
+- `openspec/changes/archive/2026-04-04-legacy-system-migration/design.md`
+- `openspec/changes/archive/2026-04-04-legacy-system-migration/tasks.md`
+- `openspec/changes/archive/2026-04-04-legacy-system-migration/test-evidence-contract.md`
 - `docs/legacy-inventory.md`
 - `docs/decision-log.md`
 - `docs/output-catalog.md`

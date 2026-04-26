@@ -106,8 +106,8 @@ These report outputs are mandatory exactly as bounded by OpenSpec.
 
 ## Output Acceptance References
 
-- `openspec/changes/legacy-system-migration/report-inventory.md`
-- `openspec/changes/legacy-system-migration/report-acceptance-matrix.md`
+- `openspec/changes/archive/2026-04-04-legacy-system-migration/report-inventory.md`
+- `openspec/changes/archive/2026-04-04-legacy-system-migration/report-acceptance-matrix.md`
 - `docs/decision-log.md`
 - `docs/cutover-runbook.md`
 
