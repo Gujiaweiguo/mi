@@ -1,0 +1,142 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "schemas/release-readiness-v1.json",
+  "title": "Release Readiness Summary v1",
+  "description": "Machine-readable final first-release readiness summary stored under artifacts/release-readiness/<commit-sha>/.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "project",
+    "change",
+    "commit_sha",
+    "started_at",
+    "finished_at",
+    "status",
+    "scope",
+    "gates",
+    "blockers",
+    "deferred",
+    "artifacts"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1"
+    },
+    "project": {
+      "type": "string",
+      "minLength": 1
+    },
+    "change": {
+      "type": "string",
+      "minLength": 1
+    },
+    "commit_sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "started_at": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "finished_at": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["GO", "NO-GO"]
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["release_boundary", "report_inventory", "excluded_domains"],
+      "properties": {
+        "release_boundary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "report_inventory": {
+          "type": "string",
+          "minLength": 1
+        },
+        "excluded_domains": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "gates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["archive_ready", "rehearsal_ready"],
+      "properties": {
+        "archive_ready": {
+          "type": "string",
+          "enum": ["passed", "failed"]
+        },
+        "rehearsal_ready": {
+          "type": "string",
+          "enum": ["passed", "failed"]
+        }
+      }
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "classification", "source", "summary"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "classification": { "type": "string", "const": "must-fix" },
+          "source": { "type": "string", "minLength": 1 },
+          "summary": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "deferred": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "classification", "source", "summary"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "classification": {
+            "type": "string",
+            "enum": ["deferred", "out-of-scope"]
+          },
+          "source": { "type": "string", "minLength": 1 },
+          "summary": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["verification", "rehearsal_result", "findings"],
+      "properties": {
+        "verification": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "rehearsal_result": {
+          "type": ["string", "null"]
+        },
+        "findings": {
+          "type": ["string", "null"]
+        }
+      }
+    }
+  }
+}
