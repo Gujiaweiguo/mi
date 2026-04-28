@@ -293,6 +293,11 @@ const attachInvoiceMocks = async (page: Page) => {
 
 const login = async (page: Page) => {
   await page.goto('/login')
+  await page.evaluate(() => {
+    window.localStorage.clear()
+  })
+  await page.reload()
+  await expect(page.getByTestId('login-view')).toBeVisible({ timeout: 10000 })
   await page.getByTestId('login-username-input').fill('operator')
   await page.getByTestId('login-password-input').fill('password')
   await page.getByTestId('login-submit-button').click()
@@ -310,6 +315,11 @@ const expectCardHeader = async (page: Page, headerText: string) => {
 
 test('switches language on the login page at runtime', async ({ page }) => {
   await page.goto('/login')
+  await page.evaluate(() => {
+    window.localStorage.clear()
+  })
+  await page.reload()
+  await expect(page.getByTestId('login-view')).toBeVisible({ timeout: 10000 })
 
   await expect(page.getByText('登录以继续')).toBeVisible()
   await expect(page.getByText('用户名')).toBeVisible()

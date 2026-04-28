@@ -16,6 +16,22 @@ type StoreTypeFixture = {
   updated_at: string
 }
 
+const gotoWithRetry = async (page: Page, url: string) => {
+  let lastError: unknown = null
+
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    try {
+      await page.goto(url)
+      return
+    } catch (error) {
+      lastError = error
+      await page.waitForTimeout(500)
+    }
+  }
+
+  throw lastError
+}
+
 const now = '2026-04-02T08:00:00Z'
 
 const attachBaseInfoMocks = async (page: Page) => {
@@ -167,6 +183,11 @@ test('creates store type records from the base info admin view', async ({ page }
   await attachBaseInfoMocks(page)
 
   await page.goto('/login')
+  await page.evaluate(() => {
+    window.localStorage.clear()
+  })
+  await page.reload()
+  await expect(page.getByTestId('login-view')).toBeVisible({ timeout: 10000 })
   await page.getByTestId('login-username-input').fill('baseinfo-admin')
   await page.getByTestId('login-password-input').fill('password')
   await page.getByTestId('login-submit-button').click()
@@ -174,7 +195,7 @@ test('creates store type records from the base info admin view', async ({ page }
   await expect(page).toHaveURL(/\/dashboard/)
   await expect(page.getByTestId('nav--admin-base-info')).toBeVisible()
 
-  await page.getByTestId('nav--admin-base-info').click()
+  await gotoWithRetry(page, '/admin/base-info')
   await expect(page).toHaveURL(/\/admin\/base-info/)
   await expect(page.getByTestId('baseinfo-admin-view')).toBeVisible()
   await expect(page.getByText('Retail store')).toBeVisible()

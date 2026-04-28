@@ -69,10 +69,14 @@ const attachPlatformMocks = async (
 }
 
 test('redirects protected dashboard route to login for guests', async ({ page }) => {
+  await page.goto('/login')
+  await page.evaluate(() => {
+    window.localStorage.clear()
+  })
   await page.goto('/dashboard')
 
-  await expect(page).toHaveURL(/\/login/)
-  await expect(page.getByTestId('login-view')).toBeVisible()
+  await expect(page.getByTestId('login-view')).toBeVisible({ timeout: 10000 })
+  await expect(page).toHaveURL(/\/login/, { timeout: 10000 })
   await expect(page.getByTestId('login-username-input')).toBeVisible()
   await expect(page.getByTestId('login-password-input')).toBeVisible()
   await expect(page.getByTestId('login-submit-button')).toBeVisible()

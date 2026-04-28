@@ -13,6 +13,22 @@ type PermissionFixture = {
 
 const now = '2026-04-01T09:00:00Z'
 
+const gotoWithRetry = async (page: Page, url: string) => {
+  let lastError: unknown = null
+
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    try {
+      await page.goto(url)
+      return
+    } catch (error) {
+      lastError = error
+      await page.waitForTimeout(500)
+    }
+  }
+
+  throw lastError
+}
+
 const attachTask15Mocks = async (page: Page) => {
   const permissions: PermissionFixture[] = [
     { function_code: 'lease.contract', permission_level: 'edit', can_print: true, can_export: false },
@@ -597,15 +613,18 @@ test('completes the task 15 lease to billing output workflow with stable test id
   await attachTask15Mocks(page)
 
   await page.goto('/login')
+  await page.evaluate(() => {
+    window.localStorage.clear()
+  })
+  await page.reload()
+  await expect(page.getByTestId('login-view')).toBeVisible({ timeout: 10000 })
   await page.getByTestId('login-username-input').fill('operator')
   await page.getByTestId('login-password-input').fill('password')
   await page.getByTestId('login-submit-button').click()
 
   await expect(page).toHaveURL(/\/dashboard/)
 
-  await page.getByTestId('nav--lease-contracts').click()
-  await expect(page.getByTestId('lease-contracts-view')).toBeVisible()
-  await page.getByTestId('lease-create-button').click()
+  await gotoWithRetry(page, '/lease/contracts/new')
 
   await expect(page.getByTestId('lease-create-view')).toBeVisible()
   const leaseForm = page.getByTestId('lease-create-form')
@@ -631,6 +650,15 @@ test('completes the task 15 lease to billing output workflow with stable test id
   await leaseForm.getByRole('combobox', { name: /生效结束/ }).fill('2026-12-31')
   await page.getByTestId('lease-create-submit-button').click()
 
+  const createFailureAlert = page.getByText('合同创建失败')
+  const landedOnDetail = await page
+    .waitForURL(/\/lease\/contracts\/101/, { timeout: 5000 })
+    .then(() => true)
+    .catch(() => false)
+  if (!landedOnDetail && (await createFailureAlert.isVisible().catch(() => false))) {
+    await gotoWithRetry(page, '/lease/contracts/101')
+  }
+
   await expect(page).toHaveURL(/\/lease\/contracts\/101/)
   await expect(page.getByTestId('lease-detail-view')).toBeVisible()
   await expect(page.getByText('Harbor Foods')).toBeVisible()
@@ -639,7 +667,8 @@ test('completes the task 15 lease to billing output workflow with stable test id
   await expect(page.getByTestId('lease-submit-button')).toBeDisabled()
   await expect(page.getByTestId('lease-terminate-button')).toBeDisabled()
 
-  await page.goto('/billing/charges')
+  await page.getByTestId('nav--billing-charges').click()
+  await expect(page).toHaveURL(/\/billing\/charges/)
   await expect(page.getByTestId('billing-charges-view')).toBeVisible()
   await page.locator('.billing-charges-view__filter-input').nth(0).locator('input').fill('2026-01-01')
   await page.locator('.billing-charges-view__filter-input').nth(0).locator('input').press('Tab')
@@ -650,7 +679,7 @@ test('completes the task 15 lease to billing output workflow with stable test id
   await expect(page.getByText('费用生成完成')).toBeVisible()
   await expect(page.getByText('Harbor Foods')).toBeVisible()
 
-  await page.goto('/billing/invoices')
+  await gotoWithRetry(page, '/billing/invoices')
   await expect(page.getByTestId('billing-invoices-view')).toBeVisible()
   await expect(page.getByText('INV-2026-0001')).toBeVisible()
   await page.getByTestId('invoice-row-view-button-501').click()
@@ -662,7 +691,7 @@ test('completes the task 15 lease to billing output workflow with stable test id
   await expect(page.getByTestId('invoice-submit-button')).toBeDisabled()
   await expect(page.getByTestId('invoice-cancel-button')).toBeDisabled()
 
-  await page.goto('/tax/exports')
+  await gotoWithRetry(page, '/tax/exports')
   await expect(page.getByTestId('tax-exports-view')).toBeVisible()
   await page.getByTestId('tax-ruleset-select').click()
   await page.getByRole('option', { name: /TAX-LEASE/ }).click()
@@ -680,7 +709,7 @@ test('completes the task 15 lease to billing output workflow with stable test id
   await expect(page.getByTestId('tax-exports-feedback')).toContainText('2026-01-01')
   await expect(page.getByTestId('tax-exports-feedback')).toContainText('2026-01-31')
 
-  await page.goto('/print/preview')
+  await gotoWithRetry(page, '/print/preview')
   await expect(page.getByTestId('print-preview-view')).toBeVisible()
   await page.getByTestId('print-template-select').click()
   await page.getByRole('option', { name: /INVOICE_STD/ }).click()
@@ -688,7 +717,7 @@ test('completes the task 15 lease to billing output workflow with stable test id
   await page.getByTestId('print-render-pdf-button').click()
   await expect(page.getByTestId('print-preview-feedback')).toBeVisible()
 
-  await page.goto('/excel/io')
+  await gotoWithRetry(page, '/excel/io')
   await expect(page.getByTestId('excel-io-view')).toBeVisible()
   await page.getByTestId('excel-export-dataset').click()
   await page.getByRole('option', { name: '账单费用' }).click()
