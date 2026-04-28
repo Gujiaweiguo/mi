@@ -101,7 +101,22 @@ fi
 
 if [[ -n "$REHEARSAL_FILE" && -f "$REHEARSAL_FILE" ]]; then
   if "$ROOT_DIR/scripts/verification/validate-rehearsal-result.sh" "$REHEARSAL_FILE" --commit-sha "$COMMIT_SHA" >/dev/null 2>&1; then
-    rehearsal_ready=passed
+    rehearsal_status=$(python3 - "$REHEARSAL_FILE" <<'PY'
+import json
+import sys
+from pathlib import Path
+data = json.loads(Path(sys.argv[1]).read_text(encoding='utf-8'))
+print(data.get('status', ''))
+print(data.get('failing_gate') or '')
+PY
+)
+    rehearsal_result_status=$(printf '%s\n' "$rehearsal_status" | sed -n '1p')
+    rehearsal_failing_gate=$(printf '%s\n' "$rehearsal_status" | sed -n '2p')
+    if [[ "$rehearsal_result_status" == "GO" ]]; then
+      rehearsal_ready=passed
+    else
+      add_blocker "{\"id\":\"rehearsal-${rehearsal_failing_gate:-result}\",\"classification\":\"must-fix\",\"source\":\"cutover-rehearsal\",\"summary\":\"Production rehearsal for the current commit ended in NO-GO at gate '${rehearsal_failing_gate:-unknown}'.\"}"
+    fi
   else
     add_blocker '{"id":"rehearsal-result","classification":"must-fix","source":"cutover-rehearsal","summary":"Production rehearsal result is present but invalid for the current commit."}'
   fi
