@@ -7,7 +7,6 @@ import { useRouter } from 'vue-router'
 import { listBrands, listCustomers, type Brand, type Customer } from '../api/masterdata'
 import {
   createLease,
-  type AdBoardFrequency,
   type CreateLeaseRequest,
   type LeaseAreaGroundDetail,
   type LeaseAdBoardDetail,
