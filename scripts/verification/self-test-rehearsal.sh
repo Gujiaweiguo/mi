@@ -51,8 +51,8 @@ text = path.read_text(encoding="utf-8")
 replacements = {
     "MYSQL_PASSWORD=change-me": "MYSQL_PASSWORD=prod-db-password-2026",
     "MYSQL_ROOT_PASSWORD=change-me-root": "MYSQL_ROOT_PASSWORD=prod-root-password-2026",
-    "MI_DB_PASSWORD=change-me": "MI_DB_PASSWORD=prod-app-password-2026",
-    "MI_JWT_SECRET=change-me-production-secret": "MI_JWT_SECRET=prod-jwt-secret-2026",
+    "MI_DATABASE_PASSWORD=change-me": "MI_DATABASE_PASSWORD=prod-app-password-2026",
+    "MI_AUTH_JWT_SECRET=change-me-production-secret": "MI_AUTH_JWT_SECRET=prod-jwt-secret-2026",
 }
 for old, new in replacements.items():
     text = text.replace(old, new)
@@ -201,7 +201,7 @@ expect_failure \
   "$PREFLIGHT" production
 
 PRECHECK_OUTPUT=$(env MI_COMPOSE_ENV_FILE="$PLACEHOLDER_ENV" "$PREFLIGHT" production 2>&1 >/dev/null || true)
-if [[ "$PRECHECK_OUTPUT" != *"MYSQL_PASSWORD=change-me"* || "$PRECHECK_OUTPUT" != *"MI_JWT_SECRET=change-me-production-secret"* ]]; then
+if [[ "$PRECHECK_OUTPUT" != *"MYSQL_PASSWORD=change-me"* || "$PRECHECK_OUTPUT" != *"MI_AUTH_JWT_SECRET=change-me-production-secret"* || "$PRECHECK_OUTPUT" != *"MI_DATABASE_PASSWORD=change-me"* ]]; then
   printf 'Expected placeholder-secret preflight failure to name offending keys, got:\n%s\n' "$PRECHECK_OUTPUT" >&2
   exit 1
 fi
