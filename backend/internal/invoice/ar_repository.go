@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Gujiaweiguo/mi/backend/internal/billing"
 	"github.com/Gujiaweiguo/mi/backend/internal/pagination"
 	"github.com/Gujiaweiguo/mi/backend/internal/sqlutil"
 )
@@ -21,6 +22,10 @@ type receivableLeaseContext struct {
 type receivableOpenItemRow struct {
 	BillingDocumentLineID int64
 	ChargeType            string
+	ChargeSource          billing.ChargeSource
+	OvertimeBillID        *int64
+	OvertimeFormulaID     *int64
+	OvertimeChargeID      *int64
 	DueDate               time.Time
 	OutstandingAmount     float64
 	IsDeposit             bool
@@ -60,11 +65,12 @@ func (r *Repository) UpsertReceivableOpenItem(ctx context.Context, tx *sql.Tx, l
 	if _, err := tx.ExecContext(ctx, `
 		INSERT INTO ar_open_items (
 			lease_contract_id, billing_document_id, billing_document_line_id, customer_id,
-			department_id, trade_id, charge_type, due_date, outstanding_amount, settled_at, is_deposit
-		) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+			department_id, trade_id, charge_type, charge_source, overtime_bill_id, overtime_formula_id, overtime_charge_id,
+			due_date, outstanding_amount, settled_at, is_deposit
+		) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 		ON DUPLICATE KEY UPDATE
 			billing_document_line_id = billing_document_line_id
-	`, leaseCtx.LeaseContractID, documentID, row.BillingDocumentLineID, leaseCtx.CustomerID, leaseCtx.DepartmentID, sqlutil.Int64PointerValue(leaseCtx.TradeID), row.ChargeType, row.DueDate, row.OutstandingAmount, nil, row.IsDeposit); err != nil {
+	`, leaseCtx.LeaseContractID, documentID, row.BillingDocumentLineID, leaseCtx.CustomerID, leaseCtx.DepartmentID, sqlutil.Int64PointerValue(leaseCtx.TradeID), row.ChargeType, row.ChargeSource, sqlutil.Int64PointerValue(row.OvertimeBillID), sqlutil.Int64PointerValue(row.OvertimeFormulaID), sqlutil.Int64PointerValue(row.OvertimeChargeID), row.DueDate, row.OutstandingAmount, nil, row.IsDeposit); err != nil {
 		return fmt.Errorf("upsert receivable open item: %w", err)
 	}
 	return nil
@@ -73,7 +79,7 @@ func (r *Repository) UpsertReceivableOpenItem(ctx context.Context, tx *sql.Tx, l
 func (r *Repository) FindOpenItemsByDocumentIDForUpdate(ctx context.Context, tx *sql.Tx, documentID int64) ([]OpenItem, error) {
 	rows, err := tx.QueryContext(ctx, `
 		SELECT id, lease_contract_id, billing_document_id, billing_document_line_id, customer_id, department_id, trade_id,
-			charge_type, due_date, outstanding_amount, settled_at, is_deposit, created_at, updated_at
+			charge_type, charge_source, overtime_bill_id, overtime_formula_id, overtime_charge_id, due_date, outstanding_amount, settled_at, is_deposit, created_at, updated_at
 		FROM ar_open_items
 		WHERE billing_document_id = ?
 		ORDER BY due_date, charge_type, id
@@ -158,20 +164,62 @@ func (r *Repository) GetReceivableSummary(ctx context.Context, documentID int64)
 	if err != nil {
 		return nil, err
 	}
+	discountHistory, err := r.getDiscountHistoryByDocumentID(ctx, documentID)
+	if err != nil {
+		return nil, err
+	}
+	interestHistory, err := r.GetInterestHistoryByDocumentID(ctx, documentID)
+	if err != nil {
+		return nil, err
+	}
+	depositAppHistory, err := r.getDepositApplicationHistoryByDocumentID(ctx, documentID)
+	if err != nil {
+		return nil, err
+	}
+	depositRefundHistory, err := r.getDepositRefundHistoryByDocumentID(ctx, documentID)
+	if err != nil {
+		return nil, err
+	}
+	leaseCtx, err := r.FindReceivableLeaseContext(ctx, document.LeaseContractID)
+	if err != nil {
+		return nil, err
+	}
+	customerSurplus := 0.0
+	surplusHistory := []SurplusEntry{}
+	if leaseCtx != nil {
+		balance, err := r.FindSurplusBalanceByCustomer(ctx, leaseCtx.CustomerID)
+		if err != nil {
+			return nil, err
+		}
+		if balance != nil {
+			customerSurplus = balance.AvailableAmount
+		}
+		history, err := r.GetSurplusHistoryByCustomer(ctx, leaseCtx.CustomerID)
+		if err != nil {
+			return nil, err
+		}
+		surplusHistory = history
+	}
 	total := 0.0
 	for _, item := range items {
 		total += item.OutstandingAmount
 	}
 	return &ReceivableSummary{
-		BillingDocumentID: document.ID,
-		DocumentNo:        document.DocumentNo,
-		DocumentType:      document.DocumentType,
-		TenantName:        document.TenantName,
-		LeaseContractID:   document.LeaseContractID,
-		OutstandingAmount: total,
-		SettlementStatus:  settlementStatus(total),
-		Items:             items,
-		PaymentHistory:    history,
+		BillingDocumentID:         document.ID,
+		DocumentNo:                document.DocumentNo,
+		DocumentType:              document.DocumentType,
+		TenantName:                document.TenantName,
+		LeaseContractID:           document.LeaseContractID,
+		OutstandingAmount:         total,
+		CustomerSurplus:           customerSurplus,
+		SettlementStatus:          settlementStatus(total),
+		Items:                     items,
+		PaymentHistory:            history,
+		DiscountHistory:           discountHistory,
+		SurplusHistory:            surplusHistory,
+		InterestHistory:           interestHistory,
+		DepositApplicationHistory: depositAppHistory,
+		DepositRefundHistory:      depositRefundHistory,
 	}, nil
 }
 
@@ -257,7 +305,7 @@ func (r *Repository) ListReceivables(ctx context.Context, filter ReceivableFilte
 func (r *Repository) getOpenItemsByDocumentID(ctx context.Context, documentID int64) ([]OpenItem, error) {
 	rows, err := r.db.QueryContext(ctx, `
 		SELECT id, lease_contract_id, billing_document_id, billing_document_line_id, customer_id, department_id, trade_id,
-			charge_type, due_date, outstanding_amount, settled_at, is_deposit, created_at, updated_at
+			charge_type, charge_source, overtime_bill_id, overtime_formula_id, overtime_charge_id, due_date, outstanding_amount, settled_at, is_deposit, created_at, updated_at
 		FROM ar_open_items
 		WHERE billing_document_id = ?
 		ORDER BY due_date, charge_type, id
@@ -275,12 +323,18 @@ func scanOpenItems(rows *sql.Rows) ([]OpenItem, error) {
 		var item OpenItem
 		var billingDocumentLineID sql.NullInt64
 		var tradeID sql.NullInt64
+		var overtimeBillID sql.NullInt64
+		var overtimeFormulaID sql.NullInt64
+		var overtimeChargeID sql.NullInt64
 		var settledAt sql.NullTime
-		if err := rows.Scan(&item.ID, &item.LeaseContractID, &item.BillingDocumentID, &billingDocumentLineID, &item.CustomerID, &item.DepartmentID, &tradeID, &item.ChargeType, &item.DueDate, &item.OutstandingAmount, &settledAt, &item.IsDeposit, &item.CreatedAt, &item.UpdatedAt); err != nil {
+		if err := rows.Scan(&item.ID, &item.LeaseContractID, &item.BillingDocumentID, &billingDocumentLineID, &item.CustomerID, &item.DepartmentID, &tradeID, &item.ChargeType, &item.ChargeSource, &overtimeBillID, &overtimeFormulaID, &overtimeChargeID, &item.DueDate, &item.OutstandingAmount, &settledAt, &item.IsDeposit, &item.CreatedAt, &item.UpdatedAt); err != nil {
 			return nil, fmt.Errorf("scan receivable open item: %w", err)
 		}
 		item.BillingDocumentLineID = sqlutil.NullInt64Pointer(billingDocumentLineID)
 		item.TradeID = sqlutil.NullInt64Pointer(tradeID)
+		item.OvertimeBillID = sqlutil.NullInt64Pointer(overtimeBillID)
+		item.OvertimeFormulaID = sqlutil.NullInt64Pointer(overtimeFormulaID)
+		item.OvertimeChargeID = sqlutil.NullInt64Pointer(overtimeChargeID)
 		item.SettledAt = sqlutil.NullTimePointer(settledAt)
 		items = append(items, item)
 	}

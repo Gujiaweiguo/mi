@@ -1,14 +1,19 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import {
+  applyInvoiceDeposit,
+  applyInvoiceSurplus,
+  applyInvoiceDiscount,
   adjustInvoice,
   cancelInvoice,
   createInvoice,
+  generateInvoiceInterest,
   getInvoice,
   getInvoiceReceivable,
   listInvoices,
   listReceivables,
   recordInvoicePayment,
+  refundInvoiceDeposit,
   submitInvoice,
 } from './invoice'
 
@@ -186,6 +191,168 @@ describe('invoice api', () => {
 
       await expect(
         recordInvoicePayment(42, { idempotency_key: 'payment-42', amount: 500 }),
+      ).rejects.toThrow('fail')
+    })
+  })
+
+  describe('applyInvoiceDiscount', () => {
+    it('calls POST /invoices/:id/discounts and returns the response', async () => {
+      const payload = {
+        billing_document_line_id: 7,
+        amount: 250,
+        reason: 'launch support',
+        idempotency_key: 'discount-1',
+      }
+      const response = { data: { receivable: { billing_document_id: 42, outstanding_amount: 500 } } } as never
+
+      vi.mocked(http.post).mockResolvedValue(response)
+
+      const result = await applyInvoiceDiscount(42, payload)
+
+      expect(http.post).toHaveBeenCalledWith('/invoices/42/discounts', payload)
+      expect(result).toEqual(response)
+    })
+
+    it('propagates errors', async () => {
+      vi.mocked(http.post).mockRejectedValue(new Error('fail') as never)
+
+      await expect(
+        applyInvoiceDiscount(42, {
+          billing_document_line_id: 7,
+          amount: 250,
+          reason: 'launch support',
+          idempotency_key: 'discount-1',
+        }),
+      ).rejects.toThrow('fail')
+    })
+  })
+
+  describe('applyInvoiceSurplus', () => {
+    it('calls POST /invoices/:id/surplus-applications and returns the response', async () => {
+      const payload = {
+        billing_document_line_id: 7,
+        amount: 250,
+        note: 'use surplus',
+        idempotency_key: 'surplus-1',
+      }
+      const response = { data: { receivable: { billing_document_id: 42, outstanding_amount: 250 } } } as never
+
+      vi.mocked(http.post).mockResolvedValue(response)
+
+      const result = await applyInvoiceSurplus(42, payload)
+
+      expect(http.post).toHaveBeenCalledWith('/invoices/42/surplus-applications', payload)
+      expect(result).toEqual(response)
+    })
+
+    it('propagates errors', async () => {
+      vi.mocked(http.post).mockRejectedValue(new Error('fail') as never)
+
+      await expect(
+        applyInvoiceSurplus(42, {
+          billing_document_line_id: 7,
+          amount: 250,
+          note: 'use surplus',
+          idempotency_key: 'surplus-1',
+        }),
+      ).rejects.toThrow('fail')
+    })
+  })
+
+  describe('generateInvoiceInterest', () => {
+    it('calls POST /invoices/:id/interest and returns the response', async () => {
+      const payload = {
+        billing_document_line_id: 7,
+        as_of_date: '2026-05-10',
+        idempotency_key: 'interest-1',
+      }
+      const response = { data: { receivable: { billing_document_id: 42, outstanding_amount: 500 } } } as never
+
+      vi.mocked(http.post).mockResolvedValue(response)
+
+      const result = await generateInvoiceInterest(42, payload)
+
+      expect(http.post).toHaveBeenCalledWith('/invoices/42/interest', payload)
+      expect(result).toEqual(response)
+    })
+
+    it('propagates errors', async () => {
+      vi.mocked(http.post).mockRejectedValue(new Error('fail') as never)
+
+      await expect(
+        generateInvoiceInterest(42, {
+          billing_document_line_id: 7,
+          as_of_date: '2026-05-10',
+          idempotency_key: 'interest-1',
+        }),
+      ).rejects.toThrow('fail')
+    })
+  })
+
+  describe('applyInvoiceDeposit', () => {
+    it('calls POST /invoices/:id/deposit-applications and returns the response', async () => {
+      const payload = {
+        billing_document_line_id: 17,
+        target_document_id: 42,
+        target_billing_document_line_id: 7,
+        amount: 300,
+        note: 'apply deposit',
+        idempotency_key: 'deposit-1',
+      }
+      const response = { data: { receivable: { billing_document_id: 42, outstanding_amount: 700 } } } as never
+
+      vi.mocked(http.post).mockResolvedValue(response)
+
+      const result = await applyInvoiceDeposit(99, payload)
+
+      expect(http.post).toHaveBeenCalledWith('/invoices/99/deposit-applications', payload)
+      expect(result).toEqual(response)
+    })
+
+    it('propagates errors', async () => {
+      vi.mocked(http.post).mockRejectedValue(new Error('fail') as never)
+
+      await expect(
+        applyInvoiceDeposit(99, {
+          billing_document_line_id: 17,
+          target_document_id: 42,
+          target_billing_document_line_id: 7,
+          amount: 300,
+          note: 'apply deposit',
+          idempotency_key: 'deposit-1',
+        }),
+      ).rejects.toThrow('fail')
+    })
+  })
+
+  describe('refundInvoiceDeposit', () => {
+    it('calls POST /invoices/:id/deposit-refunds and returns the response', async () => {
+      const payload = {
+        billing_document_line_id: 17,
+        amount: 500,
+        reason: 'lease ended',
+        idempotency_key: 'deposit-refund-1',
+      }
+      const response = { data: { receivable: { billing_document_id: 99, outstanding_amount: 0 } } } as never
+
+      vi.mocked(http.post).mockResolvedValue(response)
+
+      const result = await refundInvoiceDeposit(99, payload)
+
+      expect(http.post).toHaveBeenCalledWith('/invoices/99/deposit-refunds', payload)
+      expect(result).toEqual(response)
+    })
+
+    it('propagates errors', async () => {
+      vi.mocked(http.post).mockRejectedValue(new Error('fail') as never)
+
+      await expect(
+        refundInvoiceDeposit(99, {
+          billing_document_line_id: 17,
+          amount: 500,
+          reason: 'lease ended',
+          idempotency_key: 'deposit-refund-1',
+        }),
       ).rejects.toThrow('fail')
     })
   })

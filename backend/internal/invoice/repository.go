@@ -33,9 +33,10 @@ func (r *Repository) Create(ctx context.Context, tx *sql.Tx, document *Document)
 	result, err := tx.ExecContext(ctx, `
 		INSERT INTO billing_documents (
 			document_type, document_no, billing_run_id, lease_contract_id, tenant_name, period_start, period_end,
-			total_amount, currency_type_id, status, adjusted_from_id, created_by, updated_by
-		) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-	`, document.DocumentType, sqlutil.StringPointerValue(document.DocumentNo), document.BillingRunID, document.LeaseContractID, document.TenantName, document.PeriodStart, document.PeriodEnd, document.TotalAmount, document.CurrencyTypeID, document.Status, sqlutil.Int64PointerValue(document.AdjustedFromID), document.CreatedBy, document.UpdatedBy)
+			total_amount, currency_type_id, status, workflow_instance_id, adjusted_from_id, submitted_at,
+			approved_at, cancelled_at, created_by, updated_by
+		) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+	`, document.DocumentType, sqlutil.StringPointerValue(document.DocumentNo), document.BillingRunID, document.LeaseContractID, document.TenantName, document.PeriodStart, document.PeriodEnd, document.TotalAmount, document.CurrencyTypeID, document.Status, sqlutil.Int64PointerValue(document.WorkflowInstanceID), sqlutil.Int64PointerValue(document.AdjustedFromID), sqlutil.TimePointerValue(document.SubmittedAt), sqlutil.TimePointerValue(document.ApprovedAt), sqlutil.TimePointerValue(document.CancelledAt), document.CreatedBy, document.UpdatedBy)
 	if err != nil {
 		return fmt.Errorf("insert billing document: %w", err)
 	}
@@ -48,9 +49,9 @@ func (r *Repository) Create(ctx context.Context, tx *sql.Tx, document *Document)
 		if _, err := tx.ExecContext(ctx, `
 			INSERT INTO billing_document_lines (
 				billing_document_id, billing_charge_line_id, charge_type, period_start, period_end,
-				quantity_days, unit_amount, amount
-			) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-		`, documentID, line.BillingChargeLineID, line.ChargeType, line.PeriodStart, line.PeriodEnd, line.QuantityDays, line.UnitAmount, line.Amount); err != nil {
+				quantity_days, unit_amount, amount, charge_source, overtime_bill_id, overtime_formula_id, overtime_charge_id
+			) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+		`, documentID, line.BillingChargeLineID, line.ChargeType, line.PeriodStart, line.PeriodEnd, line.QuantityDays, line.UnitAmount, line.Amount, line.ChargeSource, sqlutil.Int64PointerValue(line.OvertimeBillID), sqlutil.Int64PointerValue(line.OvertimeFormulaID), sqlutil.Int64PointerValue(line.OvertimeChargeID)); err != nil {
 			return fmt.Errorf("insert billing document line: %w", err)
 		}
 	}
@@ -265,7 +266,7 @@ func (r *Repository) scanDocument(scanner rowScanner) (*Document, error) {
 
 func (r *Repository) loadLines(ctx context.Context, db queryer, document *Document) error {
 	rows, err := db.QueryContext(ctx, `
-		SELECT id, billing_document_id, billing_charge_line_id, charge_type, period_start, period_end, quantity_days, unit_amount, amount, created_at
+		SELECT id, billing_document_id, billing_charge_line_id, charge_type, charge_source, overtime_bill_id, overtime_formula_id, overtime_charge_id, period_start, period_end, quantity_days, unit_amount, amount, created_at
 		FROM billing_document_lines WHERE billing_document_id = ? ORDER BY id
 	`, document.ID)
 	if err != nil {
@@ -275,9 +276,15 @@ func (r *Repository) loadLines(ctx context.Context, db queryer, document *Docume
 	lines := make([]Line, 0)
 	for rows.Next() {
 		var line Line
-		if err := rows.Scan(&line.ID, &line.BillingDocumentID, &line.BillingChargeLineID, &line.ChargeType, &line.PeriodStart, &line.PeriodEnd, &line.QuantityDays, &line.UnitAmount, &line.Amount, &line.CreatedAt); err != nil {
+		var overtimeBillID sql.NullInt64
+		var overtimeFormulaID sql.NullInt64
+		var overtimeChargeID sql.NullInt64
+		if err := rows.Scan(&line.ID, &line.BillingDocumentID, &line.BillingChargeLineID, &line.ChargeType, &line.ChargeSource, &overtimeBillID, &overtimeFormulaID, &overtimeChargeID, &line.PeriodStart, &line.PeriodEnd, &line.QuantityDays, &line.UnitAmount, &line.Amount, &line.CreatedAt); err != nil {
 			return fmt.Errorf("scan billing document line: %w", err)
 		}
+		line.OvertimeBillID = sqlutil.NullInt64Pointer(overtimeBillID)
+		line.OvertimeFormulaID = sqlutil.NullInt64Pointer(overtimeFormulaID)
+		line.OvertimeChargeID = sqlutil.NullInt64Pointer(overtimeChargeID)
 		lines = append(lines, line)
 	}
 	if err := rows.Err(); err != nil {

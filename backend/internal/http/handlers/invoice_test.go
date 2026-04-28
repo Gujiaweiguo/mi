@@ -175,6 +175,176 @@ func TestInvoiceRecordPaymentRejectsInvalidJSON(t *testing.T) {
 	}
 }
 
+func TestInvoiceApplyDiscountRejectsInvalidID(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	handler := NewInvoiceHandler(nil)
+
+	recorder := httptest.NewRecorder()
+	ctx, _ := gin.CreateTestContext(recorder)
+	ctx.Params = gin.Params{{Key: "id", Value: "bad-id"}}
+	ctx.Request = httptest.NewRequest(http.MethodPost, "/api/invoices/bad-id/discounts", bytes.NewBufferString(`{"billing_document_line_id":1,"amount":100,"reason":"promo","idempotency_key":"k1"}`))
+	ctx.Request.Header.Set("Content-Type", "application/json")
+
+	handler.ApplyDiscount(ctx)
+
+	if recorder.Code != http.StatusBadRequest {
+		t.Fatalf("expected 400, got %d", recorder.Code)
+	}
+}
+
+func TestInvoiceApplyDiscountRejectsInvalidJSON(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	handler := NewInvoiceHandler(nil)
+
+	recorder := httptest.NewRecorder()
+	ctx, _ := gin.CreateTestContext(recorder)
+	ctx.Params = gin.Params{{Key: "id", Value: "1"}}
+	ctx.Request = httptest.NewRequest(http.MethodPost, "/api/invoices/1/discounts", bytes.NewBufferString(`{invalid}`))
+	ctx.Request.Header.Set("Content-Type", "application/json")
+
+	handler.ApplyDiscount(ctx)
+
+	if recorder.Code != http.StatusBadRequest {
+		t.Fatalf("expected 400, got %d", recorder.Code)
+	}
+}
+
+func TestInvoiceApplySurplusRejectsInvalidID(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	handler := NewInvoiceHandler(nil)
+
+	recorder := httptest.NewRecorder()
+	ctx, _ := gin.CreateTestContext(recorder)
+	ctx.Params = gin.Params{{Key: "id", Value: "bad-id"}}
+	ctx.Request = httptest.NewRequest(http.MethodPost, "/api/invoices/bad-id/surplus-applications", bytes.NewBufferString(`{"billing_document_line_id":1,"amount":100,"idempotency_key":"k1"}`))
+	ctx.Request.Header.Set("Content-Type", "application/json")
+
+	handler.ApplySurplus(ctx)
+
+	if recorder.Code != http.StatusBadRequest {
+		t.Fatalf("expected 400, got %d", recorder.Code)
+	}
+}
+
+func TestInvoiceApplySurplusRejectsInvalidJSON(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	handler := NewInvoiceHandler(nil)
+
+	recorder := httptest.NewRecorder()
+	ctx, _ := gin.CreateTestContext(recorder)
+	ctx.Params = gin.Params{{Key: "id", Value: "1"}}
+	ctx.Request = httptest.NewRequest(http.MethodPost, "/api/invoices/1/surplus-applications", bytes.NewBufferString(`{invalid}`))
+	ctx.Request.Header.Set("Content-Type", "application/json")
+
+	handler.ApplySurplus(ctx)
+
+	if recorder.Code != http.StatusBadRequest {
+		t.Fatalf("expected 400, got %d", recorder.Code)
+	}
+}
+
+func TestInvoiceGenerateInterestRejectsInvalidID(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	handler := NewInvoiceHandler(nil)
+
+	recorder := httptest.NewRecorder()
+	ctx, _ := gin.CreateTestContext(recorder)
+	ctx.Params = gin.Params{{Key: "id", Value: "bad-id"}}
+	ctx.Request = httptest.NewRequest(http.MethodPost, "/api/invoices/bad-id/interest", bytes.NewBufferString(`{"billing_document_line_id":1,"idempotency_key":"k1"}`))
+	ctx.Request.Header.Set("Content-Type", "application/json")
+
+	handler.GenerateInterest(ctx)
+
+	if recorder.Code != http.StatusBadRequest {
+		t.Fatalf("expected 400, got %d", recorder.Code)
+	}
+}
+
+func TestInvoiceGenerateInterestRejectsInvalidJSON(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	handler := NewInvoiceHandler(nil)
+
+	recorder := httptest.NewRecorder()
+	ctx, _ := gin.CreateTestContext(recorder)
+	ctx.Params = gin.Params{{Key: "id", Value: "1"}}
+	ctx.Request = httptest.NewRequest(http.MethodPost, "/api/invoices/1/interest", bytes.NewBufferString(`{invalid}`))
+	ctx.Request.Header.Set("Content-Type", "application/json")
+
+	handler.GenerateInterest(ctx)
+
+	if recorder.Code != http.StatusBadRequest {
+		t.Fatalf("expected 400, got %d", recorder.Code)
+	}
+}
+
+func TestInvoiceApplyDepositRejectsInvalidID(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	handler := NewInvoiceHandler(nil)
+
+	recorder := httptest.NewRecorder()
+	ctx, _ := gin.CreateTestContext(recorder)
+	ctx.Params = gin.Params{{Key: "id", Value: "bad-id"}}
+	ctx.Request = httptest.NewRequest(http.MethodPost, "/api/invoices/bad-id/deposit-applications", bytes.NewBufferString(`{"billing_document_line_id":1,"target_document_id":2,"target_billing_document_line_id":3,"amount":100,"idempotency_key":"k1"}`))
+	ctx.Request.Header.Set("Content-Type", "application/json")
+
+	handler.ApplyDeposit(ctx)
+
+	if recorder.Code != http.StatusBadRequest {
+		t.Fatalf("expected 400, got %d", recorder.Code)
+	}
+}
+
+func TestInvoiceApplyDepositRejectsInvalidJSON(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	handler := NewInvoiceHandler(nil)
+
+	recorder := httptest.NewRecorder()
+	ctx, _ := gin.CreateTestContext(recorder)
+	ctx.Params = gin.Params{{Key: "id", Value: "1"}}
+	ctx.Request = httptest.NewRequest(http.MethodPost, "/api/invoices/1/deposit-applications", bytes.NewBufferString(`{invalid}`))
+	ctx.Request.Header.Set("Content-Type", "application/json")
+
+	handler.ApplyDeposit(ctx)
+
+	if recorder.Code != http.StatusBadRequest {
+		t.Fatalf("expected 400, got %d", recorder.Code)
+	}
+}
+
+func TestInvoiceRefundDepositRejectsInvalidID(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	handler := NewInvoiceHandler(nil)
+
+	recorder := httptest.NewRecorder()
+	ctx, _ := gin.CreateTestContext(recorder)
+	ctx.Params = gin.Params{{Key: "id", Value: "bad-id"}}
+	ctx.Request = httptest.NewRequest(http.MethodPost, "/api/invoices/bad-id/deposit-refunds", bytes.NewBufferString(`{"billing_document_line_id":1,"amount":100,"reason":"lease ended","idempotency_key":"k1"}`))
+	ctx.Request.Header.Set("Content-Type", "application/json")
+
+	handler.RefundDeposit(ctx)
+
+	if recorder.Code != http.StatusBadRequest {
+		t.Fatalf("expected 400, got %d", recorder.Code)
+	}
+}
+
+func TestInvoiceRefundDepositRejectsInvalidJSON(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	handler := NewInvoiceHandler(nil)
+
+	recorder := httptest.NewRecorder()
+	ctx, _ := gin.CreateTestContext(recorder)
+	ctx.Params = gin.Params{{Key: "id", Value: "1"}}
+	ctx.Request = httptest.NewRequest(http.MethodPost, "/api/invoices/1/deposit-refunds", bytes.NewBufferString(`{invalid}`))
+	ctx.Request.Header.Set("Content-Type", "application/json")
+
+	handler.RefundDeposit(ctx)
+
+	if recorder.Code != http.StatusBadRequest {
+		t.Fatalf("expected 400, got %d", recorder.Code)
+	}
+}
+
 func TestInvoiceGetReceivableRejectsInvalidID(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	handler := NewInvoiceHandler(nil)

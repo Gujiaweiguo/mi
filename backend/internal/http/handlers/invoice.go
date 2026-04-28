@@ -44,6 +44,42 @@ type recordPaymentRequest struct {
 	Note           string  `json:"note" binding:"omitempty,max=500"`
 }
 
+type applyDiscountRequest struct {
+	BillingDocumentLineID int64   `json:"billing_document_line_id" binding:"required,gt=0"`
+	Amount                float64 `json:"amount" binding:"required,gt=0"`
+	Reason                string  `json:"reason" binding:"required,min=1,max=255"`
+	IdempotencyKey        string  `json:"idempotency_key" binding:"required,min=1,max=100"`
+}
+
+type applySurplusRequest struct {
+	BillingDocumentLineID int64   `json:"billing_document_line_id" binding:"required,gt=0"`
+	Amount                float64 `json:"amount" binding:"required,gt=0"`
+	Note                  string  `json:"note" binding:"omitempty,max=255"`
+	IdempotencyKey        string  `json:"idempotency_key" binding:"required,min=1,max=100"`
+}
+
+type generateInterestRequest struct {
+	BillingDocumentLineID int64  `json:"billing_document_line_id" binding:"required,gt=0"`
+	AsOfDate              string `json:"as_of_date"`
+	IdempotencyKey        string `json:"idempotency_key" binding:"required,min=1,max=100"`
+}
+
+type applyDepositRequest struct {
+	BillingDocumentLineID       int64   `json:"billing_document_line_id" binding:"required,gt=0"`
+	TargetDocumentID            int64   `json:"target_document_id" binding:"required,gt=0"`
+	TargetBillingDocumentLineID int64   `json:"target_billing_document_line_id" binding:"required,gt=0"`
+	Amount                      float64 `json:"amount" binding:"required,gt=0"`
+	Note                        string  `json:"note" binding:"omitempty,max=255"`
+	IdempotencyKey              string  `json:"idempotency_key" binding:"required,min=1,max=100"`
+}
+
+type refundDepositRequest struct {
+	BillingDocumentLineID int64   `json:"billing_document_line_id" binding:"required,gt=0"`
+	Amount                float64 `json:"amount" binding:"required,gt=0"`
+	Reason                string  `json:"reason" binding:"required,min=1,max=255"`
+	IdempotencyKey        string  `json:"idempotency_key" binding:"required,min=1,max=100"`
+}
+
 // Create godoc
 //
 //	@Summary		Create billing document
@@ -349,6 +385,233 @@ func (h *InvoiceHandler) RecordPayment(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"receivable": receivable})
 }
 
+// ApplyDiscount godoc
+//
+//	@Summary		Request invoice discount
+//	@Description	Creates an invoice discount request for approval and returns the current receivable summary.
+//	@Tags			Invoice
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		int					true	"Billing document ID"
+//	@Param			request	body		applyDiscountRequest	true	"Discount request"
+//	@Success		200		{object}	swaggerEnvelope{receivable=invoice.ReceivableSummary}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/invoices/{id}/discounts [post]
+func (h *InvoiceHandler) ApplyDiscount(c *gin.Context) {
+	documentID, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "invalid billing document id"})
+		return
+	}
+	var request applyDiscountRequest
+	if err := c.ShouldBindJSON(&request); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "invalid billing document discount request"})
+		return
+	}
+	sessionUser, ok := middleware.CurrentSessionUser(c)
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{"message": "missing session user"})
+		return
+	}
+	receivable, err := h.service.ApplyDiscount(c.Request.Context(), invoice.ApplyDiscountInput{DocumentID: documentID, BillingDocumentLineID: request.BillingDocumentLineID, Amount: request.Amount, Reason: request.Reason, ActorUserID: sessionUser.ID, DepartmentID: sessionUser.DepartmentID, IdempotencyKey: request.IdempotencyKey})
+	if err != nil {
+		h.renderInvoiceError(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"receivable": receivable})
+}
+
+// ApplySurplus godoc
+//
+//	@Summary		Apply customer surplus
+//	@Description	Applies available customer surplus to a billing document receivable line.
+//	@Tags			Invoice
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		int				true	"Billing document ID"
+//	@Param			request	body		applySurplusRequest	true	"Surplus application request"
+//	@Success		200		{object}	swaggerEnvelope{receivable=invoice.ReceivableSummary}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/invoices/{id}/surplus-applications [post]
+func (h *InvoiceHandler) ApplySurplus(c *gin.Context) {
+	documentID, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "invalid billing document id"})
+		return
+	}
+	var request applySurplusRequest
+	if err := c.ShouldBindJSON(&request); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "invalid billing document surplus request"})
+		return
+	}
+	sessionUser, ok := middleware.CurrentSessionUser(c)
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{"message": "missing session user"})
+		return
+	}
+	receivable, err := h.service.ApplySurplus(c.Request.Context(), invoice.ApplySurplusInput{DocumentID: documentID, BillingDocumentLineID: request.BillingDocumentLineID, Amount: request.Amount, Note: request.Note, ActorUserID: sessionUser.ID, IdempotencyKey: request.IdempotencyKey})
+	if err != nil {
+		h.renderInvoiceError(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"receivable": receivable})
+}
+
+// GenerateInterest godoc
+//
+//	@Summary		Generate late-payment interest
+//	@Description	Generates a late-payment interest invoice for an overdue receivable line.
+//	@Tags			Invoice
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		int					true	"Billing document ID"
+//	@Param			request	body		generateInterestRequest	true	"Interest generation request"
+//	@Success		200		{object}	swaggerEnvelope{receivable=invoice.ReceivableSummary}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/invoices/{id}/interest [post]
+func (h *InvoiceHandler) GenerateInterest(c *gin.Context) {
+	documentID, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "invalid billing document id"})
+		return
+	}
+	var request generateInterestRequest
+	if err := c.ShouldBindJSON(&request); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "invalid billing document interest request"})
+		return
+	}
+	sessionUser, ok := middleware.CurrentSessionUser(c)
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{"message": "missing session user"})
+		return
+	}
+	var asOfDate time.Time
+	if request.AsOfDate != "" {
+		parsed, err := time.Parse(invoice.DateLayout, request.AsOfDate)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"message": "invalid interest as-of date"})
+			return
+		}
+		asOfDate = parsed
+	}
+	receivable, err := h.service.GenerateInterest(c.Request.Context(), invoice.GenerateInterestInput{DocumentID: documentID, BillingDocumentLineID: request.BillingDocumentLineID, AsOfDate: asOfDate, ActorUserID: sessionUser.ID, DepartmentID: sessionUser.DepartmentID, IdempotencyKey: request.IdempotencyKey})
+	if err != nil {
+		h.renderInvoiceError(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"receivable": receivable})
+}
+
+// ApplyDeposit godoc
+//
+//	@Summary		Apply deposit to receivable
+//	@Description	Applies an available deposit from this billing document to an outstanding receivable on a target document.
+//	@Tags			Invoice
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		int					true	"Source billing document ID (contains the deposit)"
+//	@Param			request	body		applyDepositRequest	true	"Deposit application request"
+//	@Success		200		{object}	swaggerEnvelope{receivable=invoice.ReceivableSummary}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		409		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/invoices/{id}/deposit-applications [post]
+func (h *InvoiceHandler) ApplyDeposit(c *gin.Context) {
+	documentID, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "invalid billing document id"})
+		return
+	}
+	var request applyDepositRequest
+	if err := c.ShouldBindJSON(&request); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "invalid deposit application request"})
+		return
+	}
+	sessionUser, ok := middleware.CurrentSessionUser(c)
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{"message": "missing session user"})
+		return
+	}
+	receivable, err := h.service.ApplyDeposit(c.Request.Context(), invoice.ApplyDepositInput{
+		DocumentID:                  documentID,
+		BillingDocumentLineID:       request.BillingDocumentLineID,
+		TargetDocumentID:            request.TargetDocumentID,
+		TargetBillingDocumentLineID: request.TargetBillingDocumentLineID,
+		Amount:                      request.Amount,
+		Note:                        request.Note,
+		ActorUserID:                 sessionUser.ID,
+		IdempotencyKey:              request.IdempotencyKey,
+	})
+	if err != nil {
+		h.renderInvoiceError(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"receivable": receivable})
+}
+
+// RefundDeposit godoc
+//
+//	@Summary		Refund or release deposit
+//	@Description	Refunds or releases a deposit if no outstanding obligations block the operation.
+//	@Tags			Invoice
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		int					true	"Billing document ID (contains the deposit)"
+//	@Param			request	body		refundDepositRequest	true	"Deposit refund request"
+//	@Success		200		{object}	swaggerEnvelope{receivable=invoice.ReceivableSummary}
+//	@Failure		400		{object}	swaggerMessageResponse
+//	@Failure		401		{object}	swaggerMessageResponse
+//	@Failure		404		{object}	swaggerMessageResponse
+//	@Failure		409		{object}	swaggerMessageResponse
+//	@Failure		500		{object}	swaggerMessageResponse
+//	@Security		BearerAuth
+//	@Router			/invoices/{id}/deposit-refunds [post]
+func (h *InvoiceHandler) RefundDeposit(c *gin.Context) {
+	documentID, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "invalid billing document id"})
+		return
+	}
+	var request refundDepositRequest
+	if err := c.ShouldBindJSON(&request); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "invalid deposit refund request"})
+		return
+	}
+	sessionUser, ok := middleware.CurrentSessionUser(c)
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{"message": "missing session user"})
+		return
+	}
+	receivable, err := h.service.RefundDeposit(c.Request.Context(), invoice.RefundDepositInput{
+		DocumentID:            documentID,
+		BillingDocumentLineID: request.BillingDocumentLineID,
+		Amount:                request.Amount,
+		Reason:                request.Reason,
+		ActorUserID:           sessionUser.ID,
+		IdempotencyKey:        request.IdempotencyKey,
+	})
+	if err != nil {
+		h.renderInvoiceError(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"receivable": receivable})
+}
+
 // GetReceivable godoc
 //
 //	@Summary		Get receivable summary
@@ -466,9 +729,9 @@ func (h *InvoiceHandler) renderInvoiceError(c *gin.Context, err error) {
 	switch {
 	case errors.Is(err, invoice.ErrDocumentNotFound):
 		status = http.StatusNotFound
-	case errors.Is(err, invoice.ErrInvalidDocumentInput), errors.Is(err, invoice.ErrReceivableContextInvalid), errors.Is(err, invoice.ErrPaymentAmountInvalid), errors.Is(err, workflow.ErrDefinitionNotFound), errors.Is(err, workflow.ErrInvalidState):
+	case errors.Is(err, invoice.ErrInvalidDocumentInput), errors.Is(err, invoice.ErrReceivableContextInvalid), errors.Is(err, invoice.ErrPaymentAmountInvalid), errors.Is(err, invoice.ErrDiscountAmountInvalid), errors.Is(err, invoice.ErrDiscountReasonRequired), errors.Is(err, invoice.ErrSurplusAmountInvalid), errors.Is(err, invoice.ErrInterestNotConfigured), errors.Is(err, invoice.ErrInterestNotDue), errors.Is(err, invoice.ErrDepositAmountInvalid), errors.Is(err, invoice.ErrDepositRefundAmountInvalid), errors.Is(err, invoice.ErrDepositRefundReasonRequired), errors.Is(err, workflow.ErrDefinitionNotFound), errors.Is(err, workflow.ErrInvalidState):
 		status = http.StatusBadRequest
-	case errors.Is(err, invoice.ErrInvalidDocumentState), errors.Is(err, invoice.ErrDocumentAlreadySubmitted), errors.Is(err, invoice.ErrPaymentNotAllowed), errors.Is(err, invoice.ErrPaymentOverApplication), errors.Is(err, invoice.ErrDocumentHasRecordedPayments):
+	case errors.Is(err, invoice.ErrInvalidDocumentState), errors.Is(err, invoice.ErrDocumentAlreadySubmitted), errors.Is(err, invoice.ErrPaymentNotAllowed), errors.Is(err, invoice.ErrPaymentOverApplication), errors.Is(err, invoice.ErrDocumentHasRecordedPayments), errors.Is(err, invoice.ErrDiscountNotAllowed), errors.Is(err, invoice.ErrDiscountOverApplication), errors.Is(err, invoice.ErrDiscountPendingApproval), errors.Is(err, invoice.ErrSurplusNotAvailable), errors.Is(err, invoice.ErrSurplusInsufficient), errors.Is(err, invoice.ErrSurplusTargetNotAllowed), errors.Is(err, invoice.ErrDepositNotAvailable), errors.Is(err, invoice.ErrDepositTargetNotAllowed), errors.Is(err, invoice.ErrDepositRefundBlocked):
 		status = http.StatusConflict
 	}
 	c.JSON(status, gin.H{"message": errutil.SafeMessage(err)})
