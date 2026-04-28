@@ -1,6 +1,7 @@
 package lease
 
 import (
+	"errors"
 	"testing"
 	"time"
 
@@ -124,6 +125,7 @@ func TestContractFromCreateInput(t *testing.T) {
 	validInput := func() CreateDraftInput {
 		return CreateDraftInput{
 			LeaseNo:      "L001",
+			Subtype:      ContractSubtypeStandard,
 			DepartmentID: 1,
 			StoreID:      1,
 			TenantName:   "ACME Corp",
@@ -165,7 +167,7 @@ func TestContractFromCreateInput(t *testing.T) {
 		input := validInput()
 		input.LeaseNo = ""
 		_, err := contractFromCreateInput(input)
-		if err != ErrLeaseIncompleteForSubmission {
+		if !errors.Is(err, ErrLeaseIncompleteForSubmission) {
 			t.Errorf("expected ErrLeaseIncompleteForSubmission, got %v", err)
 		}
 	})
@@ -174,7 +176,7 @@ func TestContractFromCreateInput(t *testing.T) {
 		input := validInput()
 		input.TenantName = "   "
 		_, err := contractFromCreateInput(input)
-		if err != ErrLeaseIncompleteForSubmission {
+		if !errors.Is(err, ErrLeaseIncompleteForSubmission) {
 			t.Errorf("expected ErrLeaseIncompleteForSubmission, got %v", err)
 		}
 	})
@@ -183,7 +185,7 @@ func TestContractFromCreateInput(t *testing.T) {
 		input := validInput()
 		input.DepartmentID = 0
 		_, err := contractFromCreateInput(input)
-		if err != ErrLeaseIncompleteForSubmission {
+		if !errors.Is(err, ErrLeaseIncompleteForSubmission) {
 			t.Errorf("expected ErrLeaseIncompleteForSubmission, got %v", err)
 		}
 	})
@@ -192,7 +194,7 @@ func TestContractFromCreateInput(t *testing.T) {
 		input := validInput()
 		input.StoreID = 0
 		_, err := contractFromCreateInput(input)
-		if err != ErrLeaseIncompleteForSubmission {
+		if !errors.Is(err, ErrLeaseIncompleteForSubmission) {
 			t.Errorf("expected ErrLeaseIncompleteForSubmission, got %v", err)
 		}
 	})
@@ -201,7 +203,7 @@ func TestContractFromCreateInput(t *testing.T) {
 		input := validInput()
 		input.ActorUserID = 0
 		_, err := contractFromCreateInput(input)
-		if err != ErrLeaseIncompleteForSubmission {
+		if !errors.Is(err, ErrLeaseIncompleteForSubmission) {
 			t.Errorf("expected ErrLeaseIncompleteForSubmission, got %v", err)
 		}
 	})
@@ -211,7 +213,7 @@ func TestContractFromCreateInput(t *testing.T) {
 		input.EndDate = time.Date(2026, 3, 31, 0, 0, 0, 0, time.UTC)
 		input.StartDate = time.Date(2026, 4, 1, 0, 0, 0, 0, time.UTC)
 		_, err := contractFromCreateInput(input)
-		if err != ErrLeaseIncompleteForSubmission {
+		if !errors.Is(err, ErrLeaseIncompleteForSubmission) {
 			t.Errorf("expected ErrLeaseIncompleteForSubmission, got %v", err)
 		}
 	})
@@ -220,7 +222,7 @@ func TestContractFromCreateInput(t *testing.T) {
 		input := validInput()
 		input.Units = nil
 		_, err := contractFromCreateInput(input)
-		if err != ErrLeaseIncompleteForSubmission {
+		if !errors.Is(err, ErrLeaseIncompleteForSubmission) {
 			t.Errorf("expected ErrLeaseIncompleteForSubmission, got %v", err)
 		}
 	})
@@ -229,7 +231,7 @@ func TestContractFromCreateInput(t *testing.T) {
 		input := validInput()
 		input.Terms = nil
 		_, err := contractFromCreateInput(input)
-		if err != ErrLeaseIncompleteForSubmission {
+		if !errors.Is(err, ErrLeaseIncompleteForSubmission) {
 			t.Errorf("expected ErrLeaseIncompleteForSubmission, got %v", err)
 		}
 	})
@@ -238,7 +240,7 @@ func TestContractFromCreateInput(t *testing.T) {
 		input := validInput()
 		input.Units = []UnitInput{{UnitID: 0, RentArea: 100}}
 		_, err := contractFromCreateInput(input)
-		if err != ErrLeaseIncompleteForSubmission {
+		if !errors.Is(err, ErrLeaseIncompleteForSubmission) {
 			t.Errorf("expected ErrLeaseIncompleteForSubmission, got %v", err)
 		}
 	})
@@ -247,8 +249,46 @@ func TestContractFromCreateInput(t *testing.T) {
 		input := validInput()
 		input.Units = []UnitInput{{UnitID: 1, RentArea: 0}}
 		_, err := contractFromCreateInput(input)
-		if err != ErrLeaseIncompleteForSubmission {
+		if !errors.Is(err, ErrLeaseIncompleteForSubmission) {
 			t.Errorf("expected ErrLeaseIncompleteForSubmission, got %v", err)
+		}
+	})
+
+	t.Run("joint operation requires settlement and tax fields", func(t *testing.T) {
+		input := validInput()
+		input.Subtype = ContractSubtypeJointOperation
+		input.JointOperation = &JointOperationFieldsInput{RentInc: "5% yearly"}
+		_, err := contractFromCreateInput(input)
+		if err == nil {
+			t.Fatal("expected validation error")
+		}
+		var validationErr *ValidationError
+		if !errors.As(err, &validationErr) {
+			t.Fatalf("expected validation error, got %v", err)
+		}
+		if len(validationErr.Fields) == 0 {
+			t.Fatal("expected field-level diagnostics")
+		}
+	})
+
+	t.Run("ad board subtype preserves detail rows", func(t *testing.T) {
+		input := validInput()
+		input.Subtype = ContractSubtypeAdBoard
+		input.AdBoards = []AdBoardDetailInput{{
+			AdBoardID:    10,
+			StartDate:    time.Date(2026, 4, 1, 0, 0, 0, 0, time.UTC),
+			EndDate:      time.Date(2026, 5, 1, 0, 0, 0, 0, time.UTC),
+			RentArea:     20,
+			Airtime:      12,
+			Frequency:    AdBoardFrequencyWeek,
+			FrequencyMon: true,
+		}}
+		contract, err := contractFromCreateInput(input)
+		if err != nil {
+			t.Fatalf("unexpected error: %v", err)
+		}
+		if contract.Subtype != ContractSubtypeAdBoard || len(contract.AdBoards) != 1 {
+			t.Fatalf("expected ad board detail payload, got %#v", contract)
 		}
 	})
 }
@@ -263,6 +303,7 @@ func TestIsSubmissionReady(t *testing.T) {
 	t.Run("complete contract is ready", func(t *testing.T) {
 		contract := &Contract{
 			LeaseNo:      "L001",
+			Subtype:      ContractSubtypeStandard,
 			TenantName:   "ACME Corp",
 			DepartmentID: 1,
 			StoreID:      1,
@@ -280,6 +321,34 @@ func TestIsSubmissionReady(t *testing.T) {
 		}
 		if !isSubmissionReady(contract) {
 			t.Error("expected complete contract to be submission ready")
+		}
+	})
+
+	t.Run("joint operation contract missing detail is not ready", func(t *testing.T) {
+		contract := &Contract{
+			LeaseNo:      "L001",
+			Subtype:      ContractSubtypeJointOperation,
+			TenantName:   "ACME Corp",
+			DepartmentID: 1,
+			StoreID:      1,
+			StartDate:    time.Date(2026, 4, 1, 0, 0, 0, 0, time.UTC),
+			EndDate:      time.Date(2027, 3, 31, 0, 0, 0, 0, time.UTC),
+			Units:        []Unit{{UnitID: 1, RentArea: 100}},
+			Terms: []Term{{
+				TermType:       TermTypeRent,
+				BillingCycle:   BillingCycleMonthly,
+				CurrencyTypeID: 1,
+				Amount:         12000,
+				EffectiveFrom:  time.Date(2026, 4, 1, 0, 0, 0, 0, time.UTC),
+				EffectiveTo:    time.Date(2027, 3, 31, 0, 0, 0, 0, time.UTC),
+			}},
+		}
+		if isSubmissionReady(contract) {
+			t.Fatal("expected incomplete joint operation contract to be invalid")
+		}
+		fields := validateContractForSubmission(contract)
+		if len(fields) == 0 || fields[0].Field != "joint_operation" {
+			t.Fatalf("expected joint_operation diagnostics, got %#v", fields)
 		}
 	})
 

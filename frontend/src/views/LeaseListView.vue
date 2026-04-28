@@ -35,6 +35,19 @@ const statusOptions = computed(() => [
   { label: t('common.statuses.terminated'), value: 'terminated' },
 ])
 
+const resolveSubtypeLabel = (subtype: string) => {
+  switch (subtype) {
+    case 'joint_operation':
+      return t('lease.subtypes.jointOperation')
+    case 'ad_board':
+      return t('lease.subtypes.adBoard')
+    case 'area_ground':
+      return t('lease.subtypes.areaGround')
+    default:
+      return t('lease.subtypes.standard')
+  }
+}
+
 const resolveStatusLabel = (status: string) => {
   switch (status) {
     case 'draft':
@@ -183,6 +196,9 @@ onMounted(async () => {
         >
           <el-table-column prop="lease_no" :label="t('lease.columns.leaseNo')" min-width="180" />
           <el-table-column prop="tenant_name" :label="t('lease.columns.tenant')" min-width="220" />
+          <el-table-column :label="t('lease.columns.subtype')" min-width="160">
+            <template #default="scope">{{ resolveSubtypeLabel(scope.row.subtype) }}</template>
+          </el-table-column>
           <el-table-column :label="t('lease.columns.department')" min-width="120">
             <template #default="scope">{{ deptMap.get(scope.row.department_id) ?? scope.row.department_id }}</template>
           </el-table-column>

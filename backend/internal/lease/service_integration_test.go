@@ -156,6 +156,77 @@ func TestLeaseServiceRejectsDuplicateSubmit(t *testing.T) {
 	}
 }
 
+func TestLeaseServicePersistsSubtypeDetails(t *testing.T) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+	defer cancel()
+
+	db := platformdb.NewTestDB(t, ctx, os.DirFS("../platform/database"))
+	workflowService := workflow.NewService(db, workflow.NewRepository(db))
+	leaseService := lease.NewService(db, lease.NewRepository(db), workflowService)
+
+	jointDraft, err := leaseService.CreateDraft(ctx, newJointOperationLeaseCreateInput("CON-103A", 101))
+	if err != nil {
+		t.Fatalf("create joint operation draft: %v", err)
+	}
+	if jointDraft.Subtype != lease.ContractSubtypeJointOperation || jointDraft.JointOperation == nil {
+		t.Fatalf("expected joint operation subtype detail, got %#v", jointDraft)
+	}
+	if jointDraft.JointOperation.BillCycle != 30 || jointDraft.JointOperation.SettlementCurrencyTypeID != 101 {
+		t.Fatalf("expected joint operation settlement fields, got %#v", jointDraft.JointOperation)
+	}
+
+	adBoardDraft, err := leaseService.CreateDraft(ctx, newAdBoardLeaseCreateInput("CON-103B", 101))
+	if err != nil {
+		t.Fatalf("create ad board draft: %v", err)
+	}
+	if adBoardDraft.Subtype != lease.ContractSubtypeAdBoard || len(adBoardDraft.AdBoards) != 2 {
+		t.Fatalf("expected repeated ad board detail rows, got %#v", adBoardDraft)
+	}
+	if adBoardDraft.AdBoards[0].AdBoardID != 901 || adBoardDraft.AdBoards[1].AdBoardID != 902 {
+		t.Fatalf("expected persisted ad board IDs, got %#v", adBoardDraft.AdBoards)
+	}
+
+	areaGroundDraft, err := leaseService.CreateDraft(ctx, newAreaGroundLeaseCreateInput("CON-103C", 101))
+	if err != nil {
+		t.Fatalf("create area ground draft: %v", err)
+	}
+	if areaGroundDraft.Subtype != lease.ContractSubtypeAreaGround || len(areaGroundDraft.AreaGrounds) != 2 {
+		t.Fatalf("expected repeated area/ground detail rows, got %#v", areaGroundDraft)
+	}
+	if areaGroundDraft.AreaGrounds[0].Code != "AREA-A" || areaGroundDraft.AreaGrounds[1].Code != "AREA-B" {
+		t.Fatalf("expected persisted area/ground codes, got %#v", areaGroundDraft.AreaGrounds)
+	}
+}
+
+func TestLeaseServiceSubmitRejectsMissingSubtypeFields(t *testing.T) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+	defer cancel()
+
+	db := platformdb.NewTestDB(t, ctx, os.DirFS("../platform/database"))
+	workflowService := workflow.NewService(db, workflow.NewRepository(db))
+	leaseService := lease.NewService(db, lease.NewRepository(db), workflowService)
+
+	draft, err := leaseService.CreateDraft(ctx, newLeaseCreateInput("CON-103D", 101))
+	if err != nil {
+		t.Fatalf("create draft lease: %v", err)
+	}
+	if _, err := db.ExecContext(ctx, `UPDATE lease_contracts SET subtype = 'joint_operation' WHERE id = ?`, draft.ID); err != nil {
+		t.Fatalf("promote draft subtype for validation test: %v", err)
+	}
+
+	_, err = leaseService.SubmitForApproval(ctx, lease.SubmitInput{LeaseID: draft.ID, ActorUserID: 101, DepartmentID: 101, IdempotencyKey: "submit-con-103d", Comment: "submit lease"})
+	if err == nil {
+		t.Fatal("expected subtype validation failure")
+	}
+	var validationErr *lease.ValidationError
+	if !errors.As(err, &validationErr) {
+		t.Fatalf("expected validation error, got %v", err)
+	}
+	if len(validationErr.Fields) == 0 || validationErr.Fields[0].Field != "joint_operation" {
+		t.Fatalf("expected joint_operation field diagnostics, got %#v", validationErr.Fields)
+	}
+}
+
 func TestLeaseServiceAmendmentUpdatesBillingEffectiveLease(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
@@ -317,6 +388,7 @@ func TestLeaseServiceRejectsTerminateWhenBillingDocumentInFlight(t *testing.T) {
 func newLeaseCreateInput(leaseNo string, actorUserID int64) lease.CreateDraftInput {
 	return lease.CreateDraftInput{
 		LeaseNo:          leaseNo,
+		Subtype:          lease.ContractSubtypeStandard,
 		DepartmentID:     101,
 		StoreID:          101,
 		BuildingID:       int64Pointer(101),
@@ -338,6 +410,90 @@ func newLeaseCreateInput(leaseNo string, actorUserID int64) lease.CreateDraftInp
 		}},
 		ActorUserID: actorUserID,
 	}
+}
+
+func newJointOperationLeaseCreateInput(leaseNo string, actorUserID int64) lease.CreateDraftInput {
+	input := newLeaseCreateInput(leaseNo, actorUserID)
+	input.Subtype = lease.ContractSubtypeJointOperation
+	input.JointOperation = &lease.JointOperationFieldsInput{
+		BillCycle:                30,
+		RentInc:                  "5% yearly",
+		AccountCycle:             30,
+		TaxRate:                  0.09,
+		TaxType:                  1,
+		SettlementCurrencyTypeID: 101,
+		InTaxRate:                0.03,
+		OutTaxRate:               0.06,
+		MonthSettleDays:          25,
+		LatePayInterestRate:      0.01,
+		InterestGraceDays:        5,
+	}
+	return input
+}
+
+func newAdBoardLeaseCreateInput(leaseNo string, actorUserID int64) lease.CreateDraftInput {
+	input := newLeaseCreateInput(leaseNo, actorUserID)
+	input.Subtype = lease.ContractSubtypeAdBoard
+	input.AdBoards = []lease.AdBoardDetailInput{
+		{
+			AdBoardID:    901,
+			Description:  "North atrium screen",
+			Status:       1,
+			StartDate:    time.Date(2026, 4, 1, 0, 0, 0, 0, time.UTC),
+			EndDate:      time.Date(2026, 6, 30, 0, 0, 0, 0, time.UTC),
+			RentArea:     16,
+			Airtime:      20,
+			Frequency:    lease.AdBoardFrequencyWeek,
+			FrequencyMon: true,
+			FrequencyWed: true,
+			StoreID:      int64Pointer(101),
+			BuildingID:   int64Pointer(101),
+		},
+		{
+			AdBoardID:     902,
+			Description:   "South atrium screen",
+			Status:        1,
+			StartDate:     time.Date(2026, 4, 15, 0, 0, 0, 0, time.UTC),
+			EndDate:       time.Date(2026, 7, 31, 0, 0, 0, 0, time.UTC),
+			RentArea:      18,
+			Airtime:       10,
+			Frequency:     lease.AdBoardFrequencyDay,
+			FrequencyDays: 3,
+			BetweenFrom:   1,
+			BetweenTo:     5,
+			StoreID:       int64Pointer(101),
+			BuildingID:    int64Pointer(101),
+		},
+	}
+	return input
+}
+
+func newAreaGroundLeaseCreateInput(leaseNo string, actorUserID int64) lease.CreateDraftInput {
+	input := newLeaseCreateInput(leaseNo, actorUserID)
+	input.Subtype = lease.ContractSubtypeAreaGround
+	input.AreaGrounds = []lease.AreaGroundDetailInput{
+		{
+			Code:        "AREA-A",
+			Name:        "Festival Plaza",
+			TypeID:      1,
+			Description: "Main event area",
+			Status:      1,
+			StartDate:   time.Date(2026, 4, 1, 0, 0, 0, 0, time.UTC),
+			EndDate:     time.Date(2026, 5, 15, 0, 0, 0, 0, time.UTC),
+			RentArea:    120,
+		},
+		{
+			Code:        "AREA-B",
+			Name:        "East Courtyard",
+			TypeID:      2,
+			Description: "Outdoor activation space",
+			Status:      1,
+			StartDate:   time.Date(2026, 6, 1, 0, 0, 0, 0, time.UTC),
+			EndDate:     time.Date(2026, 8, 31, 0, 0, 0, 0, time.UTC),
+			RentArea:    80,
+		},
+	}
+	return input
 }
 
 func activateLease(t *testing.T, ctx context.Context, leaseService *lease.Service, workflowService *workflow.Service, input lease.CreateDraftInput, submitKey string) *lease.Contract {

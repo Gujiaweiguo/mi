@@ -142,7 +142,7 @@ func (s *Service) SubmitForApproval(ctx context.Context, input SubmitInput) (*Co
 		return nil, ErrInvalidLeaseState
 	}
 	if !isSubmissionReady(contract) {
-		return nil, ErrLeaseIncompleteForSubmission
+		return nil, newValidationError(validateContractForSubmission(contract))
 	}
 	definitionCode := ApprovalDefinitionCode
 	if contract.AmendedFromID != nil {
@@ -265,31 +265,20 @@ func (s *Service) SyncWorkflowState(ctx context.Context, instance *workflow.Inst
 }
 
 func contractFromCreateInput(input CreateDraftInput) (*Contract, error) {
+	if fields := validateCreateDraftInput(input); len(fields) > 0 {
+		return nil, newValidationError(fields)
+	}
+
 	leaseNo := strings.TrimSpace(input.LeaseNo)
 	tenantName := strings.TrimSpace(input.TenantName)
-	if leaseNo == "" || tenantName == "" || input.DepartmentID == 0 || input.StoreID == 0 || input.ActorUserID == 0 {
-		return nil, ErrLeaseIncompleteForSubmission
-	}
-	if !input.StartDate.Before(input.EndDate) {
-		return nil, ErrLeaseIncompleteForSubmission
-	}
-	if len(input.Units) == 0 || len(input.Terms) == 0 {
-		return nil, ErrLeaseIncompleteForSubmission
-	}
 
 	units := make([]Unit, 0, len(input.Units))
 	for _, unit := range input.Units {
-		if unit.UnitID == 0 || unit.RentArea <= 0 {
-			return nil, ErrLeaseIncompleteForSubmission
-		}
 		units = append(units, Unit{UnitID: unit.UnitID, RentArea: unit.RentArea})
 	}
 
 	terms := make([]Term, 0, len(input.Terms))
 	for _, term := range input.Terms {
-		if !isValidTerm(term) {
-			return nil, ErrLeaseIncompleteForSubmission
-		}
 		terms = append(terms, Term{
 			TermType:       term.TermType,
 			BillingCycle:   term.BillingCycle,
@@ -316,35 +305,17 @@ func contractFromCreateInput(input CreateDraftInput) (*Contract, error) {
 		EffectiveVersion: 1,
 		CreatedBy:        input.ActorUserID,
 		UpdatedBy:        input.ActorUserID,
+		Subtype:          normalizeSubtype(input.Subtype),
+		JointOperation:   jointOperationFromInput(input.JointOperation),
+		AdBoards:         adBoardDetailsFromInput(input.AdBoards),
+		AreaGrounds:      areaGroundDetailsFromInput(input.AreaGrounds),
 		Units:            units,
 		Terms:            terms,
 	}, nil
 }
 
 func isSubmissionReady(contract *Contract) bool {
-	if contract == nil {
-		return false
-	}
-	if strings.TrimSpace(contract.LeaseNo) == "" || strings.TrimSpace(contract.TenantName) == "" {
-		return false
-	}
-	if contract.DepartmentID == 0 || contract.StoreID == 0 || !contract.StartDate.Before(contract.EndDate) {
-		return false
-	}
-	if len(contract.Units) == 0 || len(contract.Terms) == 0 {
-		return false
-	}
-	for _, unit := range contract.Units {
-		if unit.UnitID == 0 || unit.RentArea <= 0 {
-			return false
-		}
-	}
-	for _, term := range contract.Terms {
-		if !isValidTerm(TermInput{TermType: term.TermType, BillingCycle: term.BillingCycle, CurrencyTypeID: term.CurrencyTypeID, Amount: term.Amount, EffectiveFrom: term.EffectiveFrom, EffectiveTo: term.EffectiveTo}) {
-			return false
-		}
-	}
-	return true
+	return len(validateContractForSubmission(contract)) == 0
 }
 
 func isValidTerm(term TermInput) bool {
@@ -465,4 +436,75 @@ func normalizeLeaseReminderRecipients(candidates []string) []string {
 		recipients = append(recipients, email)
 	}
 	return recipients
+}
+
+func jointOperationFromInput(input *JointOperationFieldsInput) *JointOperationFields {
+	if input == nil {
+		return nil
+	}
+	return &JointOperationFields{
+		BillCycle:                input.BillCycle,
+		RentInc:                  strings.TrimSpace(input.RentInc),
+		AccountCycle:             input.AccountCycle,
+		TaxRate:                  input.TaxRate,
+		TaxType:                  input.TaxType,
+		SettlementCurrencyTypeID: input.SettlementCurrencyTypeID,
+		InTaxRate:                input.InTaxRate,
+		OutTaxRate:               input.OutTaxRate,
+		MonthSettleDays:          input.MonthSettleDays,
+		LatePayInterestRate:      input.LatePayInterestRate,
+		InterestGraceDays:        input.InterestGraceDays,
+	}
+}
+
+func adBoardDetailsFromInput(input []AdBoardDetailInput) []AdBoardDetail {
+	if len(input) == 0 {
+		return nil
+	}
+	out := make([]AdBoardDetail, 0, len(input))
+	for _, detail := range input {
+		out = append(out, AdBoardDetail{
+			AdBoardID:     detail.AdBoardID,
+			Description:   strings.TrimSpace(detail.Description),
+			Status:        detail.Status,
+			StartDate:     detail.StartDate,
+			EndDate:       detail.EndDate,
+			RentArea:      detail.RentArea,
+			Airtime:       detail.Airtime,
+			Frequency:     detail.Frequency,
+			FrequencyDays: detail.FrequencyDays,
+			FrequencyMon:  detail.FrequencyMon,
+			FrequencyTue:  detail.FrequencyTue,
+			FrequencyWed:  detail.FrequencyWed,
+			FrequencyThu:  detail.FrequencyThu,
+			FrequencyFri:  detail.FrequencyFri,
+			FrequencySat:  detail.FrequencySat,
+			FrequencySun:  detail.FrequencySun,
+			BetweenFrom:   detail.BetweenFrom,
+			BetweenTo:     detail.BetweenTo,
+			StoreID:       detail.StoreID,
+			BuildingID:    detail.BuildingID,
+		})
+	}
+	return out
+}
+
+func areaGroundDetailsFromInput(input []AreaGroundDetailInput) []AreaGroundDetail {
+	if len(input) == 0 {
+		return nil
+	}
+	out := make([]AreaGroundDetail, 0, len(input))
+	for _, detail := range input {
+		out = append(out, AreaGroundDetail{
+			Code:        strings.TrimSpace(detail.Code),
+			Name:        strings.TrimSpace(detail.Name),
+			TypeID:      detail.TypeID,
+			Description: strings.TrimSpace(detail.Description),
+			Status:      detail.Status,
+			StartDate:   detail.StartDate,
+			EndDate:     detail.EndDate,
+			RentArea:    detail.RentArea,
+		})
+	}
+	return out
 }

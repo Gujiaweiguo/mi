@@ -30,10 +30,10 @@ func NewRepository(db *sql.DB) *Repository {
 func (r *Repository) Create(ctx context.Context, tx *sql.Tx, contract *Contract) error {
 	result, err := tx.ExecContext(ctx, `
 		INSERT INTO lease_contracts (
-			amended_from_id, lease_no, department_id, store_id, building_id, customer_id, brand_id, trade_id, management_type_id, tenant_name,
+			amended_from_id, lease_no, subtype, department_id, store_id, building_id, customer_id, brand_id, trade_id, management_type_id, tenant_name,
 			start_date, end_date, status, effective_version, created_by, updated_by
-		) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-	`, sqlutil.Int64PointerValue(contract.AmendedFromID), contract.LeaseNo, contract.DepartmentID, contract.StoreID, sqlutil.Int64PointerValue(contract.BuildingID), sqlutil.Int64PointerValue(contract.CustomerID), sqlutil.Int64PointerValue(contract.BrandID), sqlutil.Int64PointerValue(contract.TradeID), sqlutil.Int64PointerValue(contract.ManagementTypeID), contract.TenantName, contract.StartDate, contract.EndDate, contract.Status, contract.EffectiveVersion, contract.CreatedBy, contract.UpdatedBy)
+		) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+	`, sqlutil.Int64PointerValue(contract.AmendedFromID), contract.LeaseNo, normalizeSubtype(contract.Subtype), contract.DepartmentID, contract.StoreID, sqlutil.Int64PointerValue(contract.BuildingID), sqlutil.Int64PointerValue(contract.CustomerID), sqlutil.Int64PointerValue(contract.BrandID), sqlutil.Int64PointerValue(contract.TradeID), sqlutil.Int64PointerValue(contract.ManagementTypeID), contract.TenantName, contract.StartDate, contract.EndDate, contract.Status, contract.EffectiveVersion, contract.CreatedBy, contract.UpdatedBy)
 	if err != nil {
 		return fmt.Errorf("insert lease contract: %w", err)
 	}
@@ -60,6 +60,10 @@ func (r *Repository) Create(ctx context.Context, tx *sql.Tx, contract *Contract)
 		`, contractID, term.TermType, term.BillingCycle, term.CurrencyTypeID, term.Amount, term.EffectiveFrom, term.EffectiveTo); err != nil {
 			return fmt.Errorf("insert lease contract term: %w", err)
 		}
+	}
+
+	if err := r.saveSubtypeDetails(ctx, tx, contractID, contract); err != nil {
+		return err
 	}
 
 	return nil
@@ -119,7 +123,7 @@ func (r *Repository) List(ctx context.Context, filter ListFilter) (*pagination.L
 
 	queryArgs := append(append([]any{}, args...), pageSize, (page-1)*pageSize)
 	rows, err := r.db.QueryContext(ctx, `
-		SELECT lc.id, lc.lease_no, lc.tenant_name, lc.department_id, lc.store_id, lc.building_id,
+		SELECT lc.id, lc.lease_no, lc.subtype, lc.tenant_name, lc.department_id, lc.store_id, lc.building_id,
 			lc.customer_id, lc.brand_id, lc.trade_id, lc.management_type_id,
 			lc.start_date, lc.end_date, lc.status, lc.workflow_instance_id, lc.billing_effective_at, lc.updated_at
 		FROM lease_contracts lc
@@ -142,7 +146,7 @@ func (r *Repository) List(ctx context.Context, filter ListFilter) (*pagination.L
 		var managementTypeID sql.NullInt64
 		var workflowInstanceID sql.NullInt64
 		var billingEffectiveAt sql.NullTime
-		if err := rows.Scan(&summary.ID, &summary.LeaseNo, &summary.TenantName, &summary.DepartmentID, &summary.StoreID, &buildingID, &customerID, &brandID, &tradeID, &managementTypeID, &summary.StartDate, &summary.EndDate, &summary.Status, &workflowInstanceID, &billingEffectiveAt, &summary.UpdatedAt); err != nil {
+		if err := rows.Scan(&summary.ID, &summary.LeaseNo, &summary.Subtype, &summary.TenantName, &summary.DepartmentID, &summary.StoreID, &buildingID, &customerID, &brandID, &tradeID, &managementTypeID, &summary.StartDate, &summary.EndDate, &summary.Status, &workflowInstanceID, &billingEffectiveAt, &summary.UpdatedAt); err != nil {
 			return nil, fmt.Errorf("scan lease contract summary: %w", err)
 		}
 		summary.BuildingID = sqlutil.NullInt64Pointer(buildingID)
@@ -220,7 +224,7 @@ type rowScanner interface {
 }
 
 const leaseContractSelect = `
-	SELECT lc.id, lc.amended_from_id, lc.lease_no, lc.department_id, lc.store_id, lc.building_id,
+	SELECT lc.id, lc.amended_from_id, lc.lease_no, lc.subtype, lc.department_id, lc.store_id, lc.building_id,
 		lc.customer_id, lc.brand_id, lc.trade_id, lc.management_type_id,
 		lc.tenant_name, lc.start_date, lc.end_date, lc.status, lc.workflow_instance_id,
 		lc.effective_version, lc.submitted_at, lc.approved_at, lc.billing_effective_at,
@@ -241,7 +245,7 @@ func (r *Repository) findContract(_ context.Context, scanner rowScanner) (*Contr
 	var approvedAt sql.NullTime
 	var billingEffectiveAt sql.NullTime
 	var terminatedAt sql.NullTime
-	if err := scanner.Scan(&contract.ID, &amendedFromID, &contract.LeaseNo, &contract.DepartmentID, &contract.StoreID, &buildingID, &customerID, &brandID, &tradeID, &managementTypeID, &contract.TenantName, &contract.StartDate, &contract.EndDate, &contract.Status, &workflowInstanceID, &contract.EffectiveVersion, &submittedAt, &approvedAt, &billingEffectiveAt, &terminatedAt, &contract.CreatedBy, &contract.UpdatedBy, &contract.CreatedAt, &contract.UpdatedAt); err != nil {
+	if err := scanner.Scan(&contract.ID, &amendedFromID, &contract.LeaseNo, &contract.Subtype, &contract.DepartmentID, &contract.StoreID, &buildingID, &customerID, &brandID, &tradeID, &managementTypeID, &contract.TenantName, &contract.StartDate, &contract.EndDate, &contract.Status, &workflowInstanceID, &contract.EffectiveVersion, &submittedAt, &approvedAt, &billingEffectiveAt, &terminatedAt, &contract.CreatedBy, &contract.UpdatedBy, &contract.CreatedAt, &contract.UpdatedAt); err != nil {
 		if err == sql.ErrNoRows {
 			return nil, nil
 		}
@@ -258,10 +262,14 @@ func (r *Repository) findContract(_ context.Context, scanner rowScanner) (*Contr
 	contract.ApprovedAt = sqlutil.NullTimePointer(approvedAt)
 	contract.BillingEffectiveAt = sqlutil.NullTimePointer(billingEffectiveAt)
 	contract.TerminatedAt = sqlutil.NullTimePointer(terminatedAt)
+	contract.Subtype = normalizeSubtype(contract.Subtype)
 	return &contract, nil
 }
 
 func (r *Repository) loadChildren(ctx context.Context, contract *Contract) error {
+	if err := r.loadSubtypeChildren(ctx, r.db, contract); err != nil {
+		return err
+	}
 	units, err := r.listUnits(ctx, r.db, contract.ID)
 	if err != nil {
 		return err
@@ -276,6 +284,9 @@ func (r *Repository) loadChildren(ctx context.Context, contract *Contract) error
 }
 
 func (r *Repository) loadChildrenTx(ctx context.Context, tx *sql.Tx, contract *Contract) error {
+	if err := r.loadSubtypeChildren(ctx, tx, contract); err != nil {
+		return err
+	}
 	units, err := r.listUnits(ctx, tx, contract.ID)
 	if err != nil {
 		return err
@@ -291,6 +302,10 @@ func (r *Repository) loadChildrenTx(ctx context.Context, tx *sql.Tx, contract *C
 
 type queryer interface {
 	QueryContext(ctx context.Context, query string, args ...any) (*sql.Rows, error)
+}
+
+type execer interface {
+	ExecContext(ctx context.Context, query string, args ...any) (sql.Result, error)
 }
 
 func (r *Repository) listUnits(ctx context.Context, db queryer, leaseID int64) ([]Unit, error) {
@@ -337,6 +352,137 @@ func (r *Repository) listTerms(ctx context.Context, db queryer, leaseID int64) (
 		terms = append(terms, term)
 	}
 	return terms, rows.Err()
+}
+
+func (r *Repository) saveSubtypeDetails(ctx context.Context, tx execer, leaseID int64, contract *Contract) error {
+	if contract == nil {
+		return nil
+	}
+	if contract.JointOperation != nil {
+		if _, err := tx.ExecContext(ctx, `
+			INSERT INTO lease_contract_joint_operation_details (
+				lease_contract_id, bill_cycle, rent_inc, account_cycle, tax_rate, tax_type,
+				settlement_currency_type_id, in_tax_rate, out_tax_rate, month_settle_days,
+				late_pay_interest_rate, interest_grace_days
+			) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+		`, leaseID, contract.JointOperation.BillCycle, contract.JointOperation.RentInc, contract.JointOperation.AccountCycle, contract.JointOperation.TaxRate, contract.JointOperation.TaxType, contract.JointOperation.SettlementCurrencyTypeID, contract.JointOperation.InTaxRate, contract.JointOperation.OutTaxRate, contract.JointOperation.MonthSettleDays, contract.JointOperation.LatePayInterestRate, contract.JointOperation.InterestGraceDays); err != nil {
+			return fmt.Errorf("insert lease joint operation detail: %w", err)
+		}
+	}
+	for _, detail := range contract.AdBoards {
+		if _, err := tx.ExecContext(ctx, `
+			INSERT INTO lease_contract_ad_board_details (
+				lease_contract_id, ad_board_id, description, status, start_date, end_date,
+				rent_area, airtime, frequency, frequency_days, frequency_mon, frequency_tue,
+				frequency_wed, frequency_thu, frequency_fri, frequency_sat, frequency_sun,
+				between_from, between_to, store_id, building_id
+			) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+		`, leaseID, detail.AdBoardID, detail.Description, detail.Status, detail.StartDate, detail.EndDate, detail.RentArea, detail.Airtime, detail.Frequency, detail.FrequencyDays, detail.FrequencyMon, detail.FrequencyTue, detail.FrequencyWed, detail.FrequencyThu, detail.FrequencyFri, detail.FrequencySat, detail.FrequencySun, detail.BetweenFrom, detail.BetweenTo, sqlutil.Int64PointerValue(detail.StoreID), sqlutil.Int64PointerValue(detail.BuildingID)); err != nil {
+			return fmt.Errorf("insert lease ad board detail: %w", err)
+		}
+	}
+	for _, detail := range contract.AreaGrounds {
+		if _, err := tx.ExecContext(ctx, `
+			INSERT INTO lease_contract_area_ground_details (
+				lease_contract_id, code, name, type_id, description, status, start_date, end_date, rent_area
+			) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+		`, leaseID, detail.Code, detail.Name, detail.TypeID, detail.Description, detail.Status, detail.StartDate, detail.EndDate, detail.RentArea); err != nil {
+			return fmt.Errorf("insert lease area/ground detail: %w", err)
+		}
+	}
+	return nil
+}
+
+func (r *Repository) loadSubtypeChildren(ctx context.Context, db queryer, contract *Contract) error {
+	jointOperation, err := r.getJointOperationDetail(ctx, db, contract.ID)
+	if err != nil {
+		return err
+	}
+	adBoards, err := r.listAdBoardDetails(ctx, db, contract.ID)
+	if err != nil {
+		return err
+	}
+	areaGrounds, err := r.listAreaGroundDetails(ctx, db, contract.ID)
+	if err != nil {
+		return err
+	}
+	contract.JointOperation = jointOperation
+	contract.AdBoards = adBoards
+	contract.AreaGrounds = areaGrounds
+	return nil
+}
+
+func (r *Repository) getJointOperationDetail(ctx context.Context, db queryer, leaseID int64) (*JointOperationFields, error) {
+	rows, err := db.QueryContext(ctx, `
+		SELECT lease_contract_id, bill_cycle, rent_inc, account_cycle, tax_rate, tax_type,
+			settlement_currency_type_id, in_tax_rate, out_tax_rate, month_settle_days,
+			late_pay_interest_rate, interest_grace_days, created_at, updated_at
+		FROM lease_contract_joint_operation_details
+		WHERE lease_contract_id = ?
+	`, leaseID)
+	if err != nil {
+		return nil, fmt.Errorf("query lease joint operation detail: %w", err)
+	}
+	defer rows.Close()
+	if !rows.Next() {
+		return nil, rows.Err()
+	}
+	var detail JointOperationFields
+	if err := rows.Scan(&detail.LeaseContractID, &detail.BillCycle, &detail.RentInc, &detail.AccountCycle, &detail.TaxRate, &detail.TaxType, &detail.SettlementCurrencyTypeID, &detail.InTaxRate, &detail.OutTaxRate, &detail.MonthSettleDays, &detail.LatePayInterestRate, &detail.InterestGraceDays, &detail.CreatedAt, &detail.UpdatedAt); err != nil {
+		return nil, fmt.Errorf("scan lease joint operation detail: %w", err)
+	}
+	return &detail, rows.Err()
+}
+
+func (r *Repository) listAdBoardDetails(ctx context.Context, db queryer, leaseID int64) ([]AdBoardDetail, error) {
+	rows, err := db.QueryContext(ctx, `
+		SELECT id, lease_contract_id, ad_board_id, description, status, start_date, end_date,
+			rent_area, airtime, frequency, frequency_days, frequency_mon, frequency_tue,
+			frequency_wed, frequency_thu, frequency_fri, frequency_sat, frequency_sun,
+			between_from, between_to, store_id, building_id, created_at, updated_at
+		FROM lease_contract_ad_board_details
+		WHERE lease_contract_id = ?
+		ORDER BY id
+	`, leaseID)
+	if err != nil {
+		return nil, fmt.Errorf("query lease ad board details: %w", err)
+	}
+	defer rows.Close()
+	items := make([]AdBoardDetail, 0)
+	for rows.Next() {
+		var detail AdBoardDetail
+		var storeID sql.NullInt64
+		var buildingID sql.NullInt64
+		if err := rows.Scan(&detail.ID, &detail.LeaseContractID, &detail.AdBoardID, &detail.Description, &detail.Status, &detail.StartDate, &detail.EndDate, &detail.RentArea, &detail.Airtime, &detail.Frequency, &detail.FrequencyDays, &detail.FrequencyMon, &detail.FrequencyTue, &detail.FrequencyWed, &detail.FrequencyThu, &detail.FrequencyFri, &detail.FrequencySat, &detail.FrequencySun, &detail.BetweenFrom, &detail.BetweenTo, &storeID, &buildingID, &detail.CreatedAt, &detail.UpdatedAt); err != nil {
+			return nil, fmt.Errorf("scan lease ad board detail: %w", err)
+		}
+		detail.StoreID = sqlutil.NullInt64Pointer(storeID)
+		detail.BuildingID = sqlutil.NullInt64Pointer(buildingID)
+		items = append(items, detail)
+	}
+	return items, rows.Err()
+}
+
+func (r *Repository) listAreaGroundDetails(ctx context.Context, db queryer, leaseID int64) ([]AreaGroundDetail, error) {
+	rows, err := db.QueryContext(ctx, `
+		SELECT id, lease_contract_id, code, name, type_id, description, status, start_date, end_date, rent_area, created_at, updated_at
+		FROM lease_contract_area_ground_details
+		WHERE lease_contract_id = ?
+		ORDER BY id
+	`, leaseID)
+	if err != nil {
+		return nil, fmt.Errorf("query lease area/ground details: %w", err)
+	}
+	defer rows.Close()
+	items := make([]AreaGroundDetail, 0)
+	for rows.Next() {
+		var detail AreaGroundDetail
+		if err := rows.Scan(&detail.ID, &detail.LeaseContractID, &detail.Code, &detail.Name, &detail.TypeID, &detail.Description, &detail.Status, &detail.StartDate, &detail.EndDate, &detail.RentArea, &detail.CreatedAt, &detail.UpdatedAt); err != nil {
+			return nil, fmt.Errorf("scan lease area/ground detail: %w", err)
+		}
+		items = append(items, detail)
+	}
+	return items, rows.Err()
 }
 
 func (r *Repository) ListExpirationReminderCandidates(ctx context.Context, asOf time.Time, thresholdDays int) ([]ExpirationReminderCandidate, error) {

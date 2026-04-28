@@ -2,11 +2,13 @@ package handlers
 
 import (
 	"bytes"
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
 	"github.com/Gujiaweiguo/mi/backend/internal/auth"
+	"github.com/Gujiaweiguo/mi/backend/internal/lease"
 	"github.com/gin-gonic/gin"
 )
 
@@ -279,5 +281,65 @@ func TestLeaseListRejectsInvalidPageSize(t *testing.T) {
 
 	if recorder.Code != http.StatusBadRequest {
 		t.Fatalf("expected 400, got %d", recorder.Code)
+	}
+}
+
+func TestBindCreateDraftInputParsesSubtypeDetails(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	handler := NewLeaseHandler(nil)
+	recorder := httptest.NewRecorder()
+	ctx, _ := gin.CreateTestContext(recorder)
+
+	request := createLeaseRequest{
+		LeaseNo:      "L002",
+		Subtype:      lease.ContractSubtypeAdBoard,
+		DepartmentID: 1,
+		StoreID:      1,
+		TenantName:   "Ad Tenant",
+		StartDate:    "2026-04-01",
+		EndDate:      "2026-12-31",
+		AdBoards: []createLeaseAdBoardRequest{{
+			AdBoardID:    11,
+			StartDate:    "2026-04-01",
+			EndDate:      "2026-05-01",
+			RentArea:     20,
+			Airtime:      15,
+			Frequency:    lease.AdBoardFrequencyWeek,
+			FrequencyMon: true,
+		}},
+		Units: []createLeaseUnitRequest{{UnitID: 1, RentArea: 100}},
+		Terms: []createLeaseTermRequest{{TermType: lease.TermTypeRent, BillingCycle: lease.BillingCycleMonthly, CurrencyTypeID: 1, Amount: 5000, EffectiveFrom: "2026-04-01", EffectiveTo: "2026-12-31"}},
+	}
+
+	input, ok := handler.bindCreateDraftInput(ctx, request, 1)
+	if !ok {
+		t.Fatalf("expected subtype payload to bind, got status=%d body=%s", recorder.Code, recorder.Body.String())
+	}
+	if input.Subtype != lease.ContractSubtypeAdBoard || len(input.AdBoards) != 1 {
+		t.Fatalf("expected ad board subtype binding, got %#v", input)
+	}
+	if input.AdBoards[0].AdBoardID != 11 || !input.AdBoards[0].FrequencyMon {
+		t.Fatalf("expected bound ad board detail, got %#v", input.AdBoards[0])
+	}
+}
+
+func TestLeaseRenderValidationFields(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	handler := NewLeaseHandler(nil)
+	recorder := httptest.NewRecorder()
+	ctx, _ := gin.CreateTestContext(recorder)
+
+	handler.renderLeaseError(ctx, &lease.ValidationError{Fields: []lease.ValidationField{{Field: "joint_operation.bill_cycle", Message: "bill_cycle must be greater than zero"}}})
+
+	if recorder.Code != http.StatusBadRequest {
+		t.Fatalf("expected 400, got %d", recorder.Code)
+	}
+	var body map[string]any
+	if err := json.Unmarshal(recorder.Body.Bytes(), &body); err != nil {
+		t.Fatalf("decode response: %v", err)
+	}
+	fields, ok := body["fields"].([]any)
+	if !ok || len(fields) != 1 {
+		t.Fatalf("expected field diagnostics, got %#v", body)
 	}
 }

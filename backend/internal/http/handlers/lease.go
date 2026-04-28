@@ -23,19 +23,71 @@ func NewLeaseHandler(service *lease.Service) *LeaseHandler {
 }
 
 type createLeaseRequest struct {
-	LeaseNo          string                   `json:"lease_no" binding:"required,min=1,max=50"`
-	DepartmentID     int64                    `json:"department_id" binding:"required,gt=0"`
-	StoreID          int64                    `json:"store_id" binding:"required,gt=0"`
-	BuildingID       *int64                   `json:"building_id" binding:"omitempty,gt=0"`
-	CustomerID       *int64                   `json:"customer_id" binding:"omitempty,gt=0"`
-	BrandID          *int64                   `json:"brand_id" binding:"omitempty,gt=0"`
-	TradeID          *int64                   `json:"trade_id" binding:"omitempty,gt=0"`
-	ManagementTypeID *int64                   `json:"management_type_id" binding:"omitempty,gt=0"`
-	TenantName       string                   `json:"tenant_name" binding:"required,min=1,max=100"`
-	StartDate        string                   `json:"start_date" binding:"required"`
-	EndDate          string                   `json:"end_date" binding:"required"`
-	Units            []createLeaseUnitRequest `json:"units" binding:"required,min=1,dive"`
-	Terms            []createLeaseTermRequest `json:"terms" binding:"required,min=1,dive"`
+	LeaseNo          string                            `json:"lease_no" binding:"required,min=1,max=50"`
+	Subtype          lease.ContractSubtype             `json:"subtype" binding:"omitempty,oneof=standard joint_operation ad_board area_ground"`
+	DepartmentID     int64                             `json:"department_id" binding:"required,gt=0"`
+	StoreID          int64                             `json:"store_id" binding:"required,gt=0"`
+	BuildingID       *int64                            `json:"building_id" binding:"omitempty,gt=0"`
+	CustomerID       *int64                            `json:"customer_id" binding:"omitempty,gt=0"`
+	BrandID          *int64                            `json:"brand_id" binding:"omitempty,gt=0"`
+	TradeID          *int64                            `json:"trade_id" binding:"omitempty,gt=0"`
+	ManagementTypeID *int64                            `json:"management_type_id" binding:"omitempty,gt=0"`
+	TenantName       string                            `json:"tenant_name" binding:"required,min=1,max=100"`
+	StartDate        string                            `json:"start_date" binding:"required"`
+	EndDate          string                            `json:"end_date" binding:"required"`
+	JointOperation   *createLeaseJointOperationRequest `json:"joint_operation,omitempty"`
+	AdBoards         []createLeaseAdBoardRequest       `json:"ad_boards,omitempty"`
+	AreaGrounds      []createLeaseAreaGroundRequest    `json:"area_grounds,omitempty"`
+	Units            []createLeaseUnitRequest          `json:"units" binding:"required,min=1,dive"`
+	Terms            []createLeaseTermRequest          `json:"terms" binding:"required,min=1,dive"`
+}
+
+type createLeaseJointOperationRequest struct {
+	BillCycle                int     `json:"bill_cycle"`
+	RentInc                  string  `json:"rent_inc"`
+	AccountCycle             int     `json:"account_cycle"`
+	TaxRate                  float64 `json:"tax_rate"`
+	TaxType                  int     `json:"tax_type"`
+	SettlementCurrencyTypeID int64   `json:"settlement_currency_type_id"`
+	InTaxRate                float64 `json:"in_tax_rate"`
+	OutTaxRate               float64 `json:"out_tax_rate"`
+	MonthSettleDays          float64 `json:"month_settle_days,omitempty"`
+	LatePayInterestRate      float64 `json:"late_pay_interest_rate,omitempty"`
+	InterestGraceDays        int     `json:"interest_grace_days,omitempty"`
+}
+
+type createLeaseAdBoardRequest struct {
+	AdBoardID     int64                  `json:"ad_board_id"`
+	Description   string                 `json:"description,omitempty"`
+	Status        int                    `json:"status,omitempty"`
+	StartDate     string                 `json:"start_date"`
+	EndDate       string                 `json:"end_date"`
+	RentArea      float64                `json:"rent_area"`
+	Airtime       int                    `json:"airtime"`
+	Frequency     lease.AdBoardFrequency `json:"frequency"`
+	FrequencyDays int                    `json:"frequency_days,omitempty"`
+	FrequencyMon  bool                   `json:"frequency_mon,omitempty"`
+	FrequencyTue  bool                   `json:"frequency_tue,omitempty"`
+	FrequencyWed  bool                   `json:"frequency_wed,omitempty"`
+	FrequencyThu  bool                   `json:"frequency_thu,omitempty"`
+	FrequencyFri  bool                   `json:"frequency_fri,omitempty"`
+	FrequencySat  bool                   `json:"frequency_sat,omitempty"`
+	FrequencySun  bool                   `json:"frequency_sun,omitempty"`
+	BetweenFrom   int                    `json:"between_from,omitempty"`
+	BetweenTo     int                    `json:"between_to,omitempty"`
+	StoreID       *int64                 `json:"store_id,omitempty" binding:"omitempty,gt=0"`
+	BuildingID    *int64                 `json:"building_id,omitempty" binding:"omitempty,gt=0"`
+}
+
+type createLeaseAreaGroundRequest struct {
+	Code        string  `json:"code"`
+	Name        string  `json:"name"`
+	TypeID      int64   `json:"type_id"`
+	Description string  `json:"description,omitempty"`
+	Status      int     `json:"status,omitempty"`
+	StartDate   string  `json:"start_date"`
+	EndDate     string  `json:"end_date"`
+	RentArea    float64 `json:"rent_area"`
 }
 
 type createLeaseUnitRequest struct {
@@ -377,8 +429,86 @@ func (h *LeaseHandler) bindCreateDraftInput(c *gin.Context, request createLeaseR
 		terms = append(terms, lease.TermInput{TermType: term.TermType, BillingCycle: term.BillingCycle, CurrencyTypeID: term.CurrencyTypeID, Amount: term.Amount, EffectiveFrom: effectiveFrom, EffectiveTo: effectiveTo})
 	}
 
+	var jointOperation *lease.JointOperationFieldsInput
+	if request.JointOperation != nil {
+		jointOperation = &lease.JointOperationFieldsInput{
+			BillCycle:                request.JointOperation.BillCycle,
+			RentInc:                  request.JointOperation.RentInc,
+			AccountCycle:             request.JointOperation.AccountCycle,
+			TaxRate:                  request.JointOperation.TaxRate,
+			TaxType:                  request.JointOperation.TaxType,
+			SettlementCurrencyTypeID: request.JointOperation.SettlementCurrencyTypeID,
+			InTaxRate:                request.JointOperation.InTaxRate,
+			OutTaxRate:               request.JointOperation.OutTaxRate,
+			MonthSettleDays:          request.JointOperation.MonthSettleDays,
+			LatePayInterestRate:      request.JointOperation.LatePayInterestRate,
+			InterestGraceDays:        request.JointOperation.InterestGraceDays,
+		}
+	}
+
+	adBoards := make([]lease.AdBoardDetailInput, 0, len(request.AdBoards))
+	for _, detail := range request.AdBoards {
+		adBoardStartDate, err := time.Parse(lease.DateLayout, detail.StartDate)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"message": "invalid ad board start_date"})
+			return lease.CreateDraftInput{}, false
+		}
+		adBoardEndDate, err := time.Parse(lease.DateLayout, detail.EndDate)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"message": "invalid ad board end_date"})
+			return lease.CreateDraftInput{}, false
+		}
+		adBoards = append(adBoards, lease.AdBoardDetailInput{
+			AdBoardID:     detail.AdBoardID,
+			Description:   detail.Description,
+			Status:        detail.Status,
+			StartDate:     adBoardStartDate,
+			EndDate:       adBoardEndDate,
+			RentArea:      detail.RentArea,
+			Airtime:       detail.Airtime,
+			Frequency:     detail.Frequency,
+			FrequencyDays: detail.FrequencyDays,
+			FrequencyMon:  detail.FrequencyMon,
+			FrequencyTue:  detail.FrequencyTue,
+			FrequencyWed:  detail.FrequencyWed,
+			FrequencyThu:  detail.FrequencyThu,
+			FrequencyFri:  detail.FrequencyFri,
+			FrequencySat:  detail.FrequencySat,
+			FrequencySun:  detail.FrequencySun,
+			BetweenFrom:   detail.BetweenFrom,
+			BetweenTo:     detail.BetweenTo,
+			StoreID:       detail.StoreID,
+			BuildingID:    detail.BuildingID,
+		})
+	}
+
+	areaGrounds := make([]lease.AreaGroundDetailInput, 0, len(request.AreaGrounds))
+	for _, detail := range request.AreaGrounds {
+		areaGroundStartDate, err := time.Parse(lease.DateLayout, detail.StartDate)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"message": "invalid area ground start_date"})
+			return lease.CreateDraftInput{}, false
+		}
+		areaGroundEndDate, err := time.Parse(lease.DateLayout, detail.EndDate)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"message": "invalid area ground end_date"})
+			return lease.CreateDraftInput{}, false
+		}
+		areaGrounds = append(areaGrounds, lease.AreaGroundDetailInput{
+			Code:        detail.Code,
+			Name:        detail.Name,
+			TypeID:      detail.TypeID,
+			Description: detail.Description,
+			Status:      detail.Status,
+			StartDate:   areaGroundStartDate,
+			EndDate:     areaGroundEndDate,
+			RentArea:    detail.RentArea,
+		})
+	}
+
 	return lease.CreateDraftInput{
 		LeaseNo:          request.LeaseNo,
+		Subtype:          request.Subtype,
 		DepartmentID:     request.DepartmentID,
 		StoreID:          request.StoreID,
 		BuildingID:       request.BuildingID,
@@ -389,6 +519,9 @@ func (h *LeaseHandler) bindCreateDraftInput(c *gin.Context, request createLeaseR
 		TenantName:       request.TenantName,
 		StartDate:        startDate,
 		EndDate:          endDate,
+		JointOperation:   jointOperation,
+		AdBoards:         adBoards,
+		AreaGrounds:      areaGrounds,
 		Units:            units,
 		Terms:            terms,
 		ActorUserID:      actorUserID,
@@ -397,7 +530,11 @@ func (h *LeaseHandler) bindCreateDraftInput(c *gin.Context, request createLeaseR
 
 func (h *LeaseHandler) renderLeaseError(c *gin.Context, err error) {
 	status := http.StatusInternalServerError
+	response := gin.H{"message": errutil.SafeMessage(err)}
+	var validationErr *lease.ValidationError
 	switch {
+	case errors.As(err, &validationErr):
+		status = http.StatusBadRequest
 	case errors.Is(err, lease.ErrLeaseNotFound):
 		status = http.StatusNotFound
 	case errors.Is(err, lease.ErrDuplicateLeaseNo):
@@ -407,5 +544,9 @@ func (h *LeaseHandler) renderLeaseError(c *gin.Context, err error) {
 	case errors.Is(err, lease.ErrLeaseIncompleteForSubmission), errors.Is(err, workflow.ErrDefinitionNotFound), errors.Is(err, workflow.ErrInvalidState):
 		status = http.StatusBadRequest
 	}
-	c.JSON(status, gin.H{"message": errutil.SafeMessage(err)})
+	if errors.As(err, &validationErr) {
+		response["message"] = validationErr.Error()
+		response["fields"] = validationErr.Fields
+	}
+	c.JSON(status, response)
 }
