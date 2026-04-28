@@ -1,0 +1,48 @@
+{
+  "schema_version": "1",
+  "project": "mi",
+  "change": "first-release-acceptance-closure",
+  "commit_sha": "4fa94fe9f5a61f54fbc84bd51304bfb6e3a567c0",
+  "started_at": "2026-04-28T03:26:13Z",
+  "finished_at": "2026-04-28T03:26:14Z",
+  "status": "NO-GO",
+  "scope": {
+    "release_boundary": "first-release non-membership scope",
+    "report_inventory": "R01-R19",
+    "excluded_domains": [
+      "membership/Associator",
+      "legacy transaction migration",
+      "reports outside R01-R19",
+      "email delivery",
+      "device/client tax integration"
+    ]
+  },
+  "gates": {
+    "archive_ready": "failed",
+    "rehearsal_ready": "failed"
+  },
+  "blockers": [
+    {
+      "id": "archive-gate",
+      "classification": "must-fix",
+      "source": "archive-ready",
+      "summary": "Current commit is missing passing archive-ready evidence."
+    },
+    {
+      "id": "missing-rehearsal",
+      "classification": "must-fix",
+      "source": "cutover-rehearsal",
+      "summary": "No production rehearsal result exists for the current commit."
+    }
+  ],
+  "deferred": [],
+  "artifacts": {
+    "verification": [
+      "artifacts/verification/4fa94fe9f5a61f54fbc84bd51304bfb6e3a567c0/unit.json",
+      "artifacts/verification/4fa94fe9f5a61f54fbc84bd51304bfb6e3a567c0/integration.json",
+      "artifacts/verification/4fa94fe9f5a61f54fbc84bd51304bfb6e3a567c0/e2e.json"
+    ],
+    "rehearsal_result": null,
+    "findings": null
+  }
+}
