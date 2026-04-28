@@ -12,7 +12,7 @@
 
 ## 3. Verification and closure
 
-- [ ] 3.1 Run the bounded first-release verification set required for the evaluated commit and regenerate any missing commit-scoped evidence files.
-- [ ] 3.2 Produce machine-readable current-commit evidence under `artifacts/verification/<commit-sha>/unit.json` and `artifacts/verification/<commit-sha>/integration.json` for CI readiness.
-- [ ] 3.3 Produce machine-readable current-commit evidence under `artifacts/verification/<commit-sha>/unit.json`, `artifacts/verification/<commit-sha>/integration.json`, and `artifacts/verification/<commit-sha>/e2e.json` for archive and final acceptance readiness.
-- [ ] 3.4 Generate the final current-commit release-readiness summary and confirm it reports the correct GO/NO-GO outcome for the bounded first-release scope.
+- [x] 3.1 Run the bounded first-release verification set required for the evaluated commit and regenerate any missing commit-scoped evidence files.
+- [x] 3.2 Produce machine-readable current-commit evidence under `artifacts/verification/<commit-sha>/unit.json` and `artifacts/verification/<commit-sha>/integration.json` for CI readiness.
+- [x] 3.3 Produce machine-readable current-commit evidence under `artifacts/verification/<commit-sha>/unit.json`, `artifacts/verification/<commit-sha>/integration.json`, and `artifacts/verification/<commit-sha>/e2e.json` for archive and final acceptance readiness.
+- [x] 3.4 Generate the final current-commit release-readiness summary and confirm it reports the correct GO/NO-GO outcome for the bounded first-release scope.
