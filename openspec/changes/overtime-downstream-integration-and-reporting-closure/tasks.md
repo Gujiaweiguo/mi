@@ -19,5 +19,5 @@
 
 - [x] 4.1 Add backend unit and integration coverage for overtime downstream eligibility, duplicate safety, attribution, and bounded reporting/output behavior.
 - [x] 4.2 Add frontend unit and E2E coverage for operator-visible overtime downstream billing, invoice, receivable, or reporting flows changed by this slice.
-- [ ] 4.3 For CI readiness, produce passing commit-scoped evidence files at `artifacts/verification/<commit-sha>/unit.json` and `artifacts/verification/<commit-sha>/integration.json` for the current HEAD commit.
-- [ ] 4.4 Before archive, produce passing commit-scoped evidence files at `artifacts/verification/<commit-sha>/unit.json`, `artifacts/verification/<commit-sha>/integration.json`, and `artifacts/verification/<commit-sha>/e2e.json` for the current HEAD commit.
+- [x] 4.3 For CI readiness, produce passing commit-scoped evidence files at `artifacts/verification/<commit-sha>/unit.json` and `artifacts/verification/<commit-sha>/integration.json` for the current HEAD commit.
+- [x] 4.4 Before archive, produce passing commit-scoped evidence files at `artifacts/verification/<commit-sha>/unit.json`, `artifacts/verification/<commit-sha>/integration.json`, and `artifacts/verification/<commit-sha>/e2e.json` for the current HEAD commit.
