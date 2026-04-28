@@ -11,11 +11,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Make verification scripts executable
-        run: chmod +x scripts/verification/self-test.sh scripts/verification/validate-gate.sh scripts/ci-ready.sh scripts/archive-ready.sh
+        run: chmod +x scripts/verification/self-test.sh scripts/verification/self-test-release-readiness.sh scripts/verification/validate-gate.sh scripts/verification/validate-release-readiness.sh scripts/ci-ready.sh scripts/archive-ready.sh scripts/release-ready.sh
 
       - name: Run verification self-tests
         run: |
           scripts/verification/self-test.sh
+          scripts/verification/self-test-release-readiness.sh
           scripts/verification/self-test-artifacts.sh
 
   prerequisite-validation:
