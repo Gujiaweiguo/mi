@@ -1087,6 +1087,42 @@ func TestIntegrationAuthAndOrgRoutes(t *testing.T) {
 		t.Fatalf("expected active billing-effective lease, got body=%s", leaseGetRecorder.Body.String())
 	}
 
+	leaseSubtypeCreateRecorder := httptest.NewRecorder()
+	leaseSubtypeCreateRequest := httptest.NewRequest(http.MethodPost, "/api/leases", bytes.NewBufferString(`{"lease_no":"CON-201-AD","subtype":"ad_board","department_id":101,"store_id":101,"building_id":101,"customer_id":101,"brand_id":101,"trade_id":102,"management_type_id":101,"tenant_name":"ACME Media","start_date":"2026-04-01","end_date":"2026-12-31","ad_boards":[{"ad_board_id":901,"description":"Atrium Screen A","status":1,"start_date":"2026-04-01","end_date":"2026-06-30","rent_area":16,"airtime":20,"frequency":"W","frequency_mon":true,"frequency_wed":true,"store_id":101,"building_id":101},{"ad_board_id":902,"description":"Atrium Screen B","status":1,"start_date":"2026-04-15","end_date":"2026-07-31","rent_area":18,"airtime":10,"frequency":"D","frequency_days":3,"between_from":1,"between_to":5,"store_id":101,"building_id":101}],"units":[{"unit_id":101,"rent_area":118}],"terms":[{"term_type":"rent","billing_cycle":"monthly","currency_type_id":101,"amount":8000,"effective_from":"2026-04-01","effective_to":"2026-12-31"}]}`))
+	leaseSubtypeCreateRequest.Header.Set("Content-Type", "application/json")
+	leaseSubtypeCreateRequest.Header.Set("Authorization", "Bearer "+loginBody.Token)
+	router.ServeHTTP(leaseSubtypeCreateRecorder, leaseSubtypeCreateRequest)
+	if leaseSubtypeCreateRecorder.Code != http.StatusCreated {
+		t.Fatalf("expected 201 from subtype lease create endpoint, got %d body=%s", leaseSubtypeCreateRecorder.Code, leaseSubtypeCreateRecorder.Body.String())
+	}
+
+	var leaseSubtypeCreateBody struct {
+		Lease struct {
+			ID       int64  `json:"id"`
+			Subtype  string `json:"subtype"`
+			AdBoards []struct {
+				AdBoardID int64 `json:"ad_board_id"`
+			} `json:"ad_boards"`
+		} `json:"lease"`
+	}
+	if err := json.Unmarshal(leaseSubtypeCreateRecorder.Body.Bytes(), &leaseSubtypeCreateBody); err != nil {
+		t.Fatalf("decode subtype lease create response: %v", err)
+	}
+	if leaseSubtypeCreateBody.Lease.ID == 0 || leaseSubtypeCreateBody.Lease.Subtype != "ad_board" || len(leaseSubtypeCreateBody.Lease.AdBoards) != 2 {
+		t.Fatalf("expected subtype lease payload with repeated ad board rows, got body=%s", leaseSubtypeCreateRecorder.Body.String())
+	}
+
+	leaseSubtypeGetRecorder := httptest.NewRecorder()
+	leaseSubtypeGetRequest := httptest.NewRequest(http.MethodGet, "/api/leases/"+strconv.FormatInt(leaseSubtypeCreateBody.Lease.ID, 10), nil)
+	leaseSubtypeGetRequest.Header.Set("Authorization", "Bearer "+loginBody.Token)
+	router.ServeHTTP(leaseSubtypeGetRecorder, leaseSubtypeGetRequest)
+	if leaseSubtypeGetRecorder.Code != http.StatusOK {
+		t.Fatalf("expected 200 from subtype lease get endpoint, got %d body=%s", leaseSubtypeGetRecorder.Code, leaseSubtypeGetRecorder.Body.String())
+	}
+	if !bytes.Contains(leaseSubtypeGetRecorder.Body.Bytes(), []byte(`"subtype":"ad_board"`)) || !bytes.Contains(leaseSubtypeGetRecorder.Body.Bytes(), []byte(`"ad_board_id":901`)) || !bytes.Contains(leaseSubtypeGetRecorder.Body.Bytes(), []byte(`"ad_board_id":902`)) {
+		t.Fatalf("expected subtype lease round-trip payload, got body=%s", leaseSubtypeGetRecorder.Body.String())
+	}
+
 	for _, entry := range []struct {
 		chargeType string
 		dueDate    string

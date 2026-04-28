@@ -18,6 +18,7 @@ import (
 	"github.com/Gujiaweiguo/mi/backend/internal/lease"
 	"github.com/Gujiaweiguo/mi/backend/internal/masterdata"
 	"github.com/Gujiaweiguo/mi/backend/internal/notification"
+	"github.com/Gujiaweiguo/mi/backend/internal/overtime"
 	"github.com/Gujiaweiguo/mi/backend/internal/reporting"
 	"github.com/Gujiaweiguo/mi/backend/internal/sales"
 	"github.com/Gujiaweiguo/mi/backend/internal/structure"
@@ -87,10 +88,12 @@ func NewRouter(cfg *config.Config, db *sql.DB, logger *zap.Logger) *gin.Engine {
 	leaseService := lease.NewService(db, leaseRepository, workflowService, notifier)
 	billingRepository := billing.NewRepository(db)
 	billingService := billing.NewService(db, billingRepository)
+	overtimeRepository := overtime.NewRepository(db)
+	overtimeService := overtime.NewService(db, overtimeRepository, billingRepository, workflowService)
 	invoiceRepository := invoice.NewRepository(db)
 	invoiceService := invoice.NewService(db, invoiceRepository, billingRepository, workflowService, notifier)
 	docOutputRepository := docoutput.NewRepository(db)
-	docOutputService := docoutput.NewService(docOutputRepository, invoiceService, cfg.Storage)
+	docOutputService := docoutput.NewService(docOutputRepository, invoiceService, leaseService, cfg.Storage)
 	excelIORepository := excelio.NewRepository(db)
 	reportingRepository := reporting.NewRepository(db)
 	reportingService := reporting.NewService(reportingRepository)
@@ -107,6 +110,7 @@ func NewRouter(cfg *config.Config, db *sql.DB, logger *zap.Logger) *gin.Engine {
 	taxExportService := taxexport.NewService(taxExportRepository)
 	leaseHandler := handlers.NewLeaseHandler(leaseService)
 	billingHandler := handlers.NewBillingHandler(billingService)
+	overtimeHandler := handlers.NewOvertimeHandler(overtimeService)
 	invoiceHandler := handlers.NewInvoiceHandler(invoiceService)
 	docOutputHandler := handlers.NewDocOutputHandler(docOutputService)
 	excelIOHandler := handlers.NewExcelIOHandler(excelIOService)
@@ -119,7 +123,7 @@ func NewRouter(cfg *config.Config, db *sql.DB, logger *zap.Logger) *gin.Engine {
 	dashboardService := dashboard.NewDashboardService(db)
 	dashboardHandler := handlers.NewDashboardHandler(dashboardService)
 	userHandler := handlers.NewUserHandler(authRepository)
-	workflowHandler := handlers.NewWorkflowHandler(workflowService, workflowSyncers{syncers: []handlers.WorkflowStateSyncer{leaseService, invoiceService}})
+	workflowHandler := handlers.NewWorkflowHandler(workflowService, workflowSyncers{syncers: []handlers.WorkflowStateSyncer{leaseService, invoiceService, overtimeService}})
 	router.GET("/health", healthHandler.Get)
 	router.GET("/healthz", healthHandler.Get)
 
@@ -212,6 +216,16 @@ func NewRouter(cfg *config.Config, db *sql.DB, logger *zap.Logger) *gin.Engine {
 	billingGroup.POST("/charges/generate", middleware.RequirePermission("billing.charge", "edit", authService), billingHandler.GenerateCharges)
 	billingGroup.GET("/charges", middleware.RequirePermission("billing.charge", "view", authService), billingHandler.ListCharges)
 
+	overtimeGroup := api.Group("/overtime/bills")
+	overtimeGroup.Use(middleware.RequireAuth(authService, authRepository))
+	overtimeGroup.POST("", middleware.RequirePermission("billing.charge", "edit", authService), overtimeHandler.CreateBill)
+	overtimeGroup.GET("", middleware.RequirePermission("billing.charge", "view", authService), overtimeHandler.ListBills)
+	overtimeGroup.GET("/:id", middleware.RequirePermission("billing.charge", "view", authService), overtimeHandler.GetBill)
+	overtimeGroup.POST("/:id/submit", middleware.RequirePermission("billing.charge", "edit", authService), overtimeHandler.SubmitBill)
+	overtimeGroup.POST("/:id/cancel", middleware.RequirePermission("billing.charge", "edit", authService), overtimeHandler.CancelBill)
+	overtimeGroup.POST("/:id/stop", middleware.RequirePermission("billing.charge", "edit", authService), overtimeHandler.StopBill)
+	overtimeGroup.POST("/:id/generate", middleware.RequirePermission("billing.charge", "edit", authService), overtimeHandler.GenerateCharges)
+
 	invoiceGroup := api.Group("/invoices")
 	invoiceGroup.Use(middleware.RequireAuth(authService, authRepository))
 	invoiceGroup.POST("", middleware.RequirePermission("billing.invoice", "edit", authService), invoiceHandler.Create)
@@ -221,6 +235,11 @@ func NewRouter(cfg *config.Config, db *sql.DB, logger *zap.Logger) *gin.Engine {
 	invoiceGroup.POST("/:id/cancel", middleware.RequirePermission("billing.invoice", "edit", authService), invoiceHandler.Cancel)
 	invoiceGroup.POST("/:id/adjust", middleware.RequirePermission("billing.invoice", "edit", authService), invoiceHandler.Adjust)
 	invoiceGroup.GET("/:id/receivable", middleware.RequirePermission("billing.invoice", "view", authService), invoiceHandler.GetReceivable)
+	invoiceGroup.POST("/:id/discounts", middleware.RequirePermission("billing.invoice", "edit", authService), invoiceHandler.ApplyDiscount)
+	invoiceGroup.POST("/:id/interest", middleware.RequirePermission("billing.invoice", "edit", authService), invoiceHandler.GenerateInterest)
+	invoiceGroup.POST("/:id/surplus-applications", middleware.RequirePermission("billing.invoice", "edit", authService), invoiceHandler.ApplySurplus)
+	invoiceGroup.POST("/:id/deposit-applications", middleware.RequirePermission("billing.invoice", "edit", authService), invoiceHandler.ApplyDeposit)
+	invoiceGroup.POST("/:id/deposit-refunds", middleware.RequirePermission("billing.invoice", "edit", authService), invoiceHandler.RefundDeposit)
 	invoiceGroup.POST("/:id/payments", middleware.RequirePermission("billing.invoice", "edit", authService), invoiceHandler.RecordPayment)
 
 	receivableGroup := api.Group("/receivables")

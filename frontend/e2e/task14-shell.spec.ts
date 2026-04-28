@@ -148,6 +148,7 @@ test('shows permission-aware navigation after login and supports shared workbenc
 
   await expect(page).toHaveURL(/\/dashboard/)
   await expect(page.getByTestId('nav--dashboard')).toBeVisible()
+  await expect(page.getByTestId('nav--workbench')).toBeVisible()
   await expect(page.getByTestId('nav--health')).toBeVisible()
   await expect(page.getByTestId('nav--lease-contracts')).toBeVisible()
   await expect(page.getByTestId('nav--excel-io')).toBeVisible()

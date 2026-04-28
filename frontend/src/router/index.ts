@@ -39,6 +39,14 @@ const router = createRouter({
       },
     },
     {
+      path: '/workbench',
+      name: 'workbench',
+      component: () => import('../views/WorkbenchPageView.vue'),
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
       path: '/health',
       name: 'health',
       component: () => import('../views/HealthView.vue'),

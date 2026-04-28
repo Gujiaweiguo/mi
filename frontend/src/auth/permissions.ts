@@ -34,6 +34,10 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
     labelKey: 'app.navigation.dashboard',
   },
   {
+    path: '/workbench',
+    labelKey: 'app.navigation.workbench',
+  },
+  {
     path: '/health',
     labelKey: 'app.navigation.health',
   },

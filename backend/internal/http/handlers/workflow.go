@@ -40,7 +40,7 @@ func NewWorkflowHandler(service workflowService, syncer WorkflowStateSyncer) *Wo
 
 type startWorkflowRequest struct {
 	DefinitionCode string `json:"definition_code" binding:"required,min=1,max=50"`
-	DocumentType   string `json:"document_type" binding:"required,oneof=lease_contract invoice bill"`
+	DocumentType   string `json:"document_type" binding:"required,oneof=lease_contract invoice bill overtime_bill"`
 	DocumentID     int64  `json:"document_id" binding:"required,gt=0"`
 	Comment        string `json:"comment" binding:"omitempty,max=500"`
 }

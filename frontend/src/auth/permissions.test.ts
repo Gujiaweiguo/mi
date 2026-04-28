@@ -61,7 +61,7 @@ describe('permission helpers', () => {
   it('filters navigation items to authorized entries', () => {
     const paths = filterNavigationItems(baseUser).map((item) => item.path)
 
-    expect(paths).toEqual(['/dashboard', '/health', '/lease/contracts', '/excel/io'])
+    expect(paths).toEqual(['/dashboard', '/workbench', '/health', '/lease/contracts', '/excel/io'])
     expect(resolveAuthorizedHomePath(baseUser)).toBe('/dashboard')
   })
 
@@ -72,6 +72,10 @@ describe('permission helpers', () => {
       {
         path: '/dashboard',
         label: '工作台概览',
+      },
+      {
+        path: '/workbench',
+        label: '待办工作台',
       },
       {
         path: '/health',
