@@ -1,0 +1,22 @@
+{
+  "schema_version": "1",
+  "project": "mi",
+  "change": "first-release-acceptance-closure",
+  "commit_sha": "d11352c92ea3cf6043582e1188658dc17eb30659",
+  "test_type": "unit",
+  "status": "passed",
+  "started_at": "2026-04-28T05:50:19Z",
+  "finished_at": "2026-04-28T05:50:23Z",
+  "source": {
+    "kind": "local",
+    "workflow": "unit",
+    "run_id": "local"
+  },
+  "stats": {
+    "total": 808,
+    "passed": 808,
+    "failed": 0,
+    "skipped": 0
+  },
+  "artifacts": []
+}
