@@ -7,6 +7,7 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"mime/multipart"
 	"net/http"
 	"net/http/httptest"
@@ -21,6 +22,176 @@ import (
 	"github.com/xuri/excelize/v2"
 	"go.uber.org/zap"
 )
+
+func TestIntegrationDashboardWorkbenchRoute(t *testing.T) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+	defer cancel()
+
+	db := platformdb.NewTestDB(t, ctx, os.DirFS("../platform/database"))
+
+	router := httpapi.NewRouter(&config.Config{
+		App:  config.AppConfig{Name: "mi-backend", Environment: "test"},
+		Auth: config.AuthConfig{JWTSecret: "test-secret", TokenExpirySeconds: 3600},
+	}, db, zap.NewNop())
+
+	loginRecorder := httptest.NewRecorder()
+	loginRequest := httptest.NewRequest(http.MethodPost, "/api/auth/login", bytes.NewBufferString(`{"username":"admin","password":"password"}`))
+	loginRequest.Header.Set("Content-Type", "application/json")
+	router.ServeHTTP(loginRecorder, loginRequest)
+	if loginRecorder.Code != http.StatusOK {
+		t.Fatalf("expected 200 from login, got %d body=%s", loginRecorder.Code, loginRecorder.Body.String())
+	}
+
+	var loginBody struct {
+		Token string `json:"token"`
+	}
+	if err := json.Unmarshal(loginRecorder.Body.Bytes(), &loginBody); err != nil {
+		t.Fatalf("decode login response: %v", err)
+	}
+
+	type queueSection struct {
+		Count       int64 `json:"count"`
+		PreviewRows []struct {
+			ID          int64  `json:"id"`
+			Title       string `json:"title"`
+			RouteTarget string `json:"route_target"`
+		} `json:"preview_rows"`
+	}
+
+	type workbenchResponse struct {
+		Workbench struct {
+			PendingApprovals   queueSection `json:"pending_approvals"`
+			Receivables        queueSection `json:"receivables"`
+			OverdueReceivables queueSection `json:"overdue_receivables"`
+			ActiveLeases       queueSection `json:"active_leases"`
+		} `json:"workbench"`
+	}
+
+	requestWorkbench := func() workbenchResponse {
+		recorder := httptest.NewRecorder()
+		request := httptest.NewRequest(http.MethodGet, "/api/dashboard/workbench", nil)
+		request.Header.Set("Authorization", "Bearer "+loginBody.Token)
+		router.ServeHTTP(recorder, request)
+		if recorder.Code != http.StatusOK {
+			t.Fatalf("expected 200 from dashboard workbench endpoint, got %d body=%s", recorder.Code, recorder.Body.String())
+		}
+
+		var body workbenchResponse
+		if err := json.Unmarshal(recorder.Body.Bytes(), &body); err != nil {
+			t.Fatalf("decode workbench response: %v", err)
+		}
+		return body
+	}
+
+	emptyBody := requestWorkbench()
+	if emptyBody.Workbench.PendingApprovals.Count != 0 || len(emptyBody.Workbench.PendingApprovals.PreviewRows) != 0 {
+		t.Fatalf("expected empty pending approvals queue, got %+v", emptyBody.Workbench.PendingApprovals)
+	}
+	if emptyBody.Workbench.Receivables.Count != 0 || len(emptyBody.Workbench.Receivables.PreviewRows) != 0 {
+		t.Fatalf("expected empty receivables queue, got %+v", emptyBody.Workbench.Receivables)
+	}
+	if emptyBody.Workbench.OverdueReceivables.Count != 0 || len(emptyBody.Workbench.OverdueReceivables.PreviewRows) != 0 {
+		t.Fatalf("expected empty overdue receivables queue, got %+v", emptyBody.Workbench.OverdueReceivables)
+	}
+	if emptyBody.Workbench.ActiveLeases.Count != 0 || len(emptyBody.Workbench.ActiveLeases.PreviewRows) != 0 {
+		t.Fatalf("expected empty active leases queue, got %+v", emptyBody.Workbench.ActiveLeases)
+	}
+
+	lookupID := func(query string) int64 {
+		var id int64
+		if err := db.QueryRowContext(ctx, query).Scan(&id); err != nil {
+			t.Fatalf("lookup id with %q: %v", query, err)
+		}
+		return id
+	}
+
+	userID := lookupID("SELECT id FROM users ORDER BY id LIMIT 1")
+	departmentID := lookupID("SELECT id FROM departments ORDER BY id LIMIT 1")
+	storeID := lookupID("SELECT id FROM stores ORDER BY id LIMIT 1")
+	currencyTypeID := lookupID("SELECT id FROM currency_types ORDER BY id LIMIT 1")
+
+	var customerID int64
+	if err := db.QueryRowContext(ctx, "SELECT id FROM customers ORDER BY id LIMIT 1").Scan(&customerID); err != nil {
+		if err != sql.ErrNoRows {
+			t.Fatalf("lookup customer id: %v", err)
+		}
+		result, execErr := db.ExecContext(ctx, `INSERT INTO customers (code, name, department_id, status) VALUES (?, ?, ?, 'active')`, fmt.Sprintf("WB-CUST-%d", time.Now().UnixNano()), "Workbench Tenant", departmentID)
+		if execErr != nil {
+			t.Fatalf("insert customer: %v", execErr)
+		}
+		customerID, err = result.LastInsertId()
+		if err != nil {
+			t.Fatalf("customer last insert id: %v", err)
+		}
+	}
+
+	activeLeaseResult, err := db.ExecContext(ctx, `
+		INSERT INTO lease_contracts (lease_no, department_id, store_id, customer_id, tenant_name, start_date, end_date, status, created_by, updated_by)
+		VALUES (?, ?, ?, ?, ?, '2026-04-01', '2027-03-31', 'active', ?, ?)
+	`, fmt.Sprintf("WB-ACT-%d", time.Now().UnixNano()), departmentID, storeID, customerID, "Workbench Active Tenant", userID, userID)
+	if err != nil {
+		t.Fatalf("insert active lease: %v", err)
+	}
+	activeLeaseID, err := activeLeaseResult.LastInsertId()
+	if err != nil {
+		t.Fatalf("active lease last insert id: %v", err)
+	}
+
+	if _, err := db.ExecContext(ctx, `
+		INSERT INTO lease_contracts (lease_no, department_id, store_id, customer_id, tenant_name, start_date, end_date, status, submitted_at, created_by, updated_by)
+		VALUES (?, ?, ?, ?, ?, '2026-04-01', '2027-03-31', 'pending_approval', NOW(), ?, ?)
+	`, fmt.Sprintf("WB-PEND-%d", time.Now().UnixNano()), departmentID, storeID, customerID, "Workbench Pending Tenant", userID, userID); err != nil {
+		t.Fatalf("insert pending approval lease: %v", err)
+	}
+
+	billingRunResult, err := db.ExecContext(ctx, `
+		INSERT INTO billing_runs (period_start, period_end, status, triggered_by, generated_count, skipped_count)
+		VALUES ('2026-04-01', '2026-04-30', 'completed', ?, 0, 0)
+	`, userID)
+	if err != nil {
+		t.Fatalf("insert billing run: %v", err)
+	}
+	billingRunID, err := billingRunResult.LastInsertId()
+	if err != nil {
+		t.Fatalf("billing run last insert id: %v", err)
+	}
+
+	billingDocumentResult, err := db.ExecContext(ctx, `
+		INSERT INTO billing_documents (document_type, document_no, billing_run_id, lease_contract_id, tenant_name, period_start, period_end, total_amount, currency_type_id, status, submitted_at, created_by, updated_by)
+		VALUES ('invoice', ?, ?, ?, ?, '2026-04-01', '2026-04-30', 1200.00, ?, 'pending_approval', NOW(), ?, ?)
+	`, fmt.Sprintf("WB-INV-%d", time.Now().UnixNano()), billingRunID, activeLeaseID, "Workbench Active Tenant", currencyTypeID, userID, userID)
+	if err != nil {
+		t.Fatalf("insert billing document: %v", err)
+	}
+	billingDocumentID, err := billingDocumentResult.LastInsertId()
+	if err != nil {
+		t.Fatalf("billing document last insert id: %v", err)
+	}
+
+	if _, err := db.ExecContext(ctx, `
+		INSERT INTO ar_open_items (lease_contract_id, billing_document_id, customer_id, department_id, charge_type, due_date, outstanding_amount, is_deposit)
+		VALUES (?, ?, ?, ?, 'rent', DATE_SUB(CURDATE(), INTERVAL 3 DAY), 800.00, FALSE)
+	`, activeLeaseID, billingDocumentID, customerID, departmentID); err != nil {
+		t.Fatalf("insert receivable: %v", err)
+	}
+
+	populatedBody := requestWorkbench()
+	if populatedBody.Workbench.PendingApprovals.Count < 2 {
+		t.Fatalf("expected pending approvals count >= 2, got %d", populatedBody.Workbench.PendingApprovals.Count)
+	}
+	if populatedBody.Workbench.Receivables.Count < 1 {
+		t.Fatalf("expected receivables count >= 1, got %d", populatedBody.Workbench.Receivables.Count)
+	}
+	if populatedBody.Workbench.OverdueReceivables.Count < 1 {
+		t.Fatalf("expected overdue receivables count >= 1, got %d", populatedBody.Workbench.OverdueReceivables.Count)
+	}
+	if populatedBody.Workbench.ActiveLeases.Count < 1 {
+		t.Fatalf("expected active leases count >= 1, got %d", populatedBody.Workbench.ActiveLeases.Count)
+	}
+	if len(populatedBody.Workbench.PendingApprovals.PreviewRows) == 0 || len(populatedBody.Workbench.Receivables.PreviewRows) == 0 || len(populatedBody.Workbench.OverdueReceivables.PreviewRows) == 0 || len(populatedBody.Workbench.ActiveLeases.PreviewRows) == 0 {
+		t.Fatalf("expected preview rows in populated response, got %+v", populatedBody.Workbench)
+	}
+}
 
 func TestIntegrationAuthAndOrgRoutes(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)

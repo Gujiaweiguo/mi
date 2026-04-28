@@ -141,6 +141,7 @@ func NewRouter(cfg *config.Config, db *sql.DB, logger *zap.Logger) *gin.Engine {
 	dashboardGroup := api.Group("/dashboard")
 	dashboardGroup.Use(middleware.RequireAuth(authService, authRepository))
 	dashboardGroup.GET("/summary", dashboardHandler.Summary)
+	dashboardGroup.GET("/workbench", dashboardHandler.Workbench)
 
 	orgGroup := api.Group("/org")
 	orgGroup.Use(middleware.RequireAuth(authService, authRepository))
