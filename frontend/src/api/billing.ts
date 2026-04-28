@@ -7,8 +7,12 @@ export interface ChargeLine {
   lease_contract_id: number
   lease_no: string
   tenant_name: string
-  lease_term_id: number
+  lease_term_id: number | null
   charge_type: string
+  charge_source: string
+  overtime_bill_id: number | null
+  overtime_formula_id: number | null
+  overtime_charge_id: number | null
   period_start: string
   period_end: string
   quantity_days: number

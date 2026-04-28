@@ -2,7 +2,12 @@ package docoutput
 
 import (
 	"context"
+	"strings"
 	"testing"
+	"time"
+
+	"github.com/Gujiaweiguo/mi/backend/internal/billing"
+	"github.com/Gujiaweiguo/mi/backend/internal/invoice"
 )
 
 func TestTemplateFromInputValid(t *testing.T) {
@@ -28,6 +33,39 @@ func TestTemplateFromInputValid(t *testing.T) {
 	}
 	if tmpl.OutputMode != OutputModeInvoiceBatch {
 		t.Fatalf("expected invoice_batch output mode, got %s", tmpl.OutputMode)
+	}
+}
+
+func TestTemplateFromInputValidLeaseContract(t *testing.T) {
+	input := UpsertTemplateInput{
+		Code:         "lease-contract-a4",
+		Name:         "Lease Contract A4",
+		DocumentType: "lease_contract",
+		OutputMode:   OutputModeLeaseContract,
+		Title:        "Lease Contract Print",
+		ActorUserID:  1,
+	}
+	tmpl, err := templateFromInput(input)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if tmpl.DocumentType != "lease_contract" || tmpl.OutputMode != OutputModeLeaseContract {
+		t.Fatalf("expected lease contract template, got documentType=%s outputMode=%s", tmpl.DocumentType, tmpl.OutputMode)
+	}
+}
+
+func TestTemplateFromInputRejectsMismatchedDocumentTypeAndOutputMode(t *testing.T) {
+	input := UpsertTemplateInput{
+		Code:         "lease-contract-bad-mode",
+		Name:         "Lease Contract Bad Mode",
+		DocumentType: "lease_contract",
+		OutputMode:   OutputModeInvoiceDetail,
+		Title:        "Lease Contract Print",
+		ActorUserID:  1,
+	}
+	_, err := templateFromInput(input)
+	if err != ErrInvalidTemplate {
+		t.Fatalf("expected ErrInvalidTemplate, got %v", err)
 	}
 }
 
@@ -119,5 +157,38 @@ func TestRenderHTMLInvalidInput(t *testing.T) {
 	_, err := svc.RenderHTML(context.TODO(), RenderInput{TemplateCode: "", ActorUserID: 0})
 	if err != ErrInvalidRenderInput {
 		t.Fatalf("expected ErrInvalidRenderInput, got %v", err)
+	}
+}
+
+func TestPrintableFromInvoiceCarriesChargeSource(t *testing.T) {
+	doc := invoice.Document{
+		DocumentType: invoice.DocumentTypeInvoice,
+		Status:       invoice.StatusApproved,
+		TenantName:   "Harbor Foods",
+		PeriodStart:  time.Date(2026, 4, 1, 0, 0, 0, 0, time.UTC),
+		PeriodEnd:    time.Date(2026, 4, 30, 0, 0, 0, 0, time.UTC),
+		TotalAmount:  600,
+		Lines: []invoice.Line{{
+			ChargeType:   "overtime_rent",
+			ChargeSource: billing.ChargeSourceOvertime,
+			PeriodStart:  time.Date(2026, 4, 1, 0, 0, 0, 0, time.UTC),
+			PeriodEnd:    time.Date(2026, 4, 30, 0, 0, 0, 0, time.UTC),
+			QuantityDays: 30,
+			UnitAmount:   20,
+			Amount:       600,
+		}},
+	}
+
+	printable := printableFromInvoice(doc)
+	if len(printable.Lines) != 1 || printable.Lines[0].ChargeSource != "overtime" {
+		t.Fatalf("expected overtime charge source on printable line, got %#v", printable)
+	}
+	htmlBytes, err := renderHTML(&Template{Title: "Invoice Print", HeaderLines: []string{"Header"}, FooterLines: []string{"Footer"}}, []printableDocument{printable})
+	if err != nil {
+		t.Fatalf("render html: %v", err)
+	}
+	html := string(htmlBytes)
+	if !strings.Contains(html, "Source") || !strings.Contains(html, "overtime") {
+		t.Fatalf("expected rendered html to include source column and overtime label, got %s", html)
 	}
 }

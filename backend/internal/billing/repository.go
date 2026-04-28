@@ -51,9 +51,10 @@ func (r *Repository) InsertChargeLine(ctx context.Context, tx *sql.Tx, line *Cha
 	result, err := tx.ExecContext(ctx, `
 		INSERT INTO billing_charge_lines (
 			billing_run_id, lease_contract_id, lease_term_id, charge_type, period_start, period_end,
-			quantity_days, unit_amount, amount, currency_type_id, source_effective_version
-		) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-	`, line.BillingRunID, line.LeaseContractID, line.LeaseTermID, line.ChargeType, line.PeriodStart, line.PeriodEnd, line.QuantityDays, line.UnitAmount, line.Amount, line.CurrencyTypeID, line.SourceEffectiveVersion)
+			quantity_days, unit_amount, amount, currency_type_id, source_effective_version,
+			charge_source, overtime_bill_id, overtime_formula_id, overtime_charge_id
+		) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+	`, line.BillingRunID, line.LeaseContractID, sqlutil.Int64PointerValue(line.LeaseTermID), line.ChargeType, line.PeriodStart, line.PeriodEnd, line.QuantityDays, line.UnitAmount, line.Amount, line.CurrencyTypeID, line.SourceEffectiveVersion, line.ChargeSource, sqlutil.Int64PointerValue(line.OvertimeBillID), sqlutil.Int64PointerValue(line.OvertimeFormulaID), sqlutil.Int64PointerValue(line.OvertimeChargeID))
 	if err != nil {
 		return err
 	}
@@ -158,7 +159,8 @@ func (r *Repository) ListChargeLines(ctx context.Context, filter ChargeListFilte
 	queryArgs := append(append([]any{}, args...), pageSize, (page-1)*pageSize)
 	rows, err := r.db.QueryContext(ctx, `
 		SELECT bcl.id, bcl.billing_run_id, bcl.lease_contract_id, lc.lease_no, lc.tenant_name, bcl.lease_term_id,
-			bcl.charge_type, bcl.period_start, bcl.period_end, bcl.quantity_days, bcl.unit_amount, bcl.amount,
+			bcl.charge_type, bcl.charge_source, bcl.overtime_bill_id, bcl.overtime_formula_id, bcl.overtime_charge_id,
+			bcl.period_start, bcl.period_end, bcl.quantity_days, bcl.unit_amount, bcl.amount,
 			bcl.currency_type_id, bcl.source_effective_version, bcl.created_at
 		FROM billing_charge_lines bcl
 		INNER JOIN lease_contracts lc ON lc.id = bcl.lease_contract_id
@@ -174,9 +176,17 @@ func (r *Repository) ListChargeLines(ctx context.Context, filter ChargeListFilte
 	items := make([]ChargeLine, 0)
 	for rows.Next() {
 		var line ChargeLine
-		if err := rows.Scan(&line.ID, &line.BillingRunID, &line.LeaseContractID, &line.LeaseNo, &line.TenantName, &line.LeaseTermID, &line.ChargeType, &line.PeriodStart, &line.PeriodEnd, &line.QuantityDays, &line.UnitAmount, &line.Amount, &line.CurrencyTypeID, &line.SourceEffectiveVersion, &line.CreatedAt); err != nil {
+		var leaseTermID sql.NullInt64
+		var overtimeBillID sql.NullInt64
+		var overtimeFormulaID sql.NullInt64
+		var overtimeChargeID sql.NullInt64
+		if err := rows.Scan(&line.ID, &line.BillingRunID, &line.LeaseContractID, &line.LeaseNo, &line.TenantName, &leaseTermID, &line.ChargeType, &line.ChargeSource, &overtimeBillID, &overtimeFormulaID, &overtimeChargeID, &line.PeriodStart, &line.PeriodEnd, &line.QuantityDays, &line.UnitAmount, &line.Amount, &line.CurrencyTypeID, &line.SourceEffectiveVersion, &line.CreatedAt); err != nil {
 			return nil, fmt.Errorf("scan billing charge line: %w", err)
 		}
+		line.LeaseTermID = sqlutil.NullInt64Pointer(leaseTermID)
+		line.OvertimeBillID = sqlutil.NullInt64Pointer(overtimeBillID)
+		line.OvertimeFormulaID = sqlutil.NullInt64Pointer(overtimeFormulaID)
+		line.OvertimeChargeID = sqlutil.NullInt64Pointer(overtimeChargeID)
 		items = append(items, line)
 	}
 	if err := rows.Err(); err != nil {
@@ -196,7 +206,8 @@ func (r *Repository) GetChargeLinesByIDs(ctx context.Context, ids []int64) ([]Ch
 	}
 	rows, err := r.db.QueryContext(ctx, `
 		SELECT bcl.id, bcl.billing_run_id, bcl.lease_contract_id, lc.lease_no, lc.tenant_name, bcl.lease_term_id,
-			bcl.charge_type, bcl.period_start, bcl.period_end, bcl.quantity_days, bcl.unit_amount, bcl.amount,
+			bcl.charge_type, bcl.charge_source, bcl.overtime_bill_id, bcl.overtime_formula_id, bcl.overtime_charge_id,
+			bcl.period_start, bcl.period_end, bcl.quantity_days, bcl.unit_amount, bcl.amount,
 			bcl.currency_type_id, bcl.source_effective_version, bcl.created_at
 		FROM billing_charge_lines bcl
 		INNER JOIN lease_contracts lc ON lc.id = bcl.lease_contract_id
@@ -210,9 +221,17 @@ func (r *Repository) GetChargeLinesByIDs(ctx context.Context, ids []int64) ([]Ch
 	items := make([]ChargeLine, 0, len(ids))
 	for rows.Next() {
 		var line ChargeLine
-		if err := rows.Scan(&line.ID, &line.BillingRunID, &line.LeaseContractID, &line.LeaseNo, &line.TenantName, &line.LeaseTermID, &line.ChargeType, &line.PeriodStart, &line.PeriodEnd, &line.QuantityDays, &line.UnitAmount, &line.Amount, &line.CurrencyTypeID, &line.SourceEffectiveVersion, &line.CreatedAt); err != nil {
+		var leaseTermID sql.NullInt64
+		var overtimeBillID sql.NullInt64
+		var overtimeFormulaID sql.NullInt64
+		var overtimeChargeID sql.NullInt64
+		if err := rows.Scan(&line.ID, &line.BillingRunID, &line.LeaseContractID, &line.LeaseNo, &line.TenantName, &leaseTermID, &line.ChargeType, &line.ChargeSource, &overtimeBillID, &overtimeFormulaID, &overtimeChargeID, &line.PeriodStart, &line.PeriodEnd, &line.QuantityDays, &line.UnitAmount, &line.Amount, &line.CurrencyTypeID, &line.SourceEffectiveVersion, &line.CreatedAt); err != nil {
 			return nil, fmt.Errorf("scan billing charge line by id: %w", err)
 		}
+		line.LeaseTermID = sqlutil.NullInt64Pointer(leaseTermID)
+		line.OvertimeBillID = sqlutil.NullInt64Pointer(overtimeBillID)
+		line.OvertimeFormulaID = sqlutil.NullInt64Pointer(overtimeFormulaID)
+		line.OvertimeChargeID = sqlutil.NullInt64Pointer(overtimeChargeID)
 		items = append(items, line)
 	}
 	if err := rows.Err(); err != nil {
@@ -225,4 +244,3 @@ func (r *Repository) GetChargeLinesByIDs(ctx context.Context, ids []int64) ([]Ch
 	sort.Slice(items, func(i, j int) bool { return order[items[i].ID] < order[items[j].ID] })
 	return items, nil
 }
-

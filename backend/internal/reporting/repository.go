@@ -428,7 +428,7 @@ func (r *Repository) QueryR06(ctx context.Context, input QueryInput) ([]R06Row, 
 				GROUP BY lcu.lease_contract_id
 			) ls ON ls.lease_contract_id = bd.lease_contract_id
 			WHERE bd.status = 'approved'
-			  AND bdl.charge_type = 'rent'
+			  AND (bdl.charge_type = 'rent' OR bdl.charge_source = 'overtime')
 			  AND DATE_FORMAT(bdl.period_start, '%Y-%m') = ?
 			GROUP BY ls.store_id
 		) period_recv ON period_recv.store_id = s.id

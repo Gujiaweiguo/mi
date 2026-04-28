@@ -60,13 +60,15 @@ const formRules: FormRules = {
 
 const documentTypeOptions = [
   { value: 'invoice', labelKey: 'printPreview.dialog.documentTypeOptions.invoice' },
-  { value: 'receipt', labelKey: 'printPreview.dialog.documentTypeOptions.receipt' },
+  { value: 'bill', labelKey: 'printPreview.dialog.documentTypeOptions.bill' },
   { value: 'lease_contract', labelKey: 'printPreview.dialog.documentTypeOptions.leaseContract' },
 ] as const
 
 const outputModeOptions = [
-  { value: 'html', labelKey: 'printPreview.dialog.outputModeOptions.html' },
-  { value: 'pdf', labelKey: 'printPreview.dialog.outputModeOptions.pdf' },
+  { value: 'invoice_batch', labelKey: 'printPreview.dialog.outputModeOptions.invoiceBatch' },
+  { value: 'invoice_detail', labelKey: 'printPreview.dialog.outputModeOptions.invoiceDetail' },
+  { value: 'bill_state', labelKey: 'printPreview.dialog.outputModeOptions.billState' },
+  { value: 'lease_contract', labelKey: 'printPreview.dialog.outputModeOptions.leaseContract' },
 ] as const
 
 const dialogTitle = computed(() =>

@@ -4,10 +4,14 @@ import "time"
 
 type RunStatus string
 
+type ChargeSource string
+
 const (
-	RunStatusCompleted RunStatus = "completed"
-	ChargeTypeRent     string    = "rent"
-	DateLayout         string    = "2006-01-02"
+	RunStatusCompleted  RunStatus    = "completed"
+	ChargeTypeRent      string       = "rent"
+	ChargeSourceStandard ChargeSource = "standard"
+	ChargeSourceOvertime ChargeSource = "overtime"
+	DateLayout          string       = "2006-01-02"
 )
 
 type Run struct {
@@ -28,8 +32,12 @@ type ChargeLine struct {
 	LeaseContractID        int64     `json:"lease_contract_id"`
 	LeaseNo                string    `json:"lease_no"`
 	TenantName             string    `json:"tenant_name"`
-	LeaseTermID            int64     `json:"lease_term_id"`
-	ChargeType             string    `json:"charge_type"`
+	LeaseTermID            *int64       `json:"lease_term_id,omitempty"`
+	ChargeType             string       `json:"charge_type"`
+	ChargeSource           ChargeSource `json:"charge_source"`
+	OvertimeBillID         *int64       `json:"overtime_bill_id,omitempty"`
+	OvertimeFormulaID      *int64       `json:"overtime_formula_id,omitempty"`
+	OvertimeChargeID       *int64       `json:"overtime_charge_id,omitempty"`
 	PeriodStart            time.Time `json:"period_start"`
 	PeriodEnd              time.Time `json:"period_end"`
 	QuantityDays           int       `json:"quantity_days"`

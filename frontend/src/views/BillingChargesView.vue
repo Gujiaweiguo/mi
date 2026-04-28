@@ -75,6 +75,8 @@ const formatAmount = (value: number) =>
     maximumFractionDigits: 2,
   }).format(value)
 
+const sourceTagType = (source: string) => (source === 'overtime' ? 'warning' : 'info')
+
 const loadCharges = async () => {
   if (isPeriodRangeInvalid.value) {
     feedback.value = {
@@ -285,6 +287,13 @@ onMounted(() => {
           <el-table-column prop="lease_no" :label="t('billingCharges.columns.leaseNo')" min-width="150" />
           <el-table-column prop="tenant_name" :label="t('billingCharges.columns.tenant')" min-width="220" />
           <el-table-column prop="charge_type" :label="t('billingCharges.columns.chargeType')" min-width="150" />
+          <el-table-column label="Source" min-width="120">
+            <template #default="scope">
+              <el-tag :type="sourceTagType(scope.row.charge_source)" effect="plain">
+                {{ scope.row.charge_source === 'overtime' ? 'OT' : 'STD' }}
+              </el-tag>
+            </template>
+          </el-table-column>
           <el-table-column :label="t('billingCharges.fields.period')" min-width="220">
           <template #default="scope">
             {{ scope.row.period_start }} → {{ scope.row.period_end }}

@@ -10,9 +10,12 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"time"
 
+	"github.com/Gujiaweiguo/mi/backend/internal/billing"
 	"github.com/Gujiaweiguo/mi/backend/internal/config"
 	"github.com/Gujiaweiguo/mi/backend/internal/invoice"
+	"github.com/Gujiaweiguo/mi/backend/internal/lease"
 	"github.com/Gujiaweiguo/mi/backend/internal/pagination"
 )
 
@@ -26,11 +29,12 @@ var (
 type Service struct {
 	repository     *Repository
 	invoiceService *invoice.Service
+	leaseService   *lease.Service
 	storage        config.StorageConfig
 }
 
-func NewService(repository *Repository, invoiceService *invoice.Service, storage config.StorageConfig) *Service {
-	return &Service{repository: repository, invoiceService: invoiceService, storage: storage}
+func NewService(repository *Repository, invoiceService *invoice.Service, leaseService *lease.Service, storage config.StorageConfig) *Service {
+	return &Service{repository: repository, invoiceService: invoiceService, leaseService: leaseService, storage: storage}
 }
 
 func (s *Service) UpsertTemplate(ctx context.Context, input UpsertTemplateInput) (*Template, error) {
@@ -80,8 +84,8 @@ func (s *Service) RenderPDF(ctx context.Context, input RenderInput) (*Artifact, 
 	return &Artifact{FileName: strings.TrimSuffix(htmlArtifact.FileName, ".html") + ".pdf", ContentType: "application/pdf", Body: pdfBytes}, nil
 }
 
-func (s *Service) loadRenderableDocuments(ctx context.Context, input RenderInput) (*Template, []invoice.Document, error) {
-	if strings.TrimSpace(input.TemplateCode) == "" || input.ActorUserID == 0 || len(input.DocumentIDs) == 0 || s.invoiceService == nil {
+func (s *Service) loadRenderableDocuments(ctx context.Context, input RenderInput) (*Template, []printableDocument, error) {
+	if strings.TrimSpace(input.TemplateCode) == "" || input.ActorUserID == 0 || len(input.DocumentIDs) == 0 {
 		return nil, nil, ErrInvalidRenderInput
 	}
 	templateValue, err := s.repository.FindTemplateByCode(ctx, strings.TrimSpace(input.TemplateCode))
@@ -91,21 +95,49 @@ func (s *Service) loadRenderableDocuments(ctx context.Context, input RenderInput
 	if templateValue == nil {
 		return nil, nil, ErrTemplateNotFound
 	}
-	documents := make([]invoice.Document, 0, len(input.DocumentIDs))
+	documents := make([]printableDocument, 0, len(input.DocumentIDs))
 	for _, documentID := range normalizeDocumentIDs(input.DocumentIDs) {
-		document, err := s.invoiceService.GetDocument(ctx, documentID)
+		document, err := s.loadRenderableDocument(ctx, templateValue.DocumentType, documentID)
 		if err != nil {
 			return nil, nil, err
 		}
-		if document.Status != invoice.StatusApproved || string(document.DocumentType) != templateValue.DocumentType {
-			return nil, nil, ErrInvalidRenderInput
-		}
-		documents = append(documents, *document)
+		documents = append(documents, document)
 	}
 	if len(documents) == 0 {
 		return nil, nil, ErrInvalidRenderInput
 	}
 	return templateValue, documents, nil
+}
+
+func (s *Service) loadRenderableDocument(ctx context.Context, documentType string, documentID int64) (printableDocument, error) {
+	switch documentType {
+	case string(invoice.DocumentTypeInvoice), string(invoice.DocumentTypeBill):
+		if s.invoiceService == nil {
+			return printableDocument{}, ErrInvalidRenderInput
+		}
+		document, err := s.invoiceService.GetDocument(ctx, documentID)
+		if err != nil {
+			return printableDocument{}, err
+		}
+		if document.Status != invoice.StatusApproved || string(document.DocumentType) != documentType {
+			return printableDocument{}, ErrInvalidRenderInput
+		}
+		return printableFromInvoice(*document), nil
+	case lease.DocumentTypeContract:
+		if s.leaseService == nil {
+			return printableDocument{}, ErrInvalidRenderInput
+		}
+		contract, err := s.leaseService.GetLease(ctx, documentID)
+		if err != nil {
+			return printableDocument{}, err
+		}
+		if contract.Status != lease.StatusActive {
+			return printableDocument{}, ErrInvalidRenderInput
+		}
+		return printableFromLease(*contract), nil
+	default:
+		return printableDocument{}, ErrInvalidRenderInput
+	}
 }
 
 func templateFromInput(input UpsertTemplateInput) (*Template, error) {
@@ -116,22 +148,65 @@ func templateFromInput(input UpsertTemplateInput) (*Template, error) {
 	if code == "" || name == "" || title == "" || input.ActorUserID == 0 {
 		return nil, ErrInvalidTemplate
 	}
-	if documentType != string(invoice.DocumentTypeInvoice) && documentType != string(invoice.DocumentTypeBill) {
+	if !validDocumentType(documentType) {
 		return nil, ErrInvalidTemplate
 	}
-	if input.OutputMode != OutputModeInvoiceBatch && input.OutputMode != OutputModeInvoiceDetail && input.OutputMode != OutputModeBillState {
+	if !validOutputMode(documentType, input.OutputMode) {
 		return nil, ErrInvalidTemplate
 	}
 	return &Template{Code: code, Name: name, DocumentType: documentType, OutputMode: input.OutputMode, Status: TemplateStatusActive, Title: title, Subtitle: strings.TrimSpace(input.Subtitle), HeaderLines: input.HeaderLines, FooterLines: input.FooterLines, CreatedBy: input.ActorUserID, UpdatedBy: input.ActorUserID}, nil
 }
 
+func validDocumentType(documentType string) bool {
+	switch documentType {
+	case string(invoice.DocumentTypeInvoice), string(invoice.DocumentTypeBill), lease.DocumentTypeContract:
+		return true
+	default:
+		return false
+	}
+}
+
+func validOutputMode(documentType string, outputMode OutputMode) bool {
+	switch documentType {
+	case string(invoice.DocumentTypeInvoice):
+		return outputMode == OutputModeInvoiceBatch || outputMode == OutputModeInvoiceDetail
+	case string(invoice.DocumentTypeBill):
+		return outputMode == OutputModeBillState
+	case lease.DocumentTypeContract:
+		return outputMode == OutputModeLeaseContract
+	default:
+		return false
+	}
+}
+
+type printableDocument struct {
+	DocumentNo   string
+	DocumentType string
+	TenantName   string
+	Status       string
+	PeriodStart  time.Time
+	PeriodEnd    time.Time
+	TotalAmount  float64
+	Lines        []printableLine
+}
+
+type printableLine struct {
+	ChargeType   string
+	ChargeSource string
+	PeriodStart  time.Time
+	PeriodEnd    time.Time
+	QuantityDays int
+	UnitAmount   float64
+	Amount       float64
+}
+
 type renderData struct {
 	Template  *Template
-	Documents []invoice.Document
+	Documents []printableDocument
 	Generated string
 }
 
-func renderHTML(templateValue *Template, documents []invoice.Document) ([]byte, error) {
+func renderHTML(templateValue *Template, documents []printableDocument) ([]byte, error) {
 	tmpl, err := template.New("document-output").Funcs(template.FuncMap{"formatDate": func(value interface{}) string {
 		switch v := value.(type) {
 		case string:
@@ -150,6 +225,29 @@ func renderHTML(templateValue *Template, documents []invoice.Document) ([]byte, 
 		return nil, fmt.Errorf("execute document output template: %w", err)
 	}
 	return buffer.Bytes(), nil
+}
+
+func printableFromInvoice(document invoice.Document) printableDocument {
+	documentNo := ""
+	if document.DocumentNo != nil {
+		documentNo = *document.DocumentNo
+	}
+	lines := make([]printableLine, 0, len(document.Lines))
+	for _, line := range document.Lines {
+		lines = append(lines, printableLine{ChargeType: line.ChargeType, ChargeSource: string(line.ChargeSource), PeriodStart: line.PeriodStart, PeriodEnd: line.PeriodEnd, QuantityDays: line.QuantityDays, UnitAmount: line.UnitAmount, Amount: line.Amount})
+	}
+	return printableDocument{DocumentNo: documentNo, DocumentType: string(document.DocumentType), TenantName: document.TenantName, Status: string(document.Status), PeriodStart: document.PeriodStart, PeriodEnd: document.PeriodEnd, TotalAmount: document.TotalAmount, Lines: lines}
+}
+
+func printableFromLease(contract lease.Contract) printableDocument {
+	lines := make([]printableLine, 0, len(contract.Terms))
+	totalAmount := 0.0
+	for _, term := range contract.Terms {
+		quantityDays := int(term.EffectiveTo.Sub(term.EffectiveFrom).Hours()/24) + 1
+		lines = append(lines, printableLine{ChargeType: string(term.TermType), ChargeSource: string(billing.ChargeSourceStandard), PeriodStart: term.EffectiveFrom, PeriodEnd: term.EffectiveTo, QuantityDays: quantityDays, UnitAmount: term.Amount, Amount: term.Amount})
+		totalAmount += term.Amount
+	}
+	return printableDocument{DocumentNo: contract.LeaseNo, DocumentType: lease.DocumentTypeContract, TenantName: contract.TenantName, Status: string(contract.Status), PeriodStart: contract.StartDate, PeriodEnd: contract.EndDate, TotalAmount: totalAmount, Lines: lines}
 }
 
 func renderPDF(ctx context.Context, storage config.StorageConfig, baseFileName string, htmlBytes []byte) ([]byte, error) {
@@ -245,6 +343,7 @@ const documentHTMLTemplate = `<!DOCTYPE html>
       <thead>
         <tr>
           <th>Charge Type</th>
+          <th>Source</th>
           <th>Period Start</th>
           <th>Period End</th>
           <th>Quantity Days</th>
@@ -256,6 +355,7 @@ const documentHTMLTemplate = `<!DOCTYPE html>
         {{ range .Lines }}
         <tr>
           <td>{{ .ChargeType }}</td>
+          <td>{{ .ChargeSource }}</td>
           <td>{{ formatDate .PeriodStart }}</td>
           <td>{{ formatDate .PeriodEnd }}</td>
           <td>{{ .QuantityDays }}</td>

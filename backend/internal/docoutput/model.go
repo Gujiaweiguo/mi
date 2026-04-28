@@ -18,6 +18,7 @@ const (
 	OutputModeInvoiceBatch  OutputMode = "invoice_batch"
 	OutputModeInvoiceDetail OutputMode = "invoice_detail"
 	OutputModeBillState     OutputMode = "bill_state"
+	OutputModeLeaseContract OutputMode = "lease_contract"
 )
 
 type Template struct {

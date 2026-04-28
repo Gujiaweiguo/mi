@@ -550,6 +550,36 @@ func TestReportingServiceQueryAndExportCoreReports(t *testing.T) {
 	})
 }
 
+func TestReportingServiceR06IncludesOvertimeBackedInvoiceAmounts(t *testing.T) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+	defer cancel()
+
+	db := platformdb.NewTestDB(t, ctx, os.DirFS("../platform/database"))
+	workflowService := workflow.NewService(db, workflow.NewRepository(db))
+	leaseService := lease.NewService(db, lease.NewRepository(db), workflowService)
+	service := reporting.NewService(reporting.NewRepository(db))
+
+	activeLease := activateReportingLease(t, ctx, leaseService, workflowService)
+	seedBudgetFacts(t, ctx, db, activeLease.ID)
+	seedOvertimeBudgetFact(t, ctx, db, activeLease.ID)
+
+	periodStart, periodEnd, periodLabel, err := reporting.ParsePeriod("2026-04")
+	if err != nil {
+		t.Fatalf("parse period: %v", err)
+	}
+	storeID := int64(101)
+	result, err := service.QueryReport(ctx, reporting.QueryInput{ReportID: reporting.ReportR06, PeriodStart: periodStart, PeriodEnd: periodEnd, PeriodLabel: periodLabel, StoreID: &storeID, RequestedByID: 101})
+	if err != nil {
+		t.Fatalf("query R06: %v", err)
+	}
+	if len(result.Rows) != 1 {
+		t.Fatalf("expected one R06 row, got %#v", result.Rows)
+	}
+	if got := rowFloat64(t, result.Rows[0], "period_receivable"); got != 9600 {
+		t.Fatalf("expected overtime-backed R06 receivable 9600, got %v", got)
+	}
+}
+
 func seedSupplementalReportingUnits(t *testing.T, ctx context.Context, db *sql.DB) {
 	t.Helper()
 	if _, err := db.ExecContext(ctx, `INSERT INTO shop_types (id, code, name, color_hex, status) VALUES (102, 'zero-area', 'Zero Area', '#999999', 'active') ON DUPLICATE KEY UPDATE code = VALUES(code), name = VALUES(name), color_hex = VALUES(color_hex), status = VALUES(status)`); err != nil {
@@ -750,6 +780,37 @@ func seedBudgetFacts(t *testing.T, ctx context.Context, db *sql.DB, leaseID int6
 	}
 	if _, err := db.ExecContext(ctx, `INSERT INTO ar_payment_entries (billing_document_id, lease_contract_id, payment_date, amount, note, recorded_by, idempotency_key) VALUES (?, ?, '2026-03-20', 8000.00, 'seed payment march', 101, 'seed-payment-march')`, priorDocumentID, leaseID); err != nil {
 		t.Fatalf("seed march payment entry: %v", err)
+	}
+}
+
+func seedOvertimeBudgetFact(t *testing.T, ctx context.Context, db *sql.DB, leaseID int64) {
+	t.Helper()
+	result, err := db.ExecContext(ctx, `INSERT INTO billing_runs (period_start, period_end, status, triggered_by, generated_count, skipped_count) VALUES ('2026-04-01', '2026-04-30', 'completed', 101, 1, 0)`)
+	if err != nil {
+		t.Fatalf("seed overtime billing run: %v", err)
+	}
+	billingRunID, err := result.LastInsertId()
+	if err != nil {
+		t.Fatalf("overtime billing run id: %v", err)
+	}
+	chargeResult, err := db.ExecContext(ctx, `INSERT INTO billing_charge_lines (billing_run_id, lease_contract_id, lease_term_id, charge_type, charge_source, period_start, period_end, quantity_days, unit_amount, amount, currency_type_id, source_effective_version) VALUES (?, ?, NULL, 'overtime_rent', 'overtime', '2026-04-01', '2026-04-30', 30, 20.00, 600.00, 101, 1)`, billingRunID, leaseID)
+	if err != nil {
+		t.Fatalf("seed overtime billing charge line: %v", err)
+	}
+	chargeLineID, err := chargeResult.LastInsertId()
+	if err != nil {
+		t.Fatalf("overtime billing charge line id: %v", err)
+	}
+	docResult, err := db.ExecContext(ctx, `INSERT INTO billing_documents (document_type, document_no, billing_run_id, lease_contract_id, tenant_name, period_start, period_end, total_amount, currency_type_id, status, approved_at, created_by, updated_by) VALUES ('invoice', 'INV-2026-04-OT', ?, ?, 'Report Tenant', '2026-04-01', '2026-04-30', 600.00, 101, 'approved', NOW(), 101, 101)`, billingRunID, leaseID)
+	if err != nil {
+		t.Fatalf("seed overtime billing document: %v", err)
+	}
+	documentID, err := docResult.LastInsertId()
+	if err != nil {
+		t.Fatalf("overtime billing document id: %v", err)
+	}
+	if _, err := db.ExecContext(ctx, `INSERT INTO billing_document_lines (billing_document_id, billing_charge_line_id, charge_type, charge_source, period_start, period_end, quantity_days, unit_amount, amount) VALUES (?, ?, 'overtime_rent', 'overtime', '2026-04-01', '2026-04-30', 30, 20.00, 600.00)`, documentID, chargeLineID); err != nil {
+		t.Fatalf("seed overtime billing document line: %v", err)
 	}
 }
 
