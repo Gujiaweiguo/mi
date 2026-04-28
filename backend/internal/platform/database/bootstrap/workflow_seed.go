@@ -43,7 +43,8 @@ func seedWorkflowDefinitions() Seed {
 				VALUES
 				  (101, 101, 'lease-approval', 'Lease Approval', 'application', TRUE, 'active', TRUE, 'lease_contract'),
 				  (102, 101, 'lease-change', 'Lease Change Approval', 'change_request', FALSE, 'active', TRUE, 'lease_change'),
-				  (103, 102, 'invoice-approval', 'Invoice Approval', 'application', FALSE, 'active', TRUE, 'invoice')
+				  (103, 102, 'invoice-approval', 'Invoice Approval', 'application', FALSE, 'active', TRUE, 'invoice'),
+				  (104, 102, 'overtime-approval', 'Overtime Approval', 'application', FALSE, 'active', TRUE, 'overtime_bill')
 				ON DUPLICATE KEY UPDATE name = VALUES(name), voucher_type = VALUES(voucher_type), status = VALUES(status), transitions_enabled = VALUES(transitions_enabled), process_class = VALUES(process_class)
 			`)
 			return err
@@ -62,7 +63,9 @@ func seedWorkflowNodes() Seed {
 					  (102, 101, 101, 103, 2, 'lease-finance', 'Lease Finance Review', FALSE, TRUE, TRUE, 'lease_contract'),
 					  (104, 102, 101, 102, 1, 'lease-change-manager', 'Lease Change Manager Review', TRUE, FALSE, FALSE, 'lease_change'),
 					  (105, 102, 101, 103, 2, 'lease-change-finance', 'Lease Change Finance Review', FALSE, TRUE, TRUE, 'lease_change'),
-					  (103, 103, 102, 103, 1, 'invoice-finance', 'Invoice Finance Review', FALSE, TRUE, TRUE, 'invoice')
+					  (103, 103, 102, 103, 1, 'invoice-finance', 'Invoice Finance Review', FALSE, TRUE, TRUE, 'invoice'),
+					  (106, 104, 108, 102, 1, 'overtime-manager', 'Overtime Manager Review', TRUE, FALSE, FALSE, 'overtime_bill'),
+					  (107, 104, 108, 103, 2, 'overtime-finance', 'Overtime Finance Review', FALSE, TRUE, FALSE, 'overtime_bill')
 					ON DUPLICATE KEY UPDATE step_order = VALUES(step_order), name = VALUES(name), can_submit_to_manager = VALUES(can_submit_to_manager), validates_after_confirm = VALUES(validates_after_confirm), prints_after_confirm = VALUES(prints_after_confirm), process_class = VALUES(process_class)
 				`)
 			return err
@@ -99,7 +102,9 @@ func seedWorkflowTransitions() Seed {
 					  (102, 101, 101, 102, 'approve'),
 					  (104, 102, NULL, 104, 'submit'),
 					  (105, 102, 104, 105, 'approve'),
-					  (103, 103, NULL, 103, 'submit')
+					  (103, 103, NULL, 103, 'submit'),
+					  (106, 104, NULL, 106, 'submit'),
+					  (107, 104, 106, 107, 'approve')
 					ON DUPLICATE KEY UPDATE to_node_id = VALUES(to_node_id), action = VALUES(action)
 				`)
 			return err

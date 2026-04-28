@@ -259,19 +259,24 @@ INSERT IGNORE INTO units (id, building_id, floor_id, location_id, area_id, unit_
 
 INSERT IGNORE INTO workflow_definitions (id, business_group_id, code, name, voucher_type, is_initial, status, transitions_enabled, process_class) VALUES
   (101, 101, 'lease-approval', '租赁合同审批', 'lease_contract', TRUE, 'active', TRUE, 'lease_contract'),
-  (102, 102, 'invoice-approval', '发票审批', 'invoice', FALSE, 'active', TRUE, 'invoice');
+	(102, 102, 'invoice-approval', '发票审批', 'invoice', FALSE, 'active', TRUE, 'invoice'),
+	(103, 102, 'overtime-approval', '加班费审批', 'overtime_bill', FALSE, 'active', TRUE, 'overtime_bill');
 
 INSERT IGNORE INTO workflow_nodes (id, workflow_definition_id, function_id, role_id, step_order, code, name, can_submit_to_manager, validates_after_confirm, prints_after_confirm, process_class) VALUES
   (101, 101, 107, 105, 1, 'lease-submit', '提交申请', TRUE, FALSE, FALSE, 'lease_contract'),
   (102, 101, 107, 102, 2, 'lease-manager-approve', '经理审批', FALSE, TRUE, TRUE, 'lease_contract'),
   (103, 102, 109, 105, 1, 'invoice-submit', '提交开票', TRUE, FALSE, FALSE, 'invoice'),
-  (104, 102, 109, 103, 2, 'invoice-finance-approve', '财务审批', FALSE, TRUE, TRUE, 'invoice');
+	(104, 102, 109, 103, 2, 'invoice-finance-approve', '财务审批', FALSE, TRUE, TRUE, 'invoice'),
+	(105, 103, 108, 102, 1, 'overtime-manager-approve', '加班费经理审批', TRUE, FALSE, FALSE, 'overtime_bill'),
+	(106, 103, 108, 103, 2, 'overtime-finance-approve', '加班费财务审批', FALSE, TRUE, FALSE, 'overtime_bill');
 
 INSERT IGNORE INTO workflow_transitions (id, workflow_definition_id, from_node_id, to_node_id, action) VALUES
   (101, 101, NULL, 101, 'submit'),
   (102, 101, 101, 102, 'approve'),
   (103, 102, NULL, 103, 'submit'),
-  (104, 102, 103, 104, 'approve');
+	(104, 102, 103, 104, 'approve'),
+	(105, 103, NULL, 105, 'submit'),
+	(106, 103, 105, 106, 'approve');
 
 -- =========================================================
 -- Phase 6: Master Data
