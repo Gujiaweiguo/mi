@@ -1,0 +1,24 @@
+{
+  "schema_version": "1",
+  "project": "mi",
+  "change": "overtime-downstream-integration-and-reporting-closure",
+  "commit_sha": "4f3ebeb7d0befd41be91d83e5695d6150c127564",
+  "test_type": "e2e",
+  "status": "passed",
+  "started_at": "2026-04-28T00:53:23Z",
+  "finished_at": "2026-04-28T00:53:23Z",
+  "source": {
+    "kind": "local",
+    "workflow": "e2e",
+    "run_id": "local"
+  },
+  "stats": {
+    "total": 1,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0
+  },
+  "artifacts": [
+    "frontend/test-results/.last-run.json"
+  ]
+}
