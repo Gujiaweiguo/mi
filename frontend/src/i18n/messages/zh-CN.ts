@@ -620,47 +620,41 @@ export const zhCNMessages = {
   },
   workbench: {
     page: {
-      eyebrow: '迁移收口',
+      eyebrow: '运营工作台',
       title: '待办工作台',
-      summary: '跟踪非会员系统第一版上线前的重点运营队列。',
+      summary: '在一个共享工作台中查看第一版核心运营队列。',
     },
-    tags: {
-      shellScaffold: '壳层脚手架',
-      readyForTask15: '任务 15 已就绪',
+    actions: {
+      refresh: '刷新',
+      openQueue: '打开队列',
+      lastUpdated: '最近更新：{value}',
     },
-    filters: {
-      title: '队列筛选',
-      placeholder: '搜索队列、负责人、状态或优先级',
+    alerts: {
+      dataUnavailable: '工作台数据不可用',
     },
-    columns: {
-      queue: '队列',
-      owner: '负责人',
-      status: '状态',
-      priority: '优先级',
+    errors: {
+      unableToLoad: '无法加载工作台队列。',
     },
-    rows: {
-      leaseApprovals: {
-        queue: '租赁审批收口',
-        owner: '租赁运营',
-        status: '待复核',
-        priority: '高',
-      },
-      invoiceApprovals: {
-        queue: '账单/发票审批收口',
-        owner: '财务运营',
-        status: '待复核',
-        priority: '高',
+    sections: {
+      pendingApprovals: {
+        title: '待审批事项',
+        summary: '跟踪仍需运营跟进的租赁与发票审批。',
       },
       receivables: {
-        queue: '应收结算收口',
-        owner: '财务运营',
-        status: '每日监控',
-        priority: '中',
+        title: '应收事项',
+        summary: '查看仍需催收处理的未结应收。',
+      },
+      overdueReceivables: {
+        title: '逾期应收',
+        summary: '优先处理已经超过到期日的应收项目。',
+      },
+      activeLeases: {
+        title: '生效合同',
+        summary: '让当前有效合同保持在日常运营视野中。',
       },
     },
-    table: {
-      queueTitle: '{title} 队列',
-      empty: '当前筛选条件下暂无占位记录。',
+    empty: {
+      section: '当前队列暂无待处理项目。',
     },
   },
   billingCharges: {

@@ -1,6 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { getDashboardSummary, getEmptyDashboardSummary } from './dashboard'
+import {
+  getDashboardSummary,
+  getEmptyDashboardSummary,
+  getEmptyWorkbenchAggregate,
+  getWorkbenchAggregate,
+} from './dashboard'
 
 vi.mock('./http', () => ({
   http: {
@@ -63,6 +68,80 @@ describe('dashboard helpers', () => {
       vi.mocked(http.get).mockRejectedValue(error)
 
       await expect(getDashboardSummary()).rejects.toThrow('dashboard unavailable')
+    })
+  })
+
+  describe('getEmptyWorkbenchAggregate', () => {
+    it('returns stable empty queue sections', () => {
+      expect(getEmptyWorkbenchAggregate()).toEqual({
+        pendingApprovals: { count: null, routeTarget: '/workflow/admin', previewRows: [] },
+        receivables: { count: null, routeTarget: '/billing/receivables', previewRows: [] },
+        overdueReceivables: { count: null, routeTarget: '/billing/receivables', previewRows: [] },
+        activeLeases: { count: null, routeTarget: '/lease/contracts', previewRows: [] },
+      })
+    })
+  })
+
+  describe('getWorkbenchAggregate', () => {
+    it('returns camelCase queue sections from the backend workbench response', async () => {
+      vi.mocked(http.get).mockResolvedValue({
+        data: {
+          workbench: {
+            pending_approvals: {
+              count: 2,
+              route_target: '/workflow/admin',
+              preview_rows: [
+                {
+                  id: 11,
+                  title: 'Lease LC-001',
+                  subtitle: 'Tenant A',
+                  status: 'pending_approval',
+                  meta: '2026-04-29 09:30',
+                  route_target: '/lease/contracts',
+                },
+              ],
+            },
+            receivables: {
+              count: 3,
+              route_target: '/billing/receivables',
+              preview_rows: [],
+            },
+            overdue_receivables: {
+              count: 1,
+              route_target: '/billing/receivables',
+              preview_rows: [],
+            },
+            active_leases: {
+              count: 5,
+              route_target: '/lease/contracts',
+              preview_rows: [],
+            },
+          },
+        },
+      } as never)
+
+      const result = await getWorkbenchAggregate()
+
+      expect(http.get).toHaveBeenCalledWith('/dashboard/workbench')
+      expect(result.pendingApprovals.count).toBe(2)
+      expect(result.pendingApprovals.previewRows[0]).toEqual({
+        id: 11,
+        title: 'Lease LC-001',
+        subtitle: 'Tenant A',
+        status: 'pending_approval',
+        meta: '2026-04-29 09:30',
+        routeTarget: '/lease/contracts',
+      })
+      expect(result.receivables.routeTarget).toBe('/billing/receivables')
+      expect(result.overdueReceivables.count).toBe(1)
+      expect(result.activeLeases.count).toBe(5)
+    })
+
+    it('throws when the workbench request fails', async () => {
+      const error = new Error('workbench unavailable')
+      vi.mocked(http.get).mockRejectedValue(error)
+
+      await expect(getWorkbenchAggregate()).rejects.toThrow('workbench unavailable')
     })
   })
 })

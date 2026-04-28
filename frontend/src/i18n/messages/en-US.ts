@@ -621,47 +621,41 @@ export const enUSMessages = {
   },
   workbench: {
     page: {
-      eyebrow: 'Migration closure',
+      eyebrow: 'Operational workbench',
       title: 'Workbench',
-      summary: 'Track the first-release operating queues that close the non-membership migration for go-live.',
+      summary: 'Review the core first-release operating queues from one shared workbench surface.',
     },
-    tags: {
-      shellScaffold: 'Shell scaffold',
-      readyForTask15: 'Ready for Task 15',
+    actions: {
+      refresh: 'Refresh',
+      openQueue: 'Open queue',
+      lastUpdated: 'Last updated: {value}',
     },
-    filters: {
-      title: 'Queue filter',
-      placeholder: 'Search queue, owner, status, or priority',
+    alerts: {
+      dataUnavailable: 'Workbench data unavailable',
     },
-    columns: {
-      queue: 'Queue',
-      owner: 'Owner',
-      status: 'Status',
-      priority: 'Priority',
+    errors: {
+      unableToLoad: 'Unable to load workbench queues.',
     },
-    rows: {
-      leaseApprovals: {
-        queue: 'Lease approval closure',
-        owner: 'Lease operations',
-        status: 'Ready for review',
-        priority: 'High',
-      },
-      invoiceApprovals: {
-        queue: 'Bill / invoice approval closure',
-        owner: 'Finance operations',
-        status: 'Ready for review',
-        priority: 'High',
+    sections: {
+      pendingApprovals: {
+        title: 'Pending approvals',
+        summary: 'Track lease and invoice approvals that still need operator follow-up.',
       },
       receivables: {
-        queue: 'Receivable settlement closure',
-        owner: 'Finance operations',
-        status: 'Monitor daily',
-        priority: 'Medium',
+        title: 'Receivables',
+        summary: 'Watch open receivables that still need collection attention.',
+      },
+      overdueReceivables: {
+        title: 'Overdue receivables',
+        summary: 'Prioritize receivables that are already past due.',
+      },
+      activeLeases: {
+        title: 'Active leases',
+        summary: 'Keep the live lease book visible for day-to-day operating review.',
       },
     },
-    table: {
-      queueTitle: '{title} queue',
-      empty: 'No records match the current filters.',
+    empty: {
+      section: 'No items are waiting in this queue.',
     },
   },
   billingCharges: {
