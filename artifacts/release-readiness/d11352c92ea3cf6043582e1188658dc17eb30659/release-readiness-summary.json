@@ -1,0 +1,35 @@
+{
+  "schema_version": "1",
+  "project": "mi",
+  "change": "first-release-acceptance-closure",
+  "commit_sha": "d11352c92ea3cf6043582e1188658dc17eb30659",
+  "started_at": "2026-04-28T05:54:19Z",
+  "finished_at": "2026-04-28T05:54:20Z",
+  "status": "GO",
+  "scope": {
+    "release_boundary": "first-release non-membership scope",
+    "report_inventory": "R01-R19",
+    "excluded_domains": [
+      "membership/Associator",
+      "legacy transaction migration",
+      "reports outside R01-R19",
+      "email delivery",
+      "device/client tax integration"
+    ]
+  },
+  "gates": {
+    "archive_ready": "passed",
+    "rehearsal_ready": "passed"
+  },
+  "blockers": [],
+  "deferred": [],
+  "artifacts": {
+    "verification": [
+      "artifacts/verification/d11352c92ea3cf6043582e1188658dc17eb30659/unit.json",
+      "artifacts/verification/d11352c92ea3cf6043582e1188658dc17eb30659/integration.json",
+      "artifacts/verification/d11352c92ea3cf6043582e1188658dc17eb30659/e2e.json"
+    ],
+    "rehearsal_result": "artifacts/rehearsal/d11352c92ea3cf6043582e1188658dc17eb30659/cutover-rehearsal-production-20260428T055247Z.json",
+    "findings": null
+  }
+}
