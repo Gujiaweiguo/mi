@@ -288,7 +288,7 @@ func seedApprovedDepositInvoiceForReceivableRoutes(t *testing.T, ctx context.Con
 	if err := billingRepo.CreateRun(ctx, tx, run); err != nil {
 		t.Fatalf("create deposit billing run: %v", err)
 	}
-	chargeLine := &billing.ChargeLine{BillingRunID: run.ID, LeaseContractID: activeLease.ID, LeaseNo: activeLease.LeaseNo, TenantName: activeLease.TenantName, LeaseTermID: activeLease.Terms[0].ID, ChargeType: string(lease.TermTypeDeposit), PeriodStart: time.Date(2026, 4, 1, 0, 0, 0, 0, time.UTC), PeriodEnd: time.Date(2026, 4, 30, 0, 0, 0, 0, time.UTC), QuantityDays: 30, UnitAmount: amount, Amount: amount, CurrencyTypeID: 101, SourceEffectiveVersion: activeLease.EffectiveVersion}
+	chargeLine := &billing.ChargeLine{BillingRunID: run.ID, LeaseContractID: activeLease.ID, LeaseNo: activeLease.LeaseNo, TenantName: activeLease.TenantName, LeaseTermID: &activeLease.Terms[0].ID, ChargeType: string(lease.TermTypeDeposit), ChargeSource: billing.ChargeSourceStandard, PeriodStart: time.Date(2026, 4, 1, 0, 0, 0, 0, time.UTC), PeriodEnd: time.Date(2026, 4, 30, 0, 0, 0, 0, time.UTC), QuantityDays: 30, UnitAmount: amount, Amount: amount, CurrencyTypeID: 101, SourceEffectiveVersion: activeLease.EffectiveVersion}
 	if err := billingRepo.InsertChargeLine(ctx, tx, chargeLine); err != nil {
 		t.Fatalf("insert deposit charge line: %v", err)
 	}
