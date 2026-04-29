@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 
 import {
+  adjustInvoice,
   applyInvoiceDeposit,
   applyInvoiceDiscount,
   applyInvoiceSurplus,
@@ -36,6 +37,7 @@ const successMessage = ref('')
 const isLoading = ref(false)
 const isSubmitting = ref(false)
 const isCancelling = ref(false)
+const isAdjusting = ref(false)
 const receivable = ref<InvoiceReceivable | null>(null)
 const receivableErrorMessage = ref('')
 const isReceivableLoading = ref(false)
@@ -208,6 +210,8 @@ const refundForm = reactive({
   },
 })
 
+const adjustmentAmounts = reactive<Record<string, number>>({})
+
 const paymentRules: FormRules = {
   paymentAmount: [
     { required: true, message: '请输入金额', trigger: 'blur' },
@@ -301,6 +305,8 @@ const resolveStatusLabel = (status: string) => {
       return t('common.statuses.pendingApproval')
     case 'approved':
       return t('common.statuses.approved')
+    case 'adjusted':
+      return t('common.statuses.adjusted')
     case 'cancelled':
       return t('common.statuses.cancelled')
     default:
@@ -312,13 +318,15 @@ const documentTypeTag = (type: string) => (type === 'bill' ? 'warning' : 'primar
 
 const submitDisabled = computed(() => !invoice.value || isSubmitting.value || invoice.value.status !== 'draft')
 
+const hasRecordedPayments = computed(() => (receivable.value?.payment_history.length ?? 0) > 0)
+
 const cancelDisabled = computed(
   () =>
     !invoice.value ||
     isCancelling.value ||
     invoice.value.status !== 'approved' ||
     isReceivableLoading.value ||
-    (receivable.value?.payment_history.length ?? 0) > 0,
+    hasRecordedPayments.value,
 )
 
 const hasReceivableAccess = computed(() => invoice.value?.status === 'approved')
@@ -386,6 +394,82 @@ const selectedDepositSourceOpenItem = computed(() =>
 const selectedRefundDepositItem = computed(() =>
   refundableDepositItems.value.find((item) => item.billing_document_line_id === refundLineId.value) ?? null,
 )
+
+const adjustmentLineEntries = computed(() =>
+  (invoice.value?.lines ?? []).map((line) => {
+    const adjustmentKey = String(line.billing_charge_line_id)
+    const replacementAmount = adjustmentAmounts[adjustmentKey] ?? line.amount
+
+    return {
+      ...line,
+      adjustmentKey,
+      replacementAmount,
+    }
+  }),
+)
+
+const adjustmentReplacementTotal = computed(() =>
+  adjustmentLineEntries.value.reduce((sum, line) => sum + line.replacementAmount, 0),
+)
+
+const adjustmentChangedLineCount = computed(
+  () => adjustmentLineEntries.value.filter((line) => line.replacementAmount !== line.amount).length,
+)
+
+const adjustmentEligibilityReason = computed<
+  null | 'status' | 'payments-recorded' | 'receivable-unavailable' | 'no-lines'
+>(() => {
+  if (!invoice.value) {
+    return 'status'
+  }
+
+  if (invoice.value.status !== 'approved') {
+    return 'status'
+  }
+
+  if (invoice.value.lines.length === 0) {
+    return 'no-lines'
+  }
+
+  if (!receivable.value || receivableErrorMessage.value) {
+    return 'receivable-unavailable'
+  }
+
+  if (hasRecordedPayments.value) {
+    return 'payments-recorded'
+  }
+
+  return null
+})
+
+const adjustmentEligible = computed(() => adjustmentEligibilityReason.value === null)
+
+const submitAdjustmentDisabled = computed(
+  () =>
+    !invoice.value ||
+    !adjustmentEligible.value ||
+    isAdjusting.value ||
+    adjustmentLineEntries.value.length === 0 ||
+    adjustmentLineEntries.value.some((line) => Number.isNaN(line.replacementAmount) || line.replacementAmount < 0),
+)
+
+const showAdjustmentCard = computed(
+  () => Boolean(invoice.value && (invoice.value.status === 'approved' || invoice.value.status === 'adjusted' || invoice.value.adjusted_from_id !== null)),
+)
+
+const receivableAccessCopy = computed(() => {
+  if (invoice.value?.status === 'adjusted') {
+    return {
+      title: t('invoiceDetail.receivable.adjustedTitle'),
+      description: t('invoiceDetail.receivable.adjustedDescription'),
+    }
+  }
+
+  return {
+    title: t('invoiceDetail.receivable.approvedOnlyTitle'),
+    description: t('invoiceDetail.receivable.approvedOnlyDescription'),
+  }
+})
 
 const applyDiscountDisabled = computed(
   () =>
@@ -462,6 +546,8 @@ const statusTag = (status: string) => {
       return 'warning'
     case 'approved':
       return 'success'
+    case 'adjusted':
+      return 'warning'
     case 'cancelled':
       return 'danger'
     default:
@@ -564,6 +650,16 @@ const resetRefundForm = () => {
   }
 
   refundFormRef.value?.clearValidate()
+}
+
+const resetAdjustmentDraft = () => {
+  Object.keys(adjustmentAmounts).forEach((key) => {
+    delete adjustmentAmounts[key]
+  })
+
+  for (const line of invoice.value?.lines ?? []) {
+    adjustmentAmounts[String(line.billing_charge_line_id)] = line.amount
+  }
 }
 
 const clearDepositSourceContext = () => {
@@ -696,23 +792,34 @@ const loadInvoice = async () => {
   if (!invoiceId.value) {
     errorMessage.value = t('invoiceDetail.errors.invalidId')
     invoice.value = null
+    successMessage.value = ''
+    resetAdjustmentDraft()
     return
   }
 
   isLoading.value = true
   errorMessage.value = ''
+  successMessage.value = ''
 
   try {
     const response = await getInvoice(invoiceId.value)
     invoice.value = response.data.document
+    resetAdjustmentDraft()
     await loadReceivable()
     await loadDepositSourceOptions()
+
+    if (route.query.adjustment === 'created' && response.data.document.adjusted_from_id !== null) {
+      successMessage.value = t('invoiceDetail.feedback.adjustmentCreated', {
+        id: response.data.document.adjusted_from_id,
+      })
+    }
   } catch (error) {
     invoice.value = null
     receivable.value = null
     receivableErrorMessage.value = ''
     clearDepositSourceContext()
     resetRefundForm()
+    resetAdjustmentDraft()
     errorMessage.value = getErrorMessage(error, t('invoiceDetail.errors.unableToLoad'))
   } finally {
     isLoading.value = false
@@ -763,6 +870,46 @@ const handleCancel = async () => {
     errorMessage.value = getErrorMessage(error, t('invoiceDetail.errors.unableToCancel'))
   } finally {
     isCancelling.value = false
+  }
+}
+
+const handleViewAdjustedSource = async () => {
+  if (invoice.value?.adjusted_from_id === null || invoice.value?.adjusted_from_id === undefined) {
+    return
+  }
+
+  await router.push({
+    name: 'billing-invoice-detail',
+    params: { id: String(invoice.value.adjusted_from_id) },
+  })
+}
+
+const handleAdjust = async () => {
+  if (!invoice.value || submitAdjustmentDisabled.value) {
+    return
+  }
+
+  isAdjusting.value = true
+  errorMessage.value = ''
+  successMessage.value = ''
+
+  try {
+    const response = await adjustInvoice(invoice.value.id, {
+      lines: adjustmentLineEntries.value.map((line) => ({
+        billing_charge_line_id: line.billing_charge_line_id,
+        amount: line.replacementAmount,
+      })),
+    })
+
+    await router.push({
+      name: 'billing-invoice-detail',
+      params: { id: String(response.data.document.id) },
+      query: { adjustment: 'created' },
+    })
+  } catch (error) {
+    errorMessage.value = getErrorMessage(error, t('invoiceDetail.errors.unableToAdjust'))
+  } finally {
+    isAdjusting.value = false
   }
 }
 
@@ -1078,6 +1225,19 @@ watch(
             <el-descriptions-item :label="t('invoiceDetail.fields.approvedAt')">
               {{ formatDate(invoice.approved_at) }}
             </el-descriptions-item>
+            <el-descriptions-item :label="t('invoiceDetail.fields.adjustedFrom')">
+              <template v-if="invoice.adjusted_from_id !== null">
+                <el-button
+                  link
+                  type="primary"
+                  data-testid="invoice-adjusted-from-button"
+                  @click="handleViewAdjustedSource"
+                >
+                  {{ t('invoiceDetail.defaults.documentId', { id: invoice.adjusted_from_id }) }}
+                </el-button>
+              </template>
+              <template v-else>{{ t('common.emptyValue') }}</template>
+            </el-descriptions-item>
             <el-descriptions-item :label="t('invoiceDetail.fields.cancelledAt')">
               {{ formatDate(invoice.cancelled_at) }}
             </el-descriptions-item>
@@ -1169,6 +1329,149 @@ watch(
         </el-table>
       </el-card>
 
+      <el-card v-if="showAdjustmentCard" class="invoice-detail-view__card" shadow="never" data-testid="invoice-adjustment-card">
+        <template #header>
+          <div class="invoice-detail-view__card-header">
+            <span>{{ t('invoiceDetail.cards.adjustment') }}</span>
+            <el-tag effect="plain" :type="adjustmentEligible ? 'warning' : 'info'">
+              {{ adjustmentEligible ? t('invoiceDetail.feedback.adjustmentEligible') : resolveStatusLabel(invoice.status) }}
+            </el-tag>
+          </div>
+        </template>
+
+        <div class="invoice-detail-view__adjustment-copy">
+          <p class="invoice-detail-view__adjustment-summary-copy">
+            {{ t('invoiceDetail.adjustment.summary') }}
+          </p>
+
+          <div v-if="invoice.adjusted_from_id !== null" class="invoice-detail-view__adjustment-lineage" data-testid="invoice-adjustment-lineage">
+            <el-alert
+              :closable="false"
+              type="info"
+              show-icon
+              :title="t('invoiceDetail.adjustment.replacementTitle')"
+              :description="t('invoiceDetail.adjustment.replacementDescription', { id: invoice.adjusted_from_id })"
+            />
+
+            <el-button link type="primary" data-testid="invoice-adjustment-view-source-button" @click="handleViewAdjustedSource">
+              {{ t('invoiceDetail.actions.viewAdjustedSource') }}
+            </el-button>
+          </div>
+
+          <el-alert
+            v-if="invoice.status === 'adjusted'"
+            :closable="false"
+            type="warning"
+            show-icon
+            :title="t('invoiceDetail.adjustment.originalAdjustedTitle')"
+            :description="t('invoiceDetail.adjustment.originalAdjustedDescription')"
+            data-testid="invoice-adjustment-adjusted-alert"
+          />
+
+          <el-alert
+            v-else-if="adjustmentEligibilityReason === 'payments-recorded'"
+            :closable="false"
+            type="warning"
+            show-icon
+            :title="t('invoiceDetail.adjustment.paymentsRecordedTitle')"
+            :description="t('invoiceDetail.adjustment.paymentsRecordedDescription')"
+            data-testid="invoice-adjustment-payments-alert"
+          />
+
+          <el-alert
+            v-else-if="adjustmentEligibilityReason === 'receivable-unavailable'"
+            :closable="false"
+            type="error"
+            show-icon
+            :title="t('invoiceDetail.adjustment.receivableUnavailableTitle')"
+            :description="t('invoiceDetail.adjustment.receivableUnavailableDescription')"
+            data-testid="invoice-adjustment-receivable-alert"
+          />
+
+          <el-alert
+            v-else-if="adjustmentEligibilityReason === 'no-lines'"
+            :closable="false"
+            type="info"
+            show-icon
+            :title="t('invoiceDetail.adjustment.noLinesTitle')"
+            :description="t('invoiceDetail.adjustment.noLinesDescription')"
+            data-testid="invoice-adjustment-no-lines-alert"
+          />
+
+          <template v-else-if="adjustmentEligible">
+            <el-descriptions :column="3" border class="invoice-detail-view__adjustment-descriptions">
+              <el-descriptions-item :label="t('invoiceDetail.fields.adjustmentOriginalTotal')">
+                {{ formatAmount(invoice.total_amount) }}
+              </el-descriptions-item>
+              <el-descriptions-item :label="t('invoiceDetail.fields.adjustmentReplacementTotal')">
+                {{ formatAmount(adjustmentReplacementTotal) }}
+              </el-descriptions-item>
+              <el-descriptions-item :label="t('invoiceDetail.fields.adjustmentChangedLines')">
+                {{ adjustmentChangedLineCount }}
+              </el-descriptions-item>
+            </el-descriptions>
+
+            <div class="invoice-detail-view__adjustment-list">
+              <section
+                v-for="line in adjustmentLineEntries"
+                :key="line.id"
+                class="invoice-detail-view__adjustment-line"
+                :data-testid="`invoice-adjustment-line-${line.id}`"
+              >
+                <div class="invoice-detail-view__adjustment-line-header">
+                  <div class="invoice-detail-view__adjustment-line-copy">
+                    <h3 class="invoice-detail-view__payment-title">{{ line.charge_type }}</h3>
+                    <p class="invoice-detail-view__adjustment-line-meta">
+                      {{ line.period_start }} → {{ line.period_end }} ·
+                      {{ t('invoiceDetail.adjustment.sourceLine', { id: line.billing_charge_line_id }) }}
+                    </p>
+                  </div>
+
+                  <el-tag :type="sourceTagType(line.charge_source)" effect="plain">
+                    {{ sourceTagLabel(line.charge_source) }}
+                  </el-tag>
+                </div>
+
+                <div class="invoice-detail-view__adjustment-line-grid">
+                  <div class="invoice-detail-view__adjustment-metric">
+                    <span class="invoice-detail-view__adjustment-metric-label">{{ t('invoiceDetail.fields.amount') }}</span>
+                    <strong class="invoice-detail-view__adjustment-metric-value">{{ formatAmount(line.amount) }}</strong>
+                  </div>
+
+                  <el-form-item :label="t('invoiceDetail.fields.adjustmentReplacementAmount')" class="invoice-detail-view__adjustment-form-item">
+                    <el-input-number
+                      v-model="adjustmentAmounts[line.adjustmentKey]"
+                      :min="0"
+                      :precision="2"
+                      :step="100"
+                      :controls="false"
+                      class="invoice-detail-view__payment-input"
+                      :data-testid="`invoice-adjustment-amount-input-${line.id}`"
+                    />
+                  </el-form-item>
+                </div>
+              </section>
+            </div>
+
+            <div class="invoice-detail-view__payment-actions">
+              <el-button
+                type="warning"
+                :loading="isAdjusting"
+                :disabled="submitAdjustmentDisabled"
+                data-testid="invoice-adjustment-submit-button"
+                @click="handleAdjust"
+              >
+                {{ t('invoiceDetail.actions.adjustDocument') }}
+              </el-button>
+
+              <el-tag effect="plain" type="info" data-testid="invoice-adjustment-lines-changed-tag">
+                {{ t('invoiceDetail.feedback.adjustmentChangedLines', { count: adjustmentChangedLineCount }) }}
+              </el-tag>
+            </div>
+          </template>
+        </div>
+      </el-card>
+
       <el-card class="invoice-detail-view__card" shadow="never" data-testid="invoice-receivable-card">
         <template #header>
           <div class="invoice-detail-view__card-header">
@@ -1184,8 +1487,8 @@ watch(
           :closable="false"
           type="info"
           show-icon
-          :title="t('invoiceDetail.receivable.approvedOnlyTitle')"
-          :description="t('invoiceDetail.receivable.approvedOnlyDescription')"
+          :title="receivableAccessCopy.title"
+          :description="receivableAccessCopy.description"
           data-testid="invoice-receivable-awaiting-approval"
         />
 
@@ -1865,6 +2168,89 @@ watch(
   margin-bottom: var(--mi-space-4);
 }
 
+.invoice-detail-view__adjustment-copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mi-space-4);
+}
+
+.invoice-detail-view__adjustment-summary-copy {
+  margin: 0;
+  color: var(--mi-color-muted);
+}
+
+.invoice-detail-view__adjustment-lineage {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--mi-space-3);
+}
+
+.invoice-detail-view__adjustment-descriptions {
+  margin-bottom: var(--mi-space-2);
+}
+
+.invoice-detail-view__adjustment-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mi-space-4);
+}
+
+.invoice-detail-view__adjustment-line {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mi-space-4);
+  padding: var(--mi-space-4);
+  border: var(--mi-border-width-thin) solid var(--mi-color-border);
+  border-radius: var(--mi-radius-md);
+  background: var(--mi-color-panel);
+}
+
+.invoice-detail-view__adjustment-line-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--mi-space-3);
+}
+
+.invoice-detail-view__adjustment-line-copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mi-space-2);
+}
+
+.invoice-detail-view__adjustment-line-meta {
+  margin: 0;
+  color: var(--mi-color-muted);
+}
+
+.invoice-detail-view__adjustment-line-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 16rem);
+  gap: var(--mi-space-4);
+}
+
+.invoice-detail-view__adjustment-metric {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mi-space-2);
+}
+
+.invoice-detail-view__adjustment-metric-label {
+  font-size: var(--mi-font-size-100);
+  letter-spacing: var(--mi-letter-spacing-wide);
+  text-transform: uppercase;
+  color: var(--mi-color-muted);
+}
+
+.invoice-detail-view__adjustment-metric-value {
+  color: var(--mi-color-text);
+}
+
+.invoice-detail-view__adjustment-form-item {
+  margin-bottom: 0;
+}
+
 .invoice-detail-view__payment-entry {
   display: flex;
   flex-direction: column;
@@ -1905,6 +2291,14 @@ watch(
   }
 
   .invoice-detail-view__payment-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .invoice-detail-view__adjustment-line-header {
+    flex-direction: column;
+  }
+
+  .invoice-detail-view__adjustment-line-grid {
     grid-template-columns: minmax(0, 1fr);
   }
 
