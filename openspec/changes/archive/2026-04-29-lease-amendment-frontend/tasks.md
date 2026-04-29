@@ -13,4 +13,4 @@
 
 - [x] 3.1 Add or update Vue unit tests that cover amendment entry from lease detail, amendment-form prefilling, and amendment submission success behavior.
 - [x] 3.2 Run the relevant frontend verification commands for the touched surface, including unit tests and typecheck, and fix any change-caused failures.
-- [ ] 3.3 If this change is prepared for CI or archive evidence, record current-commit machine-readable verification artifacts under `artifacts/verification/<commit-sha>/unit.json`, `artifacts/verification/<commit-sha>/integration.json`, and `artifacts/verification/<commit-sha>/e2e.json`, remembering that CI requires current-commit unit + integration evidence while archive additionally requires current-commit e2e evidence.
+- [x] 3.3 If this change is prepared for CI or archive evidence, record current-commit machine-readable verification artifacts under `artifacts/verification/<commit-sha>/unit.json`, `artifacts/verification/<commit-sha>/integration.json`, and `artifacts/verification/<commit-sha>/e2e.json`, remembering that CI requires current-commit unit + integration evidence while archive additionally requires current-commit e2e evidence.
