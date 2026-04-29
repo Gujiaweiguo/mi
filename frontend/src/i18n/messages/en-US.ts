@@ -962,6 +962,21 @@ export const enUSMessages = {
   leaseCreate: {
     title: 'Create lease contract',
     summary: 'Capture the contract header, billing setup, and subtype-specific data needed to open the lease workflow.',
+    modes: {
+      amendment: {
+        title: 'Create lease amendment draft',
+        summary: 'Reuse the existing lease contract data as a draft, adjust billing-effective fields, and save the amendment for downstream review.',
+        sourceLeaseTag: 'Source lease {leaseNo}',
+        alertTitle: 'Amendment mode',
+        alertDescription: 'This draft starts from the source contract. Review inherited billing fields before saving the amended lease.',
+        cards: {
+          setup: 'Lease amendment setup',
+        },
+        actions: {
+          submit: 'Create amendment draft',
+        },
+      },
+    },
     cards: {
       setup: 'Lease contract setup',
       contract: 'Contract header',
@@ -1117,9 +1132,14 @@ export const enUSMessages = {
     },
     errors: {
       creationFailed: 'Lease creation failed',
+      amendmentFailed: 'Lease amendment failed',
+      amendmentDraftUnavailable: 'Amendment draft unavailable',
       referenceDataUnavailable: 'Reference data unavailable',
+      invalidSourceLeaseId: 'The source lease contract ID for this amendment is invalid.',
       unableToLoadReferenceData: 'Unable to load customer, brand, department, and store selections.',
+      unableToLoadAmendmentDraft: 'Unable to load the source lease contract for amendment drafting.',
       unableToCreate: 'Unable to create the lease contract.',
+      unableToAmend: 'Unable to create the lease amendment draft.',
     },
   },
   leaseDetail: {
@@ -1135,6 +1155,7 @@ export const enUSMessages = {
     },
     actions: {
       backToList: 'Back to list',
+      amendLease: 'Create amendment draft',
       submitForApproval: 'Submit for approval',
       terminateLease: 'Terminate lease',
     },

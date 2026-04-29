@@ -960,6 +960,21 @@ export const zhCNMessages = {
   leaseCreate: {
     title: '新建租赁合同',
     summary: '录入合同头信息、计费设定与子类型专属资料，开启租赁流程。',
+    modes: {
+      amendment: {
+        title: '新建合同修订草稿',
+        summary: '沿用原合同资料生成修订草稿，调整影响计费的字段后保存，继续后续审批流程。',
+        sourceLeaseTag: '来源合同 {leaseNo}',
+        alertTitle: '修订模式',
+        alertDescription: '当前草稿已从来源合同带出原始数据。保存前请复核所有沿用的计费相关字段。',
+        cards: {
+          setup: '合同修订设定',
+        },
+        actions: {
+          submit: '创建修订草稿',
+        },
+      },
+    },
     cards: {
       setup: '合同设定',
       contract: '合同头信息',
@@ -1115,9 +1130,14 @@ export const zhCNMessages = {
     },
     errors: {
       creationFailed: '合同创建失败',
+      amendmentFailed: '合同修订失败',
+      amendmentDraftUnavailable: '修订草稿不可用',
       referenceDataUnavailable: '参考数据不可用',
+      invalidSourceLeaseId: '当前修订对应的来源合同 ID 无效。',
       unableToLoadReferenceData: '无法加载客户、品牌、部门和门店选项。',
+      unableToLoadAmendmentDraft: '无法加载用于修订的来源租赁合同。',
       unableToCreate: '无法创建租赁合同。',
+      unableToAmend: '无法创建租赁合同修订草稿。',
     },
   },
   leaseDetail: {
@@ -1133,6 +1153,7 @@ export const zhCNMessages = {
     },
     actions: {
       backToList: '返回列表',
+      amendLease: '创建修订草稿',
       submitForApproval: '提交审批',
       terminateLease: '终止合同',
     },
