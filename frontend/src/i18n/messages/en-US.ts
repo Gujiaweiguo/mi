@@ -42,6 +42,7 @@ export const enUSMessages = {
       terminated: 'Terminated',
       pending: 'Pending',
       approved: 'Approved',
+      adjusted: 'Adjusted',
       cancelled: 'Cancelled',
     },
   },
@@ -729,6 +730,7 @@ export const enUSMessages = {
     },
     actions: {
       submit: 'Submit',
+      adjust: 'Adjust',
       cancel: 'Cancel',
     },
     fields: {
@@ -738,6 +740,7 @@ export const enUSMessages = {
       tenant: 'Tenant',
       period: 'Period',
       total: 'Total',
+      adjustedFrom: 'Adjusted from',
     },
     placeholders: {
       allTypes: 'All types',
@@ -805,6 +808,7 @@ export const enUSMessages = {
       overview: 'Document overview',
       workflowActions: 'Workflow actions',
       lineItems: 'Line items',
+      adjustment: 'Invoice adjustment',
       receivable: 'Receivable status',
       discountEntry: 'Request discount',
       surplusEntry: 'Apply surplus',
@@ -818,6 +822,8 @@ export const enUSMessages = {
     actions: {
       backToList: 'Back to list',
       submitForApproval: 'Submit for approval',
+      adjustDocument: 'Create replacement draft',
+      viewAdjustedSource: 'Open source document',
       cancelDocument: 'Cancel document',
       submitDiscountRequest: 'Submit discount request',
       applySurplus: 'Apply surplus',
@@ -839,6 +845,7 @@ export const enUSMessages = {
       workflowInstance: 'Workflow instance',
       submittedAt: 'Submitted at',
       approvedAt: 'Approved at',
+      adjustedFrom: 'Adjusted from',
       cancelledAt: 'Cancelled at',
       chargeType: 'Charge type',
       dueDate: 'Due date',
@@ -876,6 +883,10 @@ export const enUSMessages = {
       paymentAmount: 'Payment amount',
       paymentDate: 'Payment date',
       paymentNote: 'Payment note',
+      adjustmentOriginalTotal: 'Original total',
+      adjustmentReplacementTotal: 'Replacement total',
+      adjustmentChangedLines: 'Changed lines',
+      adjustmentReplacementAmount: 'Replacement amount',
       receivableOutstanding: 'Current outstanding',
       receivableSettlementStatus: 'Settlement status',
       receivableItemCount: 'Open item count',
@@ -922,6 +933,9 @@ export const enUSMessages = {
     feedback: {
       actionCompleted: 'Invoice action completed',
       submitted: 'Invoice submitted for approval.',
+      adjustmentCreated: 'Replacement draft created from document #{id}.',
+      adjustmentEligible: 'Eligible to adjust',
+      adjustmentChangedLines: '{count} lines updated in this replacement draft.',
       cancelled: 'Invoice cancelled.',
       discountRequested: 'Discount submitted for approval.',
       discountPendingApproval: 'A discount request is already pending approval.',
@@ -943,6 +957,7 @@ export const enUSMessages = {
       unableToLoad: 'Unable to load the invoice document.',
       unableToLoadReceivable: 'Unable to load receivable details for this document.',
       unableToSubmit: 'Unable to submit the invoice.',
+      unableToAdjust: 'Unable to create the replacement draft.',
       unableToCancel: 'Unable to cancel the invoice.',
       unableToApplyDiscount: 'Unable to submit the discount request.',
       unableToApplySurplus: 'Unable to apply customer surplus.',
@@ -957,6 +972,27 @@ export const enUSMessages = {
       approvedOnlyTitle: 'Receivable tracking starts after approval',
       approvedOnlyDescription:
         'Approve this billing document first. Receivable details and payment entry become available once it is approved.',
+      adjustedTitle: 'Receivable activity moved to the replacement flow',
+      adjustedDescription:
+        'This source document has already been adjusted. Review the replacement draft or its source lineage instead of recording new receivable activity here.',
+    },
+    adjustment: {
+      summary:
+        'Draft a replacement billing document by revising each line amount tied to the existing billing charge lines. The original approved document will become adjusted once the replacement draft is created.',
+      sourceLine: 'Charge line #{id}',
+      replacementTitle: 'Replacement draft lineage',
+      replacementDescription: 'This draft replaces adjusted document #{id}.',
+      originalAdjustedTitle: 'This document has already been adjusted',
+      originalAdjustedDescription:
+        'The original approved document is now closed for financial changes. Continue review from the replacement draft if more edits are needed.',
+      paymentsRecordedTitle: 'Adjustment is unavailable after payments are recorded',
+      paymentsRecordedDescription:
+        'At least one payment is already recorded for this approved document, so the replacement-draft adjustment flow is no longer available.',
+      receivableUnavailableTitle: 'Adjustment eligibility could not be confirmed',
+      receivableUnavailableDescription:
+        'The receivable summary is unavailable right now, so the frontend cannot safely confirm the no-payments rule required for adjustment.',
+      noLinesTitle: 'No adjustable lines are attached',
+      noLinesDescription: 'This document does not contain any billing lines to carry into a replacement draft.',
     },
   },
   leaseCreate: {
