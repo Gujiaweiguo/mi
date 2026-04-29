@@ -144,6 +144,15 @@ const router = createRouter({
       },
     },
     {
+      path: '/lease/contracts/:id/amend',
+      name: 'lease-contracts-amend',
+      component: () => import('../views/LeaseCreateView.vue'),
+      meta: {
+        requiresAuth: true,
+        permissionCode: FUNCTION_CODES.leaseContract,
+      },
+    },
+    {
       path: '/lease/contracts/:id',
       name: 'lease-contract-detail',
       component: () => import('../views/LeaseDetailView.vue'),
