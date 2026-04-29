@@ -72,3 +72,14 @@ The system SHALL include overtime-derived financial lines and trusted attributio
 #### Scenario: Document output does not silently omit downstream overtime data
 - **WHEN** a supported print or document output depends on downstream financial records that include overtime-derived charges
 - **THEN** the system SHALL either render those overtime-backed values correctly or reject the unsupported render path instead of silently producing misleading output
+
+### Requirement: Operators SHALL be able to render print templates as HTML from the frontend
+The print preview view SHALL allow operators to generate HTML output from a selected template and document IDs, in addition to the existing PDF render option. The HTML output SHALL be displayed in a preview dialog.
+
+#### Scenario: Operator renders HTML from selected template and documents
+- **WHEN** an operator selects a template and enters document IDs in the print preview view and clicks the HTML render button
+- **THEN** the system SHALL call the HTML render API and display the result in a preview dialog
+
+#### Scenario: HTML render button disabled when parameters missing
+- **WHEN** no template is selected or no document IDs are entered
+- **THEN** the HTML render button SHALL be disabled
