@@ -666,6 +666,19 @@ export const enUSMessages = {
     actions: {
       generate: 'Generate charges',
     },
+    createDocument: {
+      button: 'Create Document',
+      dialogTitle: 'Create Billing Document',
+      documentType: 'Document Type',
+      bill: 'Bill',
+      invoice: 'Invoice',
+      confirm: 'Create',
+      cancel: 'Cancel',
+      success: 'Document created successfully',
+      successDetail: 'Document #{id} has been created',
+      error: 'Failed to create document',
+      selectHint: 'Select charge lines to create a document',
+    },
     filters: {
       title: 'Charge filters',
     },

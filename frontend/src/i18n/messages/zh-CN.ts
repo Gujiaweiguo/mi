@@ -665,6 +665,19 @@ export const zhCNMessages = {
     actions: {
       generate: '生成费用',
     },
+    createDocument: {
+      button: '创建单据',
+      dialogTitle: '创建账单文档',
+      documentType: '单据类型',
+      bill: '账单',
+      invoice: '发票',
+      confirm: '创建',
+      cancel: '取消',
+      success: '单据创建成功',
+      successDetail: '单据 #{id} 已创建',
+      error: '创建单据失败',
+      selectHint: '选择费用行以创建单据',
+    },
     filters: {
       title: '费用筛选',
     },
