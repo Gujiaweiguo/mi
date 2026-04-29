@@ -119,6 +119,7 @@ const leaseId = computed(() => {
 const pageTitle = computed(() => lease.value?.lease_no ?? t('leaseDetail.title'))
 const canViewOvertime = computed(() => authStore.canAccess(FUNCTION_CODES.billingCharge, 'view'))
 const canEditOvertime = computed(() => authStore.canAccess(FUNCTION_CODES.billingCharge, 'edit'))
+const canAmendLease = computed(() => lease.value?.status === 'active')
 const createOvertimeDisabled = computed(
   () =>
     !canEditOvertime.value ||
@@ -349,6 +350,17 @@ const handleBack = async () => {
   await router.push({ name: 'lease-contracts' })
 }
 
+const handleAmend = async () => {
+  if (!lease.value || !canAmendLease.value) {
+    return
+  }
+
+  await router.push({
+    name: 'lease-contracts-amend',
+    params: { id: String(lease.value.id) },
+  })
+}
+
 const handleSubmitForApproval = async () => {
   if (!lease.value) {
     return
@@ -565,6 +577,16 @@ watch(
           </template>
 
           <div class="lease-detail-view__actions">
+            <el-button
+              v-if="canAmendLease"
+              type="warning"
+              plain
+              data-testid="lease-amend-button"
+              @click="handleAmend"
+            >
+              {{ t('leaseDetail.actions.amendLease') }}
+            </el-button>
+
             <el-button
               type="primary"
               :loading="isSubmitting"

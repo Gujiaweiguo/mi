@@ -78,7 +78,7 @@ describe('LeaseDetailView', () => {
     i18n.global.locale.value = 'en-US'
   })
 
-  it('loads lease detail and overtime bills on mount', async () => {
+  it('loads lease detail, overtime bills, and amendment entry for active leases', async () => {
     vi.mocked(getLease).mockResolvedValue({
       data: {
         lease: {
@@ -159,5 +159,90 @@ describe('LeaseDetailView', () => {
     expect(getLease).toHaveBeenCalledWith(42)
     expect(listOvertimeBills).toHaveBeenCalledWith({ lease_contract_id: 42, page: 1, page_size: 100 })
     expect(wrapper.get('[data-testid="lease-detail-view"]')).toBeTruthy()
+
+    await wrapper.get('[data-testid="lease-amend-button"]').trigger('click')
+
+    expect(push).toHaveBeenCalledWith({ name: 'lease-contracts-amend', params: { id: '42' } })
+  })
+
+  it('hides amendment entry when the lease is not amendment-eligible', async () => {
+    vi.mocked(getLease).mockResolvedValue({
+      data: {
+        lease: {
+          id: 42,
+          amended_from_id: null,
+          lease_no: 'L-042',
+          subtype: 'standard',
+          department_id: 1,
+          store_id: 2,
+          building_id: null,
+          customer_id: null,
+          brand_id: null,
+          trade_id: null,
+          management_type_id: null,
+          tenant_name: 'Tenant A',
+          start_date: '2026-01-01',
+          end_date: '2026-12-31',
+          status: 'draft',
+          workflow_instance_id: null,
+          effective_version: 1,
+          submitted_at: null,
+          approved_at: null,
+          billing_effective_at: null,
+          terminated_at: null,
+          created_by: 1,
+          updated_by: 1,
+          created_at: '2026-01-01T00:00:00Z',
+          updated_at: '2026-01-01T00:00:00Z',
+          joint_operation: null,
+          ad_boards: [],
+          area_grounds: [],
+          units: [],
+          terms: [],
+        },
+      },
+    } as never)
+
+    vi.mocked(listOvertimeBills).mockResolvedValue({
+      data: {
+        items: [],
+        total: 0,
+        page: 1,
+        page_size: 100,
+      },
+    } as never)
+
+    const wrapper = mount(LeaseDetailView, {
+      global: {
+        plugins: [i18n],
+        stubs: {
+          PageSection: PageSectionStub,
+          ElAlert: ElAlertStub,
+          ElButton: passthroughStub('button'),
+          ElTag: passthroughStub('span'),
+          ElCard: passthroughStub('section'),
+          ElDescriptions: passthroughStub('dl'),
+          ElDescriptionsItem: passthroughStub('div'),
+          ElForm: passthroughStub('form'),
+          ElFormItem: passthroughStub('div'),
+          ElDatePicker: passthroughStub('input'),
+          ElInput: passthroughStub('input'),
+          ElInputNumber: passthroughStub('input'),
+          ElSelect: passthroughStub('select'),
+          ElOption: passthroughStub('option'),
+          ElTable: ElTableStub,
+          ElTableColumn: passthroughStub(),
+          ElEmpty: passthroughStub(),
+          ElSkeleton: passthroughStub(),
+        },
+        directives: {
+          loading: {},
+        },
+      },
+    })
+
+    await flushPromises()
+
+    expect(wrapper.find('[data-testid="lease-amend-button"]').exists()).toBe(false)
   })
 })
