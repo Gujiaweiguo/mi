@@ -125,3 +125,51 @@ The workflow subsystem MAY emit reminder records or notifications for pending ap
 #### Scenario: Consecutive scheduler failures trigger warning signal
 - **WHEN** scheduled reminder runs fail in consecutive ticks beyond the configured warning threshold
 - **THEN** the scheduler SHALL emit a warning-level observability signal including consecutive failure count and last failure context
+
+### Requirement: Rejected workflow instances SHALL be resubmittable from the admin view
+The workflow admin view SHALL display a resubmit action button for workflow instances whose status is `rejected`. Clicking the resubmit button SHALL call the existing `resubmitWorkflow(id, { idempotency_key })` API with a client-generated `crypto.randomUUID()` idempotency key. The button SHALL show a loading state while the request is in flight and SHALL NOT appear for instances with any status other than `rejected`.
+
+#### Scenario: Resubmit button appears for rejected instance
+- **WHEN** a workflow instance has status `rejected`
+- **THEN** the admin view SHALL display a "Resubmit" action button in the actions column for that row
+
+#### Scenario: Resubmit button hidden for non-rejected instance
+- **WHEN** a workflow instance has status other than `rejected` (e.g., `pending`, `approved`)
+- **THEN** the admin view SHALL NOT display the "Resubmit" action button for that row
+
+#### Scenario: Successful resubmission
+- **WHEN** the operator clicks the "Resubmit" button on a rejected instance
+- **THEN** the system SHALL call `resubmitWorkflow(id, { idempotency_key: <uuid> })`, show a loading indicator during the request, display a success message on completion, and refresh the instances list
+
+### Requirement: Workflow instance audit history SHALL be viewable from the admin view
+The workflow admin view SHALL provide a detail drawer for any workflow instance that displays the full audit history timeline. The drawer SHALL be triggered by clicking an instance row or a "Details" action button. The audit history SHALL be fetched via the existing `getWorkflowAuditHistory(id)` API and rendered as a timeline showing each entry's action, actor, from/to status transition, comment, and timestamp.
+
+#### Scenario: Opening instance detail drawer
+- **WHEN** the operator clicks a workflow instance row or the "Details" button
+- **THEN** a right-side drawer SHALL open displaying instance metadata and the audit history timeline
+
+#### Scenario: Audit history timeline rendering
+- **WHEN** the detail drawer opens for a workflow instance
+- **THEN** the system SHALL fetch audit history and render each entry as a timeline node showing action, actor, status transition, comment, and timestamp
+
+#### Scenario: Empty audit history
+- **WHEN** the audit history API returns an empty list
+- **THEN** the drawer SHALL display a "No audit history" placeholder message
+
+### Requirement: Workflow administrators SHALL be able to trigger manual reminder evaluation
+The workflow admin view SHALL provide a "Run Reminders" button in the instances table header area. Clicking the button SHALL show a confirmation dialog, and upon confirmation SHALL call the existing `runReminders()` API.
+
+#### Scenario: Confirmed reminder run executes
+- **WHEN** the operator confirms the reminder run dialog
+- **THEN** the system SHALL call `runReminders()`, disable the trigger button during the request, and display a success message upon completion
+
+### Requirement: Reminder history SHALL be viewable per workflow instance in the detail drawer
+The instance detail drawer SHALL display a reminder history section below the audit timeline. The section SHALL fetch data via the existing `getReminderHistory(instanceId)` API and list each reminder entry.
+
+#### Scenario: Reminder history displayed in drawer
+- **WHEN** the detail drawer is open for a workflow instance
+- **THEN** the drawer SHALL fetch and display reminder history below the audit timeline
+
+#### Scenario: Empty reminder history
+- **WHEN** the reminder history API returns an empty list
+- **THEN** the section SHALL display a "No reminder history" placeholder message
