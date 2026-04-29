@@ -2022,6 +2022,7 @@ export const enUSMessages = {
     },
     actions: {
       generatePdf: 'Generate PDF',
+      generateHtml: 'Generate HTML',
     },
     fields: {
       template: 'Template',
@@ -2038,6 +2039,7 @@ export const enUSMessages = {
       outputMode: 'Output mode',
     },
     dialog: {
+      htmlPreviewTitle: 'HTML Preview',
       title: {
         create: 'Create print template',
         edit: 'Edit print template',
@@ -2083,12 +2085,16 @@ export const enUSMessages = {
       parametersRequiredDescription: 'Select a template and enter at least one document ID.',
       generatedTitle: 'PDF generated',
       generatedDescription: 'Document has been rendered and downloaded successfully.',
+      htmlGeneratedTitle: 'HTML generated successfully',
+      htmlGeneratedDescription: 'HTML preview is ready',
     },
     errors: {
       templatesUnavailable: 'Print templates unavailable',
       unableToLoadTemplates: 'Unable to load print templates.',
       generationFailed: 'PDF generation failed',
       unableToGeneratePdf: 'Unable to generate PDF output.',
+      htmlGenerationFailed: 'Failed to generate HTML',
+      unableToGenerateHtml: 'Unable to generate HTML preview',
     },
   },
   excel: {

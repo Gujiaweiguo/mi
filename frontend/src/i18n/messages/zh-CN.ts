@@ -2002,6 +2002,7 @@ export const zhCNMessages = {
     },
     actions: {
       generatePdf: '生成 PDF',
+      generateHtml: '生成 HTML',
     },
     fields: {
       template: '模板',
@@ -2018,6 +2019,7 @@ export const zhCNMessages = {
       outputMode: '输出方式',
     },
     dialog: {
+      htmlPreviewTitle: 'HTML 预览',
       title: {
         create: '新增打印模板',
         edit: '编辑打印模板',
@@ -2063,12 +2065,16 @@ export const zhCNMessages = {
       parametersRequiredDescription: '请先选择模板，并至少输入一个单据 ID。',
       generatedTitle: 'PDF 已生成',
       generatedDescription: '单据已成功生成并下载。',
+      htmlGeneratedTitle: 'HTML 生成成功',
+      htmlGeneratedDescription: 'HTML 预览已就绪',
     },
     errors: {
       templatesUnavailable: '打印模板不可用',
       unableToLoadTemplates: '无法加载打印模板。',
       generationFailed: 'PDF 生成失败',
       unableToGeneratePdf: '无法生成 PDF 输出。',
+      htmlGenerationFailed: '生成 HTML 失败',
+      unableToGenerateHtml: '无法生成 HTML 预览',
     },
   },
   excel: {

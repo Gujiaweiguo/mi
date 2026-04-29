@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n'
 
 import {
   listPrintTemplates,
+  renderPrintHtml,
   renderPrintPdf,
   upsertPrintTemplate,
   type PrintTemplate,
@@ -27,6 +28,9 @@ const templates = ref<PrintTemplate[]>([])
 const total = ref(0)
 const isLoading = ref(false)
 const isRendering = ref(false)
+const isRenderingHtml = ref(false)
+const htmlOutput = ref('')
+const showHtmlDialog = ref(false)
 const dialogVisible = ref(false)
 const isSubmitting = ref(false)
 const isEditMode = ref(false)
@@ -234,6 +238,45 @@ const handleRenderPdf = async () => {
   }
 }
 
+const handleRenderHtml = async () => {
+  const ids = parseDocumentIds()
+  if (!selectedTemplateCode.value || ids.length === 0) {
+    feedback.value = {
+      type: 'warning',
+      title: t('printPreview.feedback.parametersRequiredTitle'),
+      description: t('printPreview.feedback.parametersRequiredDescription'),
+    }
+    return
+  }
+
+  isRenderingHtml.value = true
+  feedback.value = null
+
+  try {
+    const response = await renderPrintHtml({
+      template_code: selectedTemplateCode.value,
+      document_ids: ids,
+    })
+
+    htmlOutput.value = response.data as unknown as string
+    showHtmlDialog.value = true
+
+    feedback.value = {
+      type: 'success',
+      title: t('printPreview.feedback.htmlGeneratedTitle'),
+      description: t('printPreview.feedback.htmlGeneratedDescription'),
+    }
+  } catch (error) {
+    feedback.value = {
+      type: 'error',
+      title: t('printPreview.errors.htmlGenerationFailed'),
+      description: getErrorMessage(error, t('printPreview.errors.unableToGenerateHtml')),
+    }
+  } finally {
+    isRenderingHtml.value = false
+  }
+}
+
 const handleSubmit = async () => {
   const valid = await formRef.value?.validate().catch(() => false)
   if (!valid) {
@@ -335,15 +378,26 @@ onMounted(() => {
             </el-form-item>
           </div>
 
-          <el-button
-            type="primary"
-            :loading="isRendering"
-            :disabled="!canRender()"
-            data-testid="print-render-pdf-button"
-            @click="handleRenderPdf"
-          >
-            {{ t('printPreview.actions.generatePdf') }}
-          </el-button>
+          <div class="print-preview-view__render-actions">
+            <el-button
+              type="primary"
+              :loading="isRendering"
+              :disabled="!canRender()"
+              data-testid="print-render-pdf-button"
+              @click="handleRenderPdf"
+            >
+              {{ t('printPreview.actions.generatePdf') }}
+            </el-button>
+
+            <el-button
+              :loading="isRenderingHtml"
+              :disabled="!canRender()"
+              data-testid="print-render-html-button"
+              @click="handleRenderHtml"
+            >
+              {{ t('printPreview.actions.generateHtml') }}
+            </el-button>
+          </div>
         </el-form>
       </div>
     </el-card>
@@ -493,6 +547,22 @@ onMounted(() => {
         </el-button>
       </template>
     </el-dialog>
+
+    <el-dialog
+      v-model="showHtmlDialog"
+      :title="t('printPreview.dialog.htmlPreviewTitle')"
+      width="80%"
+      :close-on-click-modal="true"
+    >
+      <div class="print-preview-view__html-preview" data-testid="print-html-preview">
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <div v-html="htmlOutput" />
+      </div>
+
+      <template #footer>
+        <el-button @click="showHtmlDialog = false">{{ t('common.actions.cancel') }}</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -528,6 +598,19 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: var(--mi-space-4);
+}
+
+.print-preview-view__render-actions {
+  display: flex;
+  gap: var(--mi-space-3);
+}
+
+.print-preview-view__html-preview {
+  max-height: 60vh;
+  overflow: auto;
+  border: 1px solid var(--mi-color-border);
+  border-radius: var(--mi-radius-md);
+  padding: var(--mi-space-4);
 }
 
 .print-preview-view__render-grid {
