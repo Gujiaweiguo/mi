@@ -13,7 +13,7 @@ type WorkbenchSection = {
   previewRows: WorkbenchPreviewRow[]
 }
 
-const props = defineProps<{
+defineProps<{
   eyebrow: string
   title: string
   summary: string
