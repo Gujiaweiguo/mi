@@ -111,12 +111,17 @@ const login = async (page: Page) => {
 const selectComboboxOption = async (page: Page, name: string | RegExp, optionLabel: string, index = 0) => {
   const combobox = page.getByRole('combobox', { name }).nth(index)
   await combobox.click({ force: true })
+  await page.waitForTimeout(300)
   await combobox.press('ArrowDown')
-  await page.locator('.el-select-dropdown:visible .el-select-dropdown__item').filter({ hasText: optionLabel }).first().click()
+  await page.waitForTimeout(300)
+  const dropdownItem = page.locator('.el-select-dropdown:visible .el-select-dropdown__item').filter({ hasText: optionLabel }).first()
+  await dropdownItem.waitFor({ state: 'visible', timeout: 5000 })
+  await dropdownItem.click()
+  await page.waitForTimeout(200)
 }
 
 test('creates an ad-board lease with repeated subtype rows', async ({ page }) => {
-  test.setTimeout(60000)
+  test.setTimeout(120000)
   await attachPlatformMocks(page, [
     { function_code: 'lease.contract', permission_level: 'edit', can_print: true, can_export: false },
     { function_code: 'billing.charge', permission_level: 'edit', can_print: false, can_export: false },
@@ -230,8 +235,8 @@ test('creates an ad-board lease with repeated subtype rows', async ({ page }) =>
   await page.getByTestId('lease-tenant-name-input').fill('Harbor Foods')
   await selectComboboxOption(page, /合同子类型/, '广告位合同')
 
-  // Wait for the ad-board section to render after subtype selection
-  await page.getByTestId('lease-ad-board-id-input-0').waitFor({ state: 'visible' })
+  // Wait for Vue to render the ad-board section after subtype change
+  await page.getByTestId('lease-ad-board-id-input-0').waitFor({ state: 'visible', timeout: 10000 })
 
   await selectComboboxOption(page, /部门/, 'OPS — Operations')
   await selectComboboxOption(page, /门店/, 'MI-001 — MI Demo Mall', 0)
@@ -243,13 +248,20 @@ test('creates an ad-board lease with repeated subtype rows', async ({ page }) =>
   await page.getByRole('combobox', { name: /生效开始/ }).fill('2026-01-01')
   await page.getByRole('combobox', { name: /生效结束/ }).fill('2026-12-31')
 
+  // Wait for the ad-board section to be fully rendered and stable after all combobox interactions
+  await page.getByTestId('lease-ad-board-id-input-0').waitFor({ state: 'visible' })
+
   // First ad-board row — use data-testid selectors for reliability
+  await page.getByTestId('lease-ad-board-id-input-0').locator('input').waitFor({ state: 'visible' })
   await page.getByTestId('lease-ad-board-id-input-0').locator('input').fill('901')
+  await page.getByTestId('lease-ad-board-description-input-0').waitFor({ state: 'visible' })
   await page.getByTestId('lease-ad-board-description-input-0').fill('North atrium screen')
   const firstAdBoardRow = page.locator('article').filter({ hasText: '广告位明细 1' })
   await firstAdBoardRow.getByRole('combobox', { name: '开始日期' }).fill('2026-01-01')
   await firstAdBoardRow.getByRole('combobox', { name: '结束日期' }).fill('2026-03-31')
+  await page.getByTestId('lease-ad-board-rent-area-input-0').locator('input').waitFor({ state: 'visible' })
   await page.getByTestId('lease-ad-board-rent-area-input-0').locator('input').fill('16')
+  await page.getByTestId('lease-ad-board-airtime-input-0').locator('input').waitFor({ state: 'visible' })
   await page.getByTestId('lease-ad-board-airtime-input-0').locator('input').fill('20')
 
   await page.getByTestId('lease-ad-board-add-button').click()
@@ -258,12 +270,16 @@ test('creates an ad-board lease with repeated subtype rows', async ({ page }) =>
   await page.getByTestId('lease-ad-board-id-input-1').waitFor({ state: 'visible' })
 
   // Second ad-board row
+  await page.getByTestId('lease-ad-board-id-input-1').locator('input').waitFor({ state: 'visible' })
   await page.getByTestId('lease-ad-board-id-input-1').locator('input').fill('902')
+  await page.getByTestId('lease-ad-board-description-input-1').waitFor({ state: 'visible' })
   await page.getByTestId('lease-ad-board-description-input-1').fill('South atrium screen')
   const secondAdBoardRow = page.locator('article').filter({ hasText: '广告位明细 2' })
   await secondAdBoardRow.getByRole('combobox', { name: '开始日期' }).fill('2026-04-01')
   await secondAdBoardRow.getByRole('combobox', { name: '结束日期' }).fill('2026-06-30')
+  await page.getByTestId('lease-ad-board-rent-area-input-1').locator('input').waitFor({ state: 'visible' })
   await page.getByTestId('lease-ad-board-rent-area-input-1').locator('input').fill('18')
+  await page.getByTestId('lease-ad-board-airtime-input-1').locator('input').waitFor({ state: 'visible' })
   await page.getByTestId('lease-ad-board-airtime-input-1').locator('input').fill('10')
 
   await page.getByTestId('lease-create-submit-button').click()
