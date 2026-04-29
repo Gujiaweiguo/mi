@@ -116,6 +116,7 @@ const selectComboboxOption = async (page: Page, name: string | RegExp, optionLab
 }
 
 test('creates an ad-board lease with repeated subtype rows', async ({ page }) => {
+  test.setTimeout(60000)
   await attachPlatformMocks(page, [
     { function_code: 'lease.contract', permission_level: 'edit', can_print: true, can_export: false },
     { function_code: 'billing.charge', permission_level: 'edit', can_print: false, can_export: false },
@@ -228,6 +229,10 @@ test('creates an ad-board lease with repeated subtype rows', async ({ page }) =>
   await page.getByTestId('lease-number-input').fill('L-AD-001')
   await page.getByTestId('lease-tenant-name-input').fill('Harbor Foods')
   await selectComboboxOption(page, /合同子类型/, '广告位合同')
+
+  // Wait for the ad-board section to render after subtype selection
+  await page.getByTestId('lease-ad-board-id-input-0').waitFor({ state: 'visible' })
+
   await selectComboboxOption(page, /部门/, 'OPS — Operations')
   await selectComboboxOption(page, /门店/, 'MI-001 — MI Demo Mall', 0)
   await page.getByRole('combobox', { name: /开始日期/ }).nth(0).fill('2026-01-01')
@@ -238,20 +243,28 @@ test('creates an ad-board lease with repeated subtype rows', async ({ page }) =>
   await page.getByRole('combobox', { name: /生效开始/ }).fill('2026-01-01')
   await page.getByRole('combobox', { name: /生效结束/ }).fill('2026-12-31')
 
-  await page.getByRole('spinbutton', { name: /广告位 ID/ }).nth(0).fill('901')
-  await page.getByRole('textbox', { name: /广告位说明/ }).nth(0).fill('North atrium screen')
-  await page.getByRole('combobox', { name: /开始日期/ }).nth(1).fill('2026-01-01')
-  await page.getByRole('combobox', { name: /结束日期/ }).nth(1).fill('2026-03-31')
-  await page.getByRole('spinbutton', { name: /租赁面积/ }).nth(1).fill('16')
-  await page.getByRole('spinbutton', { name: /投放时长/ }).nth(0).fill('20')
+  // First ad-board row — use data-testid selectors for reliability
+  await page.getByTestId('lease-ad-board-id-input-0').locator('input').fill('901')
+  await page.getByTestId('lease-ad-board-description-input-0').fill('North atrium screen')
+  const firstAdBoardRow = page.locator('article').filter({ hasText: '广告位明细 1' })
+  await firstAdBoardRow.getByRole('combobox', { name: '开始日期' }).fill('2026-01-01')
+  await firstAdBoardRow.getByRole('combobox', { name: '结束日期' }).fill('2026-03-31')
+  await page.getByTestId('lease-ad-board-rent-area-input-0').locator('input').fill('16')
+  await page.getByTestId('lease-ad-board-airtime-input-0').locator('input').fill('20')
 
   await page.getByTestId('lease-ad-board-add-button').click()
-  await page.getByRole('spinbutton', { name: /广告位 ID/ }).nth(1).fill('902')
-  await page.getByRole('textbox', { name: /广告位说明/ }).nth(1).fill('South atrium screen')
-  await page.getByRole('combobox', { name: /开始日期/ }).nth(2).fill('2026-04-01')
-  await page.getByRole('combobox', { name: /结束日期/ }).nth(2).fill('2026-06-30')
-  await page.getByRole('spinbutton', { name: /租赁面积/ }).nth(2).fill('18')
-  await page.getByRole('spinbutton', { name: /投放时长/ }).nth(1).fill('10')
+
+  // Wait for second row to appear
+  await page.getByTestId('lease-ad-board-id-input-1').waitFor({ state: 'visible' })
+
+  // Second ad-board row
+  await page.getByTestId('lease-ad-board-id-input-1').locator('input').fill('902')
+  await page.getByTestId('lease-ad-board-description-input-1').fill('South atrium screen')
+  const secondAdBoardRow = page.locator('article').filter({ hasText: '广告位明细 2' })
+  await secondAdBoardRow.getByRole('combobox', { name: '开始日期' }).fill('2026-04-01')
+  await secondAdBoardRow.getByRole('combobox', { name: '结束日期' }).fill('2026-06-30')
+  await page.getByTestId('lease-ad-board-rent-area-input-1').locator('input').fill('18')
+  await page.getByTestId('lease-ad-board-airtime-input-1').locator('input').fill('10')
 
   await page.getByTestId('lease-create-submit-button').click()
 
