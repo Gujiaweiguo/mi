@@ -78,6 +78,10 @@ func New() (*App, error) {
 		return nil, err
 	}
 
+	if err := cfg.Validate(); err != nil {
+		return nil, err
+	}
+
 	logger, err := logging.New(cfg.Log.Level)
 	if err != nil {
 		return nil, err

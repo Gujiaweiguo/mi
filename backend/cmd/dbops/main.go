@@ -24,6 +24,10 @@ func main() {
 		fatalf("load config: %v", err)
 	}
 
+	if err := cfg.Validate(); err != nil {
+		fatalf("config validation: %v", err)
+	}
+
 	db, err := sql.Open("mysql", platformdb.Config{
 		Host:     cfg.Database.Host,
 		Port:     cfg.Database.Port,
