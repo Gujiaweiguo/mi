@@ -37,6 +37,7 @@ const statusOptions = computed(() => [
   { label: t('common.statuses.draft'), value: 'draft' },
   { label: t('common.statuses.pendingApproval'), value: 'pending_approval' },
   { label: t('common.statuses.approved'), value: 'approved' },
+  { label: t('common.statuses.adjusted'), value: 'adjusted' },
   { label: t('common.statuses.cancelled'), value: 'cancelled' },
 ])
 
@@ -65,6 +66,8 @@ const resolveStatusLabel = (status: string) => {
       return t('common.statuses.pendingApproval')
     case 'approved':
       return t('common.statuses.approved')
+    case 'adjusted':
+      return t('common.statuses.adjusted')
     case 'cancelled':
       return t('common.statuses.cancelled')
     default:
@@ -81,6 +84,8 @@ const statusTag = (status: string) => {
       return 'warning'
     case 'approved':
       return 'success'
+    case 'adjusted':
+      return 'warning'
     case 'cancelled':
       return 'danger'
     default:
@@ -127,6 +132,10 @@ const handlePaginationSizeChange = (newSize: number) => {
 }
 
 const openInvoice = (id: number) => {
+  router.push({ name: 'billing-invoice-detail', params: { id: String(id) } })
+}
+
+const openInvoiceAdjustment = (id: number) => {
   router.push({ name: 'billing-invoice-detail', params: { id: String(id) } })
 }
 
@@ -271,6 +280,14 @@ onMounted(() => {
             {{ formatAmount(scope.row.total_amount) }}
           </template>
         </el-table-column>
+        <el-table-column :label="t('billingInvoices.fields.adjustedFrom')" min-width="160">
+          <template #default="scope">
+            <template v-if="scope.row.adjusted_from_id !== null">
+              {{ t('invoiceDetail.defaults.documentId', { id: scope.row.adjusted_from_id }) }}
+            </template>
+            <template v-else>{{ t('common.emptyValue') }}</template>
+          </template>
+        </el-table-column>
         <el-table-column :label="t('common.columns.status')" min-width="140">
           <template #default="scope">
             <el-tag :type="statusTag(scope.row.status)" effect="plain">
@@ -278,7 +295,7 @@ onMounted(() => {
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column :label="t('common.columns.actions')" min-width="200" fixed="right">
+        <el-table-column :label="t('common.columns.actions')" min-width="260" fixed="right">
           <template #default="scope">
             <el-button link type="primary" :data-testid="`invoice-row-view-button-${scope.row.id}`" @click.stop="openInvoice(scope.row.id)">
               {{ t('common.actions.view') }}
@@ -291,6 +308,15 @@ onMounted(() => {
               @click.stop="handleSubmit(scope.row)"
             >
               {{ t('billingInvoices.actions.submit') }}
+            </el-button>
+            <el-button
+              link
+              type="warning"
+              :disabled="scope.row.status !== 'approved'"
+              :data-testid="`invoice-row-adjust-button-${scope.row.id}`"
+              @click.stop="openInvoiceAdjustment(scope.row.id)"
+            >
+              {{ t('billingInvoices.actions.adjust') }}
             </el-button>
             <el-button
               link

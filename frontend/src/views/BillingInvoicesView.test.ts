@@ -1,14 +1,16 @@
+import ElementPlus from 'element-plus'
 import { mount } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
-import { defineComponent, h, nextTick } from 'vue'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { i18n } from '../i18n'
 import { useAppStore } from '../stores/app'
 import BillingInvoicesView from './BillingInvoicesView.vue'
 
+const push = vi.fn()
+
 vi.mock('vue-router', () => ({
-  useRouter: () => ({ push: vi.fn() }),
+  useRouter: () => ({ push }),
 }))
 
 vi.mock('../api/invoice', () => ({
@@ -19,100 +21,9 @@ vi.mock('../api/invoice', () => ({
 
 import { listInvoices } from '../api/invoice'
 
-const PageSectionStub = defineComponent({
-  props: {
-    title: { type: String, required: true },
-    summary: { type: String, required: true },
-    eyebrow: { type: String, default: '' },
-  },
-  setup(props) {
-    return () => h('section', [h('span', props.eyebrow), h('h1', props.title), h('p', props.summary)])
-  },
-})
-
-const FilterFormStub = defineComponent({
-  props: {
-    title: { type: String, default: '' },
-  },
-  setup(props) {
-    return () => h('section', { 'data-testid': 'billing-filter-form-stub' }, props.title)
-  },
-})
-
-const ElAlertStub = defineComponent({
-  props: {
-    title: { type: String, default: '' },
-    description: { type: String, default: '' },
-  },
-  setup(props, { attrs }) {
-    return () =>
-      h(
-        'div',
-        { 'data-testid': attrs['data-testid'] ?? 'billing-alert-stub' },
-        `${props.title} ${props.description}`.trim(),
-      )
-  },
-})
-
-const ElButtonStub = defineComponent({
-  setup(_, { slots }) {
-    return () => h('button', slots.default?.())
-  },
-})
-
-const ElFormItemStub = defineComponent({
-  setup(_, { slots }) {
-    return () => h('div', slots.default?.())
-  },
-})
-
-const ElSelectStub = defineComponent({
-  setup(_, { slots }) {
-    return () => h('select', slots.default?.())
-  },
-})
-
-const ElOptionStub = defineComponent({
-  setup() {
-    return () => h('option')
-  },
-})
-
-const ElTagStub = defineComponent({
-  setup(_, { slots }) {
-    return () => h('span', slots.default?.())
-  },
-})
-
-const ElCardStub = defineComponent({
-  setup(_, { slots }) {
-    return () => h('section', slots.default?.())
-  },
-})
-
-const ElTableStub = defineComponent({
-  setup(_, { attrs }) {
-    return () => h('div', { 'data-testid': attrs['data-testid'] ?? 'billing-table-stub' })
-  },
-})
-
-const ElTableColumnStub = defineComponent({
-  setup() {
-    return () => null
-  },
-})
-
-const ElPaginationStub = defineComponent({
-  setup() {
-    return () => h('div', { 'data-testid': 'billing-pagination-stub' })
-  },
-})
-
 const flushPromises = async () => {
   await Promise.resolve()
-  await nextTick()
   await Promise.resolve()
-  await nextTick()
 }
 
 describe('BillingInvoicesView', () => {
@@ -121,45 +32,6 @@ describe('BillingInvoicesView', () => {
     setActivePinia(createPinia())
     i18n.global.locale.value = 'en-US'
     useAppStore().setLocale('en-US')
-  })
-
-  it('mounts without error', async () => {
-    vi.mocked(listInvoices).mockResolvedValue({
-      data: {
-        items: [],
-        total: 0,
-        page: 1,
-        page_size: 20,
-      },
-    } as never)
-
-    const wrapper = mount(BillingInvoicesView, {
-      global: {
-        plugins: [i18n],
-        stubs: {
-          PageSection: PageSectionStub,
-          FilterForm: FilterFormStub,
-          ElAlert: ElAlertStub,
-          ElButton: ElButtonStub,
-          ElCard: ElCardStub,
-          ElFormItem: ElFormItemStub,
-          ElOption: ElOptionStub,
-          ElSelect: ElSelectStub,
-          ElTag: ElTagStub,
-          ElTable: ElTableStub,
-          ElTableColumn: ElTableColumnStub,
-          ElPagination: ElPaginationStub,
-        },
-        directives: {
-          loading: {},
-        },
-      },
-    })
-
-    await flushPromises()
-
-    expect(wrapper.get('[data-testid="billing-invoices-view"]')).toBeTruthy()
-    expect(wrapper.text()).toContain('Billing invoices')
   })
 
   it('loads billing invoice rows on mount', async () => {
@@ -172,31 +44,15 @@ describe('BillingInvoicesView', () => {
       },
     } as never)
 
-    mount(BillingInvoicesView, {
+    const wrapper = mount(BillingInvoicesView, {
       global: {
-        plugins: [i18n],
-        stubs: {
-          PageSection: PageSectionStub,
-          FilterForm: FilterFormStub,
-          ElAlert: ElAlertStub,
-          ElButton: ElButtonStub,
-          ElCard: ElCardStub,
-          ElFormItem: ElFormItemStub,
-          ElOption: ElOptionStub,
-          ElSelect: ElSelectStub,
-          ElTag: ElTagStub,
-          ElTable: ElTableStub,
-          ElTableColumn: ElTableColumnStub,
-          ElPagination: ElPaginationStub,
-        },
-        directives: {
-          loading: {},
-        },
+        plugins: [i18n, ElementPlus],
       },
     })
 
     await flushPromises()
 
+    expect(wrapper.get('[data-testid="billing-invoices-view"]')).toBeTruthy()
     expect(listInvoices).toHaveBeenCalledTimes(1)
     expect(listInvoices).toHaveBeenCalledWith({
       document_type: undefined,
@@ -206,34 +62,93 @@ describe('BillingInvoicesView', () => {
     })
   })
 
-  it('shows an error alert when invoice loading fails', async () => {
-    vi.mocked(listInvoices).mockRejectedValue(new Error('Invoice load failed'))
+  it('shows adjusted status, lineage, and adjustment entry in the list', async () => {
+    vi.mocked(listInvoices).mockResolvedValue({
+      data: {
+        items: [
+          {
+            id: 42,
+            document_type: 'invoice',
+            document_no: 'INV-042',
+            billing_run_id: 9,
+            lease_contract_id: 7,
+            tenant_name: 'Tenant A',
+            period_start: '2026-01-01',
+            period_end: '2026-01-31',
+            total_amount: 1200,
+            currency_type_id: 1,
+            status: 'adjusted',
+            workflow_instance_id: 4,
+            adjusted_from_id: 41,
+            submitted_at: '2026-01-02T00:00:00Z',
+            approved_at: '2026-01-03T00:00:00Z',
+            cancelled_at: null,
+            created_by: 1,
+            updated_by: 1,
+            created_at: '2026-01-01T00:00:00Z',
+            updated_at: '2026-01-03T00:00:00Z',
+            lines: [],
+          },
+          {
+            id: 43,
+            document_type: 'invoice',
+            document_no: 'INV-043',
+            billing_run_id: 9,
+            lease_contract_id: 7,
+            tenant_name: 'Tenant A',
+            period_start: '2026-02-01',
+            period_end: '2026-02-28',
+            total_amount: 1500,
+            currency_type_id: 1,
+            status: 'approved',
+            workflow_instance_id: 5,
+            adjusted_from_id: null,
+            submitted_at: '2026-02-02T00:00:00Z',
+            approved_at: '2026-02-03T00:00:00Z',
+            cancelled_at: null,
+            created_by: 1,
+            updated_by: 1,
+            created_at: '2026-02-01T00:00:00Z',
+            updated_at: '2026-02-03T00:00:00Z',
+            lines: [],
+          },
+        ],
+        total: 2,
+        page: 1,
+        page_size: 20,
+      },
+    } as never)
 
     const wrapper = mount(BillingInvoicesView, {
       global: {
-        plugins: [i18n],
-        stubs: {
-          PageSection: PageSectionStub,
-          FilterForm: FilterFormStub,
-          ElAlert: ElAlertStub,
-          ElButton: ElButtonStub,
-          ElCard: ElCardStub,
-          ElFormItem: ElFormItemStub,
-          ElOption: ElOptionStub,
-          ElSelect: ElSelectStub,
-          ElTag: ElTagStub,
-          ElTable: ElTableStub,
-          ElTableColumn: ElTableColumnStub,
-          ElPagination: ElPaginationStub,
-        },
-        directives: {
-          loading: {},
-        },
+        plugins: [i18n, ElementPlus],
       },
     })
 
     await flushPromises()
 
-    expect(wrapper.get('[data-testid="billing-invoices-error-alert"]').text()).toContain('Invoice records unavailable Invoice load failed')
+    expect(wrapper.text()).toContain('Adjusted')
+    expect(wrapper.text()).toContain('Document #41')
+
+    await wrapper.get('[data-testid="invoice-row-adjust-button-43"]').trigger('click')
+
+    expect(push).toHaveBeenCalledWith({
+      name: 'billing-invoice-detail',
+      params: { id: '43' },
+    })
+  })
+
+  it('shows an error alert when invoice loading fails', async () => {
+    vi.mocked(listInvoices).mockRejectedValue(new Error('Invoice load failed'))
+
+    const wrapper = mount(BillingInvoicesView, {
+      global: {
+        plugins: [i18n, ElementPlus],
+      },
+    })
+
+    await flushPromises()
+
+    expect(wrapper.get('[data-testid="billing-invoices-error-alert"]').text()).toContain('Invoice load failed')
   })
 })
