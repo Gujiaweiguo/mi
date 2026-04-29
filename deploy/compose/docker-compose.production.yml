@@ -65,7 +65,7 @@ services:
       MI_DATABASE_PORT: "3306"
       MI_DATABASE_NAME: ${MI_DATABASE_NAME:-${MYSQL_DATABASE:-mi_prod}}
       MI_DATABASE_USER: ${MI_DATABASE_USER:-${MYSQL_USER:-mi_prod}}
-      MI_DATABASE_PASSWORD: ${MI_DATABASE_PASSWORD:-${MYSQL_PASSWORD:-change-me}}
+      MI_DATABASE_PASSWORD: ${MI_DATABASE_PASSWORD:?MI_DATABASE_PASSWORD must be set}
       MI_CONFIG_FILE: ${MI_BACKEND_CONFIG_FILE:-/app/config/production.yaml}
     volumes:
       - ${MI_RUNTIME_CONFIG:-../../backend/config}:/app/config:ro
@@ -86,8 +86,8 @@ services:
       MI_DATABASE_PORT: "3306"
       MI_DATABASE_NAME: ${MI_DATABASE_NAME:-${MYSQL_DATABASE:-mi_prod}}
       MI_DATABASE_USER: ${MI_DATABASE_USER:-${MYSQL_USER:-mi_prod}}
-      MI_DATABASE_PASSWORD: ${MI_DATABASE_PASSWORD:-${MYSQL_PASSWORD:-change-me}}
-      MI_AUTH_JWT_SECRET: ${MI_AUTH_JWT_SECRET:-change-me-production-secret}
+      MI_DATABASE_PASSWORD: ${MI_DATABASE_PASSWORD:?MI_DATABASE_PASSWORD must be set}
+      MI_AUTH_JWT_SECRET: ${MI_AUTH_JWT_SECRET:?MI_AUTH_JWT_SECRET must be set}
     volumes:
       - ${MI_RUNTIME_CONFIG:-../../backend/config}:/app/config:ro
       - ${MI_RUNTIME_LOGS:-../runtime/production/logs}:/app/logs
@@ -122,8 +122,8 @@ services:
     environment:
       MYSQL_DATABASE: ${MI_DATABASE_NAME:-${MYSQL_DATABASE:-mi_prod}}
       MYSQL_USER: ${MI_DATABASE_USER:-${MYSQL_USER:-mi_prod}}
-      MYSQL_PASSWORD: ${MI_DATABASE_PASSWORD:-${MYSQL_PASSWORD:-change-me}}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-change-me-root}
+      MYSQL_PASSWORD: ${MI_DATABASE_PASSWORD:?MI_DATABASE_PASSWORD must be set}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?MYSQL_ROOT_PASSWORD must be set}
     volumes:
       - ${MI_RUNTIME_MYSQL:-../runtime/production/mysql}:/var/lib/mysql
     healthcheck:
@@ -155,7 +155,7 @@ services:
       MI_DATABASE_PORT: "3306"
       MI_DATABASE_NAME: ${MI_DATABASE_NAME:-${MYSQL_DATABASE:-mi_prod}}
       MI_DATABASE_USER: ${MI_DATABASE_USER:-${MYSQL_USER:-mi_prod}}
-      MI_DATABASE_PASSWORD: ${MI_DATABASE_PASSWORD:-${MYSQL_PASSWORD:-change-me}}
+      MI_DATABASE_PASSWORD: ${MI_DATABASE_PASSWORD:?MI_DATABASE_PASSWORD must be set}
       BACKUP_DIR: /backups
     volumes:
       - ${MI_RUNTIME_BACKUPS:-./artifacts/backups/production}:/backups

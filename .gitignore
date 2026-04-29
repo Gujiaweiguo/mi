@@ -26,6 +26,7 @@ deploy/runtime/**/mysql/**
 # env overrides
 deploy/env/*.local
 backend/config/*.local.yaml
+frontend/.env*.local
 
 # test outputs
 *.out

@@ -108,3 +108,47 @@ func Load() (*Config, error) {
 
 	return &cfg, nil
 }
+
+var blockedSecrets = []string{
+	"change-me",
+	"change-me-production-secret",
+	"change-me-root",
+	"devpassword",
+	"dev-secret-change-in-production",
+	"change-me-development-secret",
+}
+
+// Validate checks for known placeholder secrets and rejects them in production.
+func (c *Config) Validate() error {
+	if !c.isProduction() {
+		return nil
+	}
+	var errs []string
+	if isBlockedSecret(c.Database.Password) {
+		errs = append(errs, "database.password contains a placeholder value")
+	}
+	if isBlockedSecret(c.Auth.JWTSecret) {
+		errs = append(errs, "auth.jwt_secret contains a placeholder value")
+	}
+	if c.Auth.JWTSecret == c.Database.Password {
+		errs = append(errs, "auth.jwt_secret must differ from database.password")
+	}
+	if len(errs) > 0 {
+		return fmt.Errorf("production config validation failed: %s", strings.Join(errs, "; "))
+	}
+	return nil
+}
+
+func (c *Config) isProduction() bool {
+	return strings.EqualFold(c.App.Environment, "production") || strings.EqualFold(c.App.Environment, "prod")
+}
+
+func isBlockedSecret(value string) bool {
+	lower := strings.ToLower(value)
+	for _, blocked := range blockedSecrets {
+		if lower == blocked || strings.Contains(lower, blocked) {
+			return true
+		}
+	}
+	return false
+}
