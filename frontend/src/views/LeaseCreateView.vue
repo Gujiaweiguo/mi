@@ -2,14 +2,17 @@
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { useI18n } from 'vue-i18n'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 import { listBrands, listCustomers, type Brand, type Customer } from '../api/masterdata'
 import {
+  amendLease,
   createLease,
+  getLease,
   type CreateLeaseRequest,
   type LeaseAreaGroundDetail,
   type LeaseAdBoardDetail,
+  type LeaseContract,
   type LeaseContractSubtype,
   type LeaseJointOperationFields,
 } from '../api/lease'
@@ -23,12 +26,17 @@ type AdBoardForm = Omit<LeaseAdBoardDetail, 'id' | 'lease_contract_id' | 'create
 
 type AreaGroundForm = Omit<LeaseAreaGroundDetail, 'id' | 'lease_contract_id' | 'created_at' | 'updated_at'>
 
+type LeaseUnitDraft = CreateLeaseRequest['units'][number]
+
+type LeaseTermDraft = CreateLeaseRequest['terms'][number]
+
 type LeaseCreateForm = {
   lease_no: string
   subtype: LeaseContractSubtype
   tenant_name: string
   department_id: number | null
   store_id: number | null
+  building_id: number | null
   customer_id: number | null
   brand_id: number | null
   trade_id: number | null
@@ -96,18 +104,24 @@ const createAreaGroundForm = (): AreaGroundForm => ({
   rent_area: 0,
 })
 
+const route = useRoute()
 const router = useRouter()
 const { t } = useI18n()
 
 const formRef = ref<FormInstance>()
 const isSaving = ref(false)
 const errorMessage = ref('')
+const sourceErrorMessage = ref('')
 const setupErrorMessage = ref('')
 const isLoadingOptions = ref(false)
+const isLoadingSourceLease = ref(false)
 const customers = ref<Customer[]>([])
 const brands = ref<Brand[]>([])
 const departments = ref<Department[]>([])
 const stores = ref<Store[]>([])
+const sourceLease = ref<LeaseContract | null>(null)
+const amendmentUnits = ref<LeaseUnitDraft[]>([])
+const amendmentTerms = ref<LeaseTermDraft[]>([])
 
 const form = reactive<LeaseCreateForm>({
   lease_no: '',
@@ -115,6 +129,7 @@ const form = reactive<LeaseCreateForm>({
   tenant_name: '',
   department_id: null,
   store_id: null,
+  building_id: null,
   customer_id: null,
   brand_id: null,
   trade_id: null,
@@ -133,6 +148,33 @@ const form = reactive<LeaseCreateForm>({
   ad_boards: [createAdBoardForm()],
   area_grounds: [createAreaGroundForm()],
 })
+
+const isAmendmentMode = computed(() => route.name === 'lease-contracts-amend')
+
+const sourceLeaseId = computed(() => {
+  if (!isAmendmentMode.value) {
+    return null
+  }
+
+  const rawId = route.params.id
+  const normalizedId = Array.isArray(rawId) ? rawId[0] : rawId
+  const parsedId = Number(normalizedId)
+
+  return Number.isFinite(parsedId) && parsedId > 0 ? parsedId : null
+})
+
+const isInitializing = computed(() => isLoadingOptions.value || isLoadingSourceLease.value)
+const pageTitle = computed(() => (isAmendmentMode.value ? t('leaseCreate.modes.amendment.title') : t('leaseCreate.title')))
+const pageSummary = computed(() => (isAmendmentMode.value ? t('leaseCreate.modes.amendment.summary') : t('leaseCreate.summary')))
+const setupCardTitle = computed(() =>
+  isAmendmentMode.value ? t('leaseCreate.modes.amendment.cards.setup') : t('leaseCreate.cards.setup'),
+)
+const submitActionLabel = computed(() =>
+  isAmendmentMode.value ? t('leaseCreate.modes.amendment.actions.submit') : t('leaseCreate.actions.create'),
+)
+const submissionErrorTitle = computed(() =>
+  isAmendmentMode.value ? t('leaseCreate.errors.amendmentFailed') : t('leaseCreate.errors.creationFailed'),
+)
 
 const rules = computed<FormRules<LeaseCreateForm>>(() => ({
   lease_no: [{ required: true, message: t('leaseCreate.validation.leaseNumberRequired'), trigger: 'blur' }],
@@ -196,6 +238,35 @@ const isJointOperationSubtype = computed(() => form.subtype === 'joint_operation
 const isAdBoardSubtype = computed(() => form.subtype === 'ad_board')
 const isAreaGroundSubtype = computed(() => form.subtype === 'area_ground')
 
+const resetFormState = () => {
+  form.lease_no = ''
+  form.subtype = 'standard'
+  form.tenant_name = ''
+  form.department_id = null
+  form.store_id = null
+  form.building_id = null
+  form.customer_id = null
+  form.brand_id = null
+  form.trade_id = null
+  form.management_type_id = null
+  form.start_date = ''
+  form.end_date = ''
+  form.unit_id = null
+  form.rent_area = null
+  form.term_type = 'rent'
+  form.billing_cycle = 'monthly'
+  form.currency_type_id = 1
+  form.amount = null
+  form.effective_from = ''
+  form.effective_to = ''
+  form.joint_operation = createJointOperationForm()
+  form.ad_boards = [createAdBoardForm()]
+  form.area_grounds = [createAreaGroundForm()]
+  amendmentUnits.value = []
+  amendmentTerms.value = []
+  sourceLease.value = null
+}
+
 const loadReferenceData = async () => {
   isLoadingOptions.value = true
   setupErrorMessage.value = ''
@@ -220,6 +291,122 @@ const loadReferenceData = async () => {
     setupErrorMessage.value = getErrorMessage(error, t('leaseCreate.errors.unableToLoadReferenceData'))
   } finally {
     isLoadingOptions.value = false
+  }
+}
+
+const normalizeAdBoardForm = (detail: LeaseAdBoardDetail): AdBoardForm => ({
+  ad_board_id: detail.ad_board_id,
+  description: detail.description,
+  status: detail.status,
+  start_date: detail.start_date,
+  end_date: detail.end_date,
+  rent_area: detail.rent_area,
+  airtime: detail.airtime,
+  frequency: detail.frequency,
+  frequency_days: detail.frequency_days,
+  frequency_mon: detail.frequency_mon,
+  frequency_tue: detail.frequency_tue,
+  frequency_wed: detail.frequency_wed,
+  frequency_thu: detail.frequency_thu,
+  frequency_fri: detail.frequency_fri,
+  frequency_sat: detail.frequency_sat,
+  frequency_sun: detail.frequency_sun,
+  between_from: detail.between_from,
+  between_to: detail.between_to,
+  store_id: detail.store_id,
+  building_id: detail.building_id,
+})
+
+const normalizeAreaGroundForm = (detail: LeaseAreaGroundDetail): AreaGroundForm => ({
+  code: detail.code,
+  name: detail.name,
+  type_id: detail.type_id,
+  description: detail.description,
+  status: detail.status,
+  start_date: detail.start_date,
+  end_date: detail.end_date,
+  rent_area: detail.rent_area,
+})
+
+const applySourceLeaseToForm = (lease: LeaseContract) => {
+  const primaryUnit = lease.units[0]
+  const primaryTerm = lease.terms[0]
+
+  sourceLease.value = lease
+  amendmentUnits.value = lease.units.map((unit) => ({
+    unit_id: unit.unit_id,
+    rent_area: unit.rent_area,
+  }))
+  amendmentTerms.value = lease.terms.map((term) => ({
+    term_type: term.term_type,
+    billing_cycle: term.billing_cycle,
+    currency_type_id: term.currency_type_id,
+    amount: term.amount,
+    effective_from: term.effective_from,
+    effective_to: term.effective_to,
+  }))
+
+  form.lease_no = lease.lease_no
+  form.subtype = lease.subtype
+  form.tenant_name = lease.tenant_name
+  form.department_id = lease.department_id
+  form.store_id = lease.store_id
+  form.building_id = lease.building_id
+  form.customer_id = lease.customer_id
+  form.brand_id = lease.brand_id
+  form.trade_id = lease.trade_id
+  form.management_type_id = lease.management_type_id
+  form.start_date = lease.start_date
+  form.end_date = lease.end_date
+  form.unit_id = primaryUnit?.unit_id ?? null
+  form.rent_area = primaryUnit?.rent_area ?? null
+  form.term_type = primaryTerm?.term_type ?? 'rent'
+  form.billing_cycle = primaryTerm?.billing_cycle ?? 'monthly'
+  form.currency_type_id = primaryTerm?.currency_type_id ?? 1
+  form.amount = primaryTerm?.amount ?? null
+  form.effective_from = primaryTerm?.effective_from ?? ''
+  form.effective_to = primaryTerm?.effective_to ?? ''
+  form.joint_operation = lease.joint_operation
+    ? {
+        bill_cycle: lease.joint_operation.bill_cycle,
+        rent_inc: lease.joint_operation.rent_inc,
+        account_cycle: lease.joint_operation.account_cycle,
+        tax_rate: lease.joint_operation.tax_rate,
+        tax_type: lease.joint_operation.tax_type,
+        settlement_currency_type_id: lease.joint_operation.settlement_currency_type_id,
+        in_tax_rate: lease.joint_operation.in_tax_rate,
+        out_tax_rate: lease.joint_operation.out_tax_rate,
+        month_settle_days: lease.joint_operation.month_settle_days,
+        late_pay_interest_rate: lease.joint_operation.late_pay_interest_rate,
+        interest_grace_days: lease.joint_operation.interest_grace_days,
+      }
+    : createJointOperationForm()
+  form.ad_boards = lease.ad_boards.length > 0 ? lease.ad_boards.map(normalizeAdBoardForm) : [createAdBoardForm()]
+  form.area_grounds = lease.area_grounds.length > 0 ? lease.area_grounds.map(normalizeAreaGroundForm) : [createAreaGroundForm()]
+}
+
+const loadSourceLease = async () => {
+  resetFormState()
+  sourceErrorMessage.value = ''
+
+  if (!isAmendmentMode.value) {
+    return
+  }
+
+  if (!sourceLeaseId.value) {
+    sourceErrorMessage.value = t('leaseCreate.errors.invalidSourceLeaseId')
+    return
+  }
+
+  isLoadingSourceLease.value = true
+
+  try {
+    const response = await getLease(sourceLeaseId.value)
+    applySourceLeaseToForm(response.data.lease)
+  } catch (error) {
+    sourceErrorMessage.value = getErrorMessage(error, t('leaseCreate.errors.unableToLoadAmendmentDraft'))
+  } finally {
+    isLoadingSourceLease.value = false
   }
 }
 
@@ -376,34 +563,57 @@ const buildSubtypeIssues = () => {
 }
 
 const buildLeasePayload = (): CreateLeaseRequest => {
+  const units = amendmentUnits.value.length > 0
+    ? amendmentUnits.value.map((unit) => ({ ...unit }))
+    : [
+        {
+          unit_id: form.unit_id ?? 0,
+          rent_area: form.rent_area ?? 0,
+        },
+      ]
+
+  units[0] = {
+    unit_id: form.unit_id ?? 0,
+    rent_area: form.rent_area ?? 0,
+  }
+
+  const terms = amendmentTerms.value.length > 0
+    ? amendmentTerms.value.map((term) => ({ ...term }))
+    : [
+        {
+          term_type: form.term_type,
+          billing_cycle: form.billing_cycle,
+          currency_type_id: form.currency_type_id ?? 0,
+          amount: form.amount ?? 0,
+          effective_from: form.effective_from,
+          effective_to: form.effective_to,
+        },
+      ]
+
+  terms[0] = {
+    term_type: form.term_type,
+    billing_cycle: form.billing_cycle,
+    currency_type_id: form.currency_type_id ?? 0,
+    amount: form.amount ?? 0,
+    effective_from: form.effective_from,
+    effective_to: form.effective_to,
+  }
+
   const payload: CreateLeaseRequest = {
     lease_no: form.lease_no.trim(),
     subtype: form.subtype,
     tenant_name: form.tenant_name.trim(),
     department_id: form.department_id ?? 0,
     store_id: form.store_id ?? 0,
+    building_id: form.building_id,
     customer_id: form.customer_id,
     brand_id: form.brand_id,
     trade_id: form.trade_id,
     management_type_id: form.management_type_id,
     start_date: form.start_date,
     end_date: form.end_date,
-    units: [
-      {
-        unit_id: form.unit_id ?? 0,
-        rent_area: form.rent_area ?? 0,
-      },
-    ],
-    terms: [
-      {
-        term_type: form.term_type,
-        billing_cycle: form.billing_cycle,
-        currency_type_id: form.currency_type_id ?? 0,
-        amount: form.amount ?? 0,
-        effective_from: form.effective_from,
-        effective_to: form.effective_to,
-      },
-    ],
+    units,
+    terms,
   }
 
   if (form.subtype === 'joint_operation') {
@@ -441,6 +651,11 @@ const handleCancel = async () => {
 const handleSubmit = async () => {
   errorMessage.value = ''
 
+  if (isAmendmentMode.value && (!sourceLeaseId.value || !sourceLease.value)) {
+    sourceErrorMessage.value = t('leaseCreate.errors.unableToLoadAmendmentDraft')
+    return
+  }
+
   const isValid = await formRef.value?.validate().catch(() => false)
   if (isValid !== true) {
     return
@@ -455,32 +670,49 @@ const handleSubmit = async () => {
   isSaving.value = true
 
   try {
-    const response = await createLease(buildLeasePayload())
+    const payload = buildLeasePayload()
+    const response = isAmendmentMode.value && sourceLeaseId.value
+      ? await amendLease(sourceLeaseId.value, payload)
+      : await createLease(payload)
 
     await router.replace({
       name: 'lease-contract-detail',
       params: { id: String(response.data.lease.id) },
     })
   } catch (error) {
-    errorMessage.value = getErrorMessage(error, t('leaseCreate.errors.unableToCreate'))
+    errorMessage.value = getErrorMessage(
+      error,
+      isAmendmentMode.value ? t('leaseCreate.errors.unableToAmend') : t('leaseCreate.errors.unableToCreate'),
+    )
   } finally {
     isSaving.value = false
   }
 }
 
 onMounted(() => {
-  void loadReferenceData()
+  void Promise.all([loadReferenceData(), loadSourceLease()])
 })
+
+watch(
+  () => route.fullPath,
+  () => {
+    errorMessage.value = ''
+    void loadSourceLease()
+  },
+)
 </script>
 
 <template>
-  <div class="lease-create-view" v-loading="isLoadingOptions" data-testid="lease-create-view">
+  <div class="lease-create-view" v-loading="isInitializing" data-testid="lease-create-view">
     <PageSection
       :eyebrow="t('lease.eyebrow')"
-      :title="t('leaseCreate.title')"
-      :summary="t('leaseCreate.summary')"
+      :title="pageTitle"
+      :summary="pageSummary"
     >
       <template #actions>
+        <el-tag v-if="isAmendmentMode && sourceLease" effect="plain" type="warning" data-testid="lease-amendment-source-tag">
+          {{ t('leaseCreate.modes.amendment.sourceLeaseTag', { leaseNo: sourceLease.lease_no }) }}
+        </el-tag>
         <el-button data-testid="lease-create-back-button" @click="handleCancel">{{ t('leaseCreate.actions.backToList') }}</el-button>
       </template>
     </PageSection>
@@ -488,15 +720,37 @@ onMounted(() => {
     <el-card class="lease-create-view__card" shadow="never">
       <template #header>
         <div class="lease-create-view__card-header">
-          <span>{{ t('leaseCreate.cards.setup') }}</span>
+          <span>{{ setupCardTitle }}</span>
         </div>
       </template>
+
+      <el-alert
+        v-if="isAmendmentMode && sourceLease"
+        :closable="false"
+        class="lease-create-view__alert"
+        :title="t('leaseCreate.modes.amendment.alertTitle')"
+        type="info"
+        show-icon
+        :description="t('leaseCreate.modes.amendment.alertDescription')"
+        data-testid="lease-amendment-info-alert"
+      />
+
+      <el-alert
+        v-if="sourceErrorMessage"
+        :closable="false"
+        class="lease-create-view__alert"
+        :title="t('leaseCreate.errors.amendmentDraftUnavailable')"
+        type="error"
+        show-icon
+        :description="sourceErrorMessage"
+        data-testid="lease-amendment-error-alert"
+      />
 
       <el-alert
         v-if="errorMessage"
         :closable="false"
         class="lease-create-view__alert"
-        :title="t('leaseCreate.errors.creationFailed')"
+        :title="submissionErrorTitle"
         type="error"
         show-icon
         :description="errorMessage"
@@ -659,21 +913,21 @@ onMounted(() => {
 
           <div class="lease-create-view__grid">
             <el-form-item :label="t('leaseCreate.fields.unitId')" prop="unit_id">
-              <el-input-number v-model="form.unit_id" :min="1" controls-position="right" />
+              <el-input-number v-model="form.unit_id" :min="1" controls-position="right" data-testid="lease-unit-id-input" />
             </el-form-item>
 
             <el-form-item :label="t('leaseCreate.fields.rentArea')" prop="rent_area">
-              <el-input-number v-model="form.rent_area" :min="0" :precision="2" controls-position="right" />
+              <el-input-number v-model="form.rent_area" :min="0" :precision="2" controls-position="right" data-testid="lease-rent-area-input" />
             </el-form-item>
 
             <el-form-item :label="t('leaseCreate.fields.termType')" prop="term_type">
-              <el-select v-model="form.term_type" :placeholder="t('leaseCreate.placeholders.selectTermType')">
+              <el-select v-model="form.term_type" :placeholder="t('leaseCreate.placeholders.selectTermType')" data-testid="lease-term-type-select">
                 <el-option v-for="option in termTypeOptions" :key="option.value" :label="option.label" :value="option.value" />
               </el-select>
             </el-form-item>
 
             <el-form-item :label="t('leaseCreate.fields.billingCycle')" prop="billing_cycle">
-              <el-select v-model="form.billing_cycle" :placeholder="t('leaseCreate.placeholders.selectBillingCycle')">
+              <el-select v-model="form.billing_cycle" :placeholder="t('leaseCreate.placeholders.selectBillingCycle')" data-testid="lease-billing-cycle-select">
                 <el-option
                   v-for="option in billingCycleOptions"
                   :key="option.value"
@@ -684,11 +938,11 @@ onMounted(() => {
             </el-form-item>
 
             <el-form-item :label="t('leaseCreate.fields.currencyTypeId')" prop="currency_type_id">
-              <el-input-number v-model="form.currency_type_id" :min="1" controls-position="right" />
+              <el-input-number v-model="form.currency_type_id" :min="1" controls-position="right" data-testid="lease-currency-type-id-input" />
             </el-form-item>
 
             <el-form-item :label="t('leaseCreate.fields.amount')" prop="amount">
-              <el-input-number v-model="form.amount" :min="0" :precision="2" controls-position="right" />
+              <el-input-number v-model="form.amount" :min="0" :precision="2" controls-position="right" data-testid="lease-amount-input" />
             </el-form-item>
 
             <el-form-item :label="t('leaseCreate.fields.effectiveFrom')" prop="effective_from">
@@ -910,8 +1164,14 @@ onMounted(() => {
 
         <div class="lease-create-view__actions">
           <el-button data-testid="lease-create-cancel-button" @click="handleCancel">{{ t('leaseCreate.actions.cancel') }}</el-button>
-          <el-button type="primary" :loading="isSaving" data-testid="lease-create-submit-button" @click="handleSubmit">
-            {{ t('leaseCreate.actions.create') }}
+          <el-button
+            type="primary"
+            :loading="isSaving"
+            :disabled="isAmendmentMode && !sourceLease"
+            data-testid="lease-create-submit-button"
+            @click="handleSubmit"
+          >
+            {{ submitActionLabel }}
           </el-button>
         </div>
       </el-form>
