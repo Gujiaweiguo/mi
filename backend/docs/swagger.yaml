@@ -118,6 +118,8 @@ definitions:
         type: number
       billing_run_id:
         type: integer
+      charge_source:
+        $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_billing.ChargeSource'
       charge_type:
         type: string
       created_at:
@@ -132,6 +134,12 @@ definitions:
         type: string
       lease_term_id:
         type: integer
+      overtime_bill_id:
+        type: integer
+      overtime_charge_id:
+        type: integer
+      overtime_formula_id:
+        type: integer
       period_end:
         type: string
       period_start:
@@ -145,6 +153,14 @@ definitions:
       unit_amount:
         type: number
     type: object
+  github_com_Gujiaweiguo_mi_backend_internal_billing.ChargeSource:
+    enum:
+    - standard
+    - overtime
+    type: string
+    x-enum-varnames:
+    - ChargeSourceStandard
+    - ChargeSourceOvertime
   github_com_Gujiaweiguo_mi_backend_internal_billing.GenerateResult:
     properties:
       lines:
@@ -205,16 +221,55 @@ definitions:
       pending_workflows:
         type: integer
     type: object
+  github_com_Gujiaweiguo_mi_backend_internal_dashboard.WorkbenchAggregate:
+    properties:
+      active_leases:
+        $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_dashboard.WorkbenchQueueSection'
+      overdue_receivables:
+        $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_dashboard.WorkbenchQueueSection'
+      pending_approvals:
+        $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_dashboard.WorkbenchQueueSection'
+      receivables:
+        $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_dashboard.WorkbenchQueueSection'
+    type: object
+  github_com_Gujiaweiguo_mi_backend_internal_dashboard.WorkbenchPreviewRow:
+    properties:
+      id:
+        type: integer
+      meta:
+        type: string
+      route_target:
+        type: string
+      status:
+        type: string
+      subtitle:
+        type: string
+      title:
+        type: string
+    type: object
+  github_com_Gujiaweiguo_mi_backend_internal_dashboard.WorkbenchQueueSection:
+    properties:
+      count:
+        type: integer
+      preview_rows:
+        items:
+          $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_dashboard.WorkbenchPreviewRow'
+        type: array
+      route_target:
+        type: string
+    type: object
   github_com_Gujiaweiguo_mi_backend_internal_docoutput.OutputMode:
     enum:
     - invoice_batch
     - invoice_detail
     - bill_state
+    - lease_contract
     type: string
     x-enum-varnames:
     - OutputModeInvoiceBatch
     - OutputModeInvoiceDetail
     - OutputModeBillState
+    - OutputModeLeaseContract
   github_com_Gujiaweiguo_mi_backend_internal_docoutput.Template:
     properties:
       code:
@@ -274,6 +329,109 @@ definitions:
       imported_count:
         type: integer
     type: object
+  github_com_Gujiaweiguo_mi_backend_internal_invoice.DepositApplication:
+    properties:
+      amount:
+        type: number
+      applied_by:
+        type: integer
+      created_at:
+        type: string
+      id:
+        type: integer
+      idempotency_key:
+        type: string
+      lease_contract_id:
+        type: integer
+      note:
+        type: string
+      source_ar_open_item_id:
+        type: integer
+      source_billing_document_id:
+        type: integer
+      source_billing_document_line_id:
+        type: integer
+      target_ar_open_item_id:
+        type: integer
+      target_billing_document_id:
+        type: integer
+      target_billing_document_line_id:
+        type: integer
+    type: object
+  github_com_Gujiaweiguo_mi_backend_internal_invoice.DepositRefund:
+    properties:
+      amount:
+        type: number
+      ar_open_item_id:
+        type: integer
+      billing_document_id:
+        type: integer
+      billing_document_line_id:
+        type: integer
+      created_at:
+        type: string
+      id:
+        type: integer
+      idempotency_key:
+        type: string
+      lease_contract_id:
+        type: integer
+      reason:
+        type: string
+      refunded_by:
+        type: integer
+    type: object
+  github_com_Gujiaweiguo_mi_backend_internal_invoice.Discount:
+    properties:
+      approved_at:
+        type: string
+      billing_document_id:
+        type: integer
+      billing_document_line_id:
+        type: integer
+      charge_type:
+        type: string
+      created_at:
+        type: string
+      created_by:
+        type: integer
+      id:
+        type: integer
+      idempotency_key:
+        type: string
+      lease_contract_id:
+        type: integer
+      reason:
+        type: string
+      rejected_at:
+        type: string
+      requested_amount:
+        type: number
+      requested_rate:
+        type: number
+      status:
+        $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.DiscountStatus'
+      submitted_at:
+        type: string
+      updated_at:
+        type: string
+      updated_by:
+        type: integer
+      workflow_instance_id:
+        type: integer
+    type: object
+  github_com_Gujiaweiguo_mi_backend_internal_invoice.DiscountStatus:
+    enum:
+    - draft
+    - pending_approval
+    - approved
+    - rejected
+    type: string
+    x-enum-varnames:
+    - DiscountStatusDraft
+    - DiscountStatusPendingApproval
+    - DiscountStatusApproved
+    - DiscountStatusRejected
   github_com_Gujiaweiguo_mi_backend_internal_invoice.Document:
     properties:
       adjusted_from_id:
@@ -325,10 +483,49 @@ definitions:
     enum:
     - bill
     - invoice
+    - invoice_discount
     type: string
     x-enum-varnames:
     - DocumentTypeBill
     - DocumentTypeInvoice
+    - DocumentTypeDiscount
+  github_com_Gujiaweiguo_mi_backend_internal_invoice.InterestEntry:
+    properties:
+      charge_type:
+        type: string
+      covered_end_date:
+        type: string
+      covered_start_date:
+        type: string
+      created_at:
+        type: string
+      created_by:
+        type: integer
+      daily_rate:
+        type: number
+      generated_billing_document_id:
+        type: integer
+      generated_billing_document_line_id:
+        type: integer
+      grace_days:
+        type: integer
+      id:
+        type: integer
+      idempotency_key:
+        type: string
+      interest_amount:
+        type: number
+      interest_days:
+        type: integer
+      principal_amount:
+        type: number
+      source_ar_open_item_id:
+        type: integer
+      source_billing_document_id:
+        type: integer
+      source_billing_document_line_id:
+        type: integer
+    type: object
   github_com_Gujiaweiguo_mi_backend_internal_invoice.Line:
     properties:
       amount:
@@ -337,11 +534,19 @@ definitions:
         type: integer
       billing_document_id:
         type: integer
+      charge_source:
+        $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_billing.ChargeSource'
       charge_type:
         type: string
       created_at:
         type: string
       id:
+        type: integer
+      overtime_bill_id:
+        type: integer
+      overtime_charge_id:
+        type: integer
+      overtime_formula_id:
         type: integer
       period_end:
         type: string
@@ -358,6 +563,8 @@ definitions:
         type: integer
       billing_document_line_id:
         type: integer
+      charge_source:
+        $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_billing.ChargeSource'
       charge_type:
         type: string
       created_at:
@@ -376,6 +583,12 @@ definitions:
         type: integer
       outstanding_amount:
         type: number
+      overtime_bill_id:
+        type: integer
+      overtime_charge_id:
+        type: integer
+      overtime_formula_id:
+        type: integer
       settled_at:
         type: string
       trade_id:
@@ -437,10 +650,28 @@ definitions:
     properties:
       billing_document_id:
         type: integer
+      customer_surplus_available:
+        type: number
+      deposit_application_history:
+        items:
+          $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.DepositApplication'
+        type: array
+      deposit_refund_history:
+        items:
+          $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.DepositRefund'
+        type: array
+      discount_history:
+        items:
+          $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.Discount'
+        type: array
       document_no:
         type: string
       document_type:
         $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.DocumentType'
+      interest_history:
+        items:
+          $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.InterestEntry'
+        type: array
       items:
         items:
           $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.OpenItem'
@@ -455,6 +686,10 @@ definitions:
         type: array
       settlement_status:
         $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.SettlementStatus'
+      surplus_history:
+        items:
+          $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.SurplusEntry'
+        type: array
       tenant_name:
         type: string
     type: object
@@ -482,6 +717,127 @@ definitions:
     - StatusRejected
     - StatusCancelled
     - StatusAdjusted
+  github_com_Gujiaweiguo_mi_backend_internal_invoice.SurplusEntry:
+    properties:
+      amount:
+        type: number
+      ar_open_item_id:
+        type: integer
+      billing_document_id:
+        type: integer
+      created_at:
+        type: string
+      customer_id:
+        type: integer
+      entry_type:
+        $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.SurplusEntryType'
+      id:
+        type: integer
+      idempotency_key:
+        type: string
+      note:
+        type: string
+      recorded_by:
+        type: integer
+      surplus_balance_id:
+        type: integer
+    type: object
+  github_com_Gujiaweiguo_mi_backend_internal_invoice.SurplusEntryType:
+    enum:
+    - overpayment
+    - application
+    type: string
+    x-enum-varnames:
+    - SurplusEntryTypeOverpayment
+    - SurplusEntryTypeApplication
+  github_com_Gujiaweiguo_mi_backend_internal_lease.AdBoardDetail:
+    properties:
+      ad_board_id:
+        type: integer
+      airtime:
+        type: integer
+      between_from:
+        type: integer
+      between_to:
+        type: integer
+      building_id:
+        type: integer
+      created_at:
+        type: string
+      description:
+        type: string
+      end_date:
+        type: string
+      frequency:
+        $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_lease.AdBoardFrequency'
+      frequency_days:
+        type: integer
+      frequency_fri:
+        type: boolean
+      frequency_mon:
+        type: boolean
+      frequency_sat:
+        type: boolean
+      frequency_sun:
+        type: boolean
+      frequency_thu:
+        type: boolean
+      frequency_tue:
+        type: boolean
+      frequency_wed:
+        type: boolean
+      id:
+        type: integer
+      lease_contract_id:
+        type: integer
+      rent_area:
+        type: number
+      start_date:
+        type: string
+      status:
+        type: integer
+      store_id:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  github_com_Gujiaweiguo_mi_backend_internal_lease.AdBoardFrequency:
+    enum:
+    - D
+    - M
+    - W
+    type: string
+    x-enum-varnames:
+    - AdBoardFrequencyDay
+    - AdBoardFrequencyMonth
+    - AdBoardFrequencyWeek
+  github_com_Gujiaweiguo_mi_backend_internal_lease.AreaGroundDetail:
+    properties:
+      code:
+        type: string
+      created_at:
+        type: string
+      description:
+        type: string
+      end_date:
+        type: string
+      id:
+        type: integer
+      lease_contract_id:
+        type: integer
+      name:
+        type: string
+      rent_area:
+        type: number
+      start_date:
+        type: string
+      status:
+        type: integer
+      type_id:
+        type: integer
+      updated_at:
+        type: string
+    type: object
   github_com_Gujiaweiguo_mi_backend_internal_lease.BillingCycle:
     enum:
     - monthly
@@ -490,10 +846,18 @@ definitions:
     - BillingCycleMonthly
   github_com_Gujiaweiguo_mi_backend_internal_lease.Contract:
     properties:
+      ad_boards:
+        items:
+          $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_lease.AdBoardDetail'
+        type: array
       amended_from_id:
         type: integer
       approved_at:
         type: string
+      area_grounds:
+        items:
+          $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_lease.AreaGroundDetail'
+        type: array
       billing_effective_at:
         type: string
       brand_id:
@@ -514,6 +878,8 @@ definitions:
         type: string
       id:
         type: integer
+      joint_operation:
+        $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_lease.JointOperationFields'
       lease_no:
         type: string
       management_type_id:
@@ -526,6 +892,8 @@ definitions:
         type: integer
       submitted_at:
         type: string
+      subtype:
+        $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_lease.ContractSubtype'
       tenant_name:
         type: string
       terminated_at:
@@ -546,6 +914,49 @@ definitions:
         type: integer
       workflow_instance_id:
         type: integer
+    type: object
+  github_com_Gujiaweiguo_mi_backend_internal_lease.ContractSubtype:
+    enum:
+    - standard
+    - joint_operation
+    - ad_board
+    - area_ground
+    type: string
+    x-enum-varnames:
+    - ContractSubtypeStandard
+    - ContractSubtypeJointOperation
+    - ContractSubtypeAdBoard
+    - ContractSubtypeAreaGround
+  github_com_Gujiaweiguo_mi_backend_internal_lease.JointOperationFields:
+    properties:
+      account_cycle:
+        type: integer
+      bill_cycle:
+        type: integer
+      created_at:
+        type: string
+      in_tax_rate:
+        type: number
+      interest_grace_days:
+        type: integer
+      late_pay_interest_rate:
+        type: number
+      lease_contract_id:
+        type: integer
+      month_settle_days:
+        type: number
+      out_tax_rate:
+        type: number
+      rent_inc:
+        type: string
+      settlement_currency_type_id:
+        type: integer
+      tax_rate:
+        type: number
+      tax_type:
+        type: integer
+      updated_at:
+        type: string
     type: object
   github_com_Gujiaweiguo_mi_backend_internal_lease.Status:
     enum:
@@ -587,6 +998,8 @@ definitions:
         $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_lease.Status'
       store_id:
         type: integer
+      subtype:
+        $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_lease.ContractSubtype'
       tenant_name:
         type: string
       trade_id:
@@ -729,6 +1142,219 @@ definitions:
       updated_at:
         type: string
     type: object
+  github_com_Gujiaweiguo_mi_backend_internal_overtime.Bill:
+    properties:
+      approved_at:
+        type: string
+      cancelled_at:
+        type: string
+      created_at:
+        type: string
+      created_by:
+        type: integer
+      formulas:
+        items:
+          $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_overtime.Formula'
+        type: array
+      generated_at:
+        type: string
+      generated_charges:
+        items:
+          $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_overtime.GeneratedCharge'
+        type: array
+      id:
+        type: integer
+      lease_contract_id:
+        type: integer
+      lease_no:
+        type: string
+      note:
+        type: string
+      period_end:
+        type: string
+      period_start:
+        type: string
+      rejected_at:
+        type: string
+      status:
+        $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_overtime.BillStatus'
+      stopped_at:
+        type: string
+      submitted_at:
+        type: string
+      tenant_name:
+        type: string
+      updated_at:
+        type: string
+      updated_by:
+        type: integer
+      workflow_instance_id:
+        type: integer
+    type: object
+  github_com_Gujiaweiguo_mi_backend_internal_overtime.BillStatus:
+    enum:
+    - draft
+    - pending_approval
+    - approved
+    - rejected
+    - cancelled
+    - stopped
+    - generated
+    type: string
+    x-enum-varnames:
+    - BillStatusDraft
+    - BillStatusPendingApproval
+    - BillStatusApproved
+    - BillStatusRejected
+    - BillStatusCancelled
+    - BillStatusStopped
+    - BillStatusGenerated
+  github_com_Gujiaweiguo_mi_backend_internal_overtime.Formula:
+    properties:
+      base_amount:
+        type: number
+      charge_type:
+        type: string
+      created_at:
+        type: string
+      currency_type_id:
+        type: integer
+      effective_from:
+        type: string
+      effective_to:
+        type: string
+      fixed_rental:
+        type: number
+      formula_type:
+        $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_overtime.FormulaType'
+      id:
+        type: integer
+      minimum_option:
+        type: string
+      minimum_tiers:
+        items:
+          $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_overtime.MinimumTier'
+        type: array
+      overtime_bill_id:
+        type: integer
+      percentage_option:
+        type: string
+      percentage_tiers:
+        items:
+          $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_overtime.PercentTier'
+        type: array
+      rate_type:
+        $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_overtime.RateType'
+      sort_order:
+        type: integer
+      total_area:
+        type: number
+      unit_price:
+        type: number
+      updated_at:
+        type: string
+    type: object
+  github_com_Gujiaweiguo_mi_backend_internal_overtime.FormulaType:
+    enum:
+    - fixed
+    - one_time
+    - percentage
+    type: string
+    x-enum-varnames:
+    - FormulaTypeFixed
+    - FormulaTypeOneTime
+    - FormulaTypePercentage
+  github_com_Gujiaweiguo_mi_backend_internal_overtime.GeneratedCharge:
+    properties:
+      amount:
+        type: number
+      applied_minimum_amount:
+        type: number
+      applied_percentage_rate:
+        type: number
+      base_amount:
+        type: number
+      billing_run_id:
+        type: integer
+      charge_type:
+        type: string
+      created_at:
+        type: string
+      currency_type_id:
+        type: integer
+      fixed_rental:
+        type: number
+      formula_type:
+        $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_overtime.FormulaType'
+      generated_by:
+        type: integer
+      id:
+        type: integer
+      lease_contract_id:
+        type: integer
+      minimum_option:
+        type: string
+      overtime_bill_id:
+        type: integer
+      overtime_formula_id:
+        type: integer
+      percentage_option:
+        type: string
+      period_end:
+        type: string
+      period_start:
+        type: string
+      quantity:
+        type: integer
+      rate_type:
+        $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_overtime.RateType'
+      total_area:
+        type: number
+      unit_amount:
+        type: number
+      unit_price:
+        type: number
+      workflow_instance_id:
+        type: integer
+    type: object
+  github_com_Gujiaweiguo_mi_backend_internal_overtime.MinimumTier:
+    properties:
+      created_at:
+        type: string
+      formula_id:
+        type: integer
+      id:
+        type: integer
+      minimum_sum:
+        type: number
+      sales_to:
+        type: number
+      sort_order:
+        type: integer
+    type: object
+  github_com_Gujiaweiguo_mi_backend_internal_overtime.PercentTier:
+    properties:
+      created_at:
+        type: string
+      formula_id:
+        type: integer
+      id:
+        type: integer
+      percentage:
+        type: number
+      sales_to:
+        type: number
+      sort_order:
+        type: integer
+    type: object
+  github_com_Gujiaweiguo_mi_backend_internal_overtime.RateType:
+    enum:
+    - daily
+    - monthly
+    type: string
+    x-enum-varnames:
+    - RateTypeDaily
+    - RateTypeMonthly
   github_com_Gujiaweiguo_mi_backend_internal_reporting.Column:
     properties:
       key:
@@ -1265,6 +1891,68 @@ definitions:
     required:
     - lines
     type: object
+  internal_http_handlers.applyDepositRequest:
+    properties:
+      amount:
+        type: number
+      billing_document_line_id:
+        type: integer
+      idempotency_key:
+        maxLength: 100
+        minLength: 1
+        type: string
+      note:
+        maxLength: 255
+        type: string
+      target_billing_document_line_id:
+        type: integer
+      target_document_id:
+        type: integer
+    required:
+    - amount
+    - billing_document_line_id
+    - idempotency_key
+    - target_billing_document_line_id
+    - target_document_id
+    type: object
+  internal_http_handlers.applyDiscountRequest:
+    properties:
+      amount:
+        type: number
+      billing_document_line_id:
+        type: integer
+      idempotency_key:
+        maxLength: 100
+        minLength: 1
+        type: string
+      reason:
+        maxLength: 255
+        minLength: 1
+        type: string
+    required:
+    - amount
+    - billing_document_line_id
+    - idempotency_key
+    - reason
+    type: object
+  internal_http_handlers.applySurplusRequest:
+    properties:
+      amount:
+        type: number
+      billing_document_line_id:
+        type: integer
+      idempotency_key:
+        maxLength: 100
+        minLength: 1
+        type: string
+      note:
+        maxLength: 255
+        type: string
+    required:
+    - amount
+    - billing_document_line_id
+    - idempotency_key
+    type: object
   internal_http_handlers.baseInfoRequest:
     properties:
       code:
@@ -1372,8 +2060,103 @@ definitions:
     - billing_charge_line_ids
     - document_type
     type: object
+  internal_http_handlers.createLeaseAdBoardRequest:
+    properties:
+      ad_board_id:
+        type: integer
+      airtime:
+        type: integer
+      between_from:
+        type: integer
+      between_to:
+        type: integer
+      building_id:
+        type: integer
+      description:
+        type: string
+      end_date:
+        type: string
+      frequency:
+        $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_lease.AdBoardFrequency'
+      frequency_days:
+        type: integer
+      frequency_fri:
+        type: boolean
+      frequency_mon:
+        type: boolean
+      frequency_sat:
+        type: boolean
+      frequency_sun:
+        type: boolean
+      frequency_thu:
+        type: boolean
+      frequency_tue:
+        type: boolean
+      frequency_wed:
+        type: boolean
+      rent_area:
+        type: number
+      start_date:
+        type: string
+      status:
+        type: integer
+      store_id:
+        type: integer
+    type: object
+  internal_http_handlers.createLeaseAreaGroundRequest:
+    properties:
+      code:
+        type: string
+      description:
+        type: string
+      end_date:
+        type: string
+      name:
+        type: string
+      rent_area:
+        type: number
+      start_date:
+        type: string
+      status:
+        type: integer
+      type_id:
+        type: integer
+    type: object
+  internal_http_handlers.createLeaseJointOperationRequest:
+    properties:
+      account_cycle:
+        type: integer
+      bill_cycle:
+        type: integer
+      in_tax_rate:
+        type: number
+      interest_grace_days:
+        type: integer
+      late_pay_interest_rate:
+        type: number
+      month_settle_days:
+        type: number
+      out_tax_rate:
+        type: number
+      rent_inc:
+        type: string
+      settlement_currency_type_id:
+        type: integer
+      tax_rate:
+        type: number
+      tax_type:
+        type: integer
+    type: object
   internal_http_handlers.createLeaseRequest:
     properties:
+      ad_boards:
+        items:
+          $ref: '#/definitions/internal_http_handlers.createLeaseAdBoardRequest'
+        type: array
+      area_grounds:
+        items:
+          $ref: '#/definitions/internal_http_handlers.createLeaseAreaGroundRequest'
+        type: array
       brand_id:
         type: integer
       building_id:
@@ -1384,6 +2167,8 @@ definitions:
         type: integer
       end_date:
         type: string
+      joint_operation:
+        $ref: '#/definitions/internal_http_handlers.createLeaseJointOperationRequest'
       lease_no:
         maxLength: 50
         minLength: 1
@@ -1394,6 +2179,14 @@ definitions:
         type: string
       store_id:
         type: integer
+      subtype:
+        allOf:
+        - $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_lease.ContractSubtype'
+        enum:
+        - standard
+        - joint_operation
+        - ad_board
+        - area_ground
       tenant_name:
         maxLength: 100
         minLength: 1
@@ -1463,6 +2256,95 @@ definitions:
     - rent_area
     - unit_id
     type: object
+  internal_http_handlers.createOvertimeBillRequest:
+    properties:
+      formulas:
+        items:
+          $ref: '#/definitions/internal_http_handlers.createOvertimeFormulaRequest'
+        minItems: 1
+        type: array
+      lease_contract_id:
+        type: integer
+      note:
+        maxLength: 255
+        type: string
+      period_end:
+        type: string
+      period_start:
+        type: string
+    required:
+    - formulas
+    - lease_contract_id
+    - period_end
+    - period_start
+    type: object
+  internal_http_handlers.createOvertimeFormulaRequest:
+    properties:
+      base_amount:
+        type: number
+      charge_type:
+        maxLength: 32
+        minLength: 1
+        type: string
+      currency_type_id:
+        type: integer
+      effective_from:
+        type: string
+      effective_to:
+        type: string
+      fixed_rental:
+        type: number
+      formula_type:
+        allOf:
+        - $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_overtime.FormulaType'
+        enum:
+        - fixed
+        - one_time
+        - percentage
+      minimum_option:
+        maxLength: 32
+        type: string
+      minimum_tiers:
+        items:
+          $ref: '#/definitions/internal_http_handlers.createOvertimeMinimumTierRequest'
+        type: array
+      percentage_option:
+        maxLength: 32
+        type: string
+      percentage_tiers:
+        items:
+          $ref: '#/definitions/internal_http_handlers.createOvertimePercentTierRequest'
+        type: array
+      rate_type:
+        allOf:
+        - $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_overtime.RateType'
+        enum:
+        - daily
+        - monthly
+      total_area:
+        type: number
+      unit_price:
+        type: number
+    required:
+    - charge_type
+    - currency_type_id
+    - formula_type
+    - rate_type
+    type: object
+  internal_http_handlers.createOvertimeMinimumTierRequest:
+    properties:
+      minimum_sum:
+        type: number
+      sales_to:
+        type: number
+    type: object
+  internal_http_handlers.createOvertimePercentTierRequest:
+    properties:
+      percentage:
+        type: number
+      sales_to:
+        type: number
+    type: object
   internal_http_handlers.createTrafficRequest:
     properties:
       inbound_count:
@@ -1528,6 +2410,20 @@ definitions:
     - period_end
     - period_start
     type: object
+  internal_http_handlers.generateInterestRequest:
+    properties:
+      as_of_date:
+        type: string
+      billing_document_line_id:
+        type: integer
+      idempotency_key:
+        maxLength: 100
+        minLength: 1
+        type: string
+    required:
+    - billing_document_line_id
+    - idempotency_key
+    type: object
   internal_http_handlers.loginRequest:
     properties:
       password:
@@ -1558,6 +2454,26 @@ definitions:
     required:
     - amount
     - idempotency_key
+    type: object
+  internal_http_handlers.refundDepositRequest:
+    properties:
+      amount:
+        type: number
+      billing_document_line_id:
+        type: integer
+      idempotency_key:
+        maxLength: 100
+        minLength: 1
+        type: string
+      reason:
+        maxLength: 255
+        minLength: 1
+        type: string
+    required:
+    - amount
+    - billing_document_line_id
+    - idempotency_key
+    - reason
     type: object
   internal_http_handlers.renderDocumentRequest:
     properties:
@@ -1649,6 +2565,7 @@ definitions:
         - lease_contract
         - invoice
         - bill
+        - overtime_bill
         type: string
     required:
     - definition_code
@@ -3272,6 +4189,37 @@ paths:
       summary: Get dashboard summary
       tags:
       - Dashboard
+  /dashboard/workbench:
+    get:
+      consumes:
+      - application/json
+      description: Returns queue-oriented workbench data for approvals, receivables,
+        overdue receivables, and active leases.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/internal_http_handlers.swaggerEnvelope'
+            - properties:
+                workbench:
+                  $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_dashboard.WorkbenchAggregate'
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/internal_http_handlers.swaggerMessageResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/internal_http_handlers.swaggerMessageResponse'
+      security:
+      - BearerAuth: []
+      summary: Get workbench queue aggregation
+      tags:
+      - Dashboard
   /excel/exports/operational:
     get:
       consumes:
@@ -3779,6 +4727,218 @@ paths:
       summary: Cancel billing document
       tags:
       - Invoice
+  /invoices/{id}/deposit-applications:
+    post:
+      consumes:
+      - application/json
+      description: Applies an available deposit from this billing document to an outstanding
+        receivable on a target document.
+      parameters:
+      - description: Source billing document ID (contains the deposit)
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Deposit application request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_http_handlers.applyDepositRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/internal_http_handlers.swaggerEnvelope'
+            - properties:
+                receivable:
+                  $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.ReceivableSummary'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/internal_http_handlers.swaggerMessageResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/internal_http_handlers.swaggerMessageResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/internal_http_handlers.swaggerMessageResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/internal_http_handlers.swaggerMessageResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/internal_http_handlers.swaggerMessageResponse'
+      security:
+      - BearerAuth: []
+      summary: Apply deposit to receivable
+      tags:
+      - Invoice
+  /invoices/{id}/deposit-refunds:
+    post:
+      consumes:
+      - application/json
+      description: Refunds or releases a deposit if no outstanding obligations block
+        the operation.
+      parameters:
+      - description: Billing document ID (contains the deposit)
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Deposit refund request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_http_handlers.refundDepositRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/internal_http_handlers.swaggerEnvelope'
+            - properties:
+                receivable:
+                  $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.ReceivableSummary'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/internal_http_handlers.swaggerMessageResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/internal_http_handlers.swaggerMessageResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/internal_http_handlers.swaggerMessageResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/internal_http_handlers.swaggerMessageResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/internal_http_handlers.swaggerMessageResponse'
+      security:
+      - BearerAuth: []
+      summary: Refund or release deposit
+      tags:
+      - Invoice
+  /invoices/{id}/discounts:
+    post:
+      consumes:
+      - application/json
+      description: Creates an invoice discount request for approval and returns the
+        current receivable summary.
+      parameters:
+      - description: Billing document ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Discount request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_http_handlers.applyDiscountRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/internal_http_handlers.swaggerEnvelope'
+            - properties:
+                receivable:
+                  $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.ReceivableSummary'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/internal_http_handlers.swaggerMessageResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/internal_http_handlers.swaggerMessageResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/internal_http_handlers.swaggerMessageResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/internal_http_handlers.swaggerMessageResponse'
+      security:
+      - BearerAuth: []
+      summary: Request invoice discount
+      tags:
+      - Invoice
+  /invoices/{id}/interest:
+    post:
+      consumes:
+      - application/json
+      description: Generates a late-payment interest invoice for an overdue receivable
+        line.
+      parameters:
+      - description: Billing document ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Interest generation request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_http_handlers.generateInterestRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/internal_http_handlers.swaggerEnvelope'
+            - properties:
+                receivable:
+                  $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.ReceivableSummary'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/internal_http_handlers.swaggerMessageResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/internal_http_handlers.swaggerMessageResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/internal_http_handlers.swaggerMessageResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/internal_http_handlers.swaggerMessageResponse'
+      security:
+      - BearerAuth: []
+      summary: Generate late-payment interest
+      tags:
+      - Invoice
   /invoices/{id}/payments:
     post:
       consumes:
@@ -3921,6 +5081,57 @@ paths:
       security:
       - BearerAuth: []
       summary: Submit billing document
+      tags:
+      - Invoice
+  /invoices/{id}/surplus-applications:
+    post:
+      consumes:
+      - application/json
+      description: Applies available customer surplus to a billing document receivable
+        line.
+      parameters:
+      - description: Billing document ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Surplus application request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_http_handlers.applySurplusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/internal_http_handlers.swaggerEnvelope'
+            - properties:
+                receivable:
+                  $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.ReceivableSummary'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/internal_http_handlers.swaggerMessageResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/internal_http_handlers.swaggerMessageResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/internal_http_handlers.swaggerMessageResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/internal_http_handlers.swaggerMessageResponse'
+      security:
+      - BearerAuth: []
+      summary: Apply customer surplus
       tags:
       - Invoice
   /leases:
@@ -5033,6 +6244,160 @@ paths:
       summary: List organization stores
       tags:
       - Workflow
+  /overtime/bills:
+    get:
+      consumes:
+      - application/json
+      description: Returns paginated overtime bills filtered by lease, status, and
+        billing period.
+      parameters:
+      - description: Lease contract ID
+        in: query
+        name: lease_contract_id
+        type: integer
+      - description: Overtime bill status
+        in: query
+        name: status
+        type: string
+      - description: Period start (YYYY-MM-DD)
+        in: query
+        name: period_start
+        type: string
+      - description: Period end (YYYY-MM-DD)
+        in: query
+        name: period_end
+        type: string
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Page size
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/internal_http_handlers.swaggerEnvelope'
+            - properties:
+                items:
+                  items:
+                    $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_overtime.Bill'
+                  type: array
+                page:
+                  type: integer
+                page_size:
+                  type: integer
+                total:
+                  type: integer
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/internal_http_handlers.swaggerMessageResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/internal_http_handlers.swaggerMessageResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/internal_http_handlers.swaggerMessageResponse'
+      security:
+      - BearerAuth: []
+      summary: List overtime bills
+      tags:
+      - Overtime
+    post:
+      consumes:
+      - application/json
+      description: Creates a draft overtime bill with staged formula header/detail
+        rows.
+      parameters:
+      - description: Overtime bill create request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_http_handlers.createOvertimeBillRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/internal_http_handlers.swaggerEnvelope'
+            - properties:
+                bill:
+                  $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_overtime.Bill'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/internal_http_handlers.swaggerMessageResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/internal_http_handlers.swaggerMessageResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/internal_http_handlers.swaggerMessageResponse'
+      security:
+      - BearerAuth: []
+      summary: Create overtime bill draft
+      tags:
+      - Overtime
+  /overtime/bills/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Returns an overtime bill with formulas and generation history by
+        ID.
+      parameters:
+      - description: Overtime bill ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/internal_http_handlers.swaggerEnvelope'
+            - properties:
+                bill:
+                  $ref: '#/definitions/github_com_Gujiaweiguo_mi_backend_internal_overtime.Bill'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/internal_http_handlers.swaggerMessageResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/internal_http_handlers.swaggerMessageResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/internal_http_handlers.swaggerMessageResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/internal_http_handlers.swaggerMessageResponse'
+      security:
+      - BearerAuth: []
+      summary: Get overtime bill
+      tags:
+      - Overtime
   /print/render/html:
     post:
       consumes:

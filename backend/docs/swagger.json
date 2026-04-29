@@ -1809,6 +1809,58 @@
                 }
             }
         },
+        "/dashboard/workbench": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Returns queue-oriented workbench data for approvals, receivables, overdue receivables, and active leases.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Get workbench queue aggregation",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "workbench": {
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_dashboard.WorkbenchAggregate"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/excel/exports/operational": {
             "get": {
                 "security": [
@@ -2629,6 +2681,346 @@
                 }
             }
         },
+        "/invoices/{id}/deposit-applications": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Applies an available deposit from this billing document to an outstanding receivable on a target document.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Invoice"
+                ],
+                "summary": "Apply deposit to receivable",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Source billing document ID (contains the deposit)",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Deposit application request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.applyDepositRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "receivable": {
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.ReceivableSummary"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/invoices/{id}/deposit-refunds": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Refunds or releases a deposit if no outstanding obligations block the operation.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Invoice"
+                ],
+                "summary": "Refund or release deposit",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Billing document ID (contains the deposit)",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Deposit refund request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.refundDepositRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "receivable": {
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.ReceivableSummary"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/invoices/{id}/discounts": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Creates an invoice discount request for approval and returns the current receivable summary.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Invoice"
+                ],
+                "summary": "Request invoice discount",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Billing document ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Discount request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.applyDiscountRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "receivable": {
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.ReceivableSummary"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/invoices/{id}/interest": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Generates a late-payment interest invoice for an overdue receivable line.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Invoice"
+                ],
+                "summary": "Generate late-payment interest",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Billing document ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Interest generation request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.generateInterestRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "receivable": {
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.ReceivableSummary"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/invoices/{id}/payments": {
             "post": {
                 "security": [
@@ -2833,6 +3225,88 @@
                                     "properties": {
                                         "document": {
                                             "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.Document"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/invoices/{id}/surplus-applications": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Applies available customer surplus to a billing document receivable line.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Invoice"
+                ],
+                "summary": "Apply customer surplus",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Billing document ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Surplus application request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.applySurplusRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "receivable": {
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.ReceivableSummary"
                                         }
                                     }
                                 }
@@ -4677,6 +5151,254 @@
                     },
                     "401": {
                         "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/overtime/bills": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Returns paginated overtime bills filtered by lease, status, and billing period.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Overtime"
+                ],
+                "summary": "List overtime bills",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Lease contract ID",
+                        "name": "lease_contract_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Overtime bill status",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Period start (YYYY-MM-DD)",
+                        "name": "period_start",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Period end (YYYY-MM-DD)",
+                        "name": "period_end",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page size",
+                        "name": "page_size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "items": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_overtime.Bill"
+                                            }
+                                        },
+                                        "page": {
+                                            "type": "integer"
+                                        },
+                                        "page_size": {
+                                            "type": "integer"
+                                        },
+                                        "total": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Creates a draft overtime bill with staged formula header/detail rows.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Overtime"
+                ],
+                "summary": "Create overtime bill draft",
+                "parameters": [
+                    {
+                        "description": "Overtime bill create request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.createOvertimeBillRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "bill": {
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_overtime.Bill"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/overtime/bills/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Returns an overtime bill with formulas and generation history by ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Overtime"
+                ],
+                "summary": "Get overtime bill",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Overtime bill ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/internal_http_handlers.swaggerEnvelope"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "bill": {
+                                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_overtime.Bill"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
                             "$ref": "#/definitions/internal_http_handlers.swaggerMessageResponse"
                         }
@@ -8500,6 +9222,9 @@
                 "billing_run_id": {
                     "type": "integer"
                 },
+                "charge_source": {
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_billing.ChargeSource"
+                },
                 "charge_type": {
                     "type": "string"
                 },
@@ -8521,6 +9246,15 @@
                 "lease_term_id": {
                     "type": "integer"
                 },
+                "overtime_bill_id": {
+                    "type": "integer"
+                },
+                "overtime_charge_id": {
+                    "type": "integer"
+                },
+                "overtime_formula_id": {
+                    "type": "integer"
+                },
                 "period_end": {
                     "type": "string"
                 },
@@ -8540,6 +9274,17 @@
                     "type": "number"
                 }
             }
+        },
+        "github_com_Gujiaweiguo_mi_backend_internal_billing.ChargeSource": {
+            "type": "string",
+            "enum": [
+                "standard",
+                "overtime"
+            ],
+            "x-enum-varnames": [
+                "ChargeSourceStandard",
+                "ChargeSourceOvertime"
+            ]
         },
         "github_com_Gujiaweiguo_mi_backend_internal_billing.GenerateResult": {
             "type": "object",
@@ -8633,17 +9378,76 @@
                 }
             }
         },
+        "github_com_Gujiaweiguo_mi_backend_internal_dashboard.WorkbenchAggregate": {
+            "type": "object",
+            "properties": {
+                "active_leases": {
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_dashboard.WorkbenchQueueSection"
+                },
+                "overdue_receivables": {
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_dashboard.WorkbenchQueueSection"
+                },
+                "pending_approvals": {
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_dashboard.WorkbenchQueueSection"
+                },
+                "receivables": {
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_dashboard.WorkbenchQueueSection"
+                }
+            }
+        },
+        "github_com_Gujiaweiguo_mi_backend_internal_dashboard.WorkbenchPreviewRow": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "meta": {
+                    "type": "string"
+                },
+                "route_target": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "subtitle": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_Gujiaweiguo_mi_backend_internal_dashboard.WorkbenchQueueSection": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "preview_rows": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_dashboard.WorkbenchPreviewRow"
+                    }
+                },
+                "route_target": {
+                    "type": "string"
+                }
+            }
+        },
         "github_com_Gujiaweiguo_mi_backend_internal_docoutput.OutputMode": {
             "type": "string",
             "enum": [
                 "invoice_batch",
                 "invoice_detail",
-                "bill_state"
+                "bill_state",
+                "lease_contract"
             ],
             "x-enum-varnames": [
                 "OutputModeInvoiceBatch",
                 "OutputModeInvoiceDetail",
-                "OutputModeBillState"
+                "OutputModeBillState",
+                "OutputModeLeaseContract"
             ]
         },
         "github_com_Gujiaweiguo_mi_backend_internal_docoutput.Template": {
@@ -8736,6 +9540,159 @@
                 }
             }
         },
+        "github_com_Gujiaweiguo_mi_backend_internal_invoice.DepositApplication": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "number"
+                },
+                "applied_by": {
+                    "type": "integer"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "idempotency_key": {
+                    "type": "string"
+                },
+                "lease_contract_id": {
+                    "type": "integer"
+                },
+                "note": {
+                    "type": "string"
+                },
+                "source_ar_open_item_id": {
+                    "type": "integer"
+                },
+                "source_billing_document_id": {
+                    "type": "integer"
+                },
+                "source_billing_document_line_id": {
+                    "type": "integer"
+                },
+                "target_ar_open_item_id": {
+                    "type": "integer"
+                },
+                "target_billing_document_id": {
+                    "type": "integer"
+                },
+                "target_billing_document_line_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_Gujiaweiguo_mi_backend_internal_invoice.DepositRefund": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "number"
+                },
+                "ar_open_item_id": {
+                    "type": "integer"
+                },
+                "billing_document_id": {
+                    "type": "integer"
+                },
+                "billing_document_line_id": {
+                    "type": "integer"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "idempotency_key": {
+                    "type": "string"
+                },
+                "lease_contract_id": {
+                    "type": "integer"
+                },
+                "reason": {
+                    "type": "string"
+                },
+                "refunded_by": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_Gujiaweiguo_mi_backend_internal_invoice.Discount": {
+            "type": "object",
+            "properties": {
+                "approved_at": {
+                    "type": "string"
+                },
+                "billing_document_id": {
+                    "type": "integer"
+                },
+                "billing_document_line_id": {
+                    "type": "integer"
+                },
+                "charge_type": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "idempotency_key": {
+                    "type": "string"
+                },
+                "lease_contract_id": {
+                    "type": "integer"
+                },
+                "reason": {
+                    "type": "string"
+                },
+                "rejected_at": {
+                    "type": "string"
+                },
+                "requested_amount": {
+                    "type": "number"
+                },
+                "requested_rate": {
+                    "type": "number"
+                },
+                "status": {
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.DiscountStatus"
+                },
+                "submitted_at": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "integer"
+                },
+                "workflow_instance_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_Gujiaweiguo_mi_backend_internal_invoice.DiscountStatus": {
+            "type": "string",
+            "enum": [
+                "draft",
+                "pending_approval",
+                "approved",
+                "rejected"
+            ],
+            "x-enum-varnames": [
+                "DiscountStatusDraft",
+                "DiscountStatusPendingApproval",
+                "DiscountStatusApproved",
+                "DiscountStatusRejected"
+            ]
+        },
         "github_com_Gujiaweiguo_mi_backend_internal_invoice.Document": {
             "type": "object",
             "properties": {
@@ -8811,12 +9768,70 @@
             "type": "string",
             "enum": [
                 "bill",
-                "invoice"
+                "invoice",
+                "invoice_discount"
             ],
             "x-enum-varnames": [
                 "DocumentTypeBill",
-                "DocumentTypeInvoice"
+                "DocumentTypeInvoice",
+                "DocumentTypeDiscount"
             ]
+        },
+        "github_com_Gujiaweiguo_mi_backend_internal_invoice.InterestEntry": {
+            "type": "object",
+            "properties": {
+                "charge_type": {
+                    "type": "string"
+                },
+                "covered_end_date": {
+                    "type": "string"
+                },
+                "covered_start_date": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "integer"
+                },
+                "daily_rate": {
+                    "type": "number"
+                },
+                "generated_billing_document_id": {
+                    "type": "integer"
+                },
+                "generated_billing_document_line_id": {
+                    "type": "integer"
+                },
+                "grace_days": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "idempotency_key": {
+                    "type": "string"
+                },
+                "interest_amount": {
+                    "type": "number"
+                },
+                "interest_days": {
+                    "type": "integer"
+                },
+                "principal_amount": {
+                    "type": "number"
+                },
+                "source_ar_open_item_id": {
+                    "type": "integer"
+                },
+                "source_billing_document_id": {
+                    "type": "integer"
+                },
+                "source_billing_document_line_id": {
+                    "type": "integer"
+                }
+            }
         },
         "github_com_Gujiaweiguo_mi_backend_internal_invoice.Line": {
             "type": "object",
@@ -8830,6 +9845,9 @@
                 "billing_document_id": {
                     "type": "integer"
                 },
+                "charge_source": {
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_billing.ChargeSource"
+                },
                 "charge_type": {
                     "type": "string"
                 },
@@ -8837,6 +9855,15 @@
                     "type": "string"
                 },
                 "id": {
+                    "type": "integer"
+                },
+                "overtime_bill_id": {
+                    "type": "integer"
+                },
+                "overtime_charge_id": {
+                    "type": "integer"
+                },
+                "overtime_formula_id": {
                     "type": "integer"
                 },
                 "period_end": {
@@ -8861,6 +9888,9 @@
                 },
                 "billing_document_line_id": {
                     "type": "integer"
+                },
+                "charge_source": {
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_billing.ChargeSource"
                 },
                 "charge_type": {
                     "type": "string"
@@ -8888,6 +9918,15 @@
                 },
                 "outstanding_amount": {
                     "type": "number"
+                },
+                "overtime_bill_id": {
+                    "type": "integer"
+                },
+                "overtime_charge_id": {
+                    "type": "integer"
+                },
+                "overtime_formula_id": {
+                    "type": "integer"
                 },
                 "settled_at": {
                     "type": "string"
@@ -8982,11 +10021,38 @@
                 "billing_document_id": {
                     "type": "integer"
                 },
+                "customer_surplus_available": {
+                    "type": "number"
+                },
+                "deposit_application_history": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.DepositApplication"
+                    }
+                },
+                "deposit_refund_history": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.DepositRefund"
+                    }
+                },
+                "discount_history": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.Discount"
+                    }
+                },
                 "document_no": {
                     "type": "string"
                 },
                 "document_type": {
                     "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.DocumentType"
+                },
+                "interest_history": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.InterestEntry"
+                    }
                 },
                 "items": {
                     "type": "array",
@@ -9008,6 +10074,12 @@
                 },
                 "settlement_status": {
                     "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.SettlementStatus"
+                },
+                "surplus_history": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.SurplusEntry"
+                    }
                 },
                 "tenant_name": {
                     "type": "string"
@@ -9044,6 +10116,186 @@
                 "StatusAdjusted"
             ]
         },
+        "github_com_Gujiaweiguo_mi_backend_internal_invoice.SurplusEntry": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "number"
+                },
+                "ar_open_item_id": {
+                    "type": "integer"
+                },
+                "billing_document_id": {
+                    "type": "integer"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "customer_id": {
+                    "type": "integer"
+                },
+                "entry_type": {
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_invoice.SurplusEntryType"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "idempotency_key": {
+                    "type": "string"
+                },
+                "note": {
+                    "type": "string"
+                },
+                "recorded_by": {
+                    "type": "integer"
+                },
+                "surplus_balance_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_Gujiaweiguo_mi_backend_internal_invoice.SurplusEntryType": {
+            "type": "string",
+            "enum": [
+                "overpayment",
+                "application"
+            ],
+            "x-enum-varnames": [
+                "SurplusEntryTypeOverpayment",
+                "SurplusEntryTypeApplication"
+            ]
+        },
+        "github_com_Gujiaweiguo_mi_backend_internal_lease.AdBoardDetail": {
+            "type": "object",
+            "properties": {
+                "ad_board_id": {
+                    "type": "integer"
+                },
+                "airtime": {
+                    "type": "integer"
+                },
+                "between_from": {
+                    "type": "integer"
+                },
+                "between_to": {
+                    "type": "integer"
+                },
+                "building_id": {
+                    "type": "integer"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "end_date": {
+                    "type": "string"
+                },
+                "frequency": {
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_lease.AdBoardFrequency"
+                },
+                "frequency_days": {
+                    "type": "integer"
+                },
+                "frequency_fri": {
+                    "type": "boolean"
+                },
+                "frequency_mon": {
+                    "type": "boolean"
+                },
+                "frequency_sat": {
+                    "type": "boolean"
+                },
+                "frequency_sun": {
+                    "type": "boolean"
+                },
+                "frequency_thu": {
+                    "type": "boolean"
+                },
+                "frequency_tue": {
+                    "type": "boolean"
+                },
+                "frequency_wed": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "lease_contract_id": {
+                    "type": "integer"
+                },
+                "rent_area": {
+                    "type": "number"
+                },
+                "start_date": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "store_id": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_Gujiaweiguo_mi_backend_internal_lease.AdBoardFrequency": {
+            "type": "string",
+            "enum": [
+                "D",
+                "M",
+                "W"
+            ],
+            "x-enum-varnames": [
+                "AdBoardFrequencyDay",
+                "AdBoardFrequencyMonth",
+                "AdBoardFrequencyWeek"
+            ]
+        },
+        "github_com_Gujiaweiguo_mi_backend_internal_lease.AreaGroundDetail": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "end_date": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "lease_contract_id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "rent_area": {
+                    "type": "number"
+                },
+                "start_date": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "type_id": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
         "github_com_Gujiaweiguo_mi_backend_internal_lease.BillingCycle": {
             "type": "string",
             "enum": [
@@ -9056,11 +10308,23 @@
         "github_com_Gujiaweiguo_mi_backend_internal_lease.Contract": {
             "type": "object",
             "properties": {
+                "ad_boards": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_lease.AdBoardDetail"
+                    }
+                },
                 "amended_from_id": {
                     "type": "integer"
                 },
                 "approved_at": {
                     "type": "string"
+                },
+                "area_grounds": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_lease.AreaGroundDetail"
+                    }
                 },
                 "billing_effective_at": {
                     "type": "string"
@@ -9092,6 +10356,9 @@
                 "id": {
                     "type": "integer"
                 },
+                "joint_operation": {
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_lease.JointOperationFields"
+                },
                 "lease_no": {
                     "type": "string"
                 },
@@ -9109,6 +10376,9 @@
                 },
                 "submitted_at": {
                     "type": "string"
+                },
+                "subtype": {
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_lease.ContractSubtype"
                 },
                 "tenant_name": {
                     "type": "string"
@@ -9139,6 +10409,68 @@
                 },
                 "workflow_instance_id": {
                     "type": "integer"
+                }
+            }
+        },
+        "github_com_Gujiaweiguo_mi_backend_internal_lease.ContractSubtype": {
+            "type": "string",
+            "enum": [
+                "standard",
+                "joint_operation",
+                "ad_board",
+                "area_ground"
+            ],
+            "x-enum-varnames": [
+                "ContractSubtypeStandard",
+                "ContractSubtypeJointOperation",
+                "ContractSubtypeAdBoard",
+                "ContractSubtypeAreaGround"
+            ]
+        },
+        "github_com_Gujiaweiguo_mi_backend_internal_lease.JointOperationFields": {
+            "type": "object",
+            "properties": {
+                "account_cycle": {
+                    "type": "integer"
+                },
+                "bill_cycle": {
+                    "type": "integer"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "in_tax_rate": {
+                    "type": "number"
+                },
+                "interest_grace_days": {
+                    "type": "integer"
+                },
+                "late_pay_interest_rate": {
+                    "type": "number"
+                },
+                "lease_contract_id": {
+                    "type": "integer"
+                },
+                "month_settle_days": {
+                    "type": "number"
+                },
+                "out_tax_rate": {
+                    "type": "number"
+                },
+                "rent_inc": {
+                    "type": "string"
+                },
+                "settlement_currency_type_id": {
+                    "type": "integer"
+                },
+                "tax_rate": {
+                    "type": "number"
+                },
+                "tax_type": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
                 }
             }
         },
@@ -9197,6 +10529,9 @@
                 },
                 "store_id": {
                     "type": "integer"
+                },
+                "subtype": {
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_lease.ContractSubtype"
                 },
                 "tenant_name": {
                     "type": "string"
@@ -9413,6 +10748,319 @@
                     "type": "string"
                 }
             }
+        },
+        "github_com_Gujiaweiguo_mi_backend_internal_overtime.Bill": {
+            "type": "object",
+            "properties": {
+                "approved_at": {
+                    "type": "string"
+                },
+                "cancelled_at": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "integer"
+                },
+                "formulas": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_overtime.Formula"
+                    }
+                },
+                "generated_at": {
+                    "type": "string"
+                },
+                "generated_charges": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_overtime.GeneratedCharge"
+                    }
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "lease_contract_id": {
+                    "type": "integer"
+                },
+                "lease_no": {
+                    "type": "string"
+                },
+                "note": {
+                    "type": "string"
+                },
+                "period_end": {
+                    "type": "string"
+                },
+                "period_start": {
+                    "type": "string"
+                },
+                "rejected_at": {
+                    "type": "string"
+                },
+                "status": {
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_overtime.BillStatus"
+                },
+                "stopped_at": {
+                    "type": "string"
+                },
+                "submitted_at": {
+                    "type": "string"
+                },
+                "tenant_name": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "integer"
+                },
+                "workflow_instance_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_Gujiaweiguo_mi_backend_internal_overtime.BillStatus": {
+            "type": "string",
+            "enum": [
+                "draft",
+                "pending_approval",
+                "approved",
+                "rejected",
+                "cancelled",
+                "stopped",
+                "generated"
+            ],
+            "x-enum-varnames": [
+                "BillStatusDraft",
+                "BillStatusPendingApproval",
+                "BillStatusApproved",
+                "BillStatusRejected",
+                "BillStatusCancelled",
+                "BillStatusStopped",
+                "BillStatusGenerated"
+            ]
+        },
+        "github_com_Gujiaweiguo_mi_backend_internal_overtime.Formula": {
+            "type": "object",
+            "properties": {
+                "base_amount": {
+                    "type": "number"
+                },
+                "charge_type": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "currency_type_id": {
+                    "type": "integer"
+                },
+                "effective_from": {
+                    "type": "string"
+                },
+                "effective_to": {
+                    "type": "string"
+                },
+                "fixed_rental": {
+                    "type": "number"
+                },
+                "formula_type": {
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_overtime.FormulaType"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "minimum_option": {
+                    "type": "string"
+                },
+                "minimum_tiers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_overtime.MinimumTier"
+                    }
+                },
+                "overtime_bill_id": {
+                    "type": "integer"
+                },
+                "percentage_option": {
+                    "type": "string"
+                },
+                "percentage_tiers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_overtime.PercentTier"
+                    }
+                },
+                "rate_type": {
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_overtime.RateType"
+                },
+                "sort_order": {
+                    "type": "integer"
+                },
+                "total_area": {
+                    "type": "number"
+                },
+                "unit_price": {
+                    "type": "number"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_Gujiaweiguo_mi_backend_internal_overtime.FormulaType": {
+            "type": "string",
+            "enum": [
+                "fixed",
+                "one_time",
+                "percentage"
+            ],
+            "x-enum-varnames": [
+                "FormulaTypeFixed",
+                "FormulaTypeOneTime",
+                "FormulaTypePercentage"
+            ]
+        },
+        "github_com_Gujiaweiguo_mi_backend_internal_overtime.GeneratedCharge": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "number"
+                },
+                "applied_minimum_amount": {
+                    "type": "number"
+                },
+                "applied_percentage_rate": {
+                    "type": "number"
+                },
+                "base_amount": {
+                    "type": "number"
+                },
+                "billing_run_id": {
+                    "type": "integer"
+                },
+                "charge_type": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "currency_type_id": {
+                    "type": "integer"
+                },
+                "fixed_rental": {
+                    "type": "number"
+                },
+                "formula_type": {
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_overtime.FormulaType"
+                },
+                "generated_by": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "lease_contract_id": {
+                    "type": "integer"
+                },
+                "minimum_option": {
+                    "type": "string"
+                },
+                "overtime_bill_id": {
+                    "type": "integer"
+                },
+                "overtime_formula_id": {
+                    "type": "integer"
+                },
+                "percentage_option": {
+                    "type": "string"
+                },
+                "period_end": {
+                    "type": "string"
+                },
+                "period_start": {
+                    "type": "string"
+                },
+                "quantity": {
+                    "type": "integer"
+                },
+                "rate_type": {
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_overtime.RateType"
+                },
+                "total_area": {
+                    "type": "number"
+                },
+                "unit_amount": {
+                    "type": "number"
+                },
+                "unit_price": {
+                    "type": "number"
+                },
+                "workflow_instance_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_Gujiaweiguo_mi_backend_internal_overtime.MinimumTier": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "formula_id": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "minimum_sum": {
+                    "type": "number"
+                },
+                "sales_to": {
+                    "type": "number"
+                },
+                "sort_order": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_Gujiaweiguo_mi_backend_internal_overtime.PercentTier": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "formula_id": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "percentage": {
+                    "type": "number"
+                },
+                "sales_to": {
+                    "type": "number"
+                },
+                "sort_order": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_Gujiaweiguo_mi_backend_internal_overtime.RateType": {
+            "type": "string",
+            "enum": [
+                "daily",
+                "monthly"
+            ],
+            "x-enum-varnames": [
+                "RateTypeDaily",
+                "RateTypeMonthly"
+            ]
         },
         "github_com_Gujiaweiguo_mi_backend_internal_reporting.Column": {
             "type": "object",
@@ -10199,6 +11847,91 @@
                 }
             }
         },
+        "internal_http_handlers.applyDepositRequest": {
+            "type": "object",
+            "required": [
+                "amount",
+                "billing_document_line_id",
+                "idempotency_key",
+                "target_billing_document_line_id",
+                "target_document_id"
+            ],
+            "properties": {
+                "amount": {
+                    "type": "number"
+                },
+                "billing_document_line_id": {
+                    "type": "integer"
+                },
+                "idempotency_key": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                },
+                "note": {
+                    "type": "string",
+                    "maxLength": 255
+                },
+                "target_billing_document_line_id": {
+                    "type": "integer"
+                },
+                "target_document_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "internal_http_handlers.applyDiscountRequest": {
+            "type": "object",
+            "required": [
+                "amount",
+                "billing_document_line_id",
+                "idempotency_key",
+                "reason"
+            ],
+            "properties": {
+                "amount": {
+                    "type": "number"
+                },
+                "billing_document_line_id": {
+                    "type": "integer"
+                },
+                "idempotency_key": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                },
+                "reason": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 1
+                }
+            }
+        },
+        "internal_http_handlers.applySurplusRequest": {
+            "type": "object",
+            "required": [
+                "amount",
+                "billing_document_line_id",
+                "idempotency_key"
+            ],
+            "properties": {
+                "amount": {
+                    "type": "number"
+                },
+                "billing_document_line_id": {
+                    "type": "integer"
+                },
+                "idempotency_key": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                },
+                "note": {
+                    "type": "string",
+                    "maxLength": 255
+                }
+            }
+        },
         "internal_http_handlers.baseInfoRequest": {
             "type": "object",
             "required": [
@@ -10350,6 +12083,138 @@
                 }
             }
         },
+        "internal_http_handlers.createLeaseAdBoardRequest": {
+            "type": "object",
+            "properties": {
+                "ad_board_id": {
+                    "type": "integer"
+                },
+                "airtime": {
+                    "type": "integer"
+                },
+                "between_from": {
+                    "type": "integer"
+                },
+                "between_to": {
+                    "type": "integer"
+                },
+                "building_id": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "end_date": {
+                    "type": "string"
+                },
+                "frequency": {
+                    "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_lease.AdBoardFrequency"
+                },
+                "frequency_days": {
+                    "type": "integer"
+                },
+                "frequency_fri": {
+                    "type": "boolean"
+                },
+                "frequency_mon": {
+                    "type": "boolean"
+                },
+                "frequency_sat": {
+                    "type": "boolean"
+                },
+                "frequency_sun": {
+                    "type": "boolean"
+                },
+                "frequency_thu": {
+                    "type": "boolean"
+                },
+                "frequency_tue": {
+                    "type": "boolean"
+                },
+                "frequency_wed": {
+                    "type": "boolean"
+                },
+                "rent_area": {
+                    "type": "number"
+                },
+                "start_date": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "store_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "internal_http_handlers.createLeaseAreaGroundRequest": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "end_date": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "rent_area": {
+                    "type": "number"
+                },
+                "start_date": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "type_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "internal_http_handlers.createLeaseJointOperationRequest": {
+            "type": "object",
+            "properties": {
+                "account_cycle": {
+                    "type": "integer"
+                },
+                "bill_cycle": {
+                    "type": "integer"
+                },
+                "in_tax_rate": {
+                    "type": "number"
+                },
+                "interest_grace_days": {
+                    "type": "integer"
+                },
+                "late_pay_interest_rate": {
+                    "type": "number"
+                },
+                "month_settle_days": {
+                    "type": "number"
+                },
+                "out_tax_rate": {
+                    "type": "number"
+                },
+                "rent_inc": {
+                    "type": "string"
+                },
+                "settlement_currency_type_id": {
+                    "type": "integer"
+                },
+                "tax_rate": {
+                    "type": "number"
+                },
+                "tax_type": {
+                    "type": "integer"
+                }
+            }
+        },
         "internal_http_handlers.createLeaseRequest": {
             "type": "object",
             "required": [
@@ -10363,6 +12228,18 @@
                 "units"
             ],
             "properties": {
+                "ad_boards": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/internal_http_handlers.createLeaseAdBoardRequest"
+                    }
+                },
+                "area_grounds": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/internal_http_handlers.createLeaseAreaGroundRequest"
+                    }
+                },
                 "brand_id": {
                     "type": "integer"
                 },
@@ -10378,6 +12255,9 @@
                 "end_date": {
                     "type": "string"
                 },
+                "joint_operation": {
+                    "$ref": "#/definitions/internal_http_handlers.createLeaseJointOperationRequest"
+                },
                 "lease_no": {
                     "type": "string",
                     "maxLength": 50,
@@ -10391,6 +12271,19 @@
                 },
                 "store_id": {
                     "type": "integer"
+                },
+                "subtype": {
+                    "enum": [
+                        "standard",
+                        "joint_operation",
+                        "ad_board",
+                        "area_ground"
+                    ],
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_lease.ContractSubtype"
+                        }
+                    ]
                 },
                 "tenant_name": {
                     "type": "string",
@@ -10478,6 +12371,139 @@
                 },
                 "unit_id": {
                     "type": "integer"
+                }
+            }
+        },
+        "internal_http_handlers.createOvertimeBillRequest": {
+            "type": "object",
+            "required": [
+                "formulas",
+                "lease_contract_id",
+                "period_end",
+                "period_start"
+            ],
+            "properties": {
+                "formulas": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "$ref": "#/definitions/internal_http_handlers.createOvertimeFormulaRequest"
+                    }
+                },
+                "lease_contract_id": {
+                    "type": "integer"
+                },
+                "note": {
+                    "type": "string",
+                    "maxLength": 255
+                },
+                "period_end": {
+                    "type": "string"
+                },
+                "period_start": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_http_handlers.createOvertimeFormulaRequest": {
+            "type": "object",
+            "required": [
+                "charge_type",
+                "currency_type_id",
+                "formula_type",
+                "rate_type"
+            ],
+            "properties": {
+                "base_amount": {
+                    "type": "number"
+                },
+                "charge_type": {
+                    "type": "string",
+                    "maxLength": 32,
+                    "minLength": 1
+                },
+                "currency_type_id": {
+                    "type": "integer"
+                },
+                "effective_from": {
+                    "type": "string"
+                },
+                "effective_to": {
+                    "type": "string"
+                },
+                "fixed_rental": {
+                    "type": "number"
+                },
+                "formula_type": {
+                    "enum": [
+                        "fixed",
+                        "one_time",
+                        "percentage"
+                    ],
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_overtime.FormulaType"
+                        }
+                    ]
+                },
+                "minimum_option": {
+                    "type": "string",
+                    "maxLength": 32
+                },
+                "minimum_tiers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/internal_http_handlers.createOvertimeMinimumTierRequest"
+                    }
+                },
+                "percentage_option": {
+                    "type": "string",
+                    "maxLength": 32
+                },
+                "percentage_tiers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/internal_http_handlers.createOvertimePercentTierRequest"
+                    }
+                },
+                "rate_type": {
+                    "enum": [
+                        "daily",
+                        "monthly"
+                    ],
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_Gujiaweiguo_mi_backend_internal_overtime.RateType"
+                        }
+                    ]
+                },
+                "total_area": {
+                    "type": "number"
+                },
+                "unit_price": {
+                    "type": "number"
+                }
+            }
+        },
+        "internal_http_handlers.createOvertimeMinimumTierRequest": {
+            "type": "object",
+            "properties": {
+                "minimum_sum": {
+                    "type": "number"
+                },
+                "sales_to": {
+                    "type": "number"
+                }
+            }
+        },
+        "internal_http_handlers.createOvertimePercentTierRequest": {
+            "type": "object",
+            "properties": {
+                "percentage": {
+                    "type": "number"
+                },
+                "sales_to": {
+                    "type": "number"
                 }
             }
         },
@@ -10572,6 +12598,26 @@
                 }
             }
         },
+        "internal_http_handlers.generateInterestRequest": {
+            "type": "object",
+            "required": [
+                "billing_document_line_id",
+                "idempotency_key"
+            ],
+            "properties": {
+                "as_of_date": {
+                    "type": "string"
+                },
+                "billing_document_line_id": {
+                    "type": "integer"
+                },
+                "idempotency_key": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                }
+            }
+        },
         "internal_http_handlers.loginRequest": {
             "type": "object",
             "required": [
@@ -10612,6 +12658,33 @@
                 },
                 "payment_date": {
                     "type": "string"
+                }
+            }
+        },
+        "internal_http_handlers.refundDepositRequest": {
+            "type": "object",
+            "required": [
+                "amount",
+                "billing_document_line_id",
+                "idempotency_key",
+                "reason"
+            ],
+            "properties": {
+                "amount": {
+                    "type": "number"
+                },
+                "billing_document_line_id": {
+                    "type": "integer"
+                },
+                "idempotency_key": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                },
+                "reason": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 1
                 }
             }
         },
@@ -10750,7 +12823,8 @@
                     "enum": [
                         "lease_contract",
                         "invoice",
-                        "bill"
+                        "bill",
+                        "overtime_bill"
                     ]
                 }
             }

@@ -186,7 +186,7 @@ describe('WorkflowAdminView', () => {
     vi.clearAllMocks()
     i18n.global.locale.value = 'en-US'
 
-    randomUUIDSpy = vi.spyOn(globalThis.crypto, 'randomUUID').mockReturnValue('uuid-123')
+    randomUUIDSpy = vi.spyOn(globalThis.crypto, 'randomUUID').mockReturnValue('00000000-0000-0000-0000-000000000123' as `${string}-${string}-${string}-${string}-${string}`)
 
     vi.mocked(listWorkflowDefinitions).mockResolvedValue({
       data: { definitions },
@@ -230,7 +230,7 @@ describe('WorkflowAdminView', () => {
     await wrapper.get('[data-testid="workflow-resubmit-button-102"]').trigger('click')
     await flushPromises()
 
-    expect(resubmitWorkflow).toHaveBeenCalledWith(102, { idempotency_key: 'uuid-123' })
+    expect(resubmitWorkflow).toHaveBeenCalledWith(102, { idempotency_key: '00000000-0000-0000-0000-000000000123' })
     expect(listWorkflowInstances).toHaveBeenCalledTimes(2)
     expect(messageSuccessMock).toHaveBeenCalledWith('Resubmitted')
   })

@@ -17,4 +17,14 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 4173,
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vue-vendor': ['vue', 'vue-router', 'pinia'],
+          'element-plus': ['element-plus'],
+        },
+      },
+    },
+  },
 })
