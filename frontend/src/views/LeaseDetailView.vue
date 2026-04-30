@@ -5,6 +5,8 @@ import { useRoute, useRouter } from 'vue-router'
 import type { FormInstance, FormRules } from 'element-plus'
 
 import { FUNCTION_CODES } from '../auth/permissions'
+import { listCharges, type ChargeLine } from '../api/billing'
+import { listInvoices, listReceivables, type InvoiceDocument, type ReceivableListItem } from '../api/invoice'
 import {
   cancelOvertimeBill,
   createOvertimeBill,
@@ -84,11 +86,25 @@ const successMessage = ref('')
 const isLoading = ref(false)
 const isSubmitting = ref(false)
 const isTerminating = ref(false)
+const downstreamPreviewSize = 3
+const downstreamFetchPageSize = 10
 const overtimeBills = ref<OvertimeBill[]>([])
 const overtimeErrorMessage = ref('')
 const isOvertimeLoading = ref(false)
 const isCreatingOvertime = ref(false)
 const overtimeActionBillId = ref<number | null>(null)
+const chargeItems = ref<ChargeLine[]>([])
+const chargeTotal = ref(0)
+const chargeErrorMessage = ref('')
+const isChargeLoading = ref(false)
+const invoiceItems = ref<InvoiceDocument[]>([])
+const invoiceTotal = ref(0)
+const invoiceErrorMessage = ref('')
+const isInvoiceLoading = ref(false)
+const receivableItems = ref<ReceivableListItem[]>([])
+const receivableTotal = ref(0)
+const receivableErrorMessage = ref('')
+const isReceivableLoading = ref(false)
 
 const terminateForm = reactive({
   terminated_at: '',
@@ -130,6 +146,26 @@ const createOvertimeDisabled = computed(
 
 const submitDisabled = computed(() => !lease.value || isSubmitting.value || lease.value.status !== 'draft')
 const terminateDisabled = computed(() => !lease.value || isTerminating.value || lease.value.status !== 'active')
+const downstreamSummary = computed(() => [
+  {
+    key: 'charges',
+    label: t('leaseDetail.downstream.summary.charges'),
+    value: chargeTotal.value,
+  },
+  {
+    key: 'invoices',
+    label: t('leaseDetail.downstream.summary.invoices'),
+    value: invoiceTotal.value,
+  },
+  {
+    key: 'receivables',
+    label: t('leaseDetail.downstream.summary.receivables'),
+    value: receivableTotal.value,
+  },
+])
+const displayedCharges = computed(() => chargeItems.value.slice(0, downstreamPreviewSize))
+const displayedInvoices = computed(() => invoiceItems.value.slice(0, downstreamPreviewSize))
+const displayedReceivables = computed(() => receivableItems.value.slice(0, downstreamPreviewSize))
 
 const overtimeFormulaTypeOptions = computed<{ label: string; value: OvertimeFormulaType }[]>(() => [
   { label: t('leaseDetail.overtime.options.formulaTypes.fixed'), value: 'fixed' },
@@ -206,6 +242,52 @@ const resolveBillingCycleLabel = (billingCycle: string) => {
   }
 }
 
+const resolveInvoiceDocumentTypeLabel = (type: string) => {
+  switch (type) {
+    case 'bill':
+      return t('billingInvoices.documentTypes.bill')
+    case 'invoice':
+      return t('billingInvoices.documentTypes.invoice')
+    default:
+      return type
+  }
+}
+
+const resolveInvoiceStatusLabel = (status: string) => {
+  switch (status) {
+    case 'draft':
+      return t('common.statuses.draft')
+    case 'pending_approval':
+      return t('common.statuses.pendingApproval')
+    case 'approved':
+      return t('common.statuses.approved')
+    case 'adjusted':
+      return t('common.statuses.adjusted')
+    case 'cancelled':
+      return t('common.statuses.cancelled')
+    default:
+      return status
+  }
+}
+
+const resolveReceivableSettlementLabel = (status: string) => {
+  switch (status) {
+    case 'outstanding':
+      return t('receivables.settlement.outstanding')
+    case 'settled':
+      return t('receivables.settlement.settled')
+    default:
+      return status
+  }
+}
+
+const resolveChargeSourceTagType = (source: string) => (source === 'overtime' ? 'warning' : 'info')
+const resolveInvoiceDocumentTagType = (type: string) => (type === 'invoice' ? 'primary' : 'warning')
+const resolveReceivableSettlementTagType = (status: string) => (status === 'settled' ? 'success' : 'warning')
+
+const resolveDownstreamDocumentLabel = (documentNo: string | null, documentId: number) =>
+  documentNo ?? t('invoiceDetail.defaults.documentId', { id: documentId })
+
 const statusTagType = (status: string) => {
   switch (status) {
     case 'active':
@@ -243,6 +325,93 @@ const loadOvertimeBills = async () => {
     overtimeErrorMessage.value = getErrorMessage(error, t('leaseDetail.overtime.errors.unableToLoad'))
   } finally {
     isOvertimeLoading.value = false
+  }
+}
+
+const loadCharges = async () => {
+  if (!leaseId.value) {
+    chargeItems.value = []
+    chargeTotal.value = 0
+    chargeErrorMessage.value = ''
+    return
+  }
+
+  isChargeLoading.value = true
+  chargeErrorMessage.value = ''
+
+  try {
+    const response = await listCharges({
+      lease_contract_id: leaseId.value,
+      page: 1,
+      page_size: downstreamFetchPageSize,
+    })
+
+    chargeItems.value = response.data.items
+    chargeTotal.value = response.data.total
+  } catch (error) {
+    chargeItems.value = []
+    chargeTotal.value = 0
+    chargeErrorMessage.value = getErrorMessage(error, t('leaseDetail.downstream.errors.unableToLoadCharges'))
+  } finally {
+    isChargeLoading.value = false
+  }
+}
+
+const loadInvoices = async () => {
+  if (!leaseId.value) {
+    invoiceItems.value = []
+    invoiceTotal.value = 0
+    invoiceErrorMessage.value = ''
+    return
+  }
+
+  isInvoiceLoading.value = true
+  invoiceErrorMessage.value = ''
+
+  try {
+    const response = await listInvoices({
+      lease_contract_id: leaseId.value,
+      page: 1,
+      page_size: downstreamFetchPageSize,
+    })
+
+    invoiceItems.value = response.data.items
+    invoiceTotal.value = response.data.total
+  } catch (error) {
+    invoiceItems.value = []
+    invoiceTotal.value = 0
+    invoiceErrorMessage.value = getErrorMessage(error, t('leaseDetail.downstream.errors.unableToLoadInvoices'))
+  } finally {
+    isInvoiceLoading.value = false
+  }
+}
+
+const loadReceivables = async () => {
+  if (!leaseId.value) {
+    receivableItems.value = []
+    receivableTotal.value = 0
+    receivableErrorMessage.value = ''
+    return
+  }
+
+  isReceivableLoading.value = true
+  receivableErrorMessage.value = ''
+
+  try {
+    const response = await listReceivables({
+      lease_contract_id: leaseId.value,
+      page: 1,
+      page_size: downstreamFetchPageSize,
+    })
+
+    receivableItems.value = response.data.items
+    receivableTotal.value = response.data.total
+  } catch (error) {
+    receivableItems.value = []
+    receivableTotal.value = 0
+    receivableErrorMessage.value = getErrorMessage(error, t('leaseDetail.downstream.errors.unableToLoadReceivables'))
+  } finally {
+    isReceivableLoading.value = false
   }
 }
 
@@ -348,6 +517,22 @@ const validateOvertimeCreateForm = () => {
 
 const handleBack = async () => {
   await router.push({ name: 'lease-contracts' })
+}
+
+const openChargeQueue = async () => {
+  await router.push({ name: 'billing-charges' })
+}
+
+const openInvoiceQueue = async () => {
+  await router.push({ name: 'billing-invoices' })
+}
+
+const openReceivableQueue = async () => {
+  await router.push({ name: 'billing-receivables' })
+}
+
+const openInvoiceDetail = async (id: number) => {
+  await router.push({ name: 'billing-invoice-detail', params: { id: String(id) } })
 }
 
 const handleAmend = async () => {
@@ -496,16 +681,18 @@ const handleGenerateOvertime = async (bill: OvertimeBill) => {
   }, t('leaseDetail.overtime.feedback.generated'))
 }
 
+const loadLeaseContext = async () => {
+  await Promise.all([loadLease(), loadOvertimeBills(), loadCharges(), loadInvoices(), loadReceivables()])
+}
+
 onMounted(async () => {
-  await loadLease()
-  await loadOvertimeBills()
+  await loadLeaseContext()
 })
 
 watch(
   () => route.params.id,
   async () => {
-    await loadLease()
-    await loadOvertimeBills()
+    await loadLeaseContext()
   },
 )
 </script>
@@ -744,6 +931,206 @@ watch(
         </el-table>
 
         <el-empty v-else :description="t('leaseDetail.emptyStates.standardSubtype')" />
+      </el-card>
+
+      <el-card class="lease-detail-view__card" shadow="never" data-testid="lease-downstream-panel">
+        <template #header>
+          <div class="lease-detail-view__card-header lease-detail-view__card-header--stacked">
+            <div>
+              <span>{{ t('leaseDetail.downstream.title') }}</span>
+              <p class="lease-detail-view__card-summary">{{ t('leaseDetail.downstream.summaryText') }}</p>
+            </div>
+
+            <div class="lease-detail-view__summary-strip">
+              <article v-for="item in downstreamSummary" :key="item.key" class="lease-detail-view__summary-chip">
+                <span class="lease-detail-view__summary-label">{{ item.label }}</span>
+                <strong class="lease-detail-view__summary-value">{{ item.value }}</strong>
+              </article>
+            </div>
+          </div>
+        </template>
+
+        <div class="lease-detail-view__downstream-sections">
+          <section class="lease-detail-view__downstream-section" data-testid="lease-downstream-charges-section">
+            <div class="lease-detail-view__downstream-header">
+              <div>
+                <h3>{{ t('billingCharges.title') }}</h3>
+                <p>{{ t('leaseDetail.downstream.sectionSummaries.charges') }}</p>
+              </div>
+
+              <div class="lease-detail-view__downstream-actions">
+                <el-tag effect="plain" type="info">{{ t('common.total', { count: chargeTotal }) }}</el-tag>
+                <el-button link type="primary" data-testid="lease-downstream-open-charges" @click="openChargeQueue">
+                  {{ t('leaseDetail.downstream.actions.openCharges') }}
+                </el-button>
+              </div>
+            </div>
+
+            <el-alert
+              v-if="chargeErrorMessage"
+              :closable="false"
+              type="error"
+              show-icon
+              :title="t('leaseDetail.downstream.errors.chargesUnavailable')"
+              :description="chargeErrorMessage"
+              data-testid="lease-downstream-charges-error"
+            />
+
+            <el-skeleton v-else-if="isChargeLoading" :rows="3" animated data-testid="lease-downstream-charges-loading" />
+
+            <el-empty
+              v-else-if="chargeTotal === 0"
+              :description="t('leaseDetail.downstream.emptyStates.charges')"
+              data-testid="lease-downstream-charges-empty"
+            />
+
+            <ul v-else class="lease-detail-view__downstream-list">
+              <li v-for="charge in displayedCharges" :key="charge.id" class="lease-detail-view__downstream-item">
+                <div class="lease-detail-view__downstream-item-main">
+                  <div class="lease-detail-view__downstream-item-heading">
+                    <strong>#{{ charge.id }} · {{ charge.charge_type }}</strong>
+                    <el-tag effect="plain" :type="resolveChargeSourceTagType(charge.charge_source)">
+                      {{ charge.charge_source }}
+                    </el-tag>
+                  </div>
+
+                  <p>
+                    {{ formatDate(charge.period_start) }} → {{ formatDate(charge.period_end) }} ·
+                    {{ t('leaseDetail.downstream.labels.amount') }} {{ formatDecimal(charge.amount) }}
+                  </p>
+                </div>
+              </li>
+            </ul>
+          </section>
+
+          <section class="lease-detail-view__downstream-section" data-testid="lease-downstream-invoices-section">
+            <div class="lease-detail-view__downstream-header">
+              <div>
+                <h3>{{ t('billingInvoices.title') }}</h3>
+                <p>{{ t('leaseDetail.downstream.sectionSummaries.invoices') }}</p>
+              </div>
+
+              <div class="lease-detail-view__downstream-actions">
+                <el-tag effect="plain" type="info">{{ t('common.total', { count: invoiceTotal }) }}</el-tag>
+                <el-button link type="primary" data-testid="lease-downstream-open-invoices" @click="openInvoiceQueue">
+                  {{ t('leaseDetail.downstream.actions.openInvoices') }}
+                </el-button>
+              </div>
+            </div>
+
+            <el-alert
+              v-if="invoiceErrorMessage"
+              :closable="false"
+              type="error"
+              show-icon
+              :title="t('leaseDetail.downstream.errors.invoicesUnavailable')"
+              :description="invoiceErrorMessage"
+              data-testid="lease-downstream-invoices-error"
+            />
+
+            <el-skeleton v-else-if="isInvoiceLoading" :rows="3" animated data-testid="lease-downstream-invoices-loading" />
+
+            <el-empty
+              v-else-if="invoiceTotal === 0"
+              :description="t('leaseDetail.downstream.emptyStates.invoices')"
+              data-testid="lease-downstream-invoices-empty"
+            />
+
+            <ul v-else class="lease-detail-view__downstream-list">
+              <li v-for="invoice in displayedInvoices" :key="invoice.id" class="lease-detail-view__downstream-item">
+                <div class="lease-detail-view__downstream-item-main">
+                  <div class="lease-detail-view__downstream-item-heading">
+                    <strong>{{ resolveDownstreamDocumentLabel(invoice.document_no, invoice.id) }}</strong>
+                    <el-tag effect="plain" :type="resolveInvoiceDocumentTagType(invoice.document_type)">
+                      {{ resolveInvoiceDocumentTypeLabel(invoice.document_type) }}
+                    </el-tag>
+                  </div>
+
+                  <p>
+                    {{ formatDate(invoice.period_start) }} → {{ formatDate(invoice.period_end) }} ·
+                    {{ resolveInvoiceStatusLabel(invoice.status) }} ·
+                    {{ t('leaseDetail.downstream.labels.amount') }} {{ formatDecimal(invoice.total_amount) }}
+                  </p>
+                </div>
+
+                <el-button link type="primary" :data-testid="`lease-downstream-open-invoice-${invoice.id}`" @click="openInvoiceDetail(invoice.id)">
+                  {{ t('common.actions.view') }}
+                </el-button>
+              </li>
+            </ul>
+          </section>
+
+          <section class="lease-detail-view__downstream-section" data-testid="lease-downstream-receivables-section">
+            <div class="lease-detail-view__downstream-header">
+              <div>
+                <h3>{{ t('receivables.title') }}</h3>
+                <p>{{ t('leaseDetail.downstream.sectionSummaries.receivables') }}</p>
+              </div>
+
+              <div class="lease-detail-view__downstream-actions">
+                <el-tag effect="plain" type="info">{{ t('common.total', { count: receivableTotal }) }}</el-tag>
+                <el-button link type="primary" data-testid="lease-downstream-open-receivables" @click="openReceivableQueue">
+                  {{ t('leaseDetail.downstream.actions.openReceivables') }}
+                </el-button>
+              </div>
+            </div>
+
+            <el-alert
+              v-if="receivableErrorMessage"
+              :closable="false"
+              type="error"
+              show-icon
+              :title="t('leaseDetail.downstream.errors.receivablesUnavailable')"
+              :description="receivableErrorMessage"
+              data-testid="lease-downstream-receivables-error"
+            />
+
+            <el-skeleton
+              v-else-if="isReceivableLoading"
+              :rows="3"
+              animated
+              data-testid="lease-downstream-receivables-loading"
+            />
+
+            <el-empty
+              v-else-if="receivableTotal === 0"
+              :description="t('leaseDetail.downstream.emptyStates.receivables')"
+              data-testid="lease-downstream-receivables-empty"
+            />
+
+            <ul v-else class="lease-detail-view__downstream-list">
+              <li
+                v-for="receivable in displayedReceivables"
+                :key="receivable.billing_document_id"
+                class="lease-detail-view__downstream-item"
+              >
+                <div class="lease-detail-view__downstream-item-main">
+                  <div class="lease-detail-view__downstream-item-heading">
+                    <strong>{{ resolveDownstreamDocumentLabel(receivable.document_no, receivable.billing_document_id) }}</strong>
+                    <el-tag effect="plain" :type="resolveReceivableSettlementTagType(receivable.settlement_status)">
+                      {{ resolveReceivableSettlementLabel(receivable.settlement_status) }}
+                    </el-tag>
+                  </div>
+
+                  <p>
+                    {{ resolveInvoiceStatusLabel(receivable.document_status) }} ·
+                    {{ formatDate(receivable.earliest_due_date) }} → {{ formatDate(receivable.latest_due_date) }} ·
+                    {{ t('leaseDetail.downstream.labels.outstanding') }} {{ formatDecimal(receivable.outstanding_amount) }}
+                  </p>
+                </div>
+
+                <el-button
+                  link
+                  type="primary"
+                  :data-testid="`lease-downstream-open-receivable-${receivable.billing_document_id}`"
+                  @click="openInvoiceDetail(receivable.billing_document_id)"
+                >
+                  {{ t('common.actions.view') }}
+                </el-button>
+              </li>
+            </ul>
+          </section>
+        </div>
       </el-card>
 
       <el-card class="lease-detail-view__card" shadow="never" data-testid="lease-overtime-section">
@@ -1025,6 +1412,17 @@ watch(
   color: var(--mi-color-text);
 }
 
+.lease-detail-view__card-header--stacked {
+  align-items: flex-start;
+}
+
+.lease-detail-view__card-summary {
+  margin: var(--mi-space-2) 0 0;
+  font-size: var(--mi-font-size-100);
+  font-weight: var(--mi-font-weight-regular);
+  color: var(--mi-color-muted);
+}
+
 .lease-detail-view__section-header {
   align-items: flex-start;
 }
@@ -1061,6 +1459,103 @@ watch(
   background: rgba(29, 78, 216, 0.04);
 }
 
+.lease-detail-view__summary-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--mi-space-3);
+  width: 100%;
+  max-width: 30rem;
+}
+
+.lease-detail-view__summary-chip {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mi-space-1);
+  padding: var(--mi-space-3);
+  border: var(--mi-border-width-thin) solid color-mix(in srgb, var(--mi-color-primary) 14%, var(--mi-color-border));
+  border-radius: var(--mi-radius-md);
+  background: color-mix(in srgb, var(--mi-color-surface-alt) 55%, var(--mi-color-surface));
+}
+
+.lease-detail-view__summary-label {
+  font-size: var(--mi-font-size-100);
+  color: var(--mi-color-muted);
+}
+
+.lease-detail-view__summary-value {
+  font-size: var(--mi-font-size-400);
+  line-height: var(--mi-line-height-tight);
+  color: var(--mi-color-text);
+}
+
+.lease-detail-view__downstream-sections {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--mi-space-4);
+}
+
+.lease-detail-view__downstream-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mi-space-3);
+  padding: var(--mi-space-4);
+  border: var(--mi-border-width-thin) solid color-mix(in srgb, var(--mi-color-accent) 12%, var(--mi-color-border));
+  border-radius: var(--mi-radius-md);
+  background: color-mix(in srgb, var(--mi-color-panel) 45%, var(--mi-color-surface));
+}
+
+.lease-detail-view__downstream-header,
+.lease-detail-view__downstream-actions,
+.lease-detail-view__downstream-item,
+.lease-detail-view__downstream-item-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--mi-space-3);
+}
+
+.lease-detail-view__downstream-header h3,
+.lease-detail-view__downstream-item-heading strong {
+  margin: 0;
+  font-size: var(--mi-font-size-200);
+  color: var(--mi-color-text);
+}
+
+.lease-detail-view__downstream-header p,
+.lease-detail-view__downstream-item-main p {
+  margin: var(--mi-space-1) 0 0;
+  font-size: var(--mi-font-size-100);
+  color: var(--mi-color-muted);
+}
+
+.lease-detail-view__downstream-actions {
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.lease-detail-view__downstream-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mi-space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lease-detail-view__downstream-item {
+  padding-top: var(--mi-space-3);
+  border-top: var(--mi-border-width-thin) solid color-mix(in srgb, var(--mi-color-primary) 10%, var(--mi-color-border));
+}
+
+.lease-detail-view__downstream-item:first-child {
+  padding-top: 0;
+  border-top: none;
+}
+
+.lease-detail-view__downstream-item-main {
+  min-width: 0;
+}
+
 .lease-detail-view__tier-row {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr)) auto;
@@ -1093,9 +1588,18 @@ watch(
     grid-template-columns: minmax(0, 1fr);
   }
 
+  .lease-detail-view__summary-strip,
+  .lease-detail-view__downstream-sections {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .lease-detail-view__card-header,
   .lease-detail-view__section-header,
-  .lease-detail-view__formula-header {
+  .lease-detail-view__formula-header,
+  .lease-detail-view__downstream-header,
+  .lease-detail-view__downstream-actions,
+  .lease-detail-view__downstream-item,
+  .lease-detail-view__downstream-item-heading {
     flex-direction: column;
     align-items: flex-start;
   }

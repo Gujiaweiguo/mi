@@ -1298,6 +1298,42 @@ export const enUSMessages = {
       unableToSubmit: 'Unable to submit the lease for approval.',
       unableToTerminate: 'Unable to terminate the lease contract.',
     },
+    downstream: {
+      title: 'Downstream business review',
+      summaryText: 'Scan the lease-to-cash trail without leaving the contract: recent charges, documents, and receivable exposure.',
+      summary: {
+        charges: 'Charges',
+        invoices: 'Invoices',
+        receivables: 'Receivables',
+      },
+      sectionSummaries: {
+        charges: 'Recent lease-linked charge lines ready for downstream document review.',
+        invoices: 'Latest bills or invoices generated from this lease contract.',
+        receivables: 'Open or settled receivable windows tied back to lease billing documents.',
+      },
+      actions: {
+        openCharges: 'Open charge queue',
+        openInvoices: 'Open invoice queue',
+        openReceivables: 'Open receivables',
+      },
+      labels: {
+        amount: 'Amount:',
+        outstanding: 'Outstanding:',
+      },
+      emptyStates: {
+        charges: 'No billing charges have been generated for this lease yet.',
+        invoices: 'No billing documents have been issued for this lease yet.',
+        receivables: 'No receivable records are linked to this lease yet.',
+      },
+      errors: {
+        chargesUnavailable: 'Charge section unavailable',
+        invoicesUnavailable: 'Invoice section unavailable',
+        receivablesUnavailable: 'Receivable section unavailable',
+        unableToLoadCharges: 'Unable to load lease-linked charges.',
+        unableToLoadInvoices: 'Unable to load lease-linked invoices.',
+        unableToLoadReceivables: 'Unable to load lease-linked receivables.',
+      },
+    },
     overtime: {
       permissionTitle: 'Billing-charge permission required',
       permissionDescription: 'This lease is visible, but overtime billing actions require billing charge access.',

@@ -1291,6 +1291,42 @@ export const zhCNMessages = {
       unableToSubmit: '无法提交租赁合同审批。',
       unableToTerminate: '无法终止租赁合同。',
     },
+    downstream: {
+      title: '下游业务概览',
+      summaryText: '不离开合同详情即可查看租转现链路：最近费用、开票单据与应收压力。',
+      summary: {
+        charges: '费用',
+        invoices: '单据',
+        receivables: '应收',
+      },
+      sectionSummaries: {
+        charges: '查看当前合同最新生成的费用行，快速判断后续是否需要制单。',
+        invoices: '查看由当前合同生成的账单 / 发票及其最新状态。',
+        receivables: '查看已回写到当前合同的应收窗口与结清情况。',
+      },
+      actions: {
+        openCharges: '打开费用队列',
+        openInvoices: '打开单据队列',
+        openReceivables: '打开应收列表',
+      },
+      labels: {
+        amount: '金额：',
+        outstanding: '未清金额：',
+      },
+      emptyStates: {
+        charges: '当前合同尚未生成费用记录。',
+        invoices: '当前合同尚未生成账单或发票。',
+        receivables: '当前合同尚未形成应收记录。',
+      },
+      errors: {
+        chargesUnavailable: '费用区域不可用',
+        invoicesUnavailable: '单据区域不可用',
+        receivablesUnavailable: '应收区域不可用',
+        unableToLoadCharges: '无法加载当前合同关联的费用记录。',
+        unableToLoadInvoices: '无法加载当前合同关联的单据记录。',
+        unableToLoadReceivables: '无法加载当前合同关联的应收记录。',
+      },
+    },
     overtime: {
       permissionTitle: '需要账单费用权限',
       permissionDescription: '当前可以查看合同，但加班账单操作需要账单费用权限。',
