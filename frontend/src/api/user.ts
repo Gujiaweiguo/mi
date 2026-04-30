@@ -6,6 +6,7 @@ export interface UserItem {
   username: string
   display_name: string
   status: string
+  role_ids?: number[]
 }
 
 export interface RoleItem {

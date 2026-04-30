@@ -63,8 +63,10 @@ export const getWorkflowInstance = (id: number) =>
   http.get<{ instance: WorkflowInstance }>(`/workflow/instances/${id}`)
 export const getWorkflowAuditHistory = (id: number) =>
   http.get<{ history: AuditEntry[] }>(`/workflow/instances/${id}/audit`)
+export interface ReminderEntry { [key: string]: unknown }
+
 export const getReminderHistory = (instanceId: number) =>
-  http.get<{ reminders: any[] }>(`/workflow/instances/${instanceId}/reminders`)
+  http.get<{ reminders: ReminderEntry[] }>(`/workflow/instances/${instanceId}/reminders`)
 export const approveWorkflow = (id: number, data: IdempotencyRequest) =>
   http.post<{ instance: WorkflowInstance }>(`/workflow/instances/${id}/approve`, data)
 export const rejectWorkflow = (id: number, data: IdempotencyRequest) =>
