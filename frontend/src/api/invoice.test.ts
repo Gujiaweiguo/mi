@@ -370,6 +370,18 @@ describe('invoice api', () => {
       expect(result).toEqual(response)
     })
 
+    it('passes lease_contract_id param to GET /receivables', async () => {
+      const params = { lease_contract_id: 55, page: 1, page_size: 10 }
+      const response = { data: { items: [], total: 0 } } as never
+
+      vi.mocked(http.get).mockResolvedValue(response)
+
+      const result = await listReceivables(params)
+
+      expect(http.get).toHaveBeenCalledWith('/receivables', { params })
+      expect(result).toEqual(response)
+    })
+
     it('propagates errors', async () => {
       vi.mocked(http.get).mockRejectedValue(new Error('fail') as never)
 

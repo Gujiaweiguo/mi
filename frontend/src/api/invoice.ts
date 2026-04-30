@@ -220,6 +220,7 @@ export interface ReceivableListItem {
 export interface ListReceivablesParams {
   customer_id?: number
   department_id?: number
+  lease_contract_id?: number
   due_date_start?: string
   due_date_end?: string
   page?: number
