@@ -14,4 +14,4 @@
 
 - [x] 3.1 Add or update frontend unit tests covering downstream panel loading, empty states, and section-level error handling
 - [x] 3.2 Run frontend lint, build, and unit tests; run relevant backend tests for the receivable filter change
-- [ ] 3.3 Capture verification evidence appropriate for the resulting commit scope (CI requires `artifacts/verification/<commit-sha>/unit.json` and `artifacts/verification/<commit-sha>/integration.json`; archive additionally requires `artifacts/verification/<commit-sha>/e2e.json`)
+- [x] 3.3 Capture verification evidence appropriate for the resulting commit scope (CI requires `artifacts/verification/<commit-sha>/unit.json` and `artifacts/verification/<commit-sha>/integration.json`; archive additionally requires `artifacts/verification/<commit-sha>/e2e.json`)
