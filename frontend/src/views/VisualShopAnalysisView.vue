@@ -227,7 +227,9 @@ const handleExport = async () => {
   try {
     const response = await exportReport('r19', buildPayload())
     const blob = response.data instanceof Blob ? response.data : new Blob([response.data], { type: 'application/octet-stream' })
-    const extension = inferFileExtension(response.headers['content-type'])
+    const rawContentType = response.headers['content-type']
+    const contentType = typeof rawContentType === 'string' ? rawContentType : Array.isArray(rawContentType) ? rawContentType[0] : undefined
+    const extension = inferFileExtension(contentType)
     downloadBlob(blob, `${buildFileName()}.${extension}`)
   } catch (error) {
     errorMessage.value = getErrorMessage(error, t('visualShopAnalysis.errors.unableToExport'))
