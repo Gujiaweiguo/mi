@@ -119,8 +119,8 @@ onMounted(async () => {
   void loadLeases()
   try {
     const [deptResp, storeResp] = await Promise.all([listDepartments(), listStores()])
-    deptResp.data.departments?.forEach((d: any) => deptMap.value.set(d.id, d.name))
-    storeResp.data.stores?.forEach((s: any) => storeMap.value.set(s.id, s.name))
+    deptResp.data.departments?.forEach((d: { id: number; name: string }) => deptMap.value.set(d.id, d.name))
+    storeResp.data.stores?.forEach((s: { id: number; name: string }) => storeMap.value.set(s.id, s.name))
   } catch { /* non-critical */ }
 })
 </script>

@@ -52,7 +52,7 @@ const loadUsers = async () => {
 }
 
 const roleNames = (user: UserItem) => {
-  const ids = (user as any).role_ids as number[] | undefined
+  const ids = user.role_ids as number[] | undefined
   if (!ids) return ''
   return ids.map(id => roles.value.find(r => r.ID === id)?.Name ?? id).join(', ')
 }
