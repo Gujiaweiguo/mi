@@ -373,12 +373,13 @@ type RefundDepositInput struct {
 }
 
 type ReceivableFilter struct {
-	CustomerID   *int64
-	DepartmentID *int64
-	DueDateStart *time.Time
-	DueDateEnd   *time.Time
-	Page         int
-	PageSize     int
+	CustomerID      *int64
+	DepartmentID    *int64
+	LeaseContractID *int64
+	DueDateStart    *time.Time
+	DueDateEnd      *time.Time
+	Page            int
+	PageSize        int
 }
 
 type ListFilter struct {

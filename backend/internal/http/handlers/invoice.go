@@ -644,20 +644,21 @@ func (h *InvoiceHandler) GetReceivable(c *gin.Context) {
 // ListReceivables godoc
 //
 //	@Summary		List receivables
-//	@Description	Returns paginated receivable summary records filtered by customer, department, and due-date window.
+//	@Description	Returns paginated receivable summary records filtered by customer, department, lease, and due-date window.
 //	@Tags			Invoice
 //	@Accept			json
 //	@Produce		json
-//	@Param			customer_id		query		int		false	"Customer ID"
-//	@Param			department_id	query		int		false	"Department ID"
-//	@Param			due_date_start	query		string	false	"Due date start (YYYY-MM-DD)"
-//	@Param			due_date_end	query		string	false	"Due date end (YYYY-MM-DD)"
-//	@Param			page			query		int		false	"Page number"
-//	@Param			page_size		query		int		false	"Page size"
-//	@Success		200				{object}	swaggerEnvelope{items=[]invoice.ReceivableListItem,total=int,page=int,page_size=int}
-//	@Failure		400				{object}	swaggerMessageResponse
-//	@Failure		401				{object}	swaggerMessageResponse
-//	@Failure		500				{object}	swaggerMessageResponse
+//	@Param			customer_id			query		int		false	"Customer ID"
+//	@Param			department_id		query		int		false	"Department ID"
+//	@Param			lease_contract_id	query		int		false	"Lease contract ID"
+//	@Param			due_date_start		query		string	false	"Due date start (YYYY-MM-DD)"
+//	@Param			due_date_end		query		string	false	"Due date end (YYYY-MM-DD)"
+//	@Param			page				query		int		false	"Page number"
+//	@Param			page_size			query		int		false	"Page size"
+//	@Success		200					{object}	swaggerEnvelope{items=[]invoice.ReceivableListItem,total=int,page=int,page_size=int}
+//	@Failure		400					{object}	swaggerMessageResponse
+//	@Failure		401					{object}	swaggerMessageResponse
+//	@Failure		500					{object}	swaggerMessageResponse
 //	@Security		BearerAuth
 //	@Router			/receivables [get]
 func (h *InvoiceHandler) ListReceivables(c *gin.Context) {
@@ -677,6 +678,14 @@ func (h *InvoiceHandler) ListReceivables(c *gin.Context) {
 			return
 		}
 		filter.DepartmentID = &departmentID
+	}
+	if leaseIDText := c.Query("lease_contract_id"); leaseIDText != "" {
+		leaseID, err := strconv.ParseInt(leaseIDText, 10, 64)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"message": "invalid lease contract id"})
+			return
+		}
+		filter.LeaseContractID = &leaseID
 	}
 	if dueDateStart := c.Query("due_date_start"); dueDateStart != "" {
 		parsed, err := time.Parse(invoice.DateLayout, dueDateStart)

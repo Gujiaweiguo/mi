@@ -435,3 +435,18 @@ func TestInvoiceListReceivablesRejectsInvalidDueDateEnd(t *testing.T) {
 		t.Fatalf("expected 400, got %d", recorder.Code)
 	}
 }
+
+func TestInvoiceListReceivablesRejectsInvalidLeaseContractID(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	handler := NewInvoiceHandler(nil)
+
+	recorder := httptest.NewRecorder()
+	ctx, _ := gin.CreateTestContext(recorder)
+	ctx.Request = httptest.NewRequest(http.MethodGet, "/api/invoices/receivables?lease_contract_id=bad", nil)
+
+	handler.ListReceivables(ctx)
+
+	if recorder.Code != http.StatusBadRequest {
+		t.Fatalf("expected 400, got %d", recorder.Code)
+	}
+}

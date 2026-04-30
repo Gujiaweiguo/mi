@@ -235,6 +235,10 @@ func (r *Repository) ListReceivables(ctx context.Context, filter ReceivableFilte
 		conditions = append(conditions, "ai.department_id = ?")
 		args = append(args, *filter.DepartmentID)
 	}
+	if filter.LeaseContractID != nil {
+		conditions = append(conditions, "ai.lease_contract_id = ?")
+		args = append(args, *filter.LeaseContractID)
+	}
 	if filter.DueDateStart != nil {
 		conditions = append(conditions, "ai.due_date >= ?")
 		args = append(args, *filter.DueDateStart)
