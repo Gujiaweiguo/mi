@@ -121,6 +121,19 @@ Recommended order for any developer or coding agent:
 - `openspec/` — change artifacts and specifications
 - `AGENTS.md` — root migration instructions for agents and contributors
 
+## Deployment documentation
+
+Production and development deployment details live under `docs/` and `deploy/`:
+
+| Doc | What it covers |
+|-----|----------------|
+| [docs/operations-guide.md](docs/operations-guide.md) | Day-to-day ops: startup, logs, health checks, backup/restore, troubleshooting |
+| [docs/deployment-topology.md](docs/deployment-topology.md) | Docker Compose topology, service dependencies, networking |
+| [docs/deployment-defaults.md](docs/deployment-defaults.md) | Default config values, env file reference, port mappings |
+| [docs/go-live-checklist.md](docs/go-live-checklist.md) | Pre-launch checklist for production readiness |
+| [docs/cutover-runbook.md](docs/cutover-runbook.md) | Step-by-step cutover procedure |
+| [deploy/docs/tls-termination.md](deploy/docs/tls-termination.md) | TLS/HTTPS setup with nginx |
+
 ## Quick reminder
 
 If you are unsure whether something belongs in first release, **check OpenSpec before implementing**.
