@@ -14,3 +14,6 @@ echo "[prerequisite] frontend typecheck"
 
 echo "[prerequisite] frontend build"
 (cd "$ROOT_DIR/frontend" && npm run build)
+
+echo "[prerequisite] frontend audit"
+(cd "$ROOT_DIR/frontend" && npm audit --omit=dev --audit-level=high --registry=https://registry.npmjs.org)
