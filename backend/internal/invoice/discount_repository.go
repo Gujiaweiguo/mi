@@ -63,6 +63,23 @@ func (r *Repository) FindDiscountByIDForUpdate(ctx context.Context, tx *sql.Tx, 
 	return discount, nil
 }
 
+func (r *Repository) FindDiscountByID(ctx context.Context, discountID int64) (*Discount, error) {
+	discount, err := r.scanDiscount(r.db.QueryRowContext(ctx, `
+		SELECT id, billing_document_id, billing_document_line_id, lease_contract_id, charge_type, requested_amount,
+			requested_rate, reason, status, workflow_instance_id, idempotency_key, submitted_at, approved_at,
+			rejected_at, created_by, updated_by, created_at, updated_at
+		FROM invoice_discounts
+		WHERE id = ?
+	`, discountID))
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		return nil, fmt.Errorf("find invoice discount by id: %w", err)
+	}
+	return discount, nil
+}
+
 func (r *Repository) AttachDiscountWorkflowInstance(ctx context.Context, tx *sql.Tx, discountID, workflowInstanceID, updatedBy int64, submittedAt time.Time) error {
 	if _, err := tx.ExecContext(ctx, `
 		UPDATE invoice_discounts
