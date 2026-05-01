@@ -119,7 +119,7 @@ const overtimeCreateForm = reactive({
 
 const terminateFormRef = ref<FormInstance>()
 const terminateFormRules: FormRules = {
-  terminated_at: [{ required: true, message: '请选择终止日期', trigger: 'change' }],
+  terminated_at: [{ required: true, message: t('leaseDetail.validation.terminatedAtRequired'), trigger: 'change' }],
 }
 
 const today = () => new Date().toISOString().slice(0, 10)

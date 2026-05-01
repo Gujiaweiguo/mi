@@ -214,50 +214,50 @@ const adjustmentAmounts = reactive<Record<string, number>>({})
 
 const paymentRules: FormRules = {
   paymentAmount: [
-    { required: true, message: '请输入金额', trigger: 'blur' },
-    { type: 'number', min: 0.01, message: '金额必须大于 0', trigger: 'blur' },
+    { required: true, message: t('invoiceDetail.validation.paymentAmountRequired'), trigger: 'blur' },
+    { type: 'number', min: 0.01, message: t('invoiceDetail.validation.paymentAmountPositive'), trigger: 'blur' },
   ],
 
 }
 
 const discountRules: FormRules = {
-  billingDocumentLineId: [{ required: true, message: '请选择折扣行', trigger: 'change' }],
+  billingDocumentLineId: [{ required: true, message: t('invoiceDetail.validation.discountLineRequired'), trigger: 'change' }],
   discountAmount: [
-    { required: true, message: '请输入折扣金额', trigger: 'blur' },
-    { type: 'number', min: 0.01, message: '折扣金额必须大于 0', trigger: 'blur' },
+    { required: true, message: t('invoiceDetail.validation.discountAmountRequired'), trigger: 'blur' },
+    { type: 'number', min: 0.01, message: t('invoiceDetail.validation.discountAmountPositive'), trigger: 'blur' },
   ],
-  discountReason: [{ required: true, message: '请输入折扣原因', trigger: 'blur' }],
+  discountReason: [{ required: true, message: t('invoiceDetail.validation.discountReasonRequired'), trigger: 'blur' }],
 }
 
 const surplusRules: FormRules = {
-  billingDocumentLineId: [{ required: true, message: '请选择冲抵行', trigger: 'change' }],
+  billingDocumentLineId: [{ required: true, message: t('invoiceDetail.validation.surplusLineRequired'), trigger: 'change' }],
   surplusAmount: [
-    { required: true, message: '请输入冲抵金额', trigger: 'blur' },
-    { type: 'number', min: 0.01, message: '冲抵金额必须大于 0', trigger: 'blur' },
+    { required: true, message: t('invoiceDetail.validation.surplusAmountRequired'), trigger: 'blur' },
+    { type: 'number', min: 0.01, message: t('invoiceDetail.validation.surplusAmountPositive'), trigger: 'blur' },
   ],
 }
 
 const interestRules: FormRules = {
-  billingDocumentLineId: [{ required: true, message: '请选择利息生成行', trigger: 'change' }],
+  billingDocumentLineId: [{ required: true, message: t('invoiceDetail.validation.interestLineRequired'), trigger: 'change' }],
 }
 
 const depositRules: FormRules = {
-  sourceDocumentId: [{ required: true, message: '请选择保证金来源单据', trigger: 'change' }],
-  billingDocumentLineId: [{ required: true, message: '请选择保证金来源行', trigger: 'change' }],
-  targetBillingDocumentLineId: [{ required: true, message: '请选择保证金冲抵目标行', trigger: 'change' }],
+  sourceDocumentId: [{ required: true, message: t('invoiceDetail.validation.depositSourceDocumentRequired'), trigger: 'change' }],
+  billingDocumentLineId: [{ required: true, message: t('invoiceDetail.validation.depositSourceLineRequired'), trigger: 'change' }],
+  targetBillingDocumentLineId: [{ required: true, message: t('invoiceDetail.validation.depositTargetLineRequired'), trigger: 'change' }],
   depositAmount: [
-    { required: true, message: '请输入保证金金额', trigger: 'blur' },
-    { type: 'number', min: 0.01, message: '保证金金额必须大于 0', trigger: 'blur' },
+    { required: true, message: t('invoiceDetail.validation.depositAmountRequired'), trigger: 'blur' },
+    { type: 'number', min: 0.01, message: t('invoiceDetail.validation.depositAmountPositive'), trigger: 'blur' },
   ],
 }
 
 const refundRules: FormRules = {
-  billingDocumentLineId: [{ required: true, message: '请选择退款保证金行', trigger: 'change' }],
+  billingDocumentLineId: [{ required: true, message: t('invoiceDetail.validation.refundLineRequired'), trigger: 'change' }],
   depositAmount: [
-    { required: true, message: '请输入退款金额', trigger: 'blur' },
-    { type: 'number', min: 0.01, message: '退款金额必须大于 0', trigger: 'blur' },
+    { required: true, message: t('invoiceDetail.validation.refundAmountRequired'), trigger: 'blur' },
+    { type: 'number', min: 0.01, message: t('invoiceDetail.validation.refundAmountPositive'), trigger: 'blur' },
   ],
-  depositReason: [{ required: true, message: '请输入退款原因', trigger: 'blur' }],
+  depositReason: [{ required: true, message: t('invoiceDetail.validation.refundReasonRequired'), trigger: 'blur' }],
 }
 
 const invoiceId = computed(() => {

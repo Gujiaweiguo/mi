@@ -956,6 +956,27 @@ export const enUSMessages = {
       selectPaymentDate: 'Select payment date',
       enterPaymentNote: 'Optional note for the payment entry',
     },
+    validation: {
+      paymentAmountRequired: 'Enter the payment amount.',
+      paymentAmountPositive: 'The payment amount must be greater than 0.',
+      discountLineRequired: 'Select a discount line.',
+      discountAmountRequired: 'Enter the discount amount.',
+      discountAmountPositive: 'The discount amount must be greater than 0.',
+      discountReasonRequired: 'Enter the discount reason.',
+      surplusLineRequired: 'Select a surplus offset line.',
+      surplusAmountRequired: 'Enter the surplus amount.',
+      surplusAmountPositive: 'The surplus amount must be greater than 0.',
+      interestLineRequired: 'Select an interest generation line.',
+      depositSourceDocumentRequired: 'Select a deposit source document.',
+      depositSourceLineRequired: 'Select a deposit source line.',
+      depositTargetLineRequired: 'Select a deposit offset target line.',
+      depositAmountRequired: 'Enter the deposit amount.',
+      depositAmountPositive: 'The deposit amount must be greater than 0.',
+      refundLineRequired: 'Select a deposit refund line.',
+      refundAmountRequired: 'Enter the refund amount.',
+      refundAmountPositive: 'The refund amount must be greater than 0.',
+      refundReasonRequired: 'Enter the refund reason.',
+    },
     table: {
       empty: 'No line items attached.',
       lineCount: '{count} lines',
@@ -1280,6 +1301,9 @@ export const enUSMessages = {
     },
     defaults: {
       notCreatedYet: 'Not created yet',
+    },
+    validation: {
+      terminatedAtRequired: 'Select the termination date.',
     },
     table: {
       unitsEmpty: 'No units attached.',
@@ -2117,6 +2141,14 @@ export const enUSMessages = {
         failed: 'Print template save failed',
       },
     },
+    validation: {
+      codeRequired: 'Enter the template code.',
+      nameRequired: 'Enter the template name.',
+      documentTypeRequired: 'Select a document type.',
+      outputModeRequired: 'Select an output mode.',
+      titleRequired: 'Enter the title.',
+      subtitleRequired: 'Enter the subtitle.',
+    },
     table: {
       empty: 'No print templates available.',
     },
@@ -2135,6 +2167,12 @@ export const enUSMessages = {
       unableToGeneratePdf: 'Unable to generate PDF output.',
       htmlGenerationFailed: 'Failed to generate HTML',
       unableToGenerateHtml: 'Unable to generate HTML preview',
+    },
+  },
+  userManagement: {
+    placeholders: {
+      selectDepartment: 'Select a department',
+      selectRole: 'Select role(s)',
     },
   },
   excel: {

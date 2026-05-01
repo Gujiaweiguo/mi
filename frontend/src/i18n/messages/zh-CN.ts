@@ -955,6 +955,27 @@ export const zhCNMessages = {
       selectPaymentDate: '选择收款日期',
       enterPaymentNote: '可选：填写本次收款备注',
     },
+    validation: {
+      paymentAmountRequired: '请输入金额',
+      paymentAmountPositive: '金额必须大于 0',
+      discountLineRequired: '请选择折扣行',
+      discountAmountRequired: '请输入折扣金额',
+      discountAmountPositive: '折扣金额必须大于 0',
+      discountReasonRequired: '请输入折扣原因',
+      surplusLineRequired: '请选择冲抵行',
+      surplusAmountRequired: '请输入冲抵金额',
+      surplusAmountPositive: '冲抵金额必须大于 0',
+      interestLineRequired: '请选择利息生成行',
+      depositSourceDocumentRequired: '请选择保证金来源单据',
+      depositSourceLineRequired: '请选择保证金来源行',
+      depositTargetLineRequired: '请选择保证金冲抵目标行',
+      depositAmountRequired: '请输入保证金金额',
+      depositAmountPositive: '保证金金额必须大于 0',
+      refundLineRequired: '请选择退款保证金行',
+      refundAmountRequired: '请输入退款金额',
+      refundAmountPositive: '退款金额必须大于 0',
+      refundReasonRequired: '请输入退款原因',
+    },
     table: {
       empty: '暂无行项目。',
       lineCount: '{count} 行',
@@ -1273,6 +1294,9 @@ export const zhCNMessages = {
     },
     defaults: {
       notCreatedYet: '尚未创建',
+    },
+    validation: {
+      terminatedAtRequired: '请选择终止日期',
     },
     table: {
       unitsEmpty: '暂无关联单元。',
@@ -2097,6 +2121,14 @@ export const zhCNMessages = {
         failed: '打印模板保存失败',
       },
     },
+    validation: {
+      codeRequired: '请输入模板代码',
+      nameRequired: '请输入模板名称',
+      documentTypeRequired: '请选择文档类型',
+      outputModeRequired: '请选择输出模式',
+      titleRequired: '请输入标题',
+      subtitleRequired: '请输入副标题',
+    },
     table: {
       empty: '暂无打印模板。',
     },
@@ -2115,6 +2147,12 @@ export const zhCNMessages = {
       unableToGeneratePdf: '无法生成 PDF 输出。',
       htmlGenerationFailed: '生成 HTML 失败',
       unableToGenerateHtml: '无法生成 HTML 预览',
+    },
+  },
+  userManagement: {
+    placeholders: {
+      selectDepartment: '请选择部门',
+      selectRole: '请选择角色',
     },
   },
   excel: {

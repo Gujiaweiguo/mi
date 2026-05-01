@@ -54,12 +54,12 @@ const formModel = ref({
 const formRef = ref<FormInstance>()
 
 const formRules: FormRules = {
-  code: [{ required: true, message: '请输入模板代码', trigger: 'blur' }],
-  name: [{ required: true, message: '请输入模板名称', trigger: 'blur' }],
-  document_type: [{ required: true, message: '请选择文档类型', trigger: 'change' }],
-  output_mode: [{ required: true, message: '请选择输出模式', trigger: 'change' }],
-  title: [{ required: true, message: '请输入标题', trigger: 'blur' }],
-  subtitle: [{ required: true, message: '请输入副标题', trigger: 'blur' }],
+  code: [{ required: true, message: t('printPreview.validation.codeRequired'), trigger: 'blur' }],
+  name: [{ required: true, message: t('printPreview.validation.nameRequired'), trigger: 'blur' }],
+  document_type: [{ required: true, message: t('printPreview.validation.documentTypeRequired'), trigger: 'change' }],
+  output_mode: [{ required: true, message: t('printPreview.validation.outputModeRequired'), trigger: 'change' }],
+  title: [{ required: true, message: t('printPreview.validation.titleRequired'), trigger: 'blur' }],
+  subtitle: [{ required: true, message: t('printPreview.validation.subtitleRequired'), trigger: 'blur' }],
 }
 
 const documentTypeOptions = [

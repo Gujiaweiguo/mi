@@ -2,10 +2,13 @@
 import { onMounted, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 
 import { listUsers, createUser, updateUser, resetPassword, listRoles, type UserItem, type RoleItem } from '../api/user'
 import { listDepartments } from '../api/org'
 import PageSection from '../components/platform/PageSection.vue'
+
+const { t } = useI18n()
 
 const users = ref<UserItem[]>([])
 const roles = ref<RoleItem[]>([])
@@ -163,12 +166,12 @@ onMounted(async () => {
         <el-form-item label="显示名称" prop="display_name"><el-input v-model="createForm.display_name" /></el-form-item>
         <el-form-item label="密码" prop="password"><el-input v-model="createForm.password" type="password" show-password /></el-form-item>
         <el-form-item label="部门" prop="department_id">
-          <el-select v-model="createForm.department_id" placeholder="请选择部门">
+          <el-select v-model="createForm.department_id" :placeholder="t('userManagement.placeholders.selectDepartment')">
             <el-option v-for="[id, name] of deptMap" :key="id" :label="name" :value="id" />
           </el-select>
         </el-form-item>
         <el-form-item label="角色" prop="role_ids">
-          <el-select v-model="createForm.role_ids" multiple placeholder="请选择角色">
+          <el-select v-model="createForm.role_ids" multiple :placeholder="t('userManagement.placeholders.selectRole')">
             <el-option v-for="r in roles" :key="r.ID" :label="r.Name" :value="r.ID" />
           </el-select>
         </el-form-item>
@@ -183,7 +186,7 @@ onMounted(async () => {
       <el-form ref="editFormRef" :model="editForm" :rules="editRules" label-width="80px">
         <el-form-item label="显示名称" prop="display_name"><el-input v-model="editForm.display_name" /></el-form-item>
         <el-form-item label="部门" prop="department_id">
-          <el-select v-model="editForm.department_id" placeholder="请选择部门">
+          <el-select v-model="editForm.department_id" :placeholder="t('userManagement.placeholders.selectDepartment')">
             <el-option v-for="[id, name] of deptMap" :key="id" :label="name" :value="id" />
           </el-select>
         </el-form-item>
