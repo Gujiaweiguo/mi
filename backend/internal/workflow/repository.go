@@ -31,12 +31,20 @@ func NewRepositoryWithNowFunc(db *sql.DB, now func() time.Time) *Repository {
 }
 
 func (r *Repository) FindDefinitionByCode(ctx context.Context, code string) (*Definition, error) {
-	const definitionQuery = `SELECT id, code, name, process_class FROM workflow_definitions WHERE code = ? AND status = 'active'`
+	const definitionQuery = `
+		SELECT id, business_group_id, workflow_template_id, code, version_number, name, voucher_type, is_initial, status, lifecycle_status, published_at, transitions_enabled, process_class
+		FROM workflow_definitions
+		WHERE code = ? AND status = 'active' AND lifecycle_status = 'published'
+		ORDER BY version_number DESC, id DESC
+		LIMIT 1`
 	return r.findDefinition(ctx, definitionQuery, code)
 }
 
 func (r *Repository) FindDefinitionByID(ctx context.Context, id int64) (*Definition, error) {
-	const definitionQuery = `SELECT id, code, name, process_class FROM workflow_definitions WHERE id = ? AND status = 'active'`
+	const definitionQuery = `
+		SELECT id, business_group_id, workflow_template_id, code, version_number, name, voucher_type, is_initial, status, lifecycle_status, published_at, transitions_enabled, process_class
+		FROM workflow_definitions
+		WHERE id = ?`
 	return r.findDefinition(ctx, definitionQuery, id)
 }
 
@@ -86,11 +94,15 @@ func (r *Repository) ListRoleRecipientEmails(ctx context.Context, tx *sql.Tx, ro
 
 func (r *Repository) findDefinition(ctx context.Context, query string, arg any) (*Definition, error) {
 	var definition Definition
-	if err := r.db.QueryRowContext(ctx, query, arg).Scan(&definition.ID, &definition.Code, &definition.Name, &definition.ProcessClass); err != nil {
+	var publishedAt sql.NullTime
+	if err := r.db.QueryRowContext(ctx, query, arg).Scan(&definition.ID, &definition.BusinessGroupID, &definition.WorkflowTemplateID, &definition.Code, &definition.VersionNumber, &definition.Name, &definition.VoucherType, &definition.IsInitial, &definition.Status, &definition.LifecycleStatus, &publishedAt, &definition.TransitionsEnabled, &definition.ProcessClass); err != nil {
 		if err == sql.ErrNoRows {
 			return nil, nil
 		}
 		return nil, fmt.Errorf("query workflow definition: %w", err)
+	}
+	if publishedAt.Valid {
+		definition.PublishedAt = &publishedAt.Time
 	}
 
 	nodes, err := r.listNodesByDefinition(ctx, definition.ID)
@@ -147,9 +159,9 @@ func (r *Repository) listTransitionsByDefinition(ctx context.Context, definition
 func (r *Repository) CreateInstance(ctx context.Context, tx *sql.Tx, definition *Definition, input StartInput, firstNode *Node) (*Instance, error) {
 	now := r.now()
 	result, err := tx.ExecContext(ctx, `
-		INSERT INTO workflow_instances (workflow_definition_id, document_type, document_id, status, current_node_id, current_step_order, current_cycle, version, submitted_by, submitted_at)
-		VALUES (?, ?, ?, ?, ?, ?, 1, 1, ?, ?)
-	`, definition.ID, input.DocumentType, input.DocumentID, InstanceStatusPending, firstNode.ID, firstNode.StepOrder, input.ActorUserID, now)
+		INSERT INTO workflow_instances (workflow_definition_id, workflow_template_id, workflow_definition_version, document_type, document_id, status, current_node_id, current_step_order, current_cycle, version, submitted_by, submitted_at)
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, 1, ?, ?)
+	`, definition.ID, definition.WorkflowTemplateID, definition.VersionNumber, input.DocumentType, input.DocumentID, InstanceStatusPending, firstNode.ID, firstNode.StepOrder, input.ActorUserID, now)
 	if err != nil {
 		return nil, fmt.Errorf("insert workflow instance: %w", err)
 	}
@@ -161,15 +173,15 @@ func (r *Repository) CreateInstance(ctx context.Context, tx *sql.Tx, definition 
 
 	currentNodeID := firstNode.ID
 	currentStepOrder := firstNode.StepOrder
-	return &Instance{ID: instanceID, WorkflowDefinitionID: definition.ID, DocumentType: input.DocumentType, DocumentID: input.DocumentID, Status: InstanceStatusPending, CurrentNodeID: &currentNodeID, CurrentStepOrder: &currentStepOrder, CurrentCycle: 1, Version: 1, SubmittedBy: input.ActorUserID, SubmittedAt: now}, nil
+	return &Instance{ID: instanceID, WorkflowDefinitionID: definition.ID, WorkflowTemplateID: definition.WorkflowTemplateID, WorkflowDefinitionVersion: definition.VersionNumber, DocumentType: input.DocumentType, DocumentID: input.DocumentID, Status: InstanceStatusPending, CurrentNodeID: &currentNodeID, CurrentStepOrder: &currentStepOrder, CurrentCycle: 1, Version: 1, SubmittedBy: input.ActorUserID, SubmittedAt: now}, nil
 }
 
-func (r *Repository) FindStartedInstanceByIdempotencyKey(ctx context.Context, tx *sql.Tx, definitionID int64, documentType string, documentID int64, idempotencyKey string) (*Instance, error) {
+func (r *Repository) FindStartedInstanceByIdempotencyKey(ctx context.Context, tx *sql.Tx, templateID int64, documentType string, documentID int64, idempotencyKey string) (*Instance, error) {
 	const query = `
-		SELECT wi.id, wi.workflow_definition_id, wi.document_type, wi.document_id, wi.status, wi.current_node_id, wi.current_step_order, wi.current_cycle, wi.version, wi.submitted_by, wi.submitted_at, wi.completed_at
+		SELECT wi.id, wi.workflow_definition_id, wi.workflow_template_id, wi.workflow_definition_version, wi.document_type, wi.document_id, wi.status, wi.current_node_id, wi.current_step_order, wi.current_cycle, wi.version, wi.submitted_by, wi.submitted_at, wi.completed_at
 		FROM workflow_instances wi
 		INNER JOIN workflow_audit_history wah ON wah.workflow_instance_id = wi.id
-		WHERE wi.workflow_definition_id = ?
+		WHERE wi.workflow_template_id = ?
 		  AND wi.document_type = ?
 		  AND wi.document_id = ?
 		  AND wah.action = 'submit'
@@ -178,7 +190,7 @@ func (r *Repository) FindStartedInstanceByIdempotencyKey(ctx context.Context, tx
 		LIMIT 1
 	`
 	var instance Instance
-	if err := tx.QueryRowContext(ctx, query, definitionID, documentType, documentID, idempotencyKey).Scan(&instance.ID, &instance.WorkflowDefinitionID, &instance.DocumentType, &instance.DocumentID, &instance.Status, &instance.CurrentNodeID, &instance.CurrentStepOrder, &instance.CurrentCycle, &instance.Version, &instance.SubmittedBy, &instance.SubmittedAt, &instance.CompletedAt); err != nil {
+	if err := tx.QueryRowContext(ctx, query, templateID, documentType, documentID, idempotencyKey).Scan(&instance.ID, &instance.WorkflowDefinitionID, &instance.WorkflowTemplateID, &instance.WorkflowDefinitionVersion, &instance.DocumentType, &instance.DocumentID, &instance.Status, &instance.CurrentNodeID, &instance.CurrentStepOrder, &instance.CurrentCycle, &instance.Version, &instance.SubmittedBy, &instance.SubmittedAt, &instance.CompletedAt); err != nil {
 		if err == sql.ErrNoRows {
 			return nil, nil
 		}
@@ -187,11 +199,11 @@ func (r *Repository) FindStartedInstanceByIdempotencyKey(ctx context.Context, tx
 	return &instance, nil
 }
 
-func (r *Repository) FindActiveInstanceByDocument(ctx context.Context, tx *sql.Tx, definitionID int64, documentType string, documentID int64) (*Instance, error) {
+func (r *Repository) FindActiveInstanceByDocument(ctx context.Context, tx *sql.Tx, templateID int64, documentType string, documentID int64) (*Instance, error) {
 	const query = `
-		SELECT id, workflow_definition_id, document_type, document_id, status, current_node_id, current_step_order, current_cycle, version, submitted_by, submitted_at, completed_at
+		SELECT id, workflow_definition_id, workflow_template_id, workflow_definition_version, document_type, document_id, status, current_node_id, current_step_order, current_cycle, version, submitted_by, submitted_at, completed_at
 		FROM workflow_instances
-		WHERE workflow_definition_id = ?
+		WHERE workflow_template_id = ?
 		  AND document_type = ?
 		  AND document_id = ?
 		  AND completed_at IS NULL
@@ -200,7 +212,7 @@ func (r *Repository) FindActiveInstanceByDocument(ctx context.Context, tx *sql.T
 		FOR UPDATE
 	`
 	var instance Instance
-	if err := tx.QueryRowContext(ctx, query, definitionID, documentType, documentID).Scan(&instance.ID, &instance.WorkflowDefinitionID, &instance.DocumentType, &instance.DocumentID, &instance.Status, &instance.CurrentNodeID, &instance.CurrentStepOrder, &instance.CurrentCycle, &instance.Version, &instance.SubmittedBy, &instance.SubmittedAt, &instance.CompletedAt); err != nil {
+	if err := tx.QueryRowContext(ctx, query, templateID, documentType, documentID).Scan(&instance.ID, &instance.WorkflowDefinitionID, &instance.WorkflowTemplateID, &instance.WorkflowDefinitionVersion, &instance.DocumentType, &instance.DocumentID, &instance.Status, &instance.CurrentNodeID, &instance.CurrentStepOrder, &instance.CurrentCycle, &instance.Version, &instance.SubmittedBy, &instance.SubmittedAt, &instance.CompletedAt); err != nil {
 		if err == sql.ErrNoRows {
 			return nil, nil
 		}
@@ -225,10 +237,30 @@ func (r *Repository) InsertSteps(ctx context.Context, tx *sql.Tx, instance *Inst
 	return nil
 }
 
+func (r *Repository) InsertStepsWithResolution(ctx context.Context, tx *sql.Tx, instance *Instance, nodes []Node, resolution ResolvedStepAssignees) error {
+	for _, node := range nodes {
+		status := StepStatusWaiting
+		if instance.CurrentNodeID != nil && node.ID == *instance.CurrentNodeID {
+			status = StepStatusPending
+		}
+		resolved, ok := resolution[node.ID]
+		if !ok {
+			resolved = AssigneeResolution{RoleID: node.RoleID, DepartmentID: 0}
+		}
+		if _, err := tx.ExecContext(ctx, `
+			INSERT INTO workflow_instance_steps (workflow_instance_id, workflow_node_id, step_order, cycle, assignee_role_id, assignee_department_id, assignee_user_id, status)
+			VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+		`, instance.ID, node.ID, node.StepOrder, instance.CurrentCycle, resolved.RoleID, resolved.DepartmentID, resolved.UserID, status); err != nil {
+			return fmt.Errorf("insert workflow step instance with resolution: %w", err)
+		}
+	}
+	return nil
+}
+
 func (r *Repository) FindInstanceByID(ctx context.Context, instanceID int64) (*Instance, error) {
-	const query = `SELECT id, workflow_definition_id, document_type, document_id, status, current_node_id, current_step_order, current_cycle, version, submitted_by, submitted_at, completed_at FROM workflow_instances WHERE id = ?`
+	const query = `SELECT id, workflow_definition_id, workflow_template_id, workflow_definition_version, document_type, document_id, status, current_node_id, current_step_order, current_cycle, version, submitted_by, submitted_at, completed_at FROM workflow_instances WHERE id = ?`
 	var instance Instance
-	if err := r.db.QueryRowContext(ctx, query, instanceID).Scan(&instance.ID, &instance.WorkflowDefinitionID, &instance.DocumentType, &instance.DocumentID, &instance.Status, &instance.CurrentNodeID, &instance.CurrentStepOrder, &instance.CurrentCycle, &instance.Version, &instance.SubmittedBy, &instance.SubmittedAt, &instance.CompletedAt); err != nil {
+	if err := r.db.QueryRowContext(ctx, query, instanceID).Scan(&instance.ID, &instance.WorkflowDefinitionID, &instance.WorkflowTemplateID, &instance.WorkflowDefinitionVersion, &instance.DocumentType, &instance.DocumentID, &instance.Status, &instance.CurrentNodeID, &instance.CurrentStepOrder, &instance.CurrentCycle, &instance.Version, &instance.SubmittedBy, &instance.SubmittedAt, &instance.CompletedAt); err != nil {
 		if err == sql.ErrNoRows {
 			return nil, nil
 		}
@@ -238,7 +270,7 @@ func (r *Repository) FindInstanceByID(ctx context.Context, instanceID int64) (*I
 }
 
 func (r *Repository) ListInstances(ctx context.Context, filter InstanceFilter) ([]Instance, error) {
-	query := `SELECT id, workflow_definition_id, document_type, document_id, status, current_node_id, current_step_order, current_cycle, version, submitted_by, submitted_at, completed_at FROM workflow_instances`
+	query := `SELECT id, workflow_definition_id, workflow_template_id, workflow_definition_version, document_type, document_id, status, current_node_id, current_step_order, current_cycle, version, submitted_by, submitted_at, completed_at FROM workflow_instances`
 	conditions := make([]string, 0, 3)
 	args := make([]any, 0, 3)
 
@@ -268,7 +300,7 @@ func (r *Repository) ListInstances(ctx context.Context, filter InstanceFilter) (
 	instances := make([]Instance, 0)
 	for rows.Next() {
 		var instance Instance
-		if err := rows.Scan(&instance.ID, &instance.WorkflowDefinitionID, &instance.DocumentType, &instance.DocumentID, &instance.Status, &instance.CurrentNodeID, &instance.CurrentStepOrder, &instance.CurrentCycle, &instance.Version, &instance.SubmittedBy, &instance.SubmittedAt, &instance.CompletedAt); err != nil {
+		if err := rows.Scan(&instance.ID, &instance.WorkflowDefinitionID, &instance.WorkflowTemplateID, &instance.WorkflowDefinitionVersion, &instance.DocumentType, &instance.DocumentID, &instance.Status, &instance.CurrentNodeID, &instance.CurrentStepOrder, &instance.CurrentCycle, &instance.Version, &instance.SubmittedBy, &instance.SubmittedAt, &instance.CompletedAt); err != nil {
 			return nil, fmt.Errorf("scan workflow instance: %w", err)
 		}
 		instances = append(instances, instance)
@@ -278,9 +310,9 @@ func (r *Repository) ListInstances(ctx context.Context, filter InstanceFilter) (
 }
 
 func (r *Repository) FindInstanceByIDForUpdate(ctx context.Context, tx *sql.Tx, instanceID int64) (*Instance, error) {
-	const query = `SELECT id, workflow_definition_id, document_type, document_id, status, current_node_id, current_step_order, current_cycle, version, submitted_by, submitted_at, completed_at FROM workflow_instances WHERE id = ? FOR UPDATE`
+	const query = `SELECT id, workflow_definition_id, workflow_template_id, workflow_definition_version, document_type, document_id, status, current_node_id, current_step_order, current_cycle, version, submitted_by, submitted_at, completed_at FROM workflow_instances WHERE id = ? FOR UPDATE`
 	var instance Instance
-	if err := tx.QueryRowContext(ctx, query, instanceID).Scan(&instance.ID, &instance.WorkflowDefinitionID, &instance.DocumentType, &instance.DocumentID, &instance.Status, &instance.CurrentNodeID, &instance.CurrentStepOrder, &instance.CurrentCycle, &instance.Version, &instance.SubmittedBy, &instance.SubmittedAt, &instance.CompletedAt); err != nil {
+	if err := tx.QueryRowContext(ctx, query, instanceID).Scan(&instance.ID, &instance.WorkflowDefinitionID, &instance.WorkflowTemplateID, &instance.WorkflowDefinitionVersion, &instance.DocumentType, &instance.DocumentID, &instance.Status, &instance.CurrentNodeID, &instance.CurrentStepOrder, &instance.CurrentCycle, &instance.Version, &instance.SubmittedBy, &instance.SubmittedAt, &instance.CompletedAt); err != nil {
 		if err == sql.ErrNoRows {
 			return nil, nil
 		}
@@ -322,6 +354,26 @@ func (r *Repository) ActivateNextCycle(ctx context.Context, tx *sql.Tx, instance
 		}
 		if _, err := tx.ExecContext(ctx, `INSERT INTO workflow_instance_steps (workflow_instance_id, workflow_node_id, step_order, cycle, assignee_role_id, assignee_department_id, status) VALUES (?, ?, ?, ?, ?, ?, ?)`, instanceID, node.ID, node.StepOrder, nextCycle, node.RoleID, departmentID, status); err != nil {
 			return fmt.Errorf("insert resubmitted workflow step: %w", err)
+		}
+	}
+	return nil
+}
+
+func (r *Repository) ActivateNextCycleWithResolution(ctx context.Context, tx *sql.Tx, instanceID int64, nextCycle int, nodes []Node, resolution ResolvedStepAssignees) error {
+	for index, node := range nodes {
+		status := StepStatusWaiting
+		if index == 0 {
+			status = StepStatusPending
+		}
+		resolved, ok := resolution[node.ID]
+		if !ok {
+			resolved = AssigneeResolution{RoleID: node.RoleID, DepartmentID: 0}
+		}
+		if _, err := tx.ExecContext(ctx, `
+			INSERT INTO workflow_instance_steps (workflow_instance_id, workflow_node_id, step_order, cycle, assignee_role_id, assignee_department_id, assignee_user_id, status)
+			VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+		`, instanceID, node.ID, node.StepOrder, nextCycle, resolved.RoleID, resolved.DepartmentID, resolved.UserID, status); err != nil {
+			return fmt.Errorf("insert resubmitted workflow step with resolution: %w", err)
 		}
 	}
 	return nil
@@ -419,7 +471,7 @@ func (r *Repository) ListOutboxMessages(ctx context.Context, aggregateType strin
 }
 
 func (r *Repository) ListDefinitions(ctx context.Context) ([]Definition, error) {
-	const query = `SELECT code FROM workflow_definitions WHERE status = 'active' ORDER BY id`
+	const query = `SELECT id FROM workflow_definitions WHERE status = 'active' AND lifecycle_status = 'published' ORDER BY workflow_template_id, version_number DESC, id DESC`
 	rows, err := r.db.QueryContext(ctx, query)
 	if err != nil {
 		return nil, fmt.Errorf("query workflow definition codes: %w", err)
@@ -428,11 +480,11 @@ func (r *Repository) ListDefinitions(ctx context.Context) ([]Definition, error) 
 
 	definitions := make([]Definition, 0)
 	for rows.Next() {
-		var code string
-		if err := rows.Scan(&code); err != nil {
-			return nil, fmt.Errorf("scan workflow definition code: %w", err)
+		var id int64
+		if err := rows.Scan(&id); err != nil {
+			return nil, fmt.Errorf("scan workflow definition id: %w", err)
 		}
-		definition, err := r.FindDefinitionByCode(ctx, code)
+		definition, err := r.FindDefinitionByID(ctx, id)
 		if err != nil {
 			return nil, err
 		}
@@ -445,11 +497,14 @@ func (r *Repository) ListDefinitions(ctx context.Context) ([]Definition, error) 
 
 func MarshalOutboxPayload(instance *Instance, action Action, comment string) (string, error) {
 	payload := map[string]any{
-		"workflow_instance_id": instance.ID,
-		"document_type":        instance.DocumentType,
-		"document_id":          instance.DocumentID,
-		"action":               action,
-		"status":               instance.Status,
+		"workflow_instance_id":        instance.ID,
+		"workflow_template_id":        instance.WorkflowTemplateID,
+		"workflow_definition_id":      instance.WorkflowDefinitionID,
+		"workflow_definition_version": instance.WorkflowDefinitionVersion,
+		"document_type":               instance.DocumentType,
+		"document_id":                 instance.DocumentID,
+		"action":                      action,
+		"status":                      instance.Status,
 	}
 	if strings.TrimSpace(comment) != "" {
 		payload["comment"] = comment
@@ -474,7 +529,7 @@ func sortNodes(nodes []Node) []Node {
 }
 
 func (r *Repository) FindPendingInstances(ctx context.Context) ([]Instance, error) {
-	const query = `SELECT id, workflow_definition_id, document_type, document_id, status, current_node_id, current_step_order, current_cycle, version, submitted_by, submitted_at, completed_at FROM workflow_instances WHERE status = ? ORDER BY id`
+	const query = `SELECT id, workflow_definition_id, workflow_template_id, workflow_definition_version, document_type, document_id, status, current_node_id, current_step_order, current_cycle, version, submitted_by, submitted_at, completed_at FROM workflow_instances WHERE status = ? ORDER BY id`
 	rows, err := r.db.QueryContext(ctx, query, InstanceStatusPending)
 	if err != nil {
 		return nil, fmt.Errorf("query pending workflow instances: %w", err)
@@ -484,7 +539,7 @@ func (r *Repository) FindPendingInstances(ctx context.Context) ([]Instance, erro
 	instances := make([]Instance, 0)
 	for rows.Next() {
 		var instance Instance
-		if err := rows.Scan(&instance.ID, &instance.WorkflowDefinitionID, &instance.DocumentType, &instance.DocumentID, &instance.Status, &instance.CurrentNodeID, &instance.CurrentStepOrder, &instance.CurrentCycle, &instance.Version, &instance.SubmittedBy, &instance.SubmittedAt, &instance.CompletedAt); err != nil {
+		if err := rows.Scan(&instance.ID, &instance.WorkflowDefinitionID, &instance.WorkflowTemplateID, &instance.WorkflowDefinitionVersion, &instance.DocumentType, &instance.DocumentID, &instance.Status, &instance.CurrentNodeID, &instance.CurrentStepOrder, &instance.CurrentCycle, &instance.Version, &instance.SubmittedBy, &instance.SubmittedAt, &instance.CompletedAt); err != nil {
 			return nil, fmt.Errorf("scan pending workflow instance: %w", err)
 		}
 		instances = append(instances, instance)
@@ -548,4 +603,28 @@ func (r *Repository) ListReminderHistory(ctx context.Context, instanceID int64) 
 		records = append(records, record)
 	}
 	return records, rows.Err()
+}
+
+func (r *Repository) FindUserDepartment(ctx context.Context, userID int64) (int64, bool) {
+	var deptID int64
+	err := r.db.QueryRowContext(ctx, `SELECT department_id FROM users WHERE id = ?`, userID).Scan(&deptID)
+	if err != nil {
+		return 0, false
+	}
+	return deptID, true
+}
+
+func (r *Repository) FindDepartmentLeader(ctx context.Context, deptID int64) (userID int64, roleID int64, ok bool) {
+	err := r.db.QueryRowContext(ctx, `
+		SELECT ur.user_id, ur.role_id
+		FROM user_roles ur
+		INNER JOIN roles r ON r.id = ur.role_id
+		WHERE ur.department_id = ? AND r.is_leader = TRUE
+		ORDER BY ur.user_id, ur.role_id
+		LIMIT 1
+	`, deptID).Scan(&userID, &roleID)
+	if err != nil {
+		return 0, 0, false
+	}
+	return userID, roleID, true
 }
