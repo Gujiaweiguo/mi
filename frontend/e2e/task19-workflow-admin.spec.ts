@@ -228,8 +228,8 @@ test('approves a pending workflow instance from workflow admin', async ({ page }
 
   await expect(page).toHaveURL(/\/workflow\/admin/)
   await expect(page.getByTestId('workflow-admin-view')).toBeVisible()
-  await expect(page.getByTestId('workflow-definitions-table')).toBeVisible()
-  await expect(page.getByTestId('workflow-definitions-table')).toContainText('lease-approval')
+  await expect(page.getByTestId('workflow-admin-tab-label-runtime')).toBeVisible()
+  await expect(page.getByTestId('workflow-runtime-admin-panel')).toBeVisible()
 
   await expect(page.getByTestId('workflow-status-filter')).toBeVisible()
   await expect(page.getByTestId('workflow-instances-table')).toBeVisible()
