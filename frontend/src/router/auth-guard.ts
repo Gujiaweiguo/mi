@@ -1,6 +1,6 @@
 import type { RouteLocationNormalized } from 'vue-router'
 
-import { canAccessFunction, resolveAuthorizedHomePath } from '../auth/permissions'
+import { canAccessAnyFunction, canAccessFunction, resolveAuthorizedHomePath } from '../auth/permissions'
 import type { PermissionAction, SessionUser } from '../types/auth'
 
 export const DEFAULT_AUTHENTICATED_PATH = '/dashboard'
@@ -16,6 +16,7 @@ type RoutePermissionMeta = {
   guestOnly?: boolean
   requiresAuth?: boolean
   permissionCode?: string
+  permissionAnyOf?: string[]
   permissionAction?: PermissionAction
 }
 
@@ -28,7 +29,10 @@ export const hasRoutePermission = (
 ) => {
   const meta = to.meta as RoutePermissionMeta
 
-  return canAccessFunction(authState.user?.permissions, meta.permissionCode, meta.permissionAction ?? 'view')
+  return (
+    canAccessFunction(authState.user?.permissions, meta.permissionCode, meta.permissionAction ?? 'view') &&
+    canAccessAnyFunction(authState.user?.permissions, meta.permissionAnyOf, meta.permissionAction ?? 'view')
+  )
 }
 
 export const resolveAuthRedirect = (

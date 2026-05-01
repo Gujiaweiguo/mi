@@ -76,6 +76,22 @@ describe('auth guard helpers', () => {
     })
   })
 
+  it('allows access when any permission in permissionAnyOf matches', () => {
+    expect(
+      resolveAuthRedirect(
+        createRoute({
+          fullPath: '/workflow/admin',
+          path: '/workflow/admin',
+          meta: {
+            requiresAuth: true,
+            permissionAnyOf: [FUNCTION_CODES.workflowDefinition, FUNCTION_CODES.workflowAdmin],
+          },
+        }),
+        { isAuthenticated: true, user: permittedUser },
+      ),
+    ).toBe(true)
+  })
+
   it('maps the root path to the expected home route', () => {
     expect(resolveRootRedirect({ isAuthenticated: false })).toBe('/login')
     expect(resolveRootRedirect({ isAuthenticated: true, user: permittedUser })).toBe('/dashboard')
