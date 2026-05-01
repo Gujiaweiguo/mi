@@ -14,7 +14,13 @@ vi.mock('../api/lease', () => ({
   listLeases: vi.fn(),
 }))
 
+vi.mock('../api/org', () => ({
+  listDepartments: vi.fn(),
+  listStores: vi.fn(),
+}))
+
 import { listLeases } from '../api/lease'
+import { listDepartments, listStores } from '../api/org'
 
 const PageSectionStub = defineComponent({
   props: {
@@ -31,8 +37,8 @@ const FilterFormStub = defineComponent({
   props: {
     title: { type: String, default: '' },
   },
-  setup(props) {
-    return () => h('section', { 'data-testid': 'lease-filter-form-stub' }, props.title)
+  setup(props, { slots }) {
+    return () => h('section', { 'data-testid': 'lease-filter-form-stub' }, [props.title, slots.default?.()])
   },
 })
 
@@ -59,20 +65,36 @@ const ElFormItemStub = defineComponent({
 })
 
 const ElInputStub = defineComponent({
-  setup() {
-    return () => h('input')
+  props: { modelValue: { type: String, default: '' } },
+  emits: ['update:modelValue'],
+  setup(props, { emit }) {
+    return () =>
+      h('input', {
+        value: props.modelValue,
+        onInput: (event: Event) => emit('update:modelValue', (event.target as HTMLInputElement).value),
+      })
   },
 })
 
 const ElSelectStub = defineComponent({
-  setup(_, { slots }) {
-    return () => h('select', slots.default?.())
+  props: { modelValue: { type: [String, Number], default: '' } },
+  emits: ['update:modelValue'],
+  setup(props, { slots, emit }) {
+    return () =>
+      h('select', {
+        value: props.modelValue,
+        onChange: (event: Event) => emit('update:modelValue', (event.target as HTMLSelectElement).value),
+      }, slots.default?.())
   },
 })
 
 const ElOptionStub = defineComponent({
-  setup() {
-    return () => h('option')
+  props: {
+    label: { type: String, default: '' },
+    value: { type: [String, Number], default: '' },
+  },
+  setup(props) {
+    return () => h('option', { value: props.value }, props.label)
   },
 })
 
@@ -118,6 +140,8 @@ describe('LeaseListView', () => {
     vi.clearAllMocks()
     setActivePinia(createPinia())
     i18n.global.locale.value = 'en-US'
+    vi.mocked(listDepartments).mockResolvedValue({ data: { departments: [{ id: 9, name: 'Leasing Ops' }] } } as never)
+    vi.mocked(listStores).mockResolvedValue({ data: { stores: [{ id: 3, name: 'Atrium Store' }] } } as never)
   })
 
   it('mounts without error', async () => {
@@ -200,6 +224,63 @@ describe('LeaseListView', () => {
     expect(listLeases).toHaveBeenCalledWith({
       lease_no: undefined,
       status: undefined,
+      subtype: undefined,
+      department_id: undefined,
+      page: 1,
+      page_size: 20,
+    })
+  })
+
+  it('passes subtype and department filters when submitted', async () => {
+    vi.mocked(listLeases).mockResolvedValue({
+      data: {
+        items: [],
+        total: 0,
+        page: 1,
+        page_size: 20,
+      },
+    } as never)
+
+    const wrapper = mount(LeaseListView, {
+      global: {
+        plugins: [i18n],
+        stubs: {
+          PageSection: PageSectionStub,
+          FilterForm: FilterFormStub,
+          ElAlert: ElAlertStub,
+          ElButton: ElButtonStub,
+          ElCard: ElCardStub,
+          ElFormItem: ElFormItemStub,
+          ElInput: ElInputStub,
+          ElOption: ElOptionStub,
+          ElSelect: ElSelectStub,
+          ElTag: ElTagStub,
+          ElTable: ElTableStub,
+          ElTableColumn: ElTableColumnStub,
+          ElPagination: ElPaginationStub,
+        },
+        directives: {
+          loading: {},
+        },
+      },
+    })
+
+    await flushPromises()
+    vi.mocked(listLeases).mockClear()
+
+    const selects = wrapper.findAll('select')
+    await selects[1].setValue('joint_operation')
+    await selects[2].setValue('9')
+    await flushPromises()
+
+    wrapper.getComponent(FilterFormStub).vm.$emit('submit')
+    await flushPromises()
+
+    expect(listLeases).toHaveBeenCalledWith({
+      lease_no: undefined,
+      status: undefined,
+      subtype: 'joint_operation',
+      department_id: 9,
       page: 1,
       page_size: 20,
     })

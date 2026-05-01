@@ -300,6 +300,8 @@ export interface ListLeasesParams {
   lease_no?: string
   status?: string
   store_id?: number
+  subtype?: LeaseContractSubtype
+  department_id?: number
   page?: number
   page_size?: number
 }

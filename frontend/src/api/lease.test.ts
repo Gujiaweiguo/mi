@@ -130,7 +130,14 @@ describe('lease api', () => {
 
   describe('listLeases', () => {
     it('calls GET /leases with params and returns the response', async () => {
-      const params = { lease_no: 'L-001', status: 'draft', page: 1, page_size: 20 }
+      const params = {
+        lease_no: 'L-001',
+        status: 'draft',
+        subtype: 'ad_board' as const,
+        department_id: 12,
+        page: 1,
+        page_size: 20,
+      }
       const response = { data: { items: [{ id: 1 }], total: 1 } } as never
 
       vi.mocked(http.get).mockResolvedValue(response)

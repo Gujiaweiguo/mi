@@ -3,7 +3,7 @@ import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 
-import { listLeases, type LeaseSummary } from '../api/lease'
+import { listLeases, type LeaseContractSubtype, type LeaseSummary } from '../api/lease'
 import { listDepartments, listStores } from '../api/org'
 import FilterForm from '../components/platform/FilterForm.vue'
 import PageSection from '../components/platform/PageSection.vue'
@@ -16,6 +16,7 @@ const router = useRouter()
 const { t } = useI18n()
 
 const rows = ref<LeaseSummary[]>([])
+const departments = ref<Array<{ id: number; name: string }>>([])
 const deptMap = ref(new Map<number, string>())
 const storeMap = ref(new Map<number, string>())
 const { page, pageSize, total, paginationParams, resetPage, handlePageChange, handleSizeChange } = usePagination()
@@ -25,6 +26,8 @@ const errorMessage = ref('')
 const { filters, isDirty, reset } = useFilterForm({
   lease_no: '',
   status: '',
+  subtype: '',
+  department_id: '',
 })
 
 const statusOptions = computed(() => [
@@ -33,6 +36,13 @@ const statusOptions = computed(() => [
   { label: t('common.statuses.active'), value: 'active' },
   { label: t('common.statuses.rejected'), value: 'rejected' },
   { label: t('common.statuses.terminated'), value: 'terminated' },
+])
+
+const subtypeOptions = computed<{ label: string; value: LeaseContractSubtype }[]>(() => [
+  { label: t('lease.subtypes.standard'), value: 'standard' },
+  { label: t('lease.subtypes.jointOperation'), value: 'joint_operation' },
+  { label: t('lease.subtypes.adBoard'), value: 'ad_board' },
+  { label: t('lease.subtypes.areaGround'), value: 'area_ground' },
 ])
 
 const resolveSubtypeLabel = (subtype: string) => {
@@ -73,6 +83,8 @@ const loadLeases = async () => {
     const response = await listLeases({
       lease_no: filters.lease_no.trim() || undefined,
       status: filters.status || undefined,
+      subtype: (filters.subtype || undefined) as LeaseContractSubtype | undefined,
+      department_id: filters.department_id ? Number(filters.department_id) : undefined,
       ...paginationParams.value,
     })
 
@@ -119,7 +131,8 @@ onMounted(async () => {
   void loadLeases()
   try {
     const [deptResp, storeResp] = await Promise.all([listDepartments(), listStores()])
-    deptResp.data.departments?.forEach((d: { id: number; name: string }) => deptMap.value.set(d.id, d.name))
+    departments.value = deptResp.data.departments ?? []
+    departments.value.forEach((d: { id: number; name: string }) => deptMap.value.set(d.id, d.name))
     storeResp.data.stores?.forEach((s: { id: number; name: string }) => storeMap.value.set(s.id, s.name))
   } catch { /* non-critical */ }
 })
@@ -173,6 +186,28 @@ onMounted(async () => {
               :key="option.value"
               :label="option.label"
               :value="option.value"
+            />
+          </el-select>
+        </el-form-item>
+
+        <el-form-item :label="t('lease.fields.subtype')">
+          <el-select v-model="filters.subtype" :placeholder="t('lease.placeholders.allSubtypes')" clearable>
+            <el-option
+              v-for="option in subtypeOptions"
+              :key="option.value"
+              :label="option.label"
+              :value="option.value"
+            />
+          </el-select>
+        </el-form-item>
+
+        <el-form-item :label="t('lease.fields.department')">
+          <el-select v-model="filters.department_id" :placeholder="t('lease.placeholders.allDepartments')" clearable>
+            <el-option
+              v-for="department in departments"
+              :key="department.id"
+              :label="department.name"
+              :value="String(department.id)"
             />
           </el-select>
         </el-form-item>

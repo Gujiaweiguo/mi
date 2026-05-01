@@ -256,6 +256,8 @@ export const zhCNMessages = {
     fields: {
       leaseNumber: '合同编号',
       status: '合同状态',
+      subtype: '合同子类型',
+      department: '部门',
     },
     subtypes: {
       standard: '标准合同',
@@ -266,6 +268,8 @@ export const zhCNMessages = {
     placeholders: {
       searchLeaseNumber: '搜索合同编号或租户名称',
       allStatuses: '全部状态',
+      allSubtypes: '全部子类型',
+      allDepartments: '全部部门',
     },
     table: {
       queueTitle: '合同队列',

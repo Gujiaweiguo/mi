@@ -256,6 +256,8 @@ export const enUSMessages = {
     fields: {
       leaseNumber: 'Lease number',
       status: 'Status',
+      subtype: 'Subtype',
+      department: 'Department',
     },
     subtypes: {
       standard: 'Standard',
@@ -266,6 +268,8 @@ export const enUSMessages = {
     placeholders: {
       searchLeaseNumber: 'Search lease number or tenant name',
       allStatuses: 'All statuses',
+      allSubtypes: 'All subtypes',
+      allDepartments: 'All departments',
     },
     table: {
       queueTitle: 'Contract queue',
