@@ -1,8 +1,6 @@
 import { expect, test } from '@playwright/test'
 import type { Page } from '@playwright/test'
 
-test.setTimeout(120000)
-
 type PermissionFixture = {
   function_code: string
   permission_level: 'view' | 'edit' | 'approve'
@@ -68,40 +66,26 @@ const attachReportingMocks = async (page: Page) => {
 }
 
 const selectGeneralizeReport = async (page: Page, reportCode: string) => {
-  await page.getByTestId('generalize-report-select').click()
+  const reportSelect = page.getByTestId('generalize-report-select')
+
+  await reportSelect.click()
   await page.getByRole('option', { name: new RegExp(`^${reportCode}\\b`) }).click()
+  await expect(reportSelect).toContainText(reportCode)
 }
 
 const loginAndOpenGeneralize = async (page: Page) => {
-  const usernameInput = page.getByTestId('login-username-input')
-  let loginReady = false
-
-  for (let attempt = 0; attempt < 3; attempt += 1) {
-    await page.goto('/login')
-
-    try {
-      await expect(usernameInput).toBeVisible({ timeout: 20000 })
-      loginReady = true
-      break
-    } catch (error) {
-      if (attempt === 2) {
-        throw error
-      }
-      await page.waitForTimeout(1000)
-    }
-  }
-
-  if (!loginReady) {
-    throw new Error('login form did not become available')
-  }
+  await page.goto('/login', { waitUntil: 'domcontentloaded' })
+  await expect(page.getByTestId('login-view')).toBeVisible({ timeout: 15000 })
 
   await page.getByTestId('login-username-input').fill('reporter')
   await page.getByTestId('login-password-input').fill('password')
   await page.getByTestId('login-submit-button').click()
 
   await expect(page).toHaveURL(/\/dashboard/)
+  await expect(page.getByTestId('dashboard-view')).toBeVisible()
   await page.getByTestId('nav--reports-generalize').click()
   await expect(page).toHaveURL(/\/reports\/generalize/)
+  await expect(page.getByTestId('generalize-reports-view')).toBeVisible()
 }
 
 test('queries and exports the sales analysis report family (R03/R04/R13/R14)', async ({ page }) => {
@@ -1491,6 +1475,7 @@ test('queries AR aging by charge type (R09) with department, customer, trade, an
 
   await selectGeneralizeReport(page, 'R09')
 
+  await page.getByTestId('generalize-period-input').fill('2026-04')
   await page.getByTestId('generalize-department-input').fill('101')
   await page.getByTestId('generalize-customer-input').fill('101')
   await page.getByTestId('generalize-trade-input').fill('102')
