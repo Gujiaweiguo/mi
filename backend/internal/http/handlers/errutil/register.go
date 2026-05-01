@@ -12,7 +12,9 @@ import (
 
 func init() {
 	Register(
+		workflow.ErrTemplateNotFound,
 		workflow.ErrDefinitionNotFound,
+		workflow.ErrDefinitionValidationFailed,
 		workflow.ErrInvalidState,
 		lease.ErrLeaseNotFound,
 		lease.ErrInvalidLeaseState,
