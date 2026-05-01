@@ -46,3 +46,26 @@ func TestRequirePermissionRejectsForbiddenAction(t *testing.T) {
 		t.Fatalf("expected 403, got %d", recorder.Code)
 	}
 }
+
+func TestRequirePermissionRejectsForbiddenWorkflowDefinitionAction(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	service := &auth.Service{}
+
+	recorder := httptest.NewRecorder()
+	ctx, _ := gin.CreateTestContext(recorder)
+	ctx.Request = httptest.NewRequest(http.MethodPost, "/api/workflow/admin/definitions/101/publish", nil)
+	ctx.Set(sessionUserContextKey, &auth.SessionUser{
+		Permissions: []auth.Permission{{
+			FunctionCode:    "workflow.definition",
+			PermissionLevel: "view",
+			CanPrint:        false,
+			CanExport:       false,
+		}},
+	})
+
+	RequirePermission("workflow.definition", "approve", service)(ctx)
+
+	if recorder.Code != http.StatusForbidden {
+		t.Fatalf("expected 403, got %d", recorder.Code)
+	}
+}
