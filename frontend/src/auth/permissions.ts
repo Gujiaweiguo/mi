@@ -2,6 +2,7 @@ import type { PermissionAction, PermissionLevel, SessionPermission, SessionUser 
 
 export const FUNCTION_CODES = {
   workflowAdmin: 'workflow.admin',
+  workflowDefinition: 'workflow.definition',
   notificationAdmin: 'notification.admin',
   masterdataAdmin: 'masterdata.admin',
   salesAdmin: 'sales.admin',
@@ -21,6 +22,7 @@ export type NavigationItem = {
   path: string
   labelKey: string
   functionCode?: FunctionCode
+  functionCodesAny?: FunctionCode[]
   action?: PermissionAction
 }
 
@@ -44,7 +46,7 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
   {
     path: '/workflow/admin',
     labelKey: 'app.navigation.workflowAdmin',
-    functionCode: FUNCTION_CODES.workflowAdmin,
+    functionCodesAny: [FUNCTION_CODES.workflowDefinition, FUNCTION_CODES.workflowAdmin],
   },
   {
     path: '/notifications',
@@ -196,8 +198,24 @@ export const canAccessFunction = (
   return canPerformAction(getPermissionForFunction(permissions, functionCode), action)
 }
 
+export const canAccessAnyFunction = (
+  permissions: SessionPermission[] | undefined,
+  functionCodes: string[] | undefined,
+  action: PermissionAction = 'view',
+) => {
+  if (!functionCodes || functionCodes.length === 0) {
+    return true
+  }
+
+  return functionCodes.some((functionCode) => canAccessFunction(permissions, functionCode, action))
+}
+
 export const filterNavigationItems = (user: SessionUser | null) =>
-  NAVIGATION_ITEMS.filter((item) => canAccessFunction(user?.permissions, item.functionCode, item.action))
+  NAVIGATION_ITEMS.filter(
+    (item) =>
+      canAccessFunction(user?.permissions, item.functionCode, item.action) &&
+      canAccessAnyFunction(user?.permissions, item.functionCodesAny, item.action),
+  )
 
 export const resolveNavigationItems = (user: SessionUser | null, resolveLabel: (key: string) => string): ResolvedNavigationItem[] =>
   filterNavigationItems(user).map(({ labelKey, ...item }) => ({
