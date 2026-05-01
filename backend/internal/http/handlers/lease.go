@@ -237,13 +237,15 @@ func (h *LeaseHandler) Get(c *gin.Context) {
 // List godoc
 //
 //	@Summary		List leases
-//	@Description	Returns paginated lease summaries filtered by lease number, status, and store.
+//	@Description	Returns paginated lease summaries filtered by lease number, status, store, subtype, and department.
 //	@Tags			Lease
 //	@Accept			json
 //	@Produce		json
 //	@Param			lease_no	query		string	false	"Lease number"
 //	@Param			status		query		string	false	"Lease status"
 //	@Param			store_id	query		int		false	"Store ID"
+//	@Param			subtype		query		string	false	"Lease subtype"
+//	@Param			department_id	query		int		false	"Department ID"
 //	@Param			page		query		int		false	"Page number"
 //	@Param			page_size	query		int		false	"Page size"
 //	@Success		200			{object}	swaggerEnvelope{items=[]lease.Summary,total=int,page=int,page_size=int}
@@ -265,6 +267,18 @@ func (h *LeaseHandler) List(c *gin.Context) {
 			return
 		}
 		filter.StoreID = &storeID
+	}
+	if subtype := c.Query("subtype"); subtype != "" {
+		subtypeValue := lease.ContractSubtype(subtype)
+		filter.Subtype = &subtypeValue
+	}
+	if departmentIDText := c.Query("department_id"); departmentIDText != "" {
+		departmentID, err := strconv.ParseInt(departmentIDText, 10, 64)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"message": "invalid department id"})
+			return
+		}
+		filter.DepartmentID = &departmentID
 	}
 	if pageText := c.DefaultQuery("page", strconv.Itoa(pagination.DefaultPage)); pageText != "" {
 		page, err := strconv.Atoi(pageText)

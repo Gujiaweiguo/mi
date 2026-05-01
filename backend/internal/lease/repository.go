@@ -110,6 +110,14 @@ func (r *Repository) List(ctx context.Context, filter ListFilter) (*pagination.L
 		conditions = append(conditions, "lc.store_id = ?")
 		args = append(args, *filter.StoreID)
 	}
+	if filter.Subtype != nil {
+		conditions = append(conditions, "lc.subtype = ?")
+		args = append(args, *filter.Subtype)
+	}
+	if filter.DepartmentID != nil {
+		conditions = append(conditions, "lc.department_id = ?")
+		args = append(args, *filter.DepartmentID)
+	}
 	if strings.TrimSpace(filter.LeaseNo) != "" {
 		conditions = append(conditions, "lc.lease_no LIKE ?")
 		args = append(args, "%"+strings.TrimSpace(filter.LeaseNo)+"%")

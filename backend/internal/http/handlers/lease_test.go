@@ -119,6 +119,29 @@ func TestLeaseGetRejectsInvalidID(t *testing.T) {
 	}
 }
 
+func TestLeaseListRejectsInvalidDepartmentID(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	handler := NewLeaseHandler(nil)
+
+	recorder := httptest.NewRecorder()
+	ctx, _ := gin.CreateTestContext(recorder)
+	ctx.Request = httptest.NewRequest(http.MethodGet, "/api/leases?department_id=bad-id", nil)
+
+	handler.List(ctx)
+
+	if recorder.Code != http.StatusBadRequest {
+		t.Fatalf("expected 400, got %d", recorder.Code)
+	}
+
+	var payload map[string]any
+	if err := json.Unmarshal(recorder.Body.Bytes(), &payload); err != nil {
+		t.Fatalf("decode response: %v", err)
+	}
+	if payload["message"] != "invalid department id" {
+		t.Fatalf("expected invalid department id message, got %#v", payload["message"])
+	}
+}
+
 func TestLeaseSubmitRejectsInvalidID(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	handler := NewLeaseHandler(nil)

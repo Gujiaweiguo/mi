@@ -184,11 +184,13 @@ type Summary struct {
 }
 
 type ListFilter struct {
-	Status   *Status
-	StoreID  *int64
-	LeaseNo  string
-	Page     int
-	PageSize int
+	Status       *Status
+	StoreID      *int64
+	Subtype      *ContractSubtype
+	DepartmentID *int64
+	LeaseNo      string
+	Page         int
+	PageSize     int
 }
 
 type CreateDraftInput struct {

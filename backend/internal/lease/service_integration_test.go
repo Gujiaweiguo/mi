@@ -86,6 +86,68 @@ func TestLeaseServiceCreateSubmitAndActivate(t *testing.T) {
 	}
 }
 
+func TestLeaseServiceListFiltersBySubtypeAndDepartment(t *testing.T) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+	defer cancel()
+
+	db := platformdb.NewTestDB(t, ctx, os.DirFS("../platform/database"))
+	workflowService := workflow.NewService(db, workflow.NewRepository(db))
+	leaseService := lease.NewService(db, lease.NewRepository(db), workflowService)
+
+	standardInput := newLeaseCreateInput("CON-LIST-201", 101)
+	standardInput.DepartmentID = 101
+	if _, err := leaseService.CreateDraft(ctx, standardInput); err != nil {
+		t.Fatalf("create standard draft: %v", err)
+	}
+
+	jointInput := newJointOperationLeaseCreateInput("CON-LIST-202", 101)
+	jointInput.DepartmentID = 102
+	if _, err := leaseService.CreateDraft(ctx, jointInput); err != nil {
+		t.Fatalf("create joint-operation draft: %v", err)
+	}
+
+	areaInput := newAreaGroundLeaseCreateInput("CON-LIST-203", 101)
+	areaInput.DepartmentID = 102
+	if _, err := leaseService.CreateDraft(ctx, areaInput); err != nil {
+		t.Fatalf("create area-ground draft: %v", err)
+	}
+
+	jointSubtype := lease.ContractSubtypeJointOperation
+	jointOnly, err := leaseService.ListLeases(ctx, lease.ListFilter{Subtype: &jointSubtype})
+	if err != nil {
+		t.Fatalf("list leases by subtype: %v", err)
+	}
+	if jointOnly.Total != 1 || len(jointOnly.Items) != 1 || jointOnly.Items[0].Subtype != lease.ContractSubtypeJointOperation {
+		t.Fatalf("expected one joint-operation lease, got total=%d items=%#v", jointOnly.Total, jointOnly.Items)
+	}
+
+	departmentID := int64(102)
+	departmentOnly, err := leaseService.ListLeases(ctx, lease.ListFilter{DepartmentID: &departmentID})
+	if err != nil {
+		t.Fatalf("list leases by department: %v", err)
+	}
+	if departmentOnly.Total != 2 || len(departmentOnly.Items) != 2 {
+		t.Fatalf("expected two department-scoped leases, got total=%d len=%d", departmentOnly.Total, len(departmentOnly.Items))
+	}
+
+	areaSubtype := lease.ContractSubtypeAreaGround
+	combined, err := leaseService.ListLeases(ctx, lease.ListFilter{Subtype: &areaSubtype, DepartmentID: &departmentID})
+	if err != nil {
+		t.Fatalf("list leases by subtype and department: %v", err)
+	}
+	if combined.Total != 1 || len(combined.Items) != 1 || combined.Items[0].Subtype != lease.ContractSubtypeAreaGround || combined.Items[0].DepartmentID != 102 {
+		t.Fatalf("expected one area-ground lease in department 102, got total=%d items=%#v", combined.Total, combined.Items)
+	}
+
+	unfiltered, err := leaseService.ListLeases(ctx, lease.ListFilter{})
+	if err != nil {
+		t.Fatalf("list leases without new filters: %v", err)
+	}
+	if unfiltered.Total != 3 || len(unfiltered.Items) != 3 {
+		t.Fatalf("expected three leases without filters, got total=%d len=%d", unfiltered.Total, len(unfiltered.Items))
+	}
+}
+
 func TestLeaseServiceRejectAndResubmit(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
