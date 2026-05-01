@@ -25,10 +25,12 @@ func TestE2ELeaseToInvoiceSmoke(t *testing.T) {
 	defer cancel()
 
 	db := platformdb.NewTestDB(t, ctx, os.DirFS("../platform/database"))
-	router := httpapi.NewRouter(&config.Config{
+	router := httpapi.NewRouterWithOptions(&config.Config{
 		App:  config.AppConfig{Name: "mi-backend", Environment: "test"},
 		Auth: config.AuthConfig{JWTSecret: "test-secret", TokenExpirySeconds: 3600},
-	}, db, zap.NewNop())
+	}, db, zap.NewNop(), httpapi.RouterOptions{WorkflowNow: func() time.Time {
+		return time.Date(2026, 4, 1, 9, 0, 0, 0, time.UTC)
+	}})
 
 	token := loginAsAdmin(t, router)
 	authHeader := "Bearer " + token
