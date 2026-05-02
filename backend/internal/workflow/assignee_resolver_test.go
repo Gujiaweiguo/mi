@@ -5,8 +5,6 @@ import (
 	"testing"
 )
 
-func int64Ptr(v int64) *int64 { return &v }
-
 func TestResolveFixedRole(t *testing.T) {
 	nodes := []Node{
 		{ID: 1, Code: "review", RoleID: 100, AssignmentRules: []AssignmentRule{
