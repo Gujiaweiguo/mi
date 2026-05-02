@@ -5,11 +5,13 @@ package database
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"io/fs"
 	"testing"
 	"time"
 
 	bootstrap "github.com/Gujiaweiguo/mi/backend/internal/platform/database/bootstrap"
+	"github.com/docker/go-connections/nat"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
@@ -26,17 +28,31 @@ import (
 func NewTestDB(t *testing.T, ctx context.Context, migrationsFS fs.FS) *sql.DB {
 	t.Helper()
 
+	const (
+		testDBName     = "mi_integration"
+		testDBUser     = "mi_user"
+		testDBPassword = "mi_password"
+	)
+
+	testConfig := Config{
+		Name:     testDBName,
+		User:     testDBUser,
+		Password: testDBPassword,
+	}
+
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
 		ContainerRequest: testcontainers.ContainerRequest{
 			Image:        "mysql:8.0",
 			ExposedPorts: []string{"3306/tcp"},
 			Env: map[string]string{
-				"MYSQL_DATABASE":      "mi_integration",
-				"MYSQL_USER":          "mi_user",
-				"MYSQL_PASSWORD":      "mi_password",
+				"MYSQL_DATABASE":      testDBName,
+				"MYSQL_USER":          testDBUser,
+				"MYSQL_PASSWORD":      testDBPassword,
 				"MYSQL_ROOT_PASSWORD": "mi_root_password",
 			},
-			WaitingFor: wait.ForListeningPort("3306/tcp").WithStartupTimeout(3 * time.Minute),
+			WaitingFor: wait.ForSQL("3306/tcp", "mysql", func(host string, port nat.Port) string {
+				return fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", testConfig.User, testConfig.Password, host, port.Port(), testConfig.Name)
+			}).WithStartupTimeout(3 * time.Minute),
 		},
 		Started: true,
 	})
@@ -57,9 +73,9 @@ func NewTestDB(t *testing.T, ctx context.Context, migrationsFS fs.FS) *sql.DB {
 	db, err := sql.Open("mysql", Config{
 		Host:     host,
 		Port:     port.Int(),
-		Name:     "mi_integration",
-		User:     "mi_user",
-		Password: "mi_password",
+		Name:     testConfig.Name,
+		User:     testConfig.User,
+		Password: testConfig.Password,
 	}.DSN())
 	if err != nil {
 		t.Fatalf("open mysql connection: %v", err)

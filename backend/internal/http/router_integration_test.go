@@ -1638,13 +1638,14 @@ func TestIntegrationAuthAndOrgRoutes(t *testing.T) {
 		Lines []struct {
 			ID              int64   `json:"id"`
 			LeaseContractID int64   `json:"lease_contract_id"`
+			QuantityDays    int     `json:"quantity_days"`
 			Amount          float64 `json:"amount"`
 		} `json:"lines"`
 	}
 	if err := json.Unmarshal(billingGenerateRecorder.Body.Bytes(), &billingGenerateBody); err != nil {
 		t.Fatalf("decode billing generate response: %v", err)
 	}
-	if billingGenerateBody.Totals.Generated != 1 || len(billingGenerateBody.Lines) != 1 || billingGenerateBody.Lines[0].LeaseContractID != leaseAmendBody.Lease.ID || billingGenerateBody.Lines[0].Amount != 15000 {
+	if billingGenerateBody.Totals.Generated != 1 || len(billingGenerateBody.Lines) != 1 || billingGenerateBody.Lines[0].LeaseContractID != leaseAmendBody.Lease.ID || billingGenerateBody.Lines[0].QuantityDays != 30 || billingGenerateBody.Lines[0].Amount != 14516.13 {
 		t.Fatalf("expected one amended lease billing charge line, got body=%s", billingGenerateRecorder.Body.String())
 	}
 
