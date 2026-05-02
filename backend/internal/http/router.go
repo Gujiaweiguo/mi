@@ -3,6 +3,7 @@ package http
 import (
 	"context"
 	"database/sql"
+	"time"
 
 	_ "github.com/Gujiaweiguo/mi/backend/docs"
 	"github.com/Gujiaweiguo/mi/backend/internal/auth"
@@ -52,7 +53,81 @@ func (w workflowSyncers) SyncWorkflowState(ctx context.Context, instance *workfl
 	return nil
 }
 
+func newWorkflowDocumentFieldLookup(leaseRepository *lease.Repository, invoiceRepository *invoice.Repository, overtimeRepository *overtime.Repository) workflow.DocumentFieldLookup {
+	return func(ctx context.Context, documentType string, documentID int64, fieldPath string) (any, bool, error) {
+		switch documentType {
+		case string(workflow.ObjectTypeLeaseContract), string(workflow.ObjectTypeLeaseChange):
+			contract, err := leaseRepository.FindByID(ctx, documentID)
+			if err != nil {
+				return nil, false, err
+			}
+			if contract == nil {
+				return nil, false, nil
+			}
+			switch fieldPath {
+			case "department_id":
+				return contract.DepartmentID, true, nil
+			case "created_by":
+				return contract.CreatedBy, true, nil
+			case "updated_by":
+				return contract.UpdatedBy, true, nil
+			}
+		case string(workflow.ObjectTypeInvoice):
+			document, err := invoiceRepository.FindByID(ctx, documentID)
+			if err != nil {
+				return nil, false, err
+			}
+			if document == nil {
+				return nil, false, nil
+			}
+			switch fieldPath {
+			case "created_by":
+				return document.CreatedBy, true, nil
+			case "updated_by":
+				return document.UpdatedBy, true, nil
+			}
+		case string(workflow.ObjectTypeOvertimeBill):
+			bill, err := overtimeRepository.FindBillByID(ctx, documentID)
+			if err != nil {
+				return nil, false, err
+			}
+			if bill == nil {
+				return nil, false, nil
+			}
+			switch fieldPath {
+			case "created_by":
+				return bill.CreatedBy, true, nil
+			case "updated_by":
+				return bill.UpdatedBy, true, nil
+			}
+		case string(workflow.ObjectTypeInvoiceDiscount):
+			discount, err := invoiceRepository.FindDiscountByID(ctx, documentID)
+			if err != nil {
+				return nil, false, err
+			}
+			if discount == nil {
+				return nil, false, nil
+			}
+			switch fieldPath {
+			case "created_by":
+				return discount.CreatedBy, true, nil
+			case "updated_by":
+				return discount.UpdatedBy, true, nil
+			}
+		}
+		return nil, false, nil
+	}
+}
+
+type RouterOptions struct {
+	WorkflowNow func() time.Time
+}
+
 func NewRouter(cfg *config.Config, db *sql.DB, logger *zap.Logger) *gin.Engine {
+	return NewRouterWithOptions(cfg, db, logger, RouterOptions{})
+}
+
+func NewRouterWithOptions(cfg *config.Config, db *sql.DB, logger *zap.Logger, options RouterOptions) *gin.Engine {
 	if cfg == nil {
 		cfg = &config.Config{}
 	}
@@ -83,7 +158,11 @@ func NewRouter(cfg *config.Config, db *sql.DB, logger *zap.Logger) *gin.Engine {
 	}
 	notificationHandler := notification.NewHandler(notificationRepository)
 	workflowRepository := workflow.NewRepository(db)
+	if options.WorkflowNow != nil {
+		workflowRepository = workflow.NewRepositoryWithNowFunc(db, options.WorkflowNow)
+	}
 	workflowService := workflow.NewService(db, workflowRepository, notifier)
+	workflowAdminService := workflow.NewAdminService(db, workflowRepository)
 	leaseRepository := lease.NewRepository(db)
 	leaseService := lease.NewService(db, leaseRepository, workflowService, notifier)
 	billingRepository := billing.NewRepository(db)
@@ -91,6 +170,7 @@ func NewRouter(cfg *config.Config, db *sql.DB, logger *zap.Logger) *gin.Engine {
 	overtimeRepository := overtime.NewRepository(db)
 	overtimeService := overtime.NewService(db, overtimeRepository, billingRepository, workflowService)
 	invoiceRepository := invoice.NewRepository(db)
+	workflowService.SetDocumentFieldLookup(newWorkflowDocumentFieldLookup(leaseRepository, invoiceRepository, overtimeRepository))
 	invoiceService := invoice.NewService(db, invoiceRepository, billingRepository, workflowService, notifier)
 	docOutputRepository := docoutput.NewRepository(db)
 	docOutputService := docoutput.NewService(docOutputRepository, invoiceService, leaseService, cfg.Storage)
@@ -124,6 +204,7 @@ func NewRouter(cfg *config.Config, db *sql.DB, logger *zap.Logger) *gin.Engine {
 	dashboardHandler := handlers.NewDashboardHandler(dashboardService)
 	userHandler := handlers.NewUserHandler(authRepository)
 	workflowHandler := handlers.NewWorkflowHandler(workflowService, workflowSyncers{syncers: []handlers.WorkflowStateSyncer{leaseService, invoiceService, overtimeService}})
+	workflowAdminHandler := handlers.NewWorkflowAdminHandler(workflowAdminService)
 	router.GET("/health", healthHandler.Get)
 	router.GET("/healthz", healthHandler.Get)
 
@@ -315,6 +396,18 @@ func NewRouter(cfg *config.Config, db *sql.DB, logger *zap.Logger) *gin.Engine {
 	workflowGroup.POST("/instances/:id/approve", middleware.RequirePermission("workflow.admin", "approve", authService), workflowHandler.Approve)
 	workflowGroup.POST("/instances/:id/reject", middleware.RequirePermission("workflow.admin", "approve", authService), workflowHandler.Reject)
 	workflowGroup.POST("/instances/:id/resubmit", middleware.RequirePermission("workflow.admin", "approve", authService), workflowHandler.Resubmit)
+	workflowGroup.GET("/admin/templates", middleware.RequirePermission("workflow.definition", "view", authService), workflowAdminHandler.ListTemplates)
+	workflowGroup.POST("/admin/templates", middleware.RequirePermission("workflow.definition", "edit", authService), workflowAdminHandler.CreateTemplate)
+	workflowGroup.GET("/admin/templates/:id", middleware.RequirePermission("workflow.definition", "view", authService), workflowAdminHandler.GetTemplate)
+	workflowGroup.GET("/admin/templates/:id/versions", middleware.RequirePermission("workflow.definition", "view", authService), workflowAdminHandler.GetTemplateVersions)
+	workflowGroup.GET("/admin/templates/:id/audit", middleware.RequirePermission("workflow.definition", "view", authService), workflowAdminHandler.GetTemplateAudit)
+	workflowGroup.POST("/admin/templates/:id/drafts", middleware.RequirePermission("workflow.definition", "edit", authService), workflowAdminHandler.CreateDraft)
+	workflowGroup.POST("/admin/templates/:id/deactivate", middleware.RequirePermission("workflow.definition", "approve", authService), workflowAdminHandler.DeactivateTemplate)
+	workflowGroup.POST("/admin/templates/:id/rollback", middleware.RequirePermission("workflow.definition", "approve", authService), workflowAdminHandler.RollbackTemplate)
+	workflowGroup.GET("/admin/definitions/:id", middleware.RequirePermission("workflow.definition", "view", authService), workflowAdminHandler.GetDefinition)
+	workflowGroup.PUT("/admin/definitions/:id", middleware.RequirePermission("workflow.definition", "edit", authService), workflowAdminHandler.UpdateDraftDefinition)
+	workflowGroup.POST("/admin/definitions/:id/validate", middleware.RequirePermission("workflow.definition", "approve", authService), workflowAdminHandler.ValidateDefinition)
+	workflowGroup.POST("/admin/definitions/:id/publish", middleware.RequirePermission("workflow.definition", "approve", authService), workflowAdminHandler.PublishDefinition)
 
 	return router
 }

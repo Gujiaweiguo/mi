@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import {
   FUNCTION_CODES,
+  canAccessAnyFunction,
   canAccessFunction,
   filterNavigationItems,
   normalizeSessionPermission,
@@ -56,6 +57,8 @@ describe('permission helpers', () => {
     expect(canAccessFunction(baseUser.permissions, FUNCTION_CODES.leaseContract, 'approve')).toBe(false)
     expect(canAccessFunction(baseUser.permissions, FUNCTION_CODES.excelIo, 'export')).toBe(true)
     expect(canAccessFunction(baseUser.permissions, FUNCTION_CODES.taxExport, 'view')).toBe(false)
+    expect(canAccessAnyFunction(baseUser.permissions, [FUNCTION_CODES.taxExport, FUNCTION_CODES.leaseContract], 'edit')).toBe(true)
+    expect(canAccessAnyFunction(baseUser.permissions, [FUNCTION_CODES.taxExport, FUNCTION_CODES.workflowDefinition], 'view')).toBe(false)
   })
 
   it('filters navigation items to authorized entries', () => {

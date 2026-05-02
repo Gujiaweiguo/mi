@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
+import { FUNCTION_CODES } from '../auth/permissions'
 import router from './index'
 
 describe('router', () => {
@@ -16,5 +17,13 @@ describe('router', () => {
     expect(route.name).toBe('lease-contracts-amend')
     expect(route.params.id).toBe('42')
     expect(route.meta.requiresAuth).toBe(true)
+  })
+
+  it('registers the workflow admin route with dual permission access', () => {
+    const route = router.resolve('/workflow/admin')
+
+    expect(route.name).toBe('workflow-admin')
+    expect(route.meta.requiresAuth).toBe(true)
+    expect(route.meta.permissionAnyOf).toEqual([FUNCTION_CODES.workflowDefinition, FUNCTION_CODES.workflowAdmin])
   })
 })

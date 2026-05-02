@@ -106,6 +106,7 @@ INSERT IGNORE INTO roles (id, code, name, status, is_leader) VALUES
 
 INSERT IGNORE INTO functions (id, business_group_id, code, name) VALUES
   (101, 103, 'workflow.admin', '工作流管理'),
+  (113, 103, 'workflow.definition', '工作流定义管理'),
   (102, 106, 'notification.admin', '通知管理'),
   (103, 106, 'masterdata.admin', '主数据管理'),
   (104, 104, 'sales.admin', '销售数据管理'),
@@ -120,6 +121,7 @@ INSERT IGNORE INTO functions (id, business_group_id, code, name) VALUES
 
 INSERT IGNORE INTO role_permissions (role_id, function_id, permission_level, can_print, can_export) VALUES
   (101, 101, 'approve', TRUE, TRUE),
+  (101, 113, 'approve', FALSE, FALSE),
   (101, 102, 'approve', TRUE, TRUE),
   (101, 103, 'approve', TRUE, TRUE),
   (101, 104, 'approve', TRUE, TRUE),

@@ -412,7 +412,9 @@ func TestLeaseServiceRejectsTerminateWhenBillingDocumentInFlight(t *testing.T) {
 	defer cancel()
 
 	db := platformdb.NewTestDB(t, ctx, os.DirFS("../platform/database"))
-	workflowService := workflow.NewService(db, workflow.NewRepository(db))
+	workflowService := workflow.NewService(db, workflow.NewRepositoryWithNowFunc(db, func() time.Time {
+		return time.Date(2026, 4, 1, 9, 0, 0, 0, time.UTC)
+	}))
 	leaseService := lease.NewService(db, lease.NewRepository(db), workflowService)
 	billingRepo := billing.NewRepository(db)
 	billingService := billing.NewService(db, billingRepo)

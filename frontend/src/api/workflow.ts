@@ -8,6 +8,110 @@ export interface WorkflowDefinition {
   ProcessClass: string
 }
 
+export interface WorkflowDefinitionTemplate {
+  id: number
+  business_group_id: number
+  code: string
+  name: string
+  process_class: string
+  status: string
+  published_definition_id?: number
+  published_version_number?: number
+}
+
+export interface WorkflowDefinitionAssignmentRule {
+  id: number
+  workflow_node_id: number
+  strategy_type: string
+  config_json: string
+}
+
+export interface WorkflowDefinitionNode {
+  ID: number
+  WorkflowDefinitionID: number
+  FunctionID: number
+  RoleID: number
+  StepOrder: number
+  Code: string
+  Name: string
+  CanSubmitToManager: boolean
+  ValidatesAfterConfirm: boolean
+  PrintsAfterConfirm: boolean
+  ProcessClass: string
+  AssignmentRules: WorkflowDefinitionAssignmentRule[]
+}
+
+export interface WorkflowDefinitionTransition {
+  ID: number
+  WorkflowDefinitionID: number
+  FromNodeID: number | null
+  ToNodeID: number
+  Action: string
+}
+
+export interface WorkflowDefinitionDetail {
+  ID: number
+  BusinessGroupID: number
+  WorkflowTemplateID: number
+  Code: string
+  Name: string
+  VoucherType: string
+  IsInitial: boolean
+  Status: string
+  ProcessClass: string
+  VersionNumber: number
+  LifecycleStatus: string
+  PublishedAt?: string | null
+  TransitionsEnabled: boolean
+  Nodes: WorkflowDefinitionNode[]
+  Transitions: WorkflowDefinitionTransition[]
+}
+
+export interface WorkflowDefinitionValidationIssue {
+  code: string
+  field?: string
+  message: string
+}
+
+export interface WorkflowDefinitionValidationResult {
+  valid: boolean
+  issues: WorkflowDefinitionValidationIssue[]
+}
+
+export interface SaveWorkflowDefinitionDraftNodeRequest {
+  function_id: number
+  role_id: number
+  step_order: number
+  code: string
+  name: string
+  can_submit_to_manager: boolean
+  validates_after_confirm: boolean
+  prints_after_confirm: boolean
+  process_class: string
+  assignment_rules: Array<{
+    strategy_type: string
+    config_json: string
+  }>
+}
+
+export interface SaveWorkflowDefinitionDraftTransitionRequest {
+  from_node_code: string | null
+  to_node_code: string
+  action: string
+}
+
+export interface SaveWorkflowDefinitionDraftRequest {
+  name: string
+  voucher_type: string
+  is_initial: boolean
+  nodes: SaveWorkflowDefinitionDraftNodeRequest[]
+  transitions: SaveWorkflowDefinitionDraftTransitionRequest[]
+}
+
+export interface RollbackWorkflowDefinitionTemplateRequest {
+  definition_id: number
+}
+
 export interface WorkflowInstance {
   id: number
   workflow_definition_id: number
@@ -57,6 +161,22 @@ export const startWorkflow = (data: {
   idempotency_key: string
 }) => http.post<{ instance: WorkflowInstance }>('/workflow/instances', data)
 export const listWorkflowDefinitions = () => http.get<{ definitions: WorkflowDefinition[] }>('/workflow/definitions')
+export const listWorkflowDefinitionTemplates = () =>
+  http.get<{ templates: WorkflowDefinitionTemplate[] }>('/workflow/admin/templates')
+export const listWorkflowDefinitionVersions = (templateId: number) =>
+  http.get<{ definitions: WorkflowDefinitionDetail[] }>(`/workflow/admin/templates/${templateId}/versions`)
+export const getWorkflowDefinition = (definitionId: number) =>
+  http.get<{ definition: WorkflowDefinitionDetail }>(`/workflow/admin/definitions/${definitionId}`)
+export const saveWorkflowDefinitionDraft = (definitionId: number, data: SaveWorkflowDefinitionDraftRequest) =>
+  http.put<{ definition: WorkflowDefinitionDetail }>(`/workflow/admin/definitions/${definitionId}`, data)
+export const validateWorkflowDefinition = (definitionId: number) =>
+  http.post<{ validation: WorkflowDefinitionValidationResult }>(`/workflow/admin/definitions/${definitionId}/validate`)
+export const publishWorkflowDefinition = (definitionId: number) =>
+  http.post<{ definition: WorkflowDefinitionDetail }>(`/workflow/admin/definitions/${definitionId}/publish`)
+export const deactivateWorkflowDefinitionTemplate = (templateId: number) =>
+  http.post<{ template: WorkflowDefinitionTemplate }>(`/workflow/admin/templates/${templateId}/deactivate`)
+export const rollbackWorkflowDefinitionTemplate = (templateId: number, data: RollbackWorkflowDefinitionTemplateRequest) =>
+  http.post<{ definition: WorkflowDefinitionDetail }>(`/workflow/admin/templates/${templateId}/rollback`, data)
 export const listWorkflowInstances = (params?: ListWorkflowInstancesParams) =>
   http.get<{ instances: WorkflowInstanceListItem[] }>('/workflow/instances', { params })
 export const getWorkflowInstance = (id: number) =>

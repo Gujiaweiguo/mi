@@ -11,9 +11,45 @@ func WorkflowSeeds() []Seed {
 
 func workflowDefinitionSeeds() []Seed {
 	return []Seed{
+		seedWorkflowTemplates(),
 		seedWorkflowDefinitions(),
+		seedWorkflowTemplatePublications(),
 		seedWorkflowNodes(),
 		seedWorkflowTransitions(),
+	}
+}
+
+func seedWorkflowTemplates() Seed {
+	return Seed{
+		name: "workflow_templates",
+		run: func(ctx context.Context, tx *sql.Tx) error {
+			_, err := tx.ExecContext(ctx, `
+				INSERT INTO workflow_templates (id, business_group_id, code, name, process_class, status)
+				VALUES
+				  (101, 101, 'lease-approval', 'Lease Approval', 'lease_contract', 'active'),
+				  (102, 101, 'lease-change', 'Lease Change Approval', 'lease_change', 'active'),
+				  (103, 102, 'invoice-approval', 'Invoice Approval', 'invoice', 'active'),
+				  (104, 102, 'overtime-approval', 'Overtime Approval', 'overtime_bill', 'active')
+				ON DUPLICATE KEY UPDATE name = VALUES(name), process_class = VALUES(process_class), status = VALUES(status)
+			`)
+			return err
+		},
+	}
+}
+
+func seedWorkflowTemplatePublications() Seed {
+	return Seed{
+		name: "workflow_template_publications",
+		run: func(ctx context.Context, tx *sql.Tx) error {
+			_, err := tx.ExecContext(ctx, `
+				UPDATE workflow_templates wt
+				INNER JOIN workflow_definitions wd ON wd.workflow_template_id = wt.id
+				SET wt.published_definition_id = wd.id,
+				    wt.published_version_number = wd.version_number
+				WHERE wd.status = 'active' AND wd.lifecycle_status = 'published'
+			`)
+			return err
+		},
 	}
 }
 
@@ -39,13 +75,13 @@ func seedWorkflowDefinitions() Seed {
 		name: "workflow_definitions",
 		run: func(ctx context.Context, tx *sql.Tx) error {
 			_, err := tx.ExecContext(ctx, `
-				INSERT INTO workflow_definitions (id, business_group_id, code, name, voucher_type, is_initial, status, transitions_enabled, process_class)
+				INSERT INTO workflow_definitions (id, business_group_id, workflow_template_id, code, version_number, name, voucher_type, is_initial, status, lifecycle_status, published_at, transitions_enabled, process_class)
 				VALUES
-				  (101, 101, 'lease-approval', 'Lease Approval', 'application', TRUE, 'active', TRUE, 'lease_contract'),
-				  (102, 101, 'lease-change', 'Lease Change Approval', 'change_request', FALSE, 'active', TRUE, 'lease_change'),
-				  (103, 102, 'invoice-approval', 'Invoice Approval', 'application', FALSE, 'active', TRUE, 'invoice'),
-				  (104, 102, 'overtime-approval', 'Overtime Approval', 'application', FALSE, 'active', TRUE, 'overtime_bill')
-				ON DUPLICATE KEY UPDATE name = VALUES(name), voucher_type = VALUES(voucher_type), status = VALUES(status), transitions_enabled = VALUES(transitions_enabled), process_class = VALUES(process_class)
+				  (101, 101, 101, 'lease-approval', 1, 'Lease Approval', 'application', TRUE, 'active', 'published', CURRENT_TIMESTAMP, TRUE, 'lease_contract'),
+				  (102, 101, 102, 'lease-change', 1, 'Lease Change Approval', 'change_request', FALSE, 'active', 'published', CURRENT_TIMESTAMP, TRUE, 'lease_change'),
+				  (103, 102, 103, 'invoice-approval', 1, 'Invoice Approval', 'application', FALSE, 'active', 'published', CURRENT_TIMESTAMP, TRUE, 'invoice'),
+				  (104, 102, 104, 'overtime-approval', 1, 'Overtime Approval', 'application', FALSE, 'active', 'published', CURRENT_TIMESTAMP, TRUE, 'overtime_bill')
+				ON DUPLICATE KEY UPDATE workflow_template_id = VALUES(workflow_template_id), version_number = VALUES(version_number), name = VALUES(name), voucher_type = VALUES(voucher_type), status = VALUES(status), lifecycle_status = VALUES(lifecycle_status), published_at = VALUES(published_at), transitions_enabled = VALUES(transitions_enabled), process_class = VALUES(process_class)
 			`)
 			return err
 		},

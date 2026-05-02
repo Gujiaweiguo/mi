@@ -271,8 +271,8 @@ describe('UserManagementView', () => {
     i18n.global.locale.value = 'zh-CN'
     mockValidate.mockResolvedValue(true)
 
-    vi.spyOn(ElMessage, 'success').mockImplementation(() => '')
-    vi.spyOn(ElMessage, 'error').mockImplementation(() => '')
+    vi.spyOn(ElMessage, 'success').mockImplementation(() => ({ close: () => undefined }))
+    vi.spyOn(ElMessage, 'error').mockImplementation(() => ({ close: () => undefined }))
 
     vi.mocked(listUsers).mockResolvedValue({ data: { users } } as never)
     vi.mocked(listRoles).mockResolvedValue({ data: { roles } } as never)

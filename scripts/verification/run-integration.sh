@@ -8,9 +8,11 @@ SOURCE_KIND=${SOURCE_KIND:-${GITHUB_ACTIONS:+github-actions}}
 SOURCE_KIND=${SOURCE_KIND:-local}
 CHANGE_NAME=${CHANGE_NAME:-legacy-system-migration}
 INTEGRATION_REPORT=${INTEGRATION_REPORT:-/tmp/mi-go-integration.jsonl}
+GO_TEST_PARALLEL_PACKAGES=${GO_TEST_PARALLEL_PACKAGES:-4}
+GO_TEST_TIMEOUT=${GO_TEST_TIMEOUT:-20m}
 
 set +e
-(cd "$ROOT_DIR/backend" && go test -json -tags=integration ./... | tee "$INTEGRATION_REPORT" >/dev/null)
+(cd "$ROOT_DIR/backend" && go test -p "$GO_TEST_PARALLEL_PACKAGES" -timeout "$GO_TEST_TIMEOUT" -json -tags=integration ./... | tee "$INTEGRATION_REPORT" >/dev/null)
 INTEGRATION_EXIT_CODE=$?
 set -e
 

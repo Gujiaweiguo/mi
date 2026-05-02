@@ -68,7 +68,7 @@ const router = createRouter({
       component: () => import('../views/WorkflowAdminView.vue'),
       meta: {
         requiresAuth: true,
-        permissionCode: FUNCTION_CODES.workflowAdmin,
+        permissionAnyOf: [FUNCTION_CODES.workflowDefinition, FUNCTION_CODES.workflowAdmin],
       },
     },
     {

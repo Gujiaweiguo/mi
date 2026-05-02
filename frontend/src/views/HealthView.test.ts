@@ -171,8 +171,8 @@ describe('HealthView', () => {
     const errorAlert = wrapper.get('[data-testid="health-error-alert"]')
     expect(errorAlert.text()).toContain('Connection refused')
 
-    // Error alert should NOT exist when healthy (verified above), but should exist here
-    expect(errorAlert.exists()).toBe(true)
+    // Reaching this assertion through get() already proves the alert exists.
+    expect(errorAlert.text().length).toBeGreaterThan(0)
   })
 
   it('refresh button re-runs health check', async () => {

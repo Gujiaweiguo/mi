@@ -17,9 +17,10 @@ var (
 )
 
 type Service struct {
-	repository *Repository
-	db         *sql.DB
-	notifier   notification.Notifier
+	repository          *Repository
+	db                  *sql.DB
+	notifier            notification.Notifier
+	documentFieldLookup DocumentFieldLookup
 }
 
 func NewService(db *sql.DB, repository *Repository, notifiers ...notification.Notifier) *Service {
@@ -28,6 +29,13 @@ func NewService(db *sql.DB, repository *Repository, notifiers ...notification.No
 		service.notifier = notifiers[0]
 	}
 	return service
+}
+
+func (s *Service) SetDocumentFieldLookup(lookup DocumentFieldLookup) *Service {
+	if s != nil {
+		s.documentFieldLookup = lookup
+	}
+	return s
 }
 
 func (s *Service) ListDefinitions(ctx context.Context) ([]Definition, error) {
@@ -52,13 +60,21 @@ func (s *Service) Start(ctx context.Context, input StartInput) (*Instance, error
 	}
 	firstNode := nodes[0]
 
+	if err := s.hydrateAssignmentRules(ctx, definition); err != nil {
+		return nil, err
+	}
+	resolution, err := s.resolveAssignees(ctx, definition.Nodes, input.ActorUserID, input.DepartmentID, input.DocumentType, input.DocumentID)
+	if err != nil {
+		return nil, err
+	}
+
 	tx, err := s.db.BeginTx(ctx, nil)
 	if err != nil {
 		return nil, fmt.Errorf("begin workflow start transaction: %w", err)
 	}
 	defer func() { _ = tx.Rollback() }()
 
-	if duplicate, err := s.repository.FindStartedInstanceByIdempotencyKey(ctx, tx, definition.ID, input.DocumentType, input.DocumentID, input.IdempotencyKey); err != nil {
+	if duplicate, err := s.repository.FindStartedInstanceByIdempotencyKey(ctx, tx, definition.WorkflowTemplateID, input.DocumentType, input.DocumentID, input.IdempotencyKey); err != nil {
 		return nil, err
 	} else if duplicate != nil {
 		if err := tx.Commit(); err != nil {
@@ -67,7 +83,7 @@ func (s *Service) Start(ctx context.Context, input StartInput) (*Instance, error
 		return duplicate, nil
 	}
 
-	if active, err := s.repository.FindActiveInstanceByDocument(ctx, tx, definition.ID, input.DocumentType, input.DocumentID); err != nil {
+	if active, err := s.repository.FindActiveInstanceByDocument(ctx, tx, definition.WorkflowTemplateID, input.DocumentType, input.DocumentID); err != nil {
 		return nil, err
 	} else if active != nil {
 		if err := tx.Commit(); err != nil {
@@ -80,7 +96,7 @@ func (s *Service) Start(ctx context.Context, input StartInput) (*Instance, error
 	if err != nil {
 		return nil, err
 	}
-	if err := s.repository.InsertSteps(ctx, tx, instance, nodes, input.DepartmentID); err != nil {
+	if err := s.repository.InsertStepsWithResolution(ctx, tx, instance, nodes, resolution); err != nil {
 		return nil, err
 	}
 
@@ -149,8 +165,17 @@ func (s *Service) Resubmit(ctx context.Context, input TransitionInput) (*Instanc
 		return nil, ErrInvalidState
 	}
 	firstNode := nodes[0]
+
+	if err := s.hydrateAssignmentRules(ctx, definition); err != nil {
+		return nil, err
+	}
+	resolution, err := s.resolveAssignees(ctx, definition.Nodes, input.ActorUserID, input.DepartmentID, instance.DocumentType, instance.DocumentID)
+	if err != nil {
+		return nil, err
+	}
+
 	nextCycle := instance.CurrentCycle + 1
-	if err := s.repository.ActivateNextCycle(ctx, tx, instance.ID, nextCycle, nodes, input.DepartmentID); err != nil {
+	if err := s.repository.ActivateNextCycleWithResolution(ctx, tx, instance.ID, nextCycle, nodes, resolution); err != nil {
 		return nil, err
 	}
 	stepOrder := firstNode.StepOrder
@@ -474,4 +499,31 @@ func normalizeEmailRecipients(candidates []string) []string {
 		recipients = append(recipients, email)
 	}
 	return recipients
+}
+
+func (s *Service) hydrateAssignmentRules(ctx context.Context, definition *Definition) error {
+	if definition == nil {
+		return nil
+	}
+	for i := range definition.Nodes {
+		if len(definition.Nodes[i].AssignmentRules) > 0 {
+			continue
+		}
+		rules, err := s.repository.ListAssignmentRulesByNode(ctx, definition.Nodes[i].ID)
+		if err != nil {
+			return err
+		}
+		definition.Nodes[i].AssignmentRules = rules
+	}
+	return nil
+}
+
+func (s *Service) resolveAssignees(ctx context.Context, nodes []Node, submitterUserID int64, submitterDeptID int64, documentType string, documentID int64) (ResolvedStepAssignees, error) {
+	userDeptLookup := func(userID int64) (int64, bool) {
+		return s.repository.FindUserDepartment(ctx, userID)
+	}
+	deptLeaderLookup := func(deptID int64) (int64, int64, bool) {
+		return s.repository.FindDepartmentLeader(ctx, deptID)
+	}
+	return ResolveAssigneesForNodes(ctx, nodes, submitterUserID, submitterDeptID, userDeptLookup, deptLeaderLookup, s.documentFieldLookup, documentType, documentID)
 }
